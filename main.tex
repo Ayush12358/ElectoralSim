@@ -1,0 +1,37 @@
+\documentclass[pdftex,twocolumn,10pt]{article}
+\usepackage{amsfonts,amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{cite}
+
+\title{Simulating the Stability-Proportionality Trade-off: \\ A Computational Counterfactual Analysis of Proportional Representation in the Indian Parliamentary System}
+\author{Ayush Maurya \\ \textit{Your Institution}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The ``Stability Anxiety'' has long dominated the debate on electoral reform in India, favoring the First-Past-The-Post (FPTP) system despite its inherent disproportionality. This paper bridges the gap between political theory and empirical evidence through a large-scale (100k agent) Agent-Based Model (ABM). By simulating the 2024 general elections under counterfactual List-PR rules across three societal personas, we quantify the trade-off between representativeness (Gallagher Index 0.0663) and government durability (MTTF 4.86). Our findings demonstrate that while PR offers superior fairness (Gallagher 0.06 vs FPTP 0.27), the ``Polarization Trap'' reduces stability by 70\% in polarized contexts. Conversely, regional fragmentation exhibits high resilience, supporting the feasibility of moderate thresholds.
+\end{abstract}
+
+\section{Introduction}
+India's adoption of the First-Past-The-Post (FPTP) system was a deliberate decision by the Constituent Assembly. Framer B.R. Ambedkar prioritised executive stability over mathematical fairness. Seven decades later, the disproportionality gap (Gallagher 0.2728) has reached a critical point.
+
+\section{Literature Review}
+The Law Commission of India's 170th and 255th reports acknowledged the need for better proportionality but warned against instability \cite{LawCommission1999, LawCommission2015}. Sridharan (2014) highlights that Indian coalitions often form surplus majority coalitions, providing a natural hedge against fragmentation \cite{Sridharan2014}.
+
+\section{Methodology}
+Using the BharatSim framework \cite{BharatSim}, we model 100,000 agents across 12 parties. Our model accounts for economic, social, and regional ideological axes.
+
+\section{Simulation Results}
+Our results identify a ``Polarization Trap'' where MTTF drops to 1.31 years in polarized contexts, while regional fragmentation remains stable at 4.05 years. Centrist PR with a 5\% threshold achieves a Gallagher Index of 0.0663, a 75\% improvement over the FPTP baseline.
+
+\section{Conclusion}
+Institutional design can mitigate instability, but societal cohesion remains the primary driver of parliamentary durability. A 5\% threshold serves as a robust ``Stability Bridge'' for the Indian republic.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

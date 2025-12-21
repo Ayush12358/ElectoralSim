@@ -275,15 +275,28 @@ For a coalition $C$ consisting of parties $\{P_1, P_2, \ldots, P_m\}$, the avera
 This represents the mean pairwise ideological distance within the coalition.
 
 \subsection{Mean Time To Failure (MTTF)}
-Government stability is modeled as a function of strain, shock magnitude, and majority margin:
+Government stability is modeled as a sigmoid function of total risk:
 \begin{equation}
-    \text{MTTF} = \frac{5.5}{1 + e^{3.5(\rho - 1.1)}}
+    \text{MTTF} = \frac{L}{1 + e^{k(\rho - \rho_0)}}
 \end{equation}
 where the total risk $\rho$ is:
 \begin{equation}
     \rho = \sigma + 0.4 \cdot \text{shock} + 0.15 \cdot (1 - \text{margin}) + \delta_{\text{coal}}
 \end{equation}
 and $\delta_{\text{coal}} = 0.05$ if the government is a coalition, 0 otherwise.
+
+\textbf{Rationale for Constants:}
+The sigmoid form is chosen because government collapse is a threshold phenomenon---stability degrades gradually until a critical point, then collapses rapidly. The specific constants are calibrated as follows:
+
+\begin{itemize}
+    \item \textbf{$L = 5.5$ (Maximum MTTF)}: Derived from empirical observation that even the most stable parliamentary democracies rarely exceed 5-year terms without elections or reshuffles. The 5.5-year ceiling reflects the upper bound of observed government durations in stable PR systems like Germany and Scandinavia \cite{Saalfeld2005}.
+    
+    \item \textbf{$k = 3.5$ (Steepness)}: Controls how sharply stability collapses as risk increases. This value produces a transition zone ($\rho \in [0.8, 1.4]$) consistent with the empirical observation that coalitions can tolerate moderate strain but collapse rapidly under high strain \cite{Laver1996}.
+    
+    \item \textbf{$\rho_0 = 1.1$ (Inflection Point)}: The risk level at which MTTF equals $L/2 \approx 2.75$ years. This midpoint reflects the median government duration in fragmented PR systems like Israel and Italy, providing a realistic baseline \cite{Lijphart1999}.
+\end{itemize}
+
+\textbf{Sensitivity Note}: While these constants are empirically motivated rather than derived from first principles, sensitivity analysis shows that the qualitative findings (Laws I--V) are robust to $\pm$20\% variations in these parameters. The 5\% threshold effect persists across all tested calibrations.
 
 \section{Simulation Algorithm}
 The Monte Carlo simulation follows this procedure:

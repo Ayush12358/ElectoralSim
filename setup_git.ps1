@@ -1,13 +1,21 @@
-# Electoral Simulation Project - Git Setup Script (Windows PowerShell)
-
-# 1. Initialize Git
-git init
+# 1. Initialize Git if not already present
+if (-not (Test-Path .git)) {
+    git init
+    Write-Host "Initialized local Git repository." -ForegroundColor Cyan
+} else {
+    Write-Host "Git repository already initialized." -ForegroundColor Yellow
+}
 
 # 2. Add all files
 git add .
 
-# 3. Create initial commit
-git commit -m "Initial research release: Stability-Proportionality Simulation (1:10 Scale)"
+# 3. Create initial commit (if changes exist)
+$status = git status --porcelain
+if ($status) {
+    git commit -m "Research update: Audited Persona Simulation (100k Agents)"
+} else {
+    Write-Host "No changes to commit." -ForegroundColor Cyan
+}
 
 # 4. Prompt for Remote URL
 Write-Host "Please enter your GitHub repository URL (e.g., https://github.com/ayush-maurya/electoral-simulation-india.git):" -ForegroundColor Green

@@ -38,31 +38,36 @@ object CounterfactualMain extends App {
     }
   }
 
+  // --- Research Configuration ---
   val nAgents = 100000
   val totalSeats = 543
+  val defaultShock = 0.2
+  val researchThresholds = Seq(0.0, 0.01, 0.03, 0.05, 0.08, 0.10, 0.15)
+  val shockRange = Seq(0.1, 0.2, 0.3, 0.5)
 
-  // --- RUN 1: AUDIT (FPTP vs PR) ---
-  println("--- Run 1: System Baseline Audit ---")
-  val voters = generateVoters(nAgents, "Centrist")
-  val vByP = voters.map(v => parties.values.minBy(p => SimulationEngine.calculateDistance(v.ideology, p.ideology)).id).groupBy(identity).mapValues(_.size).toMap
-  val fptpSeats = voters.groupBy(_.constituencyId).map { case (cid, vs) =>
+  println("--- Final Publication Audit: Scenario Sweep ---")
+  
+  // 1. FPTP Baseline (Centrist/Hybrid)
+  val baselineVoters = generateVoters(nAgents, "Hybrid")
+  val baselineVotesByParty = baselineVoters.map(v => parties.values.minBy(p => SimulationEngine.calculateDistance(v.ideology, p.ideology)).id).groupBy(identity).mapValues(_.size).toMap
+  val fptpSeats = baselineVoters.groupBy(_.constituencyId).map { case (cid, vs) =>
     vs.map(v => parties.values.minBy(p => SimulationEngine.calculateDistance(v.ideology, p.ideology)).id).groupBy(identity).mapValues(_.size).maxBy(_._2)._1 -> 1
   }.toSeq.groupBy(_._1).mapValues(_.size).toMap
-  val fptpG = ElectoralMath.calculateGallagherIndex(vByP.mapValues(_.toDouble/nAgents).toMap, fptpSeats.mapValues(_.toDouble/543).toMap)
+  val fptpG = ElectoralMath.calculateGallagherIndex(baselineVotesByParty.mapValues(_.toDouble/nAgents).toMap, fptpSeats.mapValues(_.toDouble/fptpSeats.values.sum).toMap)
   println(f"FPTP Baseline: Gallagher=$fptpG%.4f | MTTF=5.00")
 
   // --- RUN 2: THE EXTENDED SENSITIVITY (For visualizer) ---
   val csvExtended = new java.io.PrintWriter(new java.io.File("data/processed/extended_simulation_results.csv"))
   csvExtended.println("threshold,shock_magnitude,gallagher_index,mttf,fragmentation")
   for {
-    t <- Seq(0.0, 0.01, 0.03, 0.05, 0.08, 0.10, 0.15)
-    sm <- Seq(0.1, 0.2, 0.3, 0.5)
+    t <- researchThresholds
+    sm <- shockRange
   } {
-    val filtered = vByP.filter(_._2.toDouble/nAgents >= t)
+    val filtered = baselineVotesByParty.filter(_._2.toDouble/nAgents >= t)
     val seats = ElectoralMath.allocateSainteLague(filtered, totalSeats)
     val coal = SimulationEngine.formCoalition(seats, parties, 272)
     val mttf = SimulationEngine.calculateMTTF(SimulationEngine.calculateStrain(coal, parties), sm, totalSeats, coal.toList.map(seats).sum, coal.size > 1)
-    csvExtended.println(f"$t,$sm,${ElectoralMath.calculateGallagherIndex(vByP.mapValues(_.toDouble/nAgents).toMap, seats.mapValues(_.toDouble/totalSeats).toMap)},$mttf,${coal.size}")
+    csvExtended.println(f"$t,$sm,${ElectoralMath.calculateGallagherIndex(baselineVotesByParty.mapValues(_.toDouble/nAgents).toMap, seats.mapValues(_.toDouble/totalSeats).toMap)},$mttf,${coal.size}")
   }
   csvExtended.close()
 

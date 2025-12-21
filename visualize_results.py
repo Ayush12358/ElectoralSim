@@ -40,3 +40,20 @@ sns.heatmap(pivot_df, annot=True, cmap='RdYlGn', fmt=".2f")
 plt.title('Stability (MTTF) across Thresholds & Shock Scenarios')
 plt.savefig('reports/figures/stability_heatmap.png', dpi=300)
 print("Heatmap saved to reports/figures/stability_heatmap.png")
+
+# 3. Persona Comparison: Stability vs Proportionality at 5% Threshold
+if os.path.exists('data/processed/societal_stress_results.csv'):
+    df_p = pd.read_csv('data/processed/societal_stress_results.csv')
+    df_p5 = df_p[df_p['threshold'] == 0.05]
+    
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    sns.barplot(x='persona', y='gallagher_index', data=df_p5, ax=ax1, color='tab:red', alpha=0.7)
+    ax1.set_ylabel('Gallagher Index (Lower is Better)', color='tab:red')
+    
+    ax2 = ax1.twinx()
+    sns.lineplot(x='persona', y='mttf', data=df_p5, ax=ax2, marker='o', color='tab:blue', linewidth=3)
+    ax2.set_ylabel('MTTF (Years - Higher is Better)', color='tab:blue')
+    
+    plt.title('Societal Impact on Electoral Stability (5% Threshold)')
+    plt.savefig('reports/figures/persona_comparison.png', dpi=300)
+    print("Persona comparison chart saved to reports/figures/persona_comparison.png")

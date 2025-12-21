@@ -23,6 +23,26 @@ object SimulationEngine {
   }
 
   /**
+   * Generates ideology clustered around a center point
+   */
+  def generateClusteredIdeology(nDim: Int, center: Seq[Double], spread: Double, rand: Random): Ideology = {
+    val dims = center.map { c =>
+      math.max(0.0, math.min(1.0, c + (rand.nextGaussian() * spread)))
+    }
+    Ideology(dims)
+  }
+
+  /**
+   * Calculates vote choice with Clientelism blending
+   * score = (1 - patronageAffinity) * ideologyScore + patronageAffinity * patronageScore
+   */
+  def calculateVoteScore(voter: VoterAgent, party: Party): Double = {
+    val ideologyScore = 1.0 - calculateDistance(voter.ideology, party.ideology) // Higher = better
+    val patronageScore = party.patronageScore
+    (1.0 - voter.patronageAffinity) * ideologyScore + voter.patronageAffinity * patronageScore
+  }
+
+  /**
    * Simple Coalition Formation: Minimum Winning Coalition (MWC)
    */
   def formCoalition(seats: Map[String, Int], parties: Map[String, Party], threshold: Int): Set[String] = {

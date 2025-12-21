@@ -7,35 +7,63 @@ import numpy as np
 # Create reports directory
 os.makedirs('reports/figures', exist_ok=True)
 
-# Load Monte Carlo Results
-if os.path.exists('data/processed/general_theory_results.csv'):
-    df = pd.read_csv('data/processed/general_theory_results.csv')
-
-    # 1. The Dimensionality Curse (MTTF vs Dimensions)
+# Load Extended Theory Results
+if os.path.exists('data/processed/extended_theory_results.csv'):
+    df = pd.read_csv('data/processed/extended_theory_results.csv')
+    
+    # 1. Clientelism Effect: MTTF vs Patronage Level
     plt.figure(figsize=(10, 6))
-    sns.lineplot(x='dimensions', y='avg_mttf', hue='threshold', data=df, marker='o', palette='viridis')
-    plt.title('The Dimensionality Curse: Stability vs Ideological Complexity')
+    sns.lineplot(x='patronage', y='avg_mttf', hue='threshold', style='polarization', 
+                 data=df[df['dimensions']==5], marker='o', palette='viridis')
+    plt.title('Clientelism Effect: Stability vs Patronage Weight (5D)')
+    plt.xlabel('Patronage Affinity (0=Ideology, 1=Patronage)')
     plt.ylabel('Mean Time To Failure (Years)')
     plt.grid(True)
-    plt.savefig('reports/figures/dimensionality_curse.png', dpi=300)
-    print("Saved dimensionality_curse.png")
+    plt.savefig('figures/clientelism_effect.png', dpi=300)
+    print("Saved clientelism_effect.png")
 
-    # 2. The Fragmentation Trap (MTTF vs Party Count) - Faceted by Threshold
-    g = sns.FacetGrid(df, col="threshold", col_wrap=2, height=4, aspect=1.5)
-    g.map(sns.lineplot, "n_parties", "avg_mttf", "dimensions", palette="tab10", marker="o")
-    g.add_legend()
-    g.fig.suptitle('Stability Sensitivity to Party Fragmentation', y=1.02)
-    plt.savefig('reports/figures/fragmentation_trap.png', dpi=300)
-    print("Saved fragmentation_trap.png")
+    # 2. Asymmetric Polarization Comparison
+    plt.figure(figsize=(12, 5))
+    df_5d = df[(df['dimensions']==5) & (df['threshold']==0.05) & (df['patronage']==0.0)]
+    sns.barplot(x='polarization', y='avg_mttf', data=df_5d, palette='Set2')
+    plt.title('Asymmetric Polarization Effect (5D, 5% Threshold)')
+    plt.ylabel('Mean Time To Failure (Years)')
+    plt.xlabel('Polarization Type')
+    plt.savefig('figures/asymmetric_polarization.png', dpi=300)
+    print("Saved asymmetric_polarization.png")
 
-    # 3. The Pareto Efficiency (Gallagher vs MTTF) - Aggregated
+    # 3. Combined Heatmap: Patronage x Polarization
+    plt.figure(figsize=(10, 8))
+    df_pivot = df[(df['dimensions']==5) & (df['threshold']==0.05)].pivot_table(
+        values='avg_mttf', index='patronage', columns='polarization', aggfunc='mean'
+    )
+    sns.heatmap(df_pivot, annot=True, cmap='RdYlGn', fmt=".2f")
+    plt.title('Stability: Patronage x Polarization (5D, 5% Threshold)')
+    plt.xlabel('Polarization Type')
+    plt.ylabel('Patronage Affinity')
+    plt.savefig('figures/patronage_polarization_heatmap.png', dpi=300)
+    print("Saved patronage_polarization_heatmap.png")
+
+    # 4. Pareto Frontier (Updated)
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='avg_gallagher', y='avg_mttf', hue='threshold', size='dimensions', sizes=(20, 200), data=df, alpha=0.7, palette='deep')
-    plt.title('General Theory Pareto Frontier (All Permutations)')
+    sns.scatterplot(x='avg_gallagher', y='avg_mttf', hue='polarization', 
+                    size='patronage', sizes=(20, 200), data=df, alpha=0.7, palette='deep')
+    plt.title('Extended Pareto Frontier: Fairness vs Stability')
     plt.xlabel('Disproportionality (Gallagher)')
     plt.ylabel('Stability (MTTF)')
-    plt.savefig('reports/figures/general_pareto.png', dpi=300)
-    print("Saved general_pareto.png")
+    plt.savefig('figures/extended_pareto.png', dpi=300)
+    print("Saved extended_pareto.png")
 
 else:
-    print("Data not found: data/processed/general_theory_results.csv")
+    print("Data not found: data/processed/extended_theory_results.csv")
+    # Fall back to general theory results
+    if os.path.exists('data/processed/general_theory_results.csv'):
+        df = pd.read_csv('data/processed/general_theory_results.csv')
+        
+        plt.figure(figsize=(10, 6))
+        sns.lineplot(x='dimensions', y='avg_mttf', hue='threshold', data=df, marker='o', palette='viridis')
+        plt.title('The Dimensionality Curse: Stability vs Ideological Complexity')
+        plt.ylabel('Mean Time To Failure (Years)')
+        plt.grid(True)
+        plt.savefig('figures/dimensionality_curse.png', dpi=300)
+        print("Saved dimensionality_curse.png")

@@ -255,6 +255,18 @@ For $N$-dimensional ideological space, the Euclidean distance between two entiti
 \end{equation}
 where $a_k$ and $b_k$ are the positions on dimension $k$.
 
+\subsection{Patronage Vote Score (Law IV)}
+In the extended model, a voter's party preference blends ideology and patronage:
+\begin{equation}
+    \text{Score}(v, p) = (1 - \alpha) \cdot \text{IdeologyScore}(v, p) + \alpha \cdot \text{PatronageScore}(p)
+\end{equation}
+where:
+\begin{itemize}
+    \item $\alpha \in [0, 1]$ is the voter's patronage affinity (0 = pure ideology, 1 = pure patronage)
+    \item $\text{IdeologyScore}(v, p) = 1 - d(v, p)$ (higher = closer match)
+    \item $\text{PatronageScore}(p) \in [0, 1]$ represents the party's benefit distribution capacity
+\end{itemize}
+
 \subsection{Coalition Strain}
 For a coalition $C$ consisting of parties $\{P_1, P_2, \ldots, P_m\}$, the average ideological strain is:
 \begin{equation}
@@ -273,17 +285,43 @@ where the total risk $\rho$ is:
 \end{equation}
 and $\delta_{\text{coal}} = 0.05$ if the government is a coalition, 0 otherwise.
 
+\section{Simulation Algorithm}
+The Monte Carlo simulation follows this procedure:
+
+\begin{enumerate}
+    \item \textbf{Configuration Loop}: For each combination of $(D, P, T, \alpha, \text{Polarization})$:
+    \begin{enumerate}
+        \item Generate $N = 10{,}000$ voters with positions based on polarization type:
+        \begin{itemize}
+            \item \textit{Uniform}: Random positions in $[0, 1]^D$
+            \item \textit{Symmetric}: 50\% clustered at $(0.2, \ldots)$, 50\% at $(0.8, \ldots)$
+            \item \textit{Asymmetric}: 80\% clustered at $(0.85, \ldots)$, 20\% uniform
+        \end{itemize}
+        \item Generate $P$ parties with random positions and patronage scores
+        \item Each voter selects the party with highest $\text{Score}(v, p)$
+        \item Apply threshold $T$: exclude parties with vote share $< T$
+        \item Allocate seats via Sainte-Lagu\"e method
+        \item Form minimum winning coalition (greedy by seat count)
+        \item Calculate coalition strain $\sigma$ and MTTF
+        \item Record Gallagher Index and MTTF
+    \end{enumerate}
+    \item Repeat 30--50 trials per configuration for variance reduction
+    \item Aggregate results (mean, standard deviation)
+\end{enumerate}
+
 \section{Glossary of Key Terms}
+Terms are listed alphabetically for easy reference.
 \begin{itemize}
-    \item \textbf{Ideological Dimensions}: The number of distinct issues voters care about. A ``2D'' society has just Left-Right economics; a ``5D'' society also has social, religious, regional, and identity axes.
-    \item \textbf{Electoral Threshold}: The minimum vote share a party needs to win seats (e.g., Germany's 5\% rule). Parties below this are excluded.
-    \item \textbf{MTTF (Mean Time To Failure)}: Average years before a government collapses due to internal disagreements or coalition breakdowns.
-    \item \textbf{Gallagher Index}: A measure of electoral ``unfairness''---0 means votes perfectly match seats; 0.5 means half of votes are effectively wasted.
-    \item \textbf{Proportional Representation (PR)}: An electoral system where seat shares match vote shares (unlike winner-take-all systems).
-    \item \textbf{Patronage/Clientelism}: When voters support parties in exchange for personal benefits (jobs, subsidies) rather than policy agreement.
     \item \textbf{Coalition}: A government formed by multiple parties working together to achieve a majority.
+    \item \textbf{Electoral Threshold}: The minimum vote share a party needs to win seats (e.g., Germany's 5\% rule). Parties below this are excluded.
     \item \textbf{FPTP (First Past The Post)}: A winner-take-all electoral system where the candidate with the most votes wins, used in the US, UK, and India.
+    \item \textbf{Gallagher Index}: A measure of electoral ``unfairness''---0 means votes perfectly match seats; 0.5 means half of votes are effectively wasted.
+    \item \textbf{Ideological Dimensions}: The number of distinct issues voters care about. A ``2D'' society has just Left-Right economics; a ``5D'' society also has social, religious, regional, and identity axes.
+    \item \textbf{MTTF (Mean Time To Failure)}: Average years before a government collapses due to internal disagreements or coalition breakdowns.
+    \item \textbf{Patronage/Clientelism}: When voters support parties in exchange for personal benefits (jobs, subsidies) rather than policy agreement.
+    \item \textbf{Proportional Representation (PR)}: An electoral system where seat shares match vote shares (unlike winner-take-all systems).
 \end{itemize}
 
 \end{document}
+
 

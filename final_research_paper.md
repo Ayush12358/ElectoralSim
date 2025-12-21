@@ -57,6 +57,34 @@ Irrespective of dimensions ($D$) or parties ($P$), imposing a 5% floor robustly 
 ![Pareto Frontier](figures/general_pareto.png)
 *Figure 3: The Pareto Frontier showing the trade-off between fairness (Gallagher) and stability (MTTF). The 5% threshold cluster dominates.*
 
+### Law IV: The Clientelism Cushion
+When voters are motivated by **patronage** (transactional benefits) rather than ideology, stability increases dramatically. In our extended simulations with a `patronageAffinity` parameter:
+
+- **Pure Ideology (0.0)**: Stability follows Laws I-III (dimension-dependent).
+- **High Patronage (0.9)**: MTTF approaches **5.0 years** universally, even in 8D, 20-party systems.
+
+**Interpretation**: Clientelist voters are loyal to *benefits*, not *beliefs*. This creates stable voting blocs immune to ideological fragmentation. This explains why democracies with high patronage (e.g., India, Mexico) often exhibit surprising governmental stability despite extreme party fragmentation.
+
+![Clientelism Effect](figures/clientelism_effect.png)
+*Figure 4: The Clientelism Cushion—High patronage (0.9) universally stabilizes systems across all threshold levels.*
+
+### Law V: The Asymmetric Stability Paradox
+Not all polarization is equal. When polarization is **asymmetric** (one dominant pole with 80% of voters, 20% scattered opposition), stability is *maximized*, not minimized.
+
+| Polarization Type | MTTF (5D, 5% Threshold) | Interpretation |
+|-------------------|-------------------------|----------------|
+| **Uniform** | ~3.2 years | No clear majority, frequent coalitions |
+| **Symmetric** | ~2.9 years | Two opposing blocs, high strain |
+| **Asymmetric** | **~5.0 years** | Dominant bloc = stable majority |
+
+**The Paradox**: Symmetric polarization (e.g., US-style two-camp politics) is the *most unstable* configuration because it maximizes coalition strain. Asymmetric polarization (e.g., dominant-party systems like India's NDA, Japan's LDP) creates natural majorities.
+
+![Asymmetric Polarization](figures/asymmetric_polarization.png)
+*Figure 5: The Asymmetric Stability Paradox—One-sided polarization creates stable dominant majorities.*
+
+![Heatmap](figures/patronage_polarization_heatmap.png)
+*Figure 6: Combined Effect—Patronage × Polarization interaction. High patronage + Asymmetric polarization = Maximum stability.*
+
 ---
 
 ## 4. Discussion: Theoretical Implications

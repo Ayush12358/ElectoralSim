@@ -6,13 +6,15 @@
 \usepackage{amsfonts,amssymb,amsmath}
 \usepackage{graphicx}
 \usepackage{url}
-\usepackage[numbers,sort&compress]{natbib}
+\usepackage{natbib}
 \usepackage{booktabs}
 \usepackage{titlesec}
 \usepackage{geometry}
 \usepackage{float}
 \usepackage{caption}
 \geometry{margin=1in}
+\setcitestyle{authoryear,open={(},close={)}} 
+
 
 \title{Towards a General Theory of Electoral Stability: \\ A Monte Carlo Analysis of High-Dimensional Political Landscapes}
 \author{Ayush Maurya \\ \textit{International Institute of Information Technology, Hyderabad}}
@@ -29,22 +31,22 @@ Political science often relies on context-specific case studies (e.g., ``the Ger
 \section{Introduction}
 Traditional electoral analysis is constrained by geography. A ``polarized'' society in the US (2 parties) behaves differently from a ``polarized'' society in Israel (12+ parties). To understand the fundamental physics of democracy, we must strip away country names and model the underlying mathematical structure.
 
-The challenge of aggregating individual preferences into coherent collective decisions was formalized by Arrow \cite{Arrow1951}, who proved that no voting system can satisfy all desirable properties simultaneously. Building on this, spatial models of voting \cite{Downs1957,Enelow1984} established that voter preferences can be represented geometrically---imagine each voter as a point in a multi-dimensional space, voting for the party ``nearest'' to them.
+The challenge of aggregating individual preferences into coherent collective decisions was formalized by Arrow \citep{Arrow1951}, who proved that no voting system can satisfy all desirable properties simultaneously. Building on this, spatial models of voting \citep{Downs1957,Enelow1984} established that voter preferences can be represented geometrically---imagine each voter as a point in a multi-dimensional space, voting for the party ``nearest'' to them.
 
 We ask: \textbf{What is the breaking point of a democracy?} Is it the number of parties? The complexity of issues? Or the rules of the game?
 
 \section{Methodology}
-We built a computer simulation following the tradition of computational political science \cite{Kollman1992}. The simulation generates thousands of random political scenarios and measures how long governments survive.
+We built a computer simulation following the tradition of computational political science \citep{Kollman1992}. The simulation generates thousands of random political scenarios and measures how long governments survive.
 
 \begin{itemize}
     \item \textbf{Voters}: 10,000 virtual agents, each with preferences on $N$ political issues (dimensions).
     \item \textbf{Parties}: $P$ randomly positioned parties in the same issue space.
-    \item \textbf{Voting Rule}: Each voter supports the party closest to their own position \cite{Downs1957}.
+    \item \textbf{Voting Rule}: Each voter supports the party closest to their own position \citep{Downs1957}.
     \item \textbf{Seat Allocation}: Proportional representation (used in Germany, Scandinavia) with variable threshold.
-    \item \textbf{Stability Metric}: Mean Time To Failure (MTTF)---average years until government collapse \cite{Laver1996}.
+    \item \textbf{Stability Metric}: Mean Time To Failure (MTTF)---average years until government collapse \citep{Laver1996}.
 \end{itemize}
 
-\textbf{Software Implementation:} The simulation model was implemented in Scala using the \textbf{Google Antigravity} IDE (Preview version, December 2025) powered by \textbf{Gemini 3 Pro} \cite{GoogleAntigravity2025}. While the AI agents assisted in code generation, refactoring, and test execution, all logical rules, parameters, and outputs were manually verified by the author to ensure alignment with the theoretical specifications. The full source code, including agent-generated artifacts and verification tests, is available at \url{https://github.com/Ayush12358/electoral-simulation-india}.
+\textbf{Software Implementation:} The simulation model was implemented in Scala using the \textbf{Google Antigravity} IDE (Preview version, December 2025) powered by \textbf{Gemini 3 Pro} \citep{GoogleAntigravity2025}. While the AI agents assisted in code generation, refactoring, and test execution, all logical rules, parameters, and outputs were manually verified by the author to ensure alignment with the theoretical specifications. The full source code, including agent-generated artifacts and verification tests, is available at \url{https://github.com/Ayush12358/electoral-simulation-india}.
 
 \textbf{Simulation Sweep}: We ran 6,000 permutations across: Dimensions ($D$): 2--8; Parties ($P$): 3--20; Threshold ($T$): 0\%--10\%. Table~\ref{tab:params} summarizes the simulation configuration.
 
@@ -71,7 +73,7 @@ We built a computer simulation following the tradition of computational politica
 \section{Results: Five Structural Principles of Electoral Stability}
 
 \subsection{Principle I: The Dimensionality Constraint}
-As the number of ideological dimensions increases, the probability of finding a ``center'' that satisfies everyone vanishes---a phenomenon we term the \textit{dimensionality constraint}. In a simple 2-issue society (e.g., just Left vs Right), stable governments last $\sim$4.2 years. In a 5-issue society, stability crashes to $\sim$2.1 years. This confirms Schofield's \cite{Schofield1985} mathematical prediction that complex societies have no natural equilibrium, and aligns with recent work on multidimensional apportionment \cite{Pukelsheim2022}.
+As the number of ideological dimensions increases, the probability of finding a ``center'' that satisfies everyone vanishes---a phenomenon we term the \textit{dimensionality constraint}. In a simple 2-issue society (e.g., just Left vs Right), stable governments last $\sim$4.2 years. In a 5-issue society, stability crashes to $\sim$2.1 years. This confirms Schofield's \citep{Schofield1985} mathematical prediction that complex societies have no natural equilibrium, and aligns with recent work on multidimensional apportionment \citep{Pukelsheim2022}.
 
 \begin{figure}[H]
     \centering
@@ -81,7 +83,7 @@ As the number of ideological dimensions increases, the probability of finding a 
 \end{figure}
 
 \subsection{Principle II: The Fragmentation Trade-off}
-Increasing the number of parties improves representativeness (more voices are heard) but makes coalitions fragile---a fundamental trade-off. Beyond 8 parties, average government lifespan drops below 3 years in pure proportional systems. This aligns with Sartori's \cite{Sartori1976} observation that excessive fragmentation creates ``centrifugal'' competition, and is consistent with recent agent-based election forecasting models \cite{Fernandez2022}.
+Increasing the number of parties improves representativeness (more voices are heard) but makes coalitions fragile---a fundamental trade-off. Beyond 8 parties, average government lifespan drops below 3 years in pure proportional systems. This aligns with Sartori's \citep{Sartori1976} observation that excessive fragmentation creates ``centrifugal'' competition, and is consistent with recent agent-based election forecasting models \citep{Fernandez2022}.
 
 \begin{figure}[H]
     \centering
@@ -91,7 +93,7 @@ Increasing the number of parties improves representativeness (more voices are he
 \end{figure}
 
 \subsection{Principle III: The 5\% Threshold Effect}
-Regardless of how complex or fragmented a society is, imposing a 5\% threshold restores government stability to $>$4 years---a robust structural regularity. This mirrors Germany's success with its 5\% rule (\textit{Sperrklausel}) \cite{Saalfeld2005}. The threshold works by filtering out small, extreme parties that would otherwise destabilize coalitions.
+Regardless of how complex or fragmented a society is, imposing a 5\% threshold restores government stability to $>$4 years---a robust structural regularity. This mirrors Germany's success with its 5\% rule (\textit{Sperrklausel}) \citep{Saalfeld2005}. The threshold works by filtering out small, extreme parties that would otherwise destabilize coalitions.
 
 \begin{figure}[H]
     \centering
@@ -118,7 +120,7 @@ When voters are motivated by \textbf{patronage} (transactional benefits rather t
 \end{figure}
 
 \subsection{Principle V: The Asymmetric Polarization Effect}
-Not all polarization is equal. When polarization is \textbf{asymmetric} (one dominant pole with 80\% of voters, 20\% scattered opposition), stability is \textit{maximized}, not minimized---a counterintuitive but robust finding consistent with recent social physics models of polarization \cite{Galam2024}.
+Not all polarization is equal. When polarization is \textbf{asymmetric} (one dominant pole with 80\% of voters, 20\% scattered opposition), stability is \textit{maximized}, not minimized---a counterintuitive but robust finding consistent with recent social physics models of polarization \citep{Galam2024}.
 
 \begin{table}[H]
     \centering
@@ -147,13 +149,13 @@ Not all polarization is equal. When polarization is \textbf{asymmetric} (one dom
 \section{Discussion}
 
 \subsection{The Empty Core Theorem}
-Our findings empirically validate Schofield's Chaos Theorem \cite{Schofield1985}. The ``Stability Snap'' at 5\% can be understood as an \textit{artificial} construction of a core \cite{Cox1997}.
+Our findings empirically validate Schofield's Chaos Theorem \citep{Schofield1985}. The ``Stability Snap'' at 5\% can be understood as an \textit{artificial} construction of a core \citep{Cox1997}.
 
 \subsection{The Duverger-Sartori Synthesis}
-Duverger \cite{Duverger1954} hypothesized that plurality systems trend towards two parties. Sartori \cite{Sartori1976} extended this, arguing that PR systems merely \textit{permit} fragmentation. Our model provides mechanistic evidence for this synthesis.
+Duverger \citep{Duverger1954} hypothesized that plurality systems trend towards two parties. Sartori \citep{Sartori1976} extended this, arguing that PR systems merely \textit{permit} fragmentation. Our model provides mechanistic evidence for this synthesis.
 
 \subsection{Explaining Global Divergence}
-This theory explains disparate global phenomena without recourse to cultural arguments \cite{Lijphart1999}. Table~\ref{tab:global} summarizes the model's predictions against observed outcomes.
+This theory explains disparate global phenomena without recourse to cultural arguments \citep{Lijphart1999}. Table~\ref{tab:global} summarizes the model's predictions against observed outcomes.
 
 \begin{table}[H]
     \centering
@@ -171,14 +173,14 @@ This theory explains disparate global phenomena without recourse to cultural arg
     \end{tabular}
 \end{table}
 
-The US case is explained by a forced dimensionality reduction: FPTP compresses a potentially multi-dimensional society onto a single axis \cite{McCarty2006}, creating stability at the cost of immense ideological strain \cite{Levitsky2018}.
+The US case is explained by a forced dimensionality reduction: FPTP compresses a potentially multi-dimensional society onto a single axis \citep{McCarty2006}, creating stability at the cost of immense ideological strain \citep{Levitsky2018}.
 
 \subsection{The Stability-Democracy Trade-off}
 A fundamental normative tension emerges from our findings: \textbf{Stability is not synonymous with democracy.}
 
 Consider the implications of Laws IV and V:
 \begin{itemize}
-    \item \textbf{Law IV (Clientelism)}: Patronage creates stability, but voters who are loyal to benefits do not hold governments accountable. This is stability without accountability \cite{Kitschelt2007}.
+    \item \textbf{Law IV (Clientelism)}: Patronage creates stability, but voters who are loyal to benefits do not hold governments accountable. This is stability without accountability \citep{Kitschelt2007}.
     \item \textbf{Law V (Asymmetric Polarization)}: Dominant-party systems are stable, but they suppress opposition and reduce electoral competitiveness. This is stability without alternation.
 \end{itemize}
 
@@ -219,14 +221,14 @@ While robust, our model makes necessary abstractions:
 \textbf{Note}: The extended model (Principles IV--V) addresses clientelism and asymmetric polarization, which were limitations in earlier versions.
 
 \section{Conclusion}
-\textbf{What constrains democratic stability?} Our analysis points to a clear answer: \textit{complexity}. High-dimensional societies---those grappling with multiple, cross-cutting cleavages \cite{Lipset1967}---face structural barriers to stable governance. The \textbf{5\% threshold} emerges not as an arbitrary policy choice, but as a structural necessity for societies operating in more than two ideological dimensions. It functions as a ``dimensional compressor,'' filtering noise without eliminating meaningful pluralism.
+\textbf{What constrains democratic stability?} Our analysis points to a clear answer: \textit{complexity}. High-dimensional societies---those grappling with multiple, cross-cutting cleavages \citep{Lipset1967}---face structural barriers to stable governance. The \textbf{5\% threshold} emerges not as an arbitrary policy choice, but as a structural necessity for societies operating in more than two ideological dimensions. It functions as a ``dimensional compressor,'' filtering noise without eliminating meaningful pluralism.
 
 These findings suggest that electoral stability is not primarily a function of culture, tradition, or institutional maturity. Rather, it reflects the \textbf{geometric structure} of political competition. The five principles identified here provide a framework for understanding why some democracies thrive while others struggle---and offer actionable guidance for electoral reform.
 
 \section*{Acknowledgements}
 The author acknowledges the use of \textbf{Google Antigravity} (utilizing the Gemini 3 Pro model) for accelerating the development of the Monte Carlo simulation and refining the technical descriptions in this manuscript. The author also thanks the broader computational social science community for their foundational work.
 
-\bibliographystyle{apalike}
+\bibliographystyle{plainnat}
 \bibliography{references}
 
 \appendix
@@ -280,11 +282,11 @@ and $\delta_{\text{coal}} = 0.05$ if the government is a coalition, 0 otherwise.
 The sigmoid form is chosen because government collapse is a threshold phenomenon---stability degrades gradually until a critical point, then collapses rapidly. The specific constants are calibrated as follows:
 
 \begin{itemize}
-    \item \textbf{$L = 5.5$ (Maximum MTTF)}: Derived from empirical observation that even the most stable parliamentary democracies rarely exceed 5-year terms without elections or reshuffles. The 5.5-year ceiling reflects the upper bound of observed government durations in stable PR systems like Germany and Scandinavia \cite{Saalfeld2005}.
+    \item \textbf{$L = 5.5$ (Maximum MTTF)}: Derived from empirical observation that even the most stable parliamentary democracies rarely exceed 5-year terms without elections or reshuffles. The 5.5-year ceiling reflects the upper bound of observed government durations in stable PR systems like Germany and Scandinavia \citep{Saalfeld2005}.
     
-    \item \textbf{$k = 3.5$ (Steepness)}: Controls how sharply stability collapses as risk increases. This value produces a transition zone ($\rho \in [0.8, 1.4]$) consistent with the empirical observation that coalitions can tolerate moderate strain but collapse rapidly under high strain \cite{Laver1996}.
+    \item \textbf{$k = 3.5$ (Steepness)}: Controls how sharply stability collapses as risk increases. This value produces a transition zone ($\rho \in [0.8, 1.4]$) consistent with the empirical observation that coalitions can tolerate moderate strain but collapse rapidly under high strain \citep{Laver1996}.
     
-    \item \textbf{$\rho_0 = 1.1$ (Inflection Point)}: The risk level at which MTTF equals $L/2 \approx 2.75$ years. This midpoint reflects the median government duration in fragmented PR systems like Israel and Italy, providing a realistic baseline \cite{Lijphart1999}.
+    \item \textbf{$\rho_0 = 1.1$ (Inflection Point)}: The risk level at which MTTF equals $L/2 \approx 2.75$ years. This midpoint reflects the median government duration in fragmented PR systems like Israel and Italy, providing a realistic baseline \citep{Lijphart1999}.
 \end{itemize}
 
 \textbf{Sensitivity Note}: While these constants are empirically motivated rather than derived from first principles, sensitivity analysis shows that the qualitative findings (Laws I--V) are robust to $\pm$20\% variations in these parameters. The 5\% threshold effect persists across all tested calibrations.

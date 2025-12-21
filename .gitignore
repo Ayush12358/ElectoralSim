@@ -4,12 +4,11 @@ project/target/
 project/project/
 .bsp/
 .metals/
+.history/
 .ammonite/
 out/
 *.class
 *.jar
-*.swp
-*.swo
 
 # Python
 __pycache__/
@@ -18,12 +17,25 @@ __pycache__/
 venv/
 ENV/
 
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+
 # OS/IDEs
 .DS_Store
 .idea/
 .vscode/
+*.swp
+*.swo
 
-# Project Specific
+# Project Specific (old logs)
 final_audited_results.txt
 final_grand_results.txt
 results.txt
@@ -31,4 +43,3 @@ scale_test_output.txt
 persona_test_output.txt
 final_publication_data.txt
 scale_validation_results.csv
-*.log

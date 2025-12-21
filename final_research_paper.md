@@ -65,6 +65,9 @@ When voters are motivated by **patronage** (transactional benefits) rather than 
 
 **Interpretation**: Clientelist voters are loyal to *benefits*, not *beliefs*. This creates stable voting blocs immune to ideological fragmentation. This explains why democracies with high patronage (e.g., India, Mexico) often exhibit surprising governmental stability despite extreme party fragmentation.
 
+> **Warning: The Accountability Deficit**
+> Clientelism stabilizes governments but at a severe cost: **democratic accountability**. When voters are loyal to material benefits, they do not punish corruption, incompetence, or policy failures. This creates a "stability trap" where governments persist not because they govern well, but because they distribute resources effectively. Patronage democracies are often stable *and* corrupt (Kitschelt & Wilkinson, 2007).
+
 ![Clientelism Effect](figures/clientelism_effect.png)
 *Figure 4: The Clientelism Cushion—High patronage (0.9) universally stabilizes systems across all threshold levels.*
 
@@ -120,6 +123,35 @@ A crucial caveat is that our MTTF metric measures *government duration*, not *so
 
 Future work should incorporate a "Strain Accumulation" metric to model the long-term consequences of forced stability.
 
+### 4.5 The Stability-Democracy Trade-off
+A fundamental normative tension emerges from our findings: **Stability is not synonymous with democracy.**
+
+Consider the implications of Laws IV and V:
+- **Law IV (Clientelism)**: Patronage creates stability, but voters who are loyal to benefits do not hold governments accountable. This is stability without accountability.
+- **Law V (Asymmetric Polarization)**: Dominant-party systems are stable, but they suppress opposition and reduce electoral competitiveness. This is stability without alternation.
+
+Both mechanisms produce high MTTF scores while potentially undermining democratic quality. We propose the **Authoritarian Stability Hypothesis**:
+
+> *As a democracy optimizes for stability, it converges toward authoritarianism.*
+
+This hypothesis is consistent with empirical observations:
+- **Russia (2000s)**: High stability (Putin's regime), low democratic quality.
+- **Singapore**: Decades of PAP dominance, stable but not fully democratic.
+- **India (2014-present)**: Increasing dominance, stable but with democratic backsliding concerns.
+
+The "5% Threshold" may be the optimal balance point: it provides sufficient stability (>4 years) while preserving meaningful competition. Thresholds above 10% begin to approach the "Authoritarian Stability" zone.
+
+### 4.6 Policy Prescription Matrix
+Based on our five laws, we propose the following reform recommendations:
+
+| Society Type | Current State | Recommended Reform | Rationale |
+|--------------|--------------|-------------------|-----------|
+| **Simple (2D), Consolidated** | Stable | No change needed | Laws I-III satisfied |
+| **Complex (5D+), Fragmented** | Unstable | Adopt 5% threshold | Law III: Stability Snap |
+| **Symmetric Polarized** | Highly Unstable | Consociational power-sharing | Law V: Avoid symmetric competition |
+| **High Patronage** | Stable but Corrupt | Anti-clientelism reforms first | Law IV: Address accountability deficit |
+| **Dominant-Party System** | Stable but Undemocratic | Lower thresholds, strengthen opposition | Prevent authoritarian drift |
+
 ---
 
 ## 5. Conclusion: Democracy as Topology
@@ -145,13 +177,15 @@ Democracy's stability is not a function of culture, tradition, or luck. It is a 
 4.  Duverger, M. (1954). *Political Parties: Their Organization and Activity in the Modern State*. Wiley.
 5.  Enelow, J. & Hinich, M. (1984). *The Spatial Theory of Voting*. Cambridge University Press.
 6.  Gallagher, M. (1991). Proportionality, Disproportionality and Electoral Systems. *Electoral Studies*, 10(1), 33-51.
-7.  Kollman, K., Miller, J., & Page, S. (1992). Adaptive Parties in Spatial Elections. *American Political Science Review*, 86(4), 929-937.
-8.  Laver, M. & Shepsle, K. (1996). *Making and Breaking Governments: Cabinets and Legislatures in Parliamentary Democracies*. Cambridge University Press.
-9.  Levitsky, S. & Ziblatt, D. (2018). *How Democracies Die*. Crown.
-10. Lijphart, A. (1999). *Patterns of Democracy: Government Forms and Performance in Thirty-Six Countries*. Yale University Press.
-11. Lipset, S.M. & Rokkan, S. (1967). Cleavage Structures, Party Systems, and Voter Alignments. In *Party Systems and Voter Alignments*. Free Press.
-12. McCarty, N., Poole, K. & Rosenthal, H. (2006). *Polarized America: The Dance of Ideology and Unequal Riches*. MIT Press.
-13. Riker, W. (1962). *The Theory of Political Coalitions*. Yale University Press.
-14. Saalfeld, T. (2005). Germany: Stability and Strategy in a Mixed-Member Proportional System. In Gallagher & Mitchell (Eds.), *The Politics of Electoral Systems*. Oxford University Press.
-15. Sartori, G. (1976). *Parties and Party Systems: A Framework for Analysis*. Cambridge University Press.
-16. Schofield, N. (1985). *Social Choice and Democracy*. Springer-Verlag.
+7.  Kitschelt, H. & Wilkinson, S. (2007). *Patrons, Clients, and Policies: Patterns of Democratic Accountability and Political Competition*. Cambridge University Press.
+8.  Kollman, K., Miller, J., & Page, S. (1992). Adaptive Parties in Spatial Elections. *American Political Science Review*, 86(4), 929-937.
+9.  Laver, M. & Shepsle, K. (1996). *Making and Breaking Governments: Cabinets and Legislatures in Parliamentary Democracies*. Cambridge University Press.
+10. Levitsky, S. & Ziblatt, D. (2018). *How Democracies Die*. Crown.
+11. Lijphart, A. (1999). *Patterns of Democracy: Government Forms and Performance in Thirty-Six Countries*. Yale University Press.
+12. Lipset, S.M. & Rokkan, S. (1967). Cleavage Structures, Party Systems, and Voter Alignments. In *Party Systems and Voter Alignments*. Free Press.
+13. McCarty, N., Poole, K. & Rosenthal, H. (2006). *Polarized America: The Dance of Ideology and Unequal Riches*. MIT Press.
+14. Riker, W. (1962). *The Theory of Political Coalitions*. Yale University Press.
+15. Saalfeld, T. (2005). Germany: Stability and Strategy in a Mixed-Member Proportional System. In Gallagher & Mitchell (Eds.), *The Politics of Electoral Systems*. Oxford University Press.
+16. Sartori, G. (1976). *Parties and Party Systems: A Framework for Analysis*. Cambridge University Press.
+17. Schofield, N. (1985). *Social Choice and Democracy*. Springer-Verlag.
+18. Taagepera, R. & Shugart, M. (1989). *Seats and Votes: The Effects and Determinants of Electoral Systems*. Yale University Press.

@@ -117,6 +117,8 @@ Regardless of how complex or fragmented a society is, imposing a 5\% threshold r
 
 
 \subsection{Law IV: The Clientelism Cushion}
+\textit{In Plain English: When voters care more about personal benefits than ideology, governments become very stable—but less accountable.}
+
 When voters are motivated by \textbf{patronage} (transactional benefits) rather than ideology, stability increases dramatically. In our extended simulations with a patronage affinity parameter:
 \begin{itemize}
     \item \textbf{Pure Ideology (0.0)}: Stability follows Laws I-III (dimension-dependent).
@@ -133,6 +135,8 @@ When voters are motivated by \textbf{patronage} (transactional benefits) rather 
 \end{figure}
 
 \subsection{Law V: The Asymmetric Stability Paradox}
+\textit{In Plain English: Surprisingly, one-sided dominance creates more stable governments than evenly-split competition.}
+
 Not all polarization is equal. When polarization is \textbf{asymmetric} (one dominant pole with 80\% of voters, 20\% scattered opposition), stability is \textit{maximized}, not minimized.
 
 \begin{table}[H]
@@ -226,10 +230,12 @@ Based on our five laws, we propose the following reform recommendations:
 While robust, our model makes necessary abstractions:
 \begin{itemize}
     \item \textbf{Identity Dimensions}: We abstract caste, ethnicity, and religion into the ``Social Axis.'' In reality, these identity dimensions often override ideological preferences.
-    \item \textbf{Clientelism}: The model assumes ideological voting. In many democracies, vote choice is transactional (patronage-based), which our proximity voting rule does not capture.
     \item \textbf{Anti-Defection Laws}: We model instability as a continuous function of strain. In practice, legal mechanisms (e.g., India's 10th Schedule) artificially stabilize governments.
-    \item \textbf{Symmetric Polarization}: We model polarization as two symmetric clusters. Asymmetric polarization---where one group radicalizes while others fragment---requires future investigation.
+    \item \textbf{Dynamic Evolution}: Our model is static---parties and voters do not adapt over time. Future work should model ideological drift and strategic repositioning.
+    \item \textbf{Media Effects}: We do not model how media fragmentation (e.g., social media bubbles) might increase effective dimensionality over time.
 \end{itemize}
+
+\textbf{Note}: The extended model (Laws IV--V) addresses clientelism and asymmetric polarization, which were limitations in earlier versions.
 
 \section{Conclusion}
 \textbf{What breaks a democracy?} Complexity ($D$) breaks it. High-dimensional societies---those grappling with multiple, cross-cutting cleavages \cite{Lipset1967}---are inherently unstable. The \textbf{5\% Threshold} is not merely a German policy preference; it is a mathematical necessity for any society operating in more than two ideological dimensions. It functions as a ``dimensional compressor.''

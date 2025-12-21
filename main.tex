@@ -67,12 +67,10 @@ We built a computer simulation following the tradition of computational politica
     \end{tabular}
 \end{table}
 
-\section{Results: The Five Laws of Electoral Stability}
+\section{Results: Five Structural Principles of Electoral Stability}
 
-\subsection{Law I: The Dimensionality Curse}
-\textit{In Plain English: The more issues a society disagrees on, the harder it is to form stable governments.}
-
-As the number of ideological dimensions increases, the probability of finding a ``center'' that satisfies everyone vanishes. In a simple 2-issue society (e.g., just Left vs Right), stable governments last $\sim$4.2 years. In a 5-issue society, stability crashes to $\sim$2.1 years. This confirms Schofield's \cite{Schofield1985} mathematical prediction that complex societies have no natural equilibrium.
+\subsection{Principle I: The Dimensionality Constraint}
+As the number of ideological dimensions increases, the probability of finding a ``center'' that satisfies everyone vanishes---a phenomenon we term the \textit{dimensionality constraint}. In a simple 2-issue society (e.g., just Left vs Right), stable governments last $\sim$4.2 years. In a 5-issue society, stability crashes to $\sim$2.1 years. This confirms Schofield's \cite{Schofield1985} mathematical prediction that complex societies have no natural equilibrium, and aligns with recent work on multidimensional apportionment \cite{Pukelsheim2022}.
 
 \begin{figure}[H]
     \centering
@@ -81,10 +79,8 @@ As the number of ideological dimensions increases, the probability of finding a 
     \label{fig:dimensionality}
 \end{figure}
 
-\subsection{Law II: The Fragmentation Trap}
-\textit{In Plain English: More parties means fairer representation, but also shorter governments.}
-
-Increasing the number of parties improves representativeness (more voices are heard) but makes coalitions fragile. Beyond 8 parties, average government lifespan drops below 3 years in pure proportional systems. This aligns with Sartori's \cite{Sartori1976} observation that too many parties creates ``centrifugal'' competition---everyone pulls in different directions.
+\subsection{Principle II: The Fragmentation Trade-off}
+Increasing the number of parties improves representativeness (more voices are heard) but makes coalitions fragile---a fundamental trade-off. Beyond 8 parties, average government lifespan drops below 3 years in pure proportional systems. This aligns with Sartori's \cite{Sartori1976} observation that excessive fragmentation creates ``centrifugal'' competition, and is consistent with recent agent-based election forecasting models \cite{Fernandez2022}.
 
 \begin{figure}[H]
     \centering
@@ -93,10 +89,8 @@ Increasing the number of parties improves representativeness (more voices are he
     \label{fig:fragmentation}
 \end{figure}
 
-\subsection{Law III: The ``Stability Snap''}
-\textit{In Plain English: A 5\% minimum vote requirement is a universal fix for instability.}
-
-Regardless of how complex or fragmented a society is, imposing a 5\% threshold restores government stability to $>$4 years. This mirrors Germany's success with its 5\% rule (\textit{Sperrklausel}) \cite{Saalfeld2005}. The threshold works by filtering out small, extreme parties that would otherwise destabilize coalitions.
+\subsection{Principle III: The 5\% Threshold Effect}
+Regardless of how complex or fragmented a society is, imposing a 5\% threshold restores government stability to $>$4 years---a robust structural regularity. This mirrors Germany's success with its 5\% rule (\textit{Sperrklausel}) \cite{Saalfeld2005}. The threshold works by filtering out small, extreme parties that would otherwise destabilize coalitions.
 
 \begin{figure}[H]
     \centering
@@ -106,10 +100,8 @@ Regardless of how complex or fragmented a society is, imposing a 5\% threshold r
 \end{figure}
 
 
-\subsection{Law IV: The Clientelism Cushion}
-\textit{In Plain English: When voters care more about personal benefits than ideology, governments become very stable—but less accountable.}
-
-When voters are motivated by \textbf{patronage} (transactional benefits) rather than ideology, stability increases dramatically. In our extended simulations with a patronage affinity parameter:
+\subsection{Principle IV: The Clientelism Effect}
+When voters are motivated by \textbf{patronage} (transactional benefits rather than ideology), stability increases dramatically---though at the cost of accountability. In our extended simulations with a patronage affinity parameter:
 \begin{itemize}
     \item \textbf{Pure Ideology (0.0)}: Stability follows Laws I-III (dimension-dependent).
     \item \textbf{High Patronage (0.9)}: MTTF approaches \textbf{5.0 years} universally, even in 8D, 20-party systems.
@@ -124,10 +116,8 @@ When voters are motivated by \textbf{patronage} (transactional benefits) rather 
     \label{fig:clientelism}
 \end{figure}
 
-\subsection{Law V: The Asymmetric Stability Paradox}
-\textit{In Plain English: Surprisingly, one-sided dominance creates more stable governments than evenly-split competition.}
-
-Not all polarization is equal. When polarization is \textbf{asymmetric} (one dominant pole with 80\% of voters, 20\% scattered opposition), stability is \textit{maximized}, not minimized.
+\subsection{Principle V: The Asymmetric Polarization Effect}
+Not all polarization is equal. When polarization is \textbf{asymmetric} (one dominant pole with 80\% of voters, 20\% scattered opposition), stability is \textit{maximized}, not minimized---a counterintuitive but robust finding consistent with recent social physics models of polarization \cite{Galam2024}.
 
 \begin{table}[H]
     \centering
@@ -225,12 +215,12 @@ While robust, our model makes necessary abstractions:
     \item \textbf{Media Effects}: We do not model how media fragmentation (e.g., social media bubbles) might increase effective dimensionality over time.
 \end{itemize}
 
-\textbf{Note}: The extended model (Laws IV--V) addresses clientelism and asymmetric polarization, which were limitations in earlier versions.
+\textbf{Note}: The extended model (Principles IV--V) addresses clientelism and asymmetric polarization, which were limitations in earlier versions.
 
 \section{Conclusion}
-\textbf{What breaks a democracy?} Complexity ($D$) breaks it. High-dimensional societies---those grappling with multiple, cross-cutting cleavages \cite{Lipset1967}---are inherently unstable. The \textbf{5\% Threshold} is not merely a German policy preference; it is a mathematical necessity for any society operating in more than two ideological dimensions. It functions as a ``dimensional compressor.''
+\textbf{What constrains democratic stability?} Our analysis points to a clear answer: \textit{complexity}. High-dimensional societies---those grappling with multiple, cross-cutting cleavages \cite{Lipset1967}---face structural barriers to stable governance. The \textbf{5\% threshold} emerges not as an arbitrary policy choice, but as a structural necessity for societies operating in more than two ideological dimensions. It functions as a ``dimensional compressor,'' filtering noise without eliminating meaningful pluralism.
 
-Democracy's stability is not a function of culture, tradition, or luck. It is a function of \textbf{topology}. The ``5\% Threshold'' is the universal constant of democratic physics.
+These findings suggest that electoral stability is not primarily a function of culture, tradition, or institutional maturity. Rather, it reflects the \textbf{geometric structure} of political competition. The five principles identified here provide a framework for understanding why some democracies thrive while others struggle---and offer actionable guidance for electoral reform.
 
 \section*{Acknowledgements}
 The author thanks the BharatSim framework contributors and the broader computational social science community for their foundational work.

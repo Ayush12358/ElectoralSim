@@ -21,6 +21,7 @@ object ElectoralMath {
    * D'Hondt Seat Allocation
    */
   def allocateDHondt(votes: Map[String, Int], totalSeats: Int): Map[String, Int] = {
+    if (votes.isEmpty) return Map.empty
     var seats = votes.keys.map(_ -> 0).toMap
     for (_ <- 1 to totalSeats) {
       val winner = votes.maxBy { case (partyId, v) =>
@@ -31,10 +32,8 @@ object ElectoralMath {
     seats
   }
 
-  /**
-   * Sainte-Laguë Seat Allocation
-   */
   def allocateSainteLague(votes: Map[String, Int], totalSeats: Int): Map[String, Int] = {
+    if (votes.isEmpty) return Map.empty
     var seats = votes.keys.map(_ -> 0).toMap
     for (_ <- 1 to totalSeats) {
       val winner = votes.maxBy { case (partyId, v) =>

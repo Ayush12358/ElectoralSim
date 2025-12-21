@@ -23,26 +23,37 @@
 \maketitle
 
 \begin{abstract}
-Political science often relies on context-specific case studies. This paper attempts a standardized, purely theoretical approach. Using a 10,000-agent Monte Carlo simulation across \textbf{N-Dimensional Ideological Space} (2D to 8D) and varying fragmentation levels (3 to 20 parties), we derive a ``General Theory of Electoral Stability.'' Our findings confirm the \textbf{Chaotic Instability Theorem}: as ideological dimensions increase, stability collapses exponentially \cite{Schofield1985}. However, we identify a universal \textbf{``Stability Snap''}: a 5\% electoral threshold functions as a dampening filter, restoring stability even in high-dimensional, hyper-fragmented environments.
+Political science often relies on context-specific case studies (e.g., ``the German model'' vs ``the Indian model''). This paper attempts a standardized, purely theoretical approach. Using a computer simulation with 10,000 virtual voters across political landscapes of varying complexity (2 to 8 ideological dimensions) and fragmentation (3 to 20 parties), we derive a ``General Theory of Electoral Stability.'' Our key finding: as societies become more complex, governments become less stable---unless a minimum vote threshold (like Germany's 5\% rule) filters out small parties. This ``5\% threshold'' emerges as a universal stabilizer across all tested conditions.
 \end{abstract}
 
+\subsection*{Key Terms for Non-Specialists}
+\begin{itemize}
+    \item \textbf{Ideological Dimensions}: The number of distinct issues voters care about. A ``2D'' society has just Left-Right economics; a ``5D'' society also has social, religious, regional, and identity axes.
+    \item \textbf{Electoral Threshold}: The minimum vote share a party needs to win seats (e.g., Germany's 5\% rule). Parties below this are excluded.
+    \item \textbf{MTTF (Mean Time To Failure)}: Average years before a government collapses due to internal disagreements or coalition breakdowns.
+    \item \textbf{Gallagher Index}: A measure of electoral ``unfairness''---0 means votes perfectly match seats; 0.5 means half of votes are effectively wasted.
+    \item \textbf{Proportional Representation (PR)}: An electoral system where seat shares match vote shares (unlike winner-take-all systems).
+    \item \textbf{Patronage/Clientelism}: When voters support parties in exchange for personal benefits (jobs, subsidies) rather than policy agreement.
+\end{itemize}
+
 \section{Introduction}
-Traditional electoral analysis is constrained by geography. A ``Polarized'' society in the US (2-Party) behaves differently from a ``Polarized'' society in Israel (12-Party). To understand the fundamental physics of democracy, we must strip away country names and model the underlying mathematical topology.
+Traditional electoral analysis is constrained by geography. A ``polarized'' society in the US (2 parties) behaves differently from a ``polarized'' society in Israel (12+ parties). To understand the fundamental physics of democracy, we must strip away country names and model the underlying mathematical structure.
 
-The challenge of aggregating individual preferences into coherent collective decisions was formalized by Arrow \cite{Arrow1951}, who demonstrated that no voting system can satisfy all desirable properties simultaneously. Building on this, spatial models of voting \cite{Downs1957,Enelow1984} established that voter preferences can be represented geometrically, enabling mathematical analysis of electoral competition.
+The challenge of aggregating individual preferences into coherent collective decisions was formalized by Arrow \cite{Arrow1951}, who proved that no voting system can satisfy all desirable properties simultaneously. Building on this, spatial models of voting \cite{Downs1957,Enelow1984} established that voter preferences can be represented geometrically---imagine each voter as a point in a multi-dimensional space, voting for the party ``nearest'' to them.
 
-We ask: \textbf{What is the breaking point of a democracy?} Is it the number of parties? The complexity of issues (dimensions)? Or the rules of the game?
+We ask: \textbf{What is the breaking point of a democracy?} Is it the number of parties? The complexity of issues? Or the rules of the game?
 
 \section{Methodology}
-We built a generalized Agent-Based Model (ABM) following the tradition of computational political science \cite{Kollman1992}. This approach generates random political constellations and measures emergent stability properties.
+We built a computer simulation following the tradition of computational political science \cite{Kollman1992}. The simulation generates thousands of random political scenarios and measures how long governments survive.
 
 \begin{itemize}
-    \item \textbf{Voters}: 10,000 Agents with $N$-dimensional Euclidean preferences.
-    \item \textbf{Parties}: $P$ randomly distributed entities in the same ideological space.
-    \item \textbf{Voting Rule}: Proximity voting---agents vote for the nearest party \cite{Downs1957}.
-    \item \textbf{Seat Allocation}: Sainte-Lagu\"e proportional representation with variable threshold.
-    \item \textbf{Stability Metric}: Mean Time To Failure (MTTF), based on coalition strain \cite{Laver1996}.
+    \item \textbf{Voters}: 10,000 virtual agents, each with preferences on $N$ political issues (dimensions).
+    \item \textbf{Parties}: $P$ randomly positioned parties in the same issue space.
+    \item \textbf{Voting Rule}: Each voter supports the party closest to their own position \cite{Downs1957}.
+    \item \textbf{Seat Allocation}: Proportional representation (used in Germany, Scandinavia) with variable threshold.
+    \item \textbf{Stability Metric}: Mean Time To Failure (MTTF)---average years until government collapse \cite{Laver1996}.
 \end{itemize}
+
 
 \textbf{Simulation Sweep}: We ran 6,000 permutations across: Dimensions ($D$): 2--8; Parties ($P$): 3--20; Threshold ($T$): 0\%--10\%. Table~\ref{tab:params} summarizes the simulation configuration.
 
@@ -66,37 +77,44 @@ We built a generalized Agent-Based Model (ABM) following the tradition of comput
     \end{tabular}
 \end{table}
 
-\section{Results: The Three Laws of GTES}
+\section{Results: The Five Laws of Electoral Stability}
 
 \subsection{Law I: The Dimensionality Curse}
-As the number of ideological dimensions increases, the probability of a stable ``Core'' vanishes. This confirms Schofield's \cite{Schofield1985} theoretical prediction that in spaces with $D > 2$, a Condorcet winner generically does not exist.
+\textit{In Plain English: The more issues a society disagrees on, the harder it is to form stable governments.}
+
+As the number of ideological dimensions increases, the probability of finding a ``center'' that satisfies everyone vanishes. In a simple 2-issue society (e.g., just Left vs Right), stable governments last $\sim$4.2 years. In a 5-issue society, stability crashes to $\sim$2.1 years. This confirms Schofield's \cite{Schofield1985} mathematical prediction that complex societies have no natural equilibrium.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{figures/dimensionality_curse.png}
-    \caption{The Dimensionality Curse: Exponential decay of stability (MTTF) as ideological complexity increases from 2D to 8D. Higher thresholds mitigate the effect.}
+    \caption{The Dimensionality Curse: Government stability (MTTF) decays exponentially as society becomes more complex. Higher thresholds mitigate the effect.}
     \label{fig:dimensionality}
 \end{figure}
 
 \subsection{Law II: The Fragmentation Trap}
-Increasing the number of parties linearly improves representativeness (lower Gallagher Index \cite{Gallagher1991}) but exponentially decays stability. Beyond 8 parties, average MTTF drops below 3 years in a pure PR system. This finding aligns with Sartori's \cite{Sartori1976} concept of ``polarized pluralism.''
+\textit{In Plain English: More parties means fairer representation, but also shorter governments.}
+
+Increasing the number of parties improves representativeness (more voices are heard) but makes coalitions fragile. Beyond 8 parties, average government lifespan drops below 3 years in pure proportional systems. This aligns with Sartori's \cite{Sartori1976} observation that too many parties creates ``centrifugal'' competition---everyone pulls in different directions.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{figures/fragmentation_trap.png}
-    \caption{The Fragmentation Trap: Stability sensitivity to party count, faceted by electoral threshold. Note the cliff-edge beyond 8 parties in the 0\% threshold scenario.}
+    \caption{The Fragmentation Trap: Beyond 8 parties, stability collapses---unless thresholds are in place.}
     \label{fig:fragmentation}
 \end{figure}
 
 \subsection{Law III: The ``Stability Snap''}
-Irrespective of dimensions or parties, imposing a 5\% floor robustly restores MTTF to $>$4.0 years. This mirrors the empirical success of Germany's \textit{Sperrklausel} \cite{Saalfeld2005}.
+\textit{In Plain English: A 5\% minimum vote requirement is a universal fix for instability.}
+
+Regardless of how complex or fragmented a society is, imposing a 5\% threshold restores government stability to $>$4 years. This mirrors Germany's success with its 5\% rule (\textit{Sperrklausel}) \cite{Saalfeld2005}. The threshold works by filtering out small, extreme parties that would otherwise destabilize coalitions.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{figures/general_pareto.png}
-    \caption{The Pareto Frontier: Trade-off between Disproportionality (Gallagher Index) and Stability (MTTF). The 5\% threshold cluster dominates the efficiency frontier.}
+    \caption{The trade-off between fairness and stability. The 5\% threshold achieves the best of both worlds.}
     \label{fig:pareto}
 \end{figure}
+
 
 \subsection{Law IV: The Clientelism Cushion}
 When voters are motivated by \textbf{patronage} (transactional benefits) rather than ideology, stability increases dramatically. In our extended simulations with a patronage affinity parameter:

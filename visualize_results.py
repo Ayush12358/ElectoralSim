@@ -4,8 +4,8 @@ import seaborn as sns
 import os
 import numpy as np
 
-# Create reports directory
-os.makedirs('reports/figures', exist_ok=True)
+# Ensure figures directory exists
+os.makedirs('figures', exist_ok=True)
 
 # Load Extended Theory Results
 if os.path.exists('data/processed/extended_theory_results.csv'):

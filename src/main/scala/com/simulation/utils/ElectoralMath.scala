@@ -32,6 +32,10 @@ object ElectoralMath {
     seats
   }
 
+  /**
+   * Sainte-Laguë Seat Allocation (used in Germany, Scandinavia)
+   * Divisor sequence: 1, 3, 5, 7, ... (odd numbers)
+   */
   def allocateSainteLague(votes: Map[String, Int], totalSeats: Int): Map[String, Int] = {
     if (votes.isEmpty) return Map.empty
     var seats = votes.keys.map(_ -> 0).toMap

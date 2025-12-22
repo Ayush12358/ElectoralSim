@@ -43,19 +43,35 @@ object SimulationEngine {
   }
 
   /**
-   * Simple Coalition Formation: Minimum Winning Coalition (MWC)
+   * Coalition Formation: Minimum Connected Winning (MCW)
+   * 
+   * Strategy: Start from the largest party, then add ideologically CLOSEST parties
+   * until majority is reached. This prevents unrealistic coalitions between
+   * ideological opposites (e.g., far-left + far-right).
+   * 
+   * Literature: Axelrod (1970), De Swaan (1973), Laver & Shepsle (1996)
    */
   def formCoalition(seats: Map[String, Int], parties: Map[String, Party], threshold: Int): Set[String] = {
-    val sortedParties = seats.toSeq.sortBy(-_._2)
-    var currentSeats = 0
-    var coalition = Set.empty[String]
+    if (seats.isEmpty) return Set.empty
     
-    for ((partyId, s) <- sortedParties) {
-      if (currentSeats < threshold) {
-        currentSeats += s
-        coalition += partyId
-      }
+    // Step 1: Start with the largest party (the formateur)
+    val formateur = seats.maxBy(_._2)._1
+    val formateurIdeology = parties(formateur).ideology
+    
+    // Step 2: Sort all other parties by ideological distance from formateur
+    val otherParties = seats.filterNot(_._1 == formateur).toSeq.sortBy { case (partyId, _) =>
+      calculateDistance(parties(partyId).ideology, formateurIdeology)
     }
+    
+    // Step 3: Build coalition by adding closest parties until threshold reached
+    var coalition = Set(formateur)
+    var currentSeats = seats(formateur)
+    
+    for ((partyId, s) <- otherParties if currentSeats < threshold) {
+      coalition += partyId
+      currentSeats += s
+    }
+    
     coalition
   }
 

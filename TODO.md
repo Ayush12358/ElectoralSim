@@ -82,3 +82,24 @@ After running the full simulation and analyzing results:
 - [ ] Discussion (Fragmentation): Frame as "Veto Player simulator" per Tsebelis
 - [ ] Appendix (MTTF Constants): Add Warwick citation for L=5.5 justification
 
+---
+
+## 4. ABM Methodology Enhancement
+**Status:** ❌ Not yet in paper
+
+**What to add:**
+- [ ] **ODD Protocol** (Overview, Design concepts, Details) — standard for ABM papers
+- [ ] **Agent decision rules** — explicit pseudocode for voter behavior
+- [ ] **Initialization** — how parties/voters are generated
+- [ ] **Scheduling** — order of operations per simulation step
+- [ ] **Calibration** — how parameters were chosen/validated
+- [ ] **Sensitivity analysis** — already partly done with Minkowski/collapse
+
+**Why it matters:**
+- Reviewers expect ODD or similar structured ABM description
+- Makes simulation reproducible without reading code
+- Standard practice in JASSS, Computational Social Science journals
+
+**References to cite:**
+- Grimm et al. (2006, 2010): ODD Protocol papers
+- Wilensky & Rand (2015): Agent-Based Modeling textbook

@@ -145,7 +145,7 @@ If you use this code or research, please cite:
 
 ## 🤖 AI Disclosure
 
-This project was developed using **Google Antigravity** (Gemini 3 Pro). All logical rules, parameters, and outputs were manually verified by the author.
+This project was developed using **Google Antigravity**. All logical rules, parameters, and outputs were manually verified by the author.
 
 ---
 

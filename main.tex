@@ -46,7 +46,7 @@ We built a computer simulation following the tradition of computational politica
     \item \textbf{Stability Metric}: Mean Time To Failure (MTTF)---average years until government collapse \citep{Laver1996}.
 \end{itemize}
 
-\textbf{Software Implementation:} The simulation model was implemented in Scala using the \textbf{Google Antigravity} IDE (Preview version, December 2025) powered by \textbf{Gemini 3 Pro} \citep{GoogleAntigravity2025}. While the AI agents assisted in code generation, refactoring, and test execution, all logical rules, parameters, and outputs were manually verified by the author to ensure alignment with the theoretical specifications. The full source code, including agent-generated artifacts and verification tests, is available at \url{https://github.com/Ayush12358/electoral-simulation-india}.
+\textbf{Software Implementation:} The simulation model was implemented in Scala using the \textbf{Google Antigravity} IDE \citep{GoogleAntigravity2025}. While the AI agents assisted in code generation, refactoring, and test execution, all logical rules, parameters, and outputs were manually verified by the author to ensure alignment with the theoretical specifications. The full source code, including agent-generated artifacts and verification tests, is available at \url{https://github.com/Ayush12358/electoral-simulation-india}.
 
 \textbf{Simulation Sweep}: We ran 6,000 permutations across: Dimensions ($D$): 2--8; Parties ($P$): 3--20; Threshold ($T$): 0\%--10\%. Table~\ref{tab:params} summarizes the simulation configuration.
 
@@ -106,7 +106,7 @@ Regardless of how complex or fragmented a society is, imposing a 5\% threshold r
 \subsection{Principle IV: The Clientelism Effect}
 When voters are motivated by \textbf{patronage} (transactional benefits rather than ideology), stability increases dramatically---though at the cost of accountability. In our extended simulations with a patronage affinity parameter:
 \begin{itemize}
-    \item \textbf{Pure Ideology (0.0)}: Stability follows Laws I-III (dimension-dependent).
+    \item \textbf{Pure Ideology (0.0)}: Stability follows Principles I-III (dimension-dependent).
     \item \textbf{High Patronage (0.9)}: MTTF approaches \textbf{5.0 years} universally, even in 8D, 20-party systems.
 \end{itemize}
 
@@ -198,10 +198,10 @@ Future work should incorporate a ``Strain Accumulation'' metric to model the lon
 \subsection{The Stability-Democracy Trade-off}
 A fundamental normative tension emerges from our findings: \textbf{Stability is not synonymous with democracy.}
 
-Consider the implications of Laws IV and V:
+Consider the implications of Principles IV and V:
 \begin{itemize}
-    \item \textbf{Law IV (Clientelism)}: Patronage creates stability, but voters who are loyal to benefits do not hold governments accountable. This is stability without accountability \citep{Kitschelt2007}.
-    \item \textbf{Law V (Asymmetric Polarization)}: Dominant-party systems are stable, but they suppress opposition and reduce electoral competitiveness. This is stability without alternation.
+    \item \textbf{Principle IV (Clientelism)}: Patronage creates stability, but voters who are loyal to benefits do not hold governments accountable. This is stability without accountability \citep{Kitschelt2007}.
+    \item \textbf{Principle V (Asymmetric Polarization)}: Dominant-party systems are stable, but they suppress opposition and reduce electoral competitiveness. This is stability without alternation.
 \end{itemize}
 
 Both mechanisms produce high MTTF scores while potentially undermining democratic quality. We propose the \textbf{Authoritarian Stability Hypothesis}: \textit{As a democracy optimizes for stability, it converges toward authoritarianism.}
@@ -226,10 +226,10 @@ Based on our five laws, we propose the following reform recommendations:
         \toprule
         \textbf{Society Type} & \textbf{Current State} & \textbf{Reform} & \textbf{Rationale} \\
         \midrule
-        Simple (2D) & Stable & No change & Laws I-III satisfied \\
-        Complex (5D+) & Unstable & 5\% threshold & Law III \\
-        Symmetric Polarized & Highly Unstable & Consociational sharing & Law V \\
-        High Patronage & Stable, Corrupt & Anti-clientelism first & Law IV \\
+        Simple (2D) & Stable & No change & Principles I-III satisfied \\
+        Complex (5D+) & Unstable & 5\% threshold & Principle III \\
+        Symmetric Polarized & Highly Unstable & Consociational sharing & Principle V \\
+        High Patronage & Stable, Corrupt & Anti-clientelism first & Principle IV \\
         Dominant-Party & Stable, Undemocratic & Lower thresholds & Prevent drift \\
         \bottomrule
     \end{tabular}
@@ -253,7 +253,7 @@ While robust, our model makes necessary abstractions:
 These findings suggest that electoral stability is not primarily a function of culture, tradition, or institutional maturity. Rather, it reflects the \textbf{geometric structure} of political competition. The five principles identified here provide a framework for understanding why some democracies thrive while others struggle---and offer actionable guidance for electoral reform.
 
 \section*{Acknowledgements}
-The author acknowledges the use of \textbf{Google Antigravity} (utilizing the Gemini 3 Pro model) for accelerating the development of the Monte Carlo simulation and refining the technical descriptions in this manuscript. The author also thanks the broader computational social science community for their foundational work.
+The author acknowledges the use of \textbf{Google Antigravity} for accelerating the development of the Monte Carlo simulation and refining the technical descriptions in this manuscript. The author also thanks the broader computational social science community for their foundational work.
 
 \bibliographystyle{plainnat}
 \bibliography{references}

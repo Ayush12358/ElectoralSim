@@ -65,3 +65,20 @@ After running the full simulation and analyzing results:
 1. Generate new figures with `python visualize_results.py`
 2. Update `main.tex` with new sections
 3. Update `references.bib` if new citations needed
+
+---
+
+## 3. Foundational Citations Added (for academic rigor)
+**Status:** ✅ Added to `references.bib`, ⚠️ Need integration into main text
+
+| Citation | Topic | Where to Cite |
+|----------|-------|---------------|
+| **Warwick (1994)** | Government Survival | Justifies L=5.5 in MTTF formula |
+| **Tsebelis (2002)** | Veto Players | Explains why fragmentation → instability |
+| **Laver & Shepsle (1996)** | Cabinet Formation | Already cited, connects to Patronage |
+
+**Paper sections to update:**
+- [ ] Methodology: Cite Warwick for MTTF calibration rationale
+- [ ] Discussion (Fragmentation): Frame as "Veto Player simulator" per Tsebelis
+- [ ] Appendix (MTTF Constants): Add Warwick citation for L=5.5 justification
+

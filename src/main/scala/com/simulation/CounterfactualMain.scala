@@ -14,15 +14,17 @@ object CounterfactualMain extends App {
   val rangeDimensions = Seq(2, 3, 5, 8)
   val rangeParties = Seq(5, 8, 12, 20)
   val rangeThresholds = Seq(0.0, 0.05, 0.10)
-  val rangePatronage = Seq(0.0, 0.3, 0.6, 0.9) // NEW: Clientelism sweep
-  val polarizationTypes = Seq("Uniform", "Symmetric", "Asymmetric") // NEW
+  val rangePatronage = Seq(0.0, 0.3, 0.6, 0.9)
+  val polarizationTypes = Seq("Uniform", "Symmetric", "Asymmetric")
+  val rangeMinkowskiP = Seq(1.0, 2.0, 3.0, 4.0, 5.0) // NEW: Minkowski p sweep
   
   println(s"--- Starting Extended Monte Carlo Simulation ---")
   println(s"Patronage Levels: $rangePatronage")
   println(s"Polarization Types: $polarizationTypes")
+  println(s"Minkowski p Values: $rangeMinkowskiP")
 
   val csvWriter = new PrintWriter(new File("data/processed/extended_theory_results.csv"))
-  csvWriter.println("dimensions,n_parties,threshold,patronage,polarization,avg_mttf,avg_gallagher,std_mttf")
+  csvWriter.println("dimensions,n_parties,threshold,patronage,polarization,minkowski_p,avg_mttf,avg_gallagher,std_mttf")
 
   val rand = new Random(42)
 
@@ -33,6 +35,7 @@ object CounterfactualMain extends App {
     thresh <- rangeThresholds
     patronageLevel <- rangePatronage
     polType <- polarizationTypes
+    minkowskiP <- rangeMinkowskiP  // NEW: Loop over Minkowski p
   } {
     var rawMTTF = Seq.empty[Double]
     var rawGallagher = Seq.empty[Double]
@@ -40,12 +43,12 @@ object CounterfactualMain extends App {
     for (_ <- 1 to nTrials) {
       // 1. Generate Parties with random patronage scores
       val parties = (1 to nP).map { i => 
-        val p = Party(
+        val party = Party(
           s"P$i", 
           SimulationEngine.generateRandomIdeology(dim, rand),
           rand.nextDouble() // Random patronage score for each party
         )
-        p.id -> p
+        party.id -> party
       }.toMap
 
       // 2. Generate Voters based on polarization type
@@ -79,34 +82,34 @@ object CounterfactualMain extends App {
           cluster1 ++ scattered
       }
 
-      // 3. Cast Votes using blended score (ideology + patronage)
+      // 3. Cast Votes using blended score (ideology + patronage) with Minkowski distance
       val votes = voters.map { v =>
-        val bestParty = parties.values.maxBy(p => SimulationEngine.calculateVoteScore(v, p))
+        val bestParty = parties.values.maxBy(party => SimulationEngine.calculateVoteScore(v, party, minkowskiP))
         bestParty.id
-      }.groupBy(identity).mapValues(_.size)
+      }.groupBy(identity).view.mapValues(_.size).toMap
 
       // 4. Allocate Seats
       val totalVotes = votes.values.sum
       val qualifiedVotes = votes.filter { case (_, v) => (v.toDouble / totalVotes) >= thresh }
-      val seats = ElectoralMath.allocateSainteLague(qualifiedVotes.toMap, totalSeats)
+      val seats = ElectoralMath.allocateSainteLague(qualifiedVotes, totalSeats)
 
-      // 5. Form Coalition & Calculate Stability
+      // 5. Form Coalition & Calculate Stability using Minkowski distance
       val maxSeatParty = if (seats.nonEmpty) seats.maxBy(_._2) else ("None" -> 0)
       val govSeats = if (maxSeatParty._2 > 250) {
           maxSeatParty._2
       } else {
-          val coal = SimulationEngine.formCoalition(seats, parties, 251)
+          val coal = SimulationEngine.formCoalition(seats, parties, 251, minkowskiP)
           coal.toList.map(seats.getOrElse(_, 0)).sum
       }
       val isCoalition = maxSeatParty._2 <= 250
 
-      val coalitionSet = if (!isCoalition) Set(maxSeatParty._1) else SimulationEngine.formCoalition(seats, parties, 251)
-      val strain = SimulationEngine.calculateStrain(coalitionSet, parties)
+      val coalitionSet = if (!isCoalition) Set(maxSeatParty._1) else SimulationEngine.formCoalition(seats, parties, 251, minkowskiP)
+      val strain = SimulationEngine.calculateStrain(coalitionSet, parties, minkowskiP)
       
       val mttf = SimulationEngine.calculateMTTF(strain, 0.2, totalSeats, govSeats, isCoalition)
       val gallagher = ElectoralMath.calculateGallagherIndex(
-        votes.mapValues(_.toDouble/totalVotes).toMap, 
-        seats.mapValues(_.toDouble/totalSeats).toMap
+        votes.view.mapValues(_.toDouble/totalVotes).toMap, 
+        seats.view.mapValues(_.toDouble/totalSeats).toMap
       )
       
       rawMTTF = rawMTTF :+ mttf
@@ -118,7 +121,7 @@ object CounterfactualMain extends App {
     val avgGallagher = rawGallagher.sum / nTrials
     val stdMTTF = math.sqrt(rawMTTF.map(x => math.pow(x - avgMTTF, 2)).sum / nTrials)
 
-    csvWriter.println(f"$dim,$nP,$thresh,$patronageLevel,$polType,$avgMTTF,$avgGallagher,$stdMTTF")
+    csvWriter.println(f"$dim,$nP,$thresh,$patronageLevel,$polType,$minkowskiP,$avgMTTF,$avgGallagher,$stdMTTF")
   }
 
   csvWriter.close()

@@ -7,12 +7,21 @@ import scala.util.Random
 object SimulationEngine {
 
   /**
-   * Calculates Euclidean distance in N-dimensions
+   * Calculates Minkowski distance in N-dimensions
+   * 
+   * Minkowski distance is a generalization:
+   *   - p=1: Manhattan distance (L1 norm) - sum of absolute differences
+   *   - p=2: Euclidean distance (L2 norm) - standard geometric distance
+   *   - p>2: Higher-order norms - more sensitive to large differences
+   *   - p→∞: Chebyshev distance (max absolute difference)
+   * 
+   * Formula: d(x,y) = (Σ |x_i - y_i|^p)^(1/p)
    */
-  def calculateDistance(i1: Ideology, i2: Ideology): Double = {
-    math.sqrt(
-      i1.dimensions.zip(i2.dimensions).map { case (d1, d2) => math.pow(d1 - d2, 2) }.sum
-    )
+  def calculateDistance(i1: Ideology, i2: Ideology, p: Double = 2.0): Double = {
+    val sumOfPowers = i1.dimensions.zip(i2.dimensions).map { case (d1, d2) =>
+      math.pow(math.abs(d1 - d2), p)
+    }.sum
+    math.pow(sumOfPowers, 1.0 / p)
   }
 
   /**
@@ -35,9 +44,11 @@ object SimulationEngine {
   /**
    * Calculates vote choice with Clientelism blending
    * score = (1 - patronageAffinity) * ideologyScore + patronageAffinity * patronageScore
+   * 
+   * @param p Minkowski distance parameter (default 2.0 = Euclidean)
    */
-  def calculateVoteScore(voter: VoterAgent, party: Party): Double = {
-    val ideologyScore = 1.0 - calculateDistance(voter.ideology, party.ideology) // Higher = better
+  def calculateVoteScore(voter: VoterAgent, party: Party, p: Double = 2.0): Double = {
+    val ideologyScore = 1.0 - calculateDistance(voter.ideology, party.ideology, p)
     val patronageScore = party.patronageScore
     (1.0 - voter.patronageAffinity) * ideologyScore + voter.patronageAffinity * patronageScore
   }
@@ -50,8 +61,10 @@ object SimulationEngine {
    * ideological opposites (e.g., far-left + far-right).
    * 
    * Literature: Axelrod (1970), De Swaan (1973), Laver & Shepsle (1996)
+   * 
+   * @param p Minkowski distance parameter (default 2.0 = Euclidean)
    */
-  def formCoalition(seats: Map[String, Int], parties: Map[String, Party], threshold: Int): Set[String] = {
+  def formCoalition(seats: Map[String, Int], parties: Map[String, Party], threshold: Int, p: Double = 2.0): Set[String] = {
     if (seats.isEmpty) return Set.empty
     
     // Step 1: Start with the largest party (the formateur)
@@ -60,7 +73,7 @@ object SimulationEngine {
     
     // Step 2: Sort all other parties by ideological distance from formateur
     val otherParties = seats.filterNot(_._1 == formateur).toSeq.sortBy { case (partyId, _) =>
-      calculateDistance(parties(partyId).ideology, formateurIdeology)
+      calculateDistance(parties(partyId).ideology, formateurIdeology, p)
     }
     
     // Step 3: Build coalition by adding closest parties until threshold reached
@@ -77,15 +90,17 @@ object SimulationEngine {
 
   /**
    * Calculates Coalition Ideological Strain
+   * 
+   * @param p Minkowski distance parameter (default 2.0 = Euclidean)
    */
-  def calculateStrain(coalition: Set[String], parties: Map[String, Party]): Double = {
+  def calculateStrain(coalition: Set[String], parties: Map[String, Party], p: Double = 2.0): Double = {
     if (coalition.size <= 1) 0.0
     else {
       val ids = coalition.toList
       val distances = for {
         p1 <- ids
         p2 <- ids if p1 < p2
-      } yield calculateDistance(parties(p1).ideology, parties(p2).ideology)
+      } yield calculateDistance(parties(p1).ideology, parties(p2).ideology, p)
       if (distances.isEmpty) 0.0 else distances.sum / distances.size
     }
   }

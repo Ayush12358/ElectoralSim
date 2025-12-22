@@ -106,15 +106,47 @@ object SimulationEngine {
   }
 
   /**
-   * Calculates Mean Time To Failure (MTTF) - Generalized
+   * Calculates Mean Time To Failure (MTTF) with configurable collapse model
+   * 
+   * @param collapseModel One of:
+   *   - "sigmoid": Phase transition / tipping point (default)
+   *   - "linear": Gradual proportional decay
+   *   - "exponential": Early risk is most damaging
+   * 
+   * Literature:
+   *   - Sigmoid: Tsebelis (1995) veto players theory suggests threshold behavior
+   *   - Linear: Traditional risk accumulation assumption
+   *   - Exponential: Warwick (1994) shows early crises are most destabilizing
    */
-  def calculateMTTF(strain: Double, shockMagnitude: Double, totalSeats: Int, govSeats: Int, isCoalition: Boolean): Double = {
+  def calculateMTTF(strain: Double, shockMagnitude: Double, totalSeats: Int, govSeats: Int, 
+                    isCoalition: Boolean, collapseModel: String = "sigmoid"): Double = {
     val baseRisk = strain + (shockMagnitude * 0.4)
     val majorityRatio = govSeats.toDouble / totalSeats
     val marginBonus = math.max(0.0, (majorityRatio - 0.5) * 2.0)
     val coalitionPenalty = if (isCoalition) 0.05 else 0.0
     val totalRisk = baseRisk + (0.15 * (1.0 - marginBonus)) + coalitionPenalty
-    val years = 5.5 / (1.0 + math.exp(3.5 * (totalRisk - 1.1)))
+    
+    val years = collapseModel match {
+      case "sigmoid" =>
+        // Phase transition: stable until tipping point, then rapid collapse
+        // Formula: MTTF = L / (1 + e^(k*(ρ - ρ₀)))
+        5.5 / (1.0 + math.exp(3.5 * (totalRisk - 1.1)))
+        
+      case "linear" =>
+        // Gradual decay: each unit of risk reduces stability equally
+        // Formula: MTTF = max(0.5, L - k*ρ)
+        math.max(0.5, 5.5 - (3.0 * totalRisk))
+        
+      case "exponential" =>
+        // Front-loaded risk: early risk is devastating, later risk less impactful
+        // Formula: MTTF = L * e^(-k*ρ)
+        5.5 * math.exp(-1.5 * totalRisk)
+        
+      case _ =>
+        // Default to sigmoid if unknown model
+        5.5 / (1.0 + math.exp(3.5 * (totalRisk - 1.1)))
+    }
+    
     math.max(0.5, math.min(5.0, years))
   }
 }

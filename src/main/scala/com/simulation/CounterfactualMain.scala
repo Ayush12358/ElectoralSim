@@ -16,15 +16,17 @@ object CounterfactualMain extends App {
   val rangeThresholds = Seq(0.0, 0.05, 0.10)
   val rangePatronage = Seq(0.0, 0.3, 0.6, 0.9)
   val polarizationTypes = Seq("Uniform", "Symmetric", "Asymmetric")
-  val rangeMinkowskiP = Seq(1.0, 2.0, 3.0, 4.0, 5.0) // NEW: Minkowski p sweep
+  val rangeMinkowskiP = Seq(1.0, 2.0, 3.0, 4.0, 5.0)
+  val collapseModels = Seq("sigmoid", "linear", "exponential") // NEW: Collapse model sweep
   
   println(s"--- Starting Extended Monte Carlo Simulation ---")
   println(s"Patronage Levels: $rangePatronage")
   println(s"Polarization Types: $polarizationTypes")
   println(s"Minkowski p Values: $rangeMinkowskiP")
+  println(s"Collapse Models: $collapseModels")
 
   val csvWriter = new PrintWriter(new File("data/processed/extended_theory_results.csv"))
-  csvWriter.println("dimensions,n_parties,threshold,patronage,polarization,minkowski_p,avg_mttf,avg_gallagher,std_mttf")
+  csvWriter.println("dimensions,n_parties,threshold,patronage,polarization,minkowski_p,collapse_model,avg_mttf,avg_gallagher,std_mttf")
 
   val rand = new Random(42)
 
@@ -35,7 +37,8 @@ object CounterfactualMain extends App {
     thresh <- rangeThresholds
     patronageLevel <- rangePatronage
     polType <- polarizationTypes
-    minkowskiP <- rangeMinkowskiP  // NEW: Loop over Minkowski p
+    minkowskiP <- rangeMinkowskiP
+    collapseModel <- collapseModels  // NEW: Loop over collapse models
   } {
     var rawMTTF = Seq.empty[Double]
     var rawGallagher = Seq.empty[Double]
@@ -106,7 +109,7 @@ object CounterfactualMain extends App {
       val coalitionSet = if (!isCoalition) Set(maxSeatParty._1) else SimulationEngine.formCoalition(seats, parties, 251, minkowskiP)
       val strain = SimulationEngine.calculateStrain(coalitionSet, parties, minkowskiP)
       
-      val mttf = SimulationEngine.calculateMTTF(strain, 0.2, totalSeats, govSeats, isCoalition)
+      val mttf = SimulationEngine.calculateMTTF(strain, 0.2, totalSeats, govSeats, isCoalition, collapseModel)
       val gallagher = ElectoralMath.calculateGallagherIndex(
         votes.view.mapValues(_.toDouble/totalVotes).toMap, 
         seats.view.mapValues(_.toDouble/totalSeats).toMap
@@ -121,7 +124,7 @@ object CounterfactualMain extends App {
     val avgGallagher = rawGallagher.sum / nTrials
     val stdMTTF = math.sqrt(rawMTTF.map(x => math.pow(x - avgMTTF, 2)).sum / nTrials)
 
-    csvWriter.println(f"$dim,$nP,$thresh,$patronageLevel,$polType,$minkowskiP,$avgMTTF,$avgGallagher,$stdMTTF")
+    csvWriter.println(f"$dim,$nP,$thresh,$patronageLevel,$polType,$minkowskiP,$collapseModel,$avgMTTF,$avgGallagher,$stdMTTF")
   }
 
   csvWriter.close()

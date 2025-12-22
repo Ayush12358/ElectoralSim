@@ -112,6 +112,8 @@ When voters are motivated by \textbf{patronage} (transactional benefits rather t
 
 \textbf{Interpretation}: Clientelist voters are loyal to \textit{benefits}, not \textit{beliefs}. This creates stable voting blocs immune to ideological fragmentation. This explains why democracies with high patronage (e.g., India, Mexico) often exhibit surprising governmental stability despite extreme party fragmentation.
 
+\textbf{Warning: The Accountability Deficit.} Clientelism stabilizes governments but at a severe cost: \textbf{democratic accountability}. When voters are loyal to material benefits, they do not punish corruption, incompetence, or policy failures. This creates a ``stability trap'' where governments persist not because they govern well, but because they distribute resources effectively. Patronage democracies are often stable \textit{and} corrupt \citep{Kitschelt2007}.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{figures/clientelism_effect.png}
@@ -146,13 +148,26 @@ Not all polarization is equal. When polarization is \textbf{asymmetric} (one dom
     \label{fig:asymmetric}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/patronage_polarization_heatmap.png}
+    \caption{Combined Effect: Patronage $\times$ Polarization interaction. High patronage + Asymmetric polarization = Maximum stability.}
+    \label{fig:heatmap}
+\end{figure}
+
 \section{Discussion}
 
 \subsection{The Empty Core Theorem}
 Our findings empirically validate Schofield's Chaos Theorem \citep{Schofield1985}. The ``Stability Snap'' at 5\% can be understood as an \textit{artificial} construction of a core \citep{Cox1997}.
 
 \subsection{The Duverger-Sartori Synthesis}
-Duverger \citep{Duverger1954} hypothesized that plurality systems trend towards two parties. Sartori \citep{Sartori1976} extended this, arguing that PR systems merely \textit{permit} fragmentation. Our model provides mechanistic evidence for this synthesis.
+Duverger \citep{Duverger1954} hypothesized that plurality systems trend towards two parties. Sartori \citep{Sartori1976} extended this, arguing that PR systems merely \textit{permit} fragmentation. Our model provides mechanistic evidence for this synthesis:
+\begin{itemize}
+    \item \textbf{Low Threshold (0\%)}: Permits extreme fragmentation, but \textit{only if} the underlying ideological space is high-dimensional. A simple 2D society remains stable even under pure PR.
+    \item \textbf{High Threshold (10\%)}: Forces consolidation, but at a severe cost to representativeness (Gallagher Index rises to $>$0.40).
+\end{itemize}
+
+The 5\% threshold represents what we term the \textbf{Sartori Equilibrium}: the point at which the system permits meaningful pluralism without crossing the chaos threshold.
 
 \subsection{Explaining Global Divergence}
 This theory explains disparate global phenomena without recourse to cultural arguments \citep{Lijphart1999}. Table~\ref{tab:global} summarizes the model's predictions against observed outcomes.
@@ -175,6 +190,11 @@ This theory explains disparate global phenomena without recourse to cultural arg
 
 The US case is explained by a forced dimensionality reduction: FPTP compresses a potentially multi-dimensional society onto a single axis \citep{McCarty2006}, creating stability at the cost of immense ideological strain \citep{Levitsky2018}.
 
+\subsection{The Hidden Cost of Stability: ``Strain Blindness''}
+A crucial caveat is that our MTTF metric measures \textit{government duration}, not \textit{societal health}. The US model demonstrates that a system can be mathematically ``stable'' (long MTTF) while accumulating dangerous levels of internal strain. Our model does not capture this latent risk, which manifests as political violence, norm erosion, or democratic backsliding \citep{Levitsky2018}.
+
+Future work should incorporate a ``Strain Accumulation'' metric to model the long-term consequences of forced stability.
+
 \subsection{The Stability-Democracy Trade-off}
 A fundamental normative tension emerges from our findings: \textbf{Stability is not synonymous with democracy.}
 
@@ -185,6 +205,13 @@ Consider the implications of Laws IV and V:
 \end{itemize}
 
 Both mechanisms produce high MTTF scores while potentially undermining democratic quality. We propose the \textbf{Authoritarian Stability Hypothesis}: \textit{As a democracy optimizes for stability, it converges toward authoritarianism.}
+
+This hypothesis is consistent with empirical observations:
+\begin{itemize}
+    \item \textbf{Russia (2000s)}: High stability (Putin's regime), low democratic quality.
+    \item \textbf{Singapore}: Decades of PAP dominance, stable but not fully democratic.
+    \item \textbf{India (2014--present)}: Increasing dominance, stable but with democratic backsliding concerns.
+\end{itemize}
 
 The ``5\% Threshold'' may be the optimal balance point: it provides sufficient stability ($>$4 years) while preserving meaningful competition. Thresholds above 10\% begin to approach the ``Authoritarian Stability'' zone.
 

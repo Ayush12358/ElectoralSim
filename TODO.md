@@ -109,11 +109,25 @@
 - [ ] **Spoiler effect** — third party splits vote with ideologically similar major party
 
 ### Voter Models *(from elsim)*
-- [ ] **Impartial Culture (IC)** — each voter ranking is equally likely (random permutation)
+- [ ] **Impartial Culture (IC)**:
+  - Each voter ranking is **equally likely** (random permutation)
+  - With n candidates, each of n! orderings has probability 1/n!
+  - **Unrealistic but mathematically tractable** — worst-case analysis
+  - Variants: Impartial Anonymous Culture (IAC), IANC
 - [ ] **Random Utilities** — each voter-candidate utility drawn from distribution
-- [ ] **Normal Electorate (Spatial)** — voters/candidates positioned in N-dimensional Gaussian space
+- [ ] **Normal Electorate (Spatial)** — voters/candidates in N-dimensional Gaussian space
   - Distance → utility (normed_dist_utilities)
-- [ ] **1D/2D Spatial Visualization** — "Yee diagrams" showing which candidate wins at each point
+
+### Yee Diagrams *(Ka-Ping Yee)*
+- [ ] **2D visualization of single-winner methods**:
+  - Candidates as fixed points in 2D issue space
+  - Voters distributed (usually Gaussian) around each grid point
+  - Color each point by winner under given voting method
+- [ ] **Reveals**:
+  - IRV/Plurality bias toward extremes
+  - Approval bias toward center
+  - **Non-monotonicity** — shifting opinion TOWARD candidate can cause them to LOSE
+- [ ] Implementations: voteline (1D), IEVS, Brian Olson Elections On The Plane
 
 ### Ballot Strategies *(from elsim)*
 - [ ] **Honest Rankings** — rank by true utility
@@ -176,8 +190,16 @@
   - Top 2 by score → automatic runoff by preferences
 
 #### Additional Voting Methods *(from elsim)*
-- [ ] **Black's Method** — Condorcet winner if exists, else Borda winner
-- [ ] **Coombs Method** — eliminate candidate with most last-place votes
+- [ ] **Black's Method** (Duncan Black 1958):
+  - **Algorithm**: If Condorcet winner exists → elect them; else → Borda winner
+  - Satisfies Condorcet criterion AND majority criterion
+  - Does NOT satisfy Independence of Irrelevant Alternatives
+- [ ] **Coombs Method** (Clyde Coombs):
+  - **Algorithm**: Iteratively eliminate candidate with MOST last-place votes
+  - Continue until a candidate has majority of first-place votes
+  - **Key difference from IRV**: IRV eliminates fewest first-place; Coombs eliminates most last-place
+  - Tends to elect broadly acceptable candidates
+  - **Condorcet efficiency ~99%** (very high)
 - [ ] **SNTV (Single Non-Transferable Vote)** — multi-winner plurality
 - [ ] **Two-Round Runoff** — top 2 if no majority, then second round
 
@@ -220,11 +242,16 @@
 - [ ] **Partisan bias** — seats deviation at 50% vote share
 
 ### Voting System Efficiency *(from elsim)*
-- [ ] **Social Utility Efficiency (SUE) / Voter Satisfaction Efficiency (VSE)**:
-  - How often does method elect highest-utility candidate?
-  - VSE = (elected_utility - random_utility) / (optimal_utility - random_utility)
-- [ ] **Condorcet Efficiency** — how often does method elect Condorcet winner (when one exists)?
-- [ ] **Condorcet Cycle Likelihood** — probability of no Condorcet winner
+- [ ] **Social Utility Efficiency (SUE) / Voter Satisfaction Efficiency (VSE)** (Jameson Quinn):
+  - **VSE = 1 - [BR(method) / BR(Random)]**
+  - **Bayesian Regret (BR)** = expected avoidable unhappiness
+  - BR = average(Optimal_Utility - Elected_Utility) over many simulations
+  - VSE 100% = always elects max-utility candidate; 0% = random selection
+- [ ] **Condorcet Efficiency** — % elections electing Condorcet winner:
+  - **Condorcet methods: 100%** (by definition)
+  - **Coombs: ~99%** | **Borda: ~86%** | **IRV: ~60%** | **Plurality: ~33%**
+  - RCV empirical (US since 2004): 99.6% when beats-all winner exists
+- [ ] **Condorcet Cycle Likelihood** — ~3% in typical simulations
 - [ ] **Utility Winner** — candidate maximizing total voter utility (benchmark)
 
 ---
@@ -249,16 +276,20 @@
 
 #### Stochastic Block Model (SBM) *(from es_simulations)*
 - [ ] **Community-based network generation** — topological communities
-- [ ] **Parameters**:
-  - `q` = number of districts/communities
-  - `n` = total nodes
-  - `avg_deg` = average degree
-  - `ra` = ratio: P(connection within community) / P(connection between)
-- [ ] Districts with variable sizes (`qn`) and seats (`qs`)
+- [ ] **Core Parameters**:
+  - `n` (N) = total vertices/nodes
+  - `k` (K) = number of communities/blocks
+  - `P` or `B` = **block matrix** (k×k): P_ij = probability of edge between community i and j
+  - `z` or `C` = community assignment vector for each node
+- [ ] **Electoral Parameters** (es_simulations):
+  - `q` = number of districts | `qn` = sizes per district | `qs` = seats per district
+  - `avg_deg` = average degree | `ra` = within/between connection ratio
+- [ ] **Degree-Corrected SBM (DC-SBM)** — handles heterogeneous node degrees within communities
+- [ ] **Polarization ratio q** — q=0: disconnected communities, q=1: bipartite
 
 #### Distance-Based Planar Model *(from es_simulations)*
 - [ ] **Geographic network** — connection probability based on distance
-- [ ] **planar_c parameter** — fit to real commuting data
+- [ ] **planar_c parameter** — fit to real commuting data using `fit_planar_c.py`
 - [ ] More realistic spatial voter distribution
 
 ### Contagion & Diffusion
@@ -292,24 +323,30 @@
 - [ ] **Deffuant-Weisbuch** — pairwise bounded confidence
 
 #### Noisy Voter Model *(from es_simulations)*
-- [ ] **Opinion propagation** — copy neighbor's state (social influence)
-- [ ] **Mutation/noise** — random state change with probability `ε`
+- [ ] **Opinion propagation** — copy neighbor's state (social influence/herding)
+- [ ] **Mutation/noise parameter `ε`** — probability of spontaneous opinion change
+  - High ε → more diversity, harder for single opinion to dominate
+  - Low ε → social influence dominates, approaches consensus
+  - **Prevents complete consensus** unlike standard voter model
 - [ ] **Majority Rule** — adopt local majority opinion
-- [ ] **Minority Rule** — adopt local minority (experimental)
+- [ ] **Minority Rule** — adopt local minority (experimental, less empirically supported)
 
-### Zealots & Media Influence *(from es_simulations)*
+### Zealots & Media Influence *(from es_simulations, Raducha et al. 2023)*
 
 #### Zealots
-- [ ] **Fixed-opinion agents** — never change their mind regardless of social pressure
+- [ ] **Fixed-opinion agents** — never change mind regardless of social pressure
+- [ ] Other agents are **susceptible** — can adopt neighbors' opinions
 - [ ] **Parameters**:
   - `zn` = number of zealots
   - Zealot state/party affiliation
+  - Zealot connectivity/placement in network
 - [ ] **Zealot susceptibility metric** — how vulnerable is electoral system to zealots?
 
 #### Mass Media Bias
 - [ ] **Media influence probability** `mm` — probability of adopting "media state" during mutation
 - [ ] **Media susceptibility metric** — how vulnerable is electoral system to media bias?
 - [ ] **Media vs Zealots cross-analysis** — interaction effects
+- [ ] **Key finding (Raducha 2023)**: Plurality voting MORE susceptible to agitators/propaganda than PR
 
 ### Simulation Dynamics *(from es_simulations)*
 - [ ] **Thermalization** — equilibration period before data collection

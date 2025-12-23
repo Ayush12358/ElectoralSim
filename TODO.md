@@ -1,6 +1,6 @@
 # ElectoralSim - Comprehensive TODO
 
-> **Research Status:** Searches completed with detailed academic references. See `RESEARCH_NOTES.md` for sources.
+> **Research Status:** 28 exhaustive web searches completed across all categories. This TODO includes specific formulas, parameters, and academic references.
 
 ---
 
@@ -18,72 +18,102 @@
 - [ ] **Ideological Identity** — 7-point liberal-conservative, issue-by-issue positions
 
 ### Psychological Profile
-- [x] Basic ideology dimensions (implemented)
-- [ ] **Big Five Personality** (each 0-100):
-  - Openness → correlates with progressive views
-  - Conscientiousness → correlates with rule-following
-  - Extraversion → enables political engagement
-  - Agreeableness → correlates with redistribution support
-  - Neuroticism → correlates with threat sensitivity, conservatism
-- [ ] **Authoritarianism scale** (0-100) — preference for order, hierarchy, tradition
-- [ ] **Moral Foundations** (each 0-100):
-  - Care/Harm, Fairness/Cheating, Loyalty/Betrayal, Authority/Subversion, Sanctity/Degradation, Liberty/Oppression
-  - Liberals weight Care/Fairness; conservatives weight all six
-- [ ] **Cognitive complexity** — simple (black/white) vs. nuanced thinking
+
+#### Big Five Personality (OCEAN) — each 0-100
+- [ ] **Openness** → correlates with liberal/progressive views, curiosity, creativity
+- [ ] **Conscientiousness** → correlates with conservative views, order, rule-following
+- [ ] **Extraversion** → enables political engagement, may lean conservative
+- [ ] **Agreeableness** → correlates with social safety net support, Labour voting (UK)
+- [ ] **Neuroticism** → correlates with threat sensitivity, anxiety about economic future
+
+#### Moral Foundations Theory (Haidt-Graham) — each 0-100
+- [ ] **Care/Harm** — sensitivity to suffering, compassion
+- [ ] **Fairness/Cheating** — justice, reciprocal altruism (liberals = equality, conservatives = proportionality)
+- [ ] **Loyalty/Betrayal** — group cohesion, patriotism, in-group preference
+- [ ] **Authority/Subversion** — respect for tradition, hierarchy, leadership
+- [ ] **Sanctity/Degradation** — disgust, purity, contamination avoidance
+- [ ] **Liberty/Oppression** — resistance to domination, autonomy
+- **Pattern:** Liberals weight Care/Fairness heavily; conservatives weight all six
+
+#### Right-Wing Authoritarianism (Altemeyer RWA Scale)
+- [ ] **Authoritarian Submission** — deference to legitimate authority
+- [ ] **Authoritarian Aggression** — aggression toward perceived out-groups
+- [ ] **Conventionalism** — adherence to traditional social norms
+- [ ] **Measurement:** 22-30 item Likert scale (1-9), α = 0.81-0.95
 
 ### Knowledge & Information
 - [ ] **Political knowledge quiz score** (0-100)
 - [ ] **Candidate position accuracy** (0-100) — how well voter knows actual positions
 - [ ] **Media diet** — news sources, hours/week, partisan slant
-- [ ] **Misinformation susceptibility** (0-100) — conspiracy belief, fact-check receptiveness
+- [ ] **Misinformation susceptibility** (0-100):
+  - **Belief persistence** — misinformation shapes attitudes even after correction
+  - **Belief echoes** — residual attitudinal effects persist
+  - **Backfire effect** (Nyhan-Reifler) — corrections may strengthen false belief (worldview/familiarity types)
+  - **Illusory truth** — repeated exposure increases perceived accuracy
 
 ---
 
 ## 🗳️ VOTING BEHAVIOR MODELS
 
 ### Spatial Voting Models
-- [x] **Proximity Model** (current) — vote for nearest party in ideological space
-- [ ] **Directional Model (Rabinowitz-Macdonald 1989)**:
-  - Utility = voter_intensity × candidate_intensity × (same_side ? +1 : -1)
-  - Voters prefer candidates on same side of neutral point
-  - More extreme candidates preferred if on correct side
-  - **Region of Acceptability** — penalty for too-extreme positions
-- [ ] **Unified Model** — combine proximity + directional with weights
-- [ ] **Discounting Model** — discount extreme promises as unrealistic
+
+#### Proximity Model (current implementation)
+- [x] Vote for nearest party in ideological space
+- Uses Minkowski distance with configurable p parameter
+
+#### Directional Model (Rabinowitz-Macdonald 1989)
+- [ ] **Utility = voter_intensity × candidate_intensity × direction_sign**
+  - direction_sign = +1 if same side of neutral point, -1 otherwise
+- [ ] Voters prefer candidates on same side of issue
+- [ ] More extreme candidates preferred if on correct side
+- [ ] **Region of Acceptability** — penalty for too-extreme positions
+
+#### Unified Model
+- [ ] Combine proximity + directional with weights: U = α×(proximity) + (1-α)×(directional)
 
 ### Probabilistic Voting (McFadden)
-- [x] Deterministic (argmax) — current
-- [ ] **Multinomial Logit (MNL)**:
-  - P(vote for j) = exp(V_j) / Σ exp(V_k)
+
+#### Multinomial Logit (MNL)
+- [x] Deterministic (argmax) — current implementation
+- [ ] **P(vote for j) = exp(V_j / τ) / Σ exp(V_k / τ)**
   - V_j = systematic utility for party j
-  - **Temperature parameter** — controls randomness (high = more random)
-  - **IIA property** — independence of irrelevant alternatives
-- [ ] **Mixed Multinomial Logit (MMNL)** — relaxes IIA, allows preference heterogeneity
-- [ ] **Nested Logit** — groups similar alternatives
+  - **τ = temperature parameter** — controls randomness (low = deterministic, high = random)
+- [ ] **IIA property** — Independence of Irrelevant Alternatives (ratio of probabilities unchanged by adding alternative)
+
+#### Advanced Logit Models
+- [ ] **Mixed Multinomial Logit (MMNL)** — relaxes IIA, allows heterogeneous preferences
+- [ ] **Nested Logit** — groups similar alternatives in "nests"
 
 ### Valence Voting
-- [ ] **Non-policy competence attributes**:
-  - Leadership quality (0-100)
-  - Character/integrity (0-100)
-  - Experience (0-100)
-  - Charisma (0-100)
-- [ ] Utility = α×(policy proximity) + (1-α)×(valence score)
-- [ ] Candidates with high valence can adopt more moderate positions
+- [ ] **Non-policy competence attributes** (each 0-100):
+  - Leadership quality, charisma
+  - Character/integrity, honesty
+  - Experience, legislative skill
+  - Credibility (delivering on promises)
+- [ ] **Combined utility:** U = α×(policy proximity) + (1-α)×(valence score)
+- [ ] High-valence candidates can adopt more moderate positions
 
-### Turnout Model (Riker-Ordeshook)
+### Turnout Model (Riker-Ordeshook 1968)
 - [ ] **Calculus of Voting: V = pB - C + D**
-  - p = probability vote is decisive (very small)
-  - B = benefit if preferred candidate wins
-  - C = cost of voting (time, effort)
-  - D = **civic duty** / expressive benefit (key to explaining turnout)
-- [ ] **Alienation** — don't vote if all candidates too far
+  - **p** = probability vote is decisive (very small, ~1/N)
+  - **B** = benefit if preferred candidate wins (differential)
+  - **C** = cost of voting (time, effort, information)
+  - **D** = **civic duty / expressive benefit** (key to explaining turnout paradox)
+- [ ] **Alienation** — don't vote if all candidates too far from ideal point
 - [ ] **Indifference** — don't vote if candidates too similar
+
+### Strategic Voting (Tactical Voting)
+- [ ] Voting for non-preferred viable candidate to prevent worst outcome
+- [ ] Driven by fear of **wasted vote** (votes for losing candidates)
+- [ ] **Third-party squeeze** — minor parties suppressed in FPTP
+- [ ] **Spoiler effect** — third party splits vote with ideologically similar major party
 
 ### Heuristics
 - [ ] **Party heuristic** — vote by party label alone
 - [ ] **Incumbent heuristic** — default to status quo
 - [ ] **Likability heuristic** — personality-based voting
 - [ ] **Elite cues** — follow trusted opinion leaders
+- [ ] **Appearance heuristic** — attractiveness bias
 
 ---
 
@@ -98,52 +128,127 @@
 - [ ] **Modified Sainte-Laguë** — first divisor 1.4 (Swedish method)
 
 ### Electoral System Types
+
+#### Proportional Representation
 - [x] **Party-list PR** (current)
-- [ ] **FPTP** — single-member districts, plurality wins
-- [ ] **MMP (Mixed-Member Proportional)** — constituency + list seats, compensatory
+- [ ] **MMP (Mixed-Member Proportional)** — Germany model:
+  - **Erststimme** (first vote) — constituency direct candidate (FPTP)
+  - **Zweitstimme** (second vote) — party list (determines overall proportionality)
+  - **Überhangmandate** — overhang seats when constituency > proportional entitlement
+  - **Ausgleichsmandate** — leveling/compensatory seats to restore proportionality
+  - 2023 Reform: fixed 630 seats, abolishes overhang/leveling
 - [ ] **STV (Single Transferable Vote)**:
-  - **Droop quota**: floor(votes / (seats + 1)) + 1
+  - **Droop quota**: floor(votes/(seats+1)) + 1
   - Surplus transfer: fractional value = surplus / total_votes
   - **Gregory method** — transfer last parcel at fractional value
   - **Meek method** — keep factors, iterative recalculation
+  - Elimination of lowest, votes transfer to next preference
+
+#### Majoritarian/Plurality
+- [ ] **FPTP** — single-member districts, plurality wins
+- [ ] **Two-round runoff** — if no majority, top two compete in second round
 - [ ] **RCV/IRV** — eliminate lowest, transfer votes until majority
-- [ ] **Condorcet** — pairwise comparisons, Condorcet winner beats all
-- [ ] **Schulze** — strongest path through tournament graph
-- [ ] **Borda** — points by rank (n-1, n-2, ..., 0)
-- [ ] **Approval** — vote for all acceptable candidates
-- [ ] **STAR** — score 0-5, top two runoff by preferences
+
+#### Alternative Systems
+- [ ] **Condorcet Methods**:
+  - **Condorcet Winner** — beats all others in pairwise comparison
+  - **Condorcet Paradox / Cycling** — A>B>C>A, no clear winner
+  - **Condorcet-completion methods** — resolve cycles (Schulze, Ranked Pairs)
+- [ ] **Schulze Method** — strongest path through tournament graph
+- [ ] **Borda Count** — points by rank (n-1, n-2, ..., 0)
+- [ ] **Approval Voting** — vote for all acceptable candidates, most approvals wins
+- [ ] **Score/Range Voting** — rate candidates 0-5, highest total wins
+- [ ] **STAR Voting** — Score Then Automatic Runoff:
+  - Rate 0-5, sum scores
+  - Top 2 by score → automatic runoff by preferences
 
 ### Electoral Rules
+
+#### Thresholds
 - [x] National threshold (implemented) — 0%, 5%, 10%
-- [ ] **Natural threshold** — 75% / (M + 1) where M = district magnitude
-- [ ] **M+1 rule (Cox 1997)** — max viable parties ≈ M + 1
-- [ ] **Duverger's Law** — FPTP → 2-party system (mechanical + psychological effects)
+- [ ] **Natural/effective threshold** — 75% / (M + 1) where M = district magnitude
+- [ ] **Regional thresholds**
+
+#### Theoretical Laws
+- [ ] **Duverger's Law** — FPTP → 2-party system
+  - **Mechanical effect** — small parties don't win seats
+  - **Psychological effect** — voters avoid "wasting" votes on small parties
+- [ ] **M+1 Rule (Cox 1997)** — max viable parties ≈ district magnitude + 1
 
 ---
 
 ## 📊 METRICS & INDICES
 
 ### Disproportionality
-- [x] **Gallagher Index** (implemented):
-  - LSq = √(½ Σ(v_i - s_i)²)
+- [x] **Gallagher Index (Least Squares)**: LSq = √(½ Σ(v_i - s_i)²)
 - [ ] **Loosemore-Hanby**: D = ½ Σ|v_i - s_i|
 - [ ] **Sainte-Laguë Index**: 1/2 Σ(v_i - s_i)² / v_i
 
 ### Fragmentation
 - [ ] **Effective Number of Parties (Laakso-Taagepera 1979)**:
   - **N = 1 / Σ(p_i)²**
-  - p_i = vote/seat share (as proportion, not %)
-  - ENEP (by votes), ENPP (by seats)
-  - Related to Herfindahl-Hirschman Index: HHI = Σ(p_i)², N = 1/HHI
+  - p_i = vote/seat share (as proportion, 0-1)
+  - **ENEP** (by votes), **ENPP** (by seats)
+  - Related: HHI = Σ(p_i)², N = 1/HHI (inverse Simpson index)
 
 ### Gerrymandering
 - [ ] **Efficiency Gap (Stephanopoulos-McGhee 2014)**:
   - Wasted votes = losing votes + (winning votes - 50% - 1)
-  - EG = (Party A wasted - Party B wasted) / total votes
-  - **>7% suggests illegal gerrymandering**
+  - **EG = (Party A wasted - Party B wasted) / total votes**
+  - **>7% threshold** suggests potential illegal gerrymandering
 - [ ] **Polsby-Popper Compactness**: 4π × area / perimeter²
 - [ ] **Seats-votes curve** — responsiveness and bias
 - [ ] **Partisan bias** — seats deviation at 50% vote share
+
+---
+
+## 🌐 SOCIAL NETWORKS & OPINION DYNAMICS
+
+### Network Topologies
+
+#### Small-World (Watts-Strogatz 1998)
+- [ ] Start with ring lattice, K nearest neighbors
+- [ ] **Rewiring probability p**:
+  - p=0: regular lattice (high clustering, high path length)
+  - p≈0.01-0.1: small-world (high clustering, short paths)
+  - p=1: random graph (low clustering, short paths)
+- [ ] **Clustering coefficient** — probability neighbors are connected
+
+#### Scale-Free (Barabási-Albert 1998)
+- [ ] **Preferential attachment** — "rich get richer"
+- [ ] **Power-law degree distribution**: P(k) ~ k^(-γ), γ ≈ 2-3
+- [ ] **Hubs** — highly connected nodes (influencers)
+- [ ] Robust to random failure, vulnerable to targeted hub removal
+
+### Contagion & Diffusion
+
+#### Epidemic Models for Information Spread
+- [ ] **SIR (Susceptible-Infected-Recovered)**:
+  - **β** = transmission rate (S→I)
+  - **γ** = recovery rate (I→R)
+  - **R₀ = β/γ** (basic reproduction number)
+- [ ] **SEIR** — adds Exposed state:
+  - **σ** = incubation rate (E→I)
+- [ ] **SIS** — recovered can become susceptible again
+- [ ] **SIRS** — temporary immunity before re-susceptibility
+- [ ] **SVFR** — Susceptible-View-Forward-Removed (social media)
+
+### Opinion Dynamics
+
+#### Bounded Confidence (Hegselmann-Krause)
+- [ ] **Key parameter: ε (epsilon) = confidence bound**
+- [ ] Only interact if |opinion_i - opinion_j| < ε
+- [ ] **Dynamics**: x_i(t+1) = average of all x_j within ε neighborhood
+- [ ] **Outcomes**:
+  - Large ε → consensus
+  - Small ε → multiple clusters (polarization)
+  - **Finite-time convergence** guaranteed
+- [ ] Variants: asymmetric ε, heterogeneous ε, noise
+
+#### Other Models
+- [ ] **DeGroot** — weighted averaging from network neighbors
+- [ ] **Voter Model** — randomly copy neighbor's opinion
+- [ ] **Deffuant-Weisbuch** — pairwise bounded confidence
 
 ---
 
@@ -154,7 +259,7 @@
 - [ ] **MWC (Minimum Winning Coalition)** — smallest majority (Riker 1962)
 - [ ] **Laver-Shepsle Portfolio Allocation Model**:
   - Parties prefer specific policy departments
-  - Policy = function of who controls which ministry
+  - **Policy = f(who controls which ministry)**
   - Credible commitments via portfolio assignment
   - Central parties more likely in government
 - [ ] **Policy-seeking** — minimize ideological distance
@@ -170,68 +275,94 @@
 
 ---
 
-## 🌐 OPINION DYNAMICS
+## ⏱️ GOVERNMENT STABILITY & SURVIVAL
 
-### Bounded Confidence (Hegselmann-Krause)
-- [ ] **Model parameters**:
-  - n = number of agents
-  - ε (epsilon) = **confidence bound** — only interact if |opinion_i - opinion_j| < ε
-  - Initial distribution (uniform, normal, bimodal)
-- [ ] **Dynamics**: x_i(t+1) = average of all x_j where |x_i - x_j| < ε
-- [ ] **Outcomes**:
-  - Large ε → consensus
-  - Small ε → multiple clusters (polarization)
-  - **Finite-time convergence** guaranteed
-- [ ] **Variations**:
-  - Asymmetric ε (different left/right bounds)
-  - Heterogeneous ε (open-minded vs. closed-minded agents)
-  - Noise/perturbations
+### Collapse Models
+- [x] Sigmoid (implemented)
+- [x] Linear (implemented)
+- [x] Exponential (implemented)
+- [ ] **Survival Analysis / Duration Modeling (Warwick)**:
+  - **Hazard rate h(t)** — instantaneous failure probability at time t
+  - **Survival function S(t)** — probability government survives past t
+  - **Cox Proportional Hazards** — h(t|X) = h₀(t) × exp(β'X)
+  - Covariates: party count, ideology spread, economic conditions
 
-### Other Opinion Models
-- [ ] **DeGroot** — weighted averaging from network neighbors
-- [ ] **Voter Model** — randomly copy neighbor's opinion
-- [ ] **Deffuant-Weisbuch** — pairwise bounded confidence
+### Stability Factors
+- [x] Coalition strain (implemented)
+- [x] Majority margin (implemented)
+- [ ] Economic shocks (GDP, unemployment, inflation)
+- [ ] Scandals
 
 ---
 
-## 🗺️ ELECTORAL GEOGRAPHY
+## 📈 EXTERNAL EFFECTS & SHOCKS
 
-### District Structure
-- [x] Single national district (current)
-- [ ] Multi-district with variable magnitude
-- [ ] **MCMC redistricting** — Markov Chain Monte Carlo for fair maps
+### Economic Voting
+- [ ] **Retrospective Voting** — evaluate incumbent on past performance
+- [ ] **Pocketbook voting** — based on personal financial situation
+- [ ] **Sociotropic voting** — based on national economy perception (stronger effect)
+- [ ] **VP Function** — Vote/Popularity as f(economic conditions)
+- [ ] **Incumbency advantage** — name recognition, resources, credit-claiming
 
-### Gerrymandering Metrics (see Metrics section)
-- [ ] Efficiency gap, compactness scores, partisan bias
+### Debate Effects
+- [ ] **Minimal effects hypothesis** — campaigns mostly reinforce existing views
+- [ ] ~10% of voters decide based on debates
+- [ ] 72% decide >2 months before election
+- [ ] **Debate bumps often temporary** — "sample artifacts"
+- [ ] Primary debates more persuasive (~60% mind changes) than general election debates
+- [ ] Post-debate media framing may matter more than debate content
 
----
-
-## 📈 TEMPORAL DYNAMICS
-
-### Campaign Phases
-- [ ] Pre-campaign → Announcement → Early → Mid → Late → Final stretch → Election day → Post
-
-### Attention & Volatility
-- [ ] Early campaign: high volatility, many undecided
-- [ ] Late campaign: stabilization, last-minute deciders
-- [ ] Debate bumps, scandal drops, recovery time
-
----
-
-## ⚔️ EXTERNAL SHOCKS & ADVERSARIAL
-
-### Economic Events
-- [ ] GDP growth, unemployment, inflation → incumbent penalty/reward
-- [ ] **Retrospective voting** — did economy improve?
-
-### Scandals
-- [ ] Break → coverage → support drop → response → narrative → fade
-
-### October Surprises
-- [ ] Late-breaking events, scandals, discoveries
+### Scandal Effects
+- [ ] **Vote penalty** — 6-11% vote share decrease for corruption
+- [ ] **Corruption-voting puzzle** — some scandals have mild electoral consequences
+- [ ] **Moderators**: partisanship, media coverage, scandal type (financial > moral)
+- [ ] Long-term trust erosion, especially for first-time voters during scandal
 
 ### Voter Suppression
-- [ ] ID laws, purges, polling place closures, wait times
+- [ ] **Voter ID laws** — 1.6-2.2 percentage point turnout decline
+- [ ] **Polling place closures** — 5.65pp decline from relocation, 1,688 closures (2012-2018)
+- [ ] **Wait times** — 1% decrease in future voting per hour waited, 500-700k lost votes (2012)
+- [ ] Disproportionate impact: minorities, poor, elderly, young
+
+### Poll Aggregation (538 Methodology)
+- [ ] **Poll weighting** by: pollster track record, sample size, recency
+- [ ] **House effects** correction for pollster bias
+- [ ] **Probabilistic forecasts** — Monte Carlo simulations
+- [ ] **Challenges**: 2016 state-level misses, 2020 largest error in decades (R+4.6)
+
+---
+
+## 🏛️ THEORETICAL FOUNDATIONS
+
+### Social Choice Theorems
+
+#### Arrow's Impossibility Theorem
+- [ ] No ranked-choice voting system (≥3 alternatives) can satisfy all:
+  1. **Unrestricted Domain** — any preference ordering allowed
+  2. **Non-dictatorship** — no single voter determines outcome
+  3. **Pareto Efficiency** — if all prefer A>B, society prefers A>B
+  4. **Independence of Irrelevant Alternatives** — A vs B unaffected by C
+  5. **Social Ordering / Transitivity** — no A>B>C>A cycles
+
+#### Gibbard-Satterthwaite Theorem
+- [ ] Any deterministic voting rule (≥3 alternatives) must be either:
+  - **Dictatorial**, OR
+  - **Manipulable** (strategic voting beneficial)
+- [ ] Related to Arrow via IIA ↔ strategy-proofness connection
+- [ ] **Pivotal voter** argument in proof
+
+#### Median Voter Theorem (Black-Downs)
+- [ ] Under majority rule + single-peaked preferences:
+  - **Median voter's preferred position wins**
+- [ ] **Downs Convergence** — parties move toward center in two-party systems
+- [ ] **Assumptions**: single dimension, full information, two candidates
+- [ ] Relaxations lead to divergence, polarization
+
+### Party Behavior
+- [ ] **Mainstream parties** track median voter, adapt to shifts
+- [ ] **Niche parties** prioritize policy/ideology over median voter
+- [ ] **Critical elections** — realignments from major events
+- [ ] Voters may shift preferences to match preferred party (elite cue-taking)
 
 ---
 
@@ -239,7 +370,7 @@
 
 ### Computational
 - [ ] Parallelization, GPU, distributed computing
-- [ ] 10M+ agents
+- [ ] 10M+ agents capacity
 
 ### Data
 - [ ] Real voter file integration
@@ -247,16 +378,44 @@
 - [ ] Survey data import
 
 ### Validation
-- [ ] Backtest on historical elections
-- [ ] Calibration curves
-- [ ] Out-of-sample cross-validation
+- [ ] **Hindcast validation** — backtest on 2020, 2016, 2012
+- [ ] **Calibration curves** — predicted 70% → actual 70%?
+- [ ] **Out-of-sample cross-validation**
+- [ ] **Bias detection** — systematic over/under prediction
 
 ---
 
-## 📚 RESEARCH NOTES (Failed Searches to Retry)
+## 📚 RESEARCH NOTES
 
-None in latest batch. Previous failed searches:
-- *(None tracked)*
+### Searches Completed (28 total, 0 failed)
+1. ✅ Spatial voting (proximity vs directional, Rabinowitz-Macdonald 1989)
+2. ✅ Probabilistic voting (MNL, random utility, McFadden)
+3. ✅ Coalition formation (Laver-Shepsle portfolio allocation)
+4. ✅ Turnout calculus (Riker-Ordeshook V=pB-C+D)
+5. ✅ STV algorithm (Droop quota, Gregory/Meek methods)
+6. ✅ Hegselmann-Krause bounded confidence (ε, clusters)
+7. ✅ Duverger's Law, M+1 rule (Cox 1997)
+8. ✅ Big Five personality-politics
+9. ✅ Moral Foundations Theory (Haidt)
+10. ✅ RWA scale (Altemeyer)
+11. ✅ Watts-Strogatz small-world
+12. ✅ Barabási-Albert scale-free
+13. ✅ SIR/SEIR epidemic models
+14. ✅ MMP electoral system (Germany)
+15. ✅ Approval/STAR/Score voting
+16. ✅ Condorcet winner, cycling paradox
+17. ✅ Retrospective/economic voting
+18. ✅ Strategic voting, wasted vote
+19. ✅ Scandal effects
+20. ✅ Debate effects, minimal persuasion
+21. ✅ Misinformation, backfire effect
+22. ✅ Poll aggregation (538 methodology)
+23. ✅ Voter suppression (ID, closures, wait times)
+24. ✅ Government survival analysis (Warwick)
+25. ✅ Arrow Impossibility Theorem
+26. ✅ Gibbard-Satterthwaite Theorem
+27. ✅ Median Voter Theorem (Downs convergence)
+28. ✅ Party adaptive behavior
 
 ---
 
@@ -264,4 +423,4 @@ None in latest batch. Previous failed searches:
 
 - [x] = Implemented
 - [ ] = Not implemented
-- **Bold** = High priority / has detailed specification
+- **Bold** = Has detailed specification with formula/parameters

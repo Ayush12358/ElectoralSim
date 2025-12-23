@@ -1,180 +1,182 @@
 # ElectoralSim - TODO
 
-> Focused roadmap with high-impact features only. Research notes archived separately.
+> Priority: **P1** = Critical | **P2** = High | **P3** = Medium | **P4** = Low | **P5** = Nice-to-have
 
 ---
 
 ## 🧠 VOTER AGENT
 
 ### Core Attributes
-- [ ] **Demographics** — age, gender, education, income, religion, location
-- [ ] **Party ID (7-point)** — Strong D → Independent → Strong R
-- [ ] **Ideology** — multi-dimensional issue positions
-- [ ] **Affective Polarization** — in-group/out-group favorability gap
+- [ ] **P1** Demographics — age, gender, education, income, religion, location
+- [ ] **P1** Party ID (7-point) — Strong D → Independent → Strong R
+- [ ] **P1** Ideology — multi-dimensional issue positions
+- [ ] **P3** Affective Polarization — in-group/out-group favorability gap
 
 ### Psychology (Choose ONE)
-- [ ] **Big Five (OCEAN)** — Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism
-- [ ] **Moral Foundations (Haidt)** — Care, Fairness, Loyalty, Authority, Sanctity, Liberty
+- [ ] **P2** Big Five (OCEAN) — correlates with political views
+- [ ] **P3** Moral Foundations (Haidt) — Care, Fairness, Loyalty, Authority, Sanctity
 
 ### Information
-- [ ] **Political Knowledge** (0-100)
-- [ ] **Misinformation Susceptibility** — belief persistence, illusory truth
-- [ ] **Media Diet** — sources, partisan slant
+- [ ] **P2** Political Knowledge (0-100)
+- [ ] **P3** Misinformation Susceptibility
+- [ ] **P3** Media Diet — sources, partisan slant
 
 ---
 
 ## 🎭 CANDIDATE/PARTY AGENT
 
-- [ ] **Valence** — charisma, competence, integrity (0-100)
-- [ ] **Policy Position** — N-dimensional issue space
-- [ ] **Incumbent Status** — affects credibility, resources
-- [ ] **Adaptive Strategy** — respond to polls, opponents
+- [ ] **P1** Policy Position — N-dimensional issue space
+- [ ] **P2** Valence — charisma, competence, integrity (0-100)
+- [ ] **P2** Incumbent Status
+- [ ] **P4** Adaptive Strategy — respond to polls
 
 ---
 
 ## 🗳️ VOTING MODELS
 
-### Core (Implement These)
-- [x] **Proximity Model** ✓ — vote for nearest in ideological space
-- [ ] **Multinomial Logit** — P(j) = exp(V_j/τ) / Σexp(V_k/τ)
-  - Temperature τ controls randomness
+### Core
+- [x] **P1** Proximity Model ✓
+- [ ] **P1** Multinomial Logit — P(j) = exp(V_j/τ) / Σexp(V_k/τ)
 
 ### Turnout
-- [ ] **Calculus of Voting**: R = pB - C + D
-  - p = pivotal probability, B = benefit, C = cost, D = duty
-- [ ] **Alienation** — abstain if all candidates too far
-- [ ] **Indifference** — abstain if candidates too similar
+- [ ] **P2** Calculus of Voting: R = pB - C + D
+- [ ] **P3** Alienation/Indifference abstention
 
 ### Strategic
-- [ ] Tactical voting to prevent worst outcome
-- [ ] Wasted vote fear, spoiler effect
+- [ ] **P3** Tactical voting, wasted vote fear
 
 ---
 
 ## 🗳️ ELECTORAL SYSTEMS
 
 ### Seat Allocation
-- [x] **Sainte-Laguë** ✓
-- [x] **D'Hondt** ✓
-- [ ] **Droop Quota** — floor(votes/(seats+1)) + 1
+- [x] **P1** Sainte-Laguë ✓
+- [x] **P1** D'Hondt ✓
+- [ ] **P3** Droop Quota
 
 ### System Types
-- [x] **Party-list PR** ✓
-- [ ] **FPTP** — single-member plurality
-- [ ] **MMP** — Germany model (constituency + list)
-- [ ] **STV** — preference transfer
-- [ ] **IRV/RCV** — eliminate lowest until majority
+- [x] **P1** Party-list PR ✓
+- [ ] **P1** FPTP — most common worldwide
+- [ ] **P2** MMP — Germany model
+- [ ] **P2** STV — Ireland, Australia
+- [ ] **P2** IRV/RCV — growing adoption
 
 ### Other Methods
-- [ ] **Condorcet/Schulze** — pairwise winner
-- [ ] **Approval Voting** — vote for all acceptable
-- [ ] **STAR Voting** — Score Then Automatic Runoff
+- [ ] **P3** Condorcet/Schulze
+- [ ] **P3** Approval Voting
+- [ ] **P4** STAR Voting
 
 ### Rules
-- [x] **National Threshold** ✓ — 0%, 5%, 10%
-- [ ] **Duverger's Law** — FPTP → 2-party system
+- [x] **P1** National Threshold ✓
+- [ ] **P4** Duverger's Law simulation
 
 ---
 
 ## 📊 METRICS
 
-- [x] **Gallagher Index** ✓ — disproportionality
-- [ ] **ENP (Laakso-Taagepera)** — N = 1 / Σ(p_i)²
-- [ ] **Efficiency Gap** — gerrymandering detection (>7% threshold)
-- [ ] **VSE** — voting system efficiency (Jameson Quinn)
+- [x] **P1** Gallagher Index ✓
+- [ ] **P1** ENP (Laakso-Taagepera) — party fragmentation
+- [ ] **P3** Efficiency Gap — gerrymandering
+- [ ] **P4** VSE — voting system efficiency
 
 ---
 
 ## 🌐 SOCIAL NETWORKS
 
-### Topologies (Choose 1-2)
-- [ ] **Barabási-Albert** — scale-free, hubs, realistic
-- [ ] **Watts-Strogatz** — small-world (rewiring p=0.01-0.1)
+### Topologies
+- [ ] **P2** Barabási-Albert — scale-free, realistic
+- [ ] **P3** Watts-Strogatz — small-world
 
 ### Opinion Dynamics
-- [ ] **Noisy Voter Model** — copy neighbor + mutation rate ε
-- [ ] **Zealots** — fixed-opinion agents that never change
+- [ ] **P2** Noisy Voter Model — copy neighbor + mutation
+- [ ] **P2** Zealots — fixed-opinion agents
 
 ### Media
-- [ ] **Mass Media Bias** — probability of adopting media state
-- [ ] **Key Finding**: Plurality MORE susceptible to propaganda than PR (Raducha 2023)
+- [ ] **P3** Mass Media Bias
+- [ ] **P3** Plurality vs PR susceptibility (Raducha)
 
 ---
 
 ## 🤝 COALITION FORMATION
 
-- [x] **MCW** ✓ — minimum connected winning
-- [ ] **MWC** — minimum winning coalition (Riker)
-- [ ] **Laver-Shepsle** — portfolio allocation
-- [ ] **Policy vs Office-seeking** tradeoffs
+- [x] **P1** MCW ✓ — minimum connected winning
+- [ ] **P2** MWC — minimum winning coalition
+- [ ] **P3** Laver-Shepsle portfolio allocation
+- [ ] **P4** Policy vs Office-seeking tradeoffs
 
 ### Dynamics
-- [x] **Coalition Strain** ✓
-- [ ] **Junior Partner Penalty**
+- [x] **P1** Coalition Strain ✓
+- [ ] **P3** Junior Partner Penalty
 
 ---
 
 ## ⏱️ GOVERNMENT STABILITY
 
-- [x] Sigmoid, Linear, Exponential collapse ✓
-- [ ] **Survival Analysis** — Cox hazard model
-- [ ] Economic shocks, Scandals as covariates
+- [x] **P1** Collapse Models ✓ (Sigmoid, Linear, Exponential)
+- [ ] **P3** Survival Analysis — Cox hazard
+- [ ] **P4** Economic shocks, Scandals
 
 ---
 
 ## 📈 EXTERNAL EFFECTS
 
 ### Economic Voting
-- [ ] **Retrospective** — evaluate incumbent on past
-- [ ] **Sociotropic** — national economy > personal
-- [ ] **Incumbency Advantage**
+- [ ] **P2** Retrospective voting
+- [ ] **P3** Sociotropic vs Pocketbook
+- [ ] **P3** Incumbency Advantage
 
 ### Campaign
-- [ ] **Spending Effects** — 94% House winners outspent
-- [ ] **Microtargeting** — 70% more effective single-attribute
-- [ ] **Scandal Penalty** — 6-11% vote decrease
+- [ ] **P4** Spending Effects
+- [ ] **P4** Microtargeting
+- [ ] **P4** Scandal Penalty
 
 ---
 
 ## 🇮🇳 INDIA-SPECIFIC
 
 ### NOTA
-- [ ] Higher in reserved: ST (2.18%) > SC (1.1%) > General (0.95%)
-- [ ] State-level fresh elections (Maharashtra, Haryana, Delhi local)
+- [ ] **P2** NOTA implementation
+- [ ] **P3** Reserved constituency differential
 
 ### Reserved Constituencies
-- [ ] SC, ST reservations
-- [ ] Delimitation-based rotation
+- [ ] **P2** SC, ST reservations
 
 ### EVM & VVPAT
-- [ ] Standalone, no network, one-time programmable
-- [ ] 5 polling stations/constituency verified
-- [ ] 5% microcontroller audit on request (2024)
+- [ ] **P4** EVM simulation
+- [ ] **P5** VVPAT audit modeling
 
 ### Ballot Effects
-- [ ] **Ordering Bias** — first-listed gets ~1-2% advantage
+- [ ] **P4** Ordering Bias (~1-2%)
 
 ---
 
 ## 🏛️ THEORY (Reference Only)
 
-- **Arrow's Impossibility** — no perfect ranked system (≥3 options)
-- **Median Voter Theorem** — median position wins (single-peaked)
-- **Downs Convergence** — parties move to center
+- Arrow's Impossibility, Median Voter Theorem, Downs Convergence
 
 ---
 
 ## 🔧 TECHNICAL
 
-- [ ] Parallelization, GPU support
-- [ ] 10M+ agent capacity
-- [ ] Real voter/manifesto data integration
-- [ ] **Validation** — hindcast on 2016, 2020
+- [ ] **P2** Parallelization, GPU support
+- [ ] **P3** 10M+ agent capacity
+- [ ] **P3** Real data integration
+- [ ] **P2** Validation — hindcast 2016, 2020
 
 ---
 
-## 🏷️ LEGEND
+## 📋 PRIORITY SUMMARY
 
-- [x] = Implemented
-- [ ] = To implement
-- ✓ = Already done
+| Priority | Count | Description |
+|----------|-------|-------------|
+| **P1** | 12 | Must-have for MVP |
+| **P2** | 15 | Core functionality |
+| **P3** | 18 | Important extensions |
+| **P4** | 10 | Nice additions |
+| **P5** | 1 | Future scope |
+
+### Recommended Implementation Order
+1. **Phase 1 (P1)**: Demographics, Party ID, Ideology, MNL, FPTP, ENP
+2. **Phase 2 (P2)**: Valence, Turnout, Networks, Coalition dynamics, Validation
+3. **Phase 3 (P3)**: Opinion dynamics, Media, Economic voting, India features
+4. **Phase 4 (P4+)**: Campaign effects, Advanced metrics, EVM simulation

@@ -1,6 +1,6 @@
 # ElectoralSim - Comprehensive TODO
 
-> **Research Status:** 28 exhaustive web searches completed across all categories. This TODO includes specific formulas, parameters, and academic references.
+> **Research Status:** 28 exhaustive web searches + analysis of 2 reference repositories (pcbouman-eur/es_simulations, endolith/elsim). Includes formulas, parameters, and academic references.
 
 ---
 
@@ -108,6 +108,19 @@
 - [ ] **Third-party squeeze** — minor parties suppressed in FPTP
 - [ ] **Spoiler effect** — third party splits vote with ideologically similar major party
 
+### Voter Models *(from elsim)*
+- [ ] **Impartial Culture (IC)** — each voter ranking is equally likely (random permutation)
+- [ ] **Random Utilities** — each voter-candidate utility drawn from distribution
+- [ ] **Normal Electorate (Spatial)** — voters/candidates positioned in N-dimensional Gaussian space
+  - Distance → utility (normed_dist_utilities)
+- [ ] **1D/2D Spatial Visualization** — "Yee diagrams" showing which candidate wins at each point
+
+### Ballot Strategies *(from elsim)*
+- [ ] **Honest Rankings** — rank by true utility
+- [ ] **Honest Normed Scores** — score proportional to utility
+- [ ] **Approval Optimal** — approve all candidates above mean utility
+- [ ] **Vote for K** — approve top K candidates
+
 ### Heuristics
 - [ ] **Party heuristic** — vote by party label alone
 - [ ] **Incumbent heuristic** — default to status quo
@@ -162,6 +175,12 @@
   - Rate 0-5, sum scores
   - Top 2 by score → automatic runoff by preferences
 
+#### Additional Voting Methods *(from elsim)*
+- [ ] **Black's Method** — Condorcet winner if exists, else Borda winner
+- [ ] **Coombs Method** — eliminate candidate with most last-place votes
+- [ ] **SNTV (Single Non-Transferable Vote)** — multi-winner plurality
+- [ ] **Two-Round Runoff** — top 2 if no majority, then second round
+
 ### Electoral Rules
 
 #### Thresholds
@@ -200,6 +219,14 @@
 - [ ] **Seats-votes curve** — responsiveness and bias
 - [ ] **Partisan bias** — seats deviation at 50% vote share
 
+### Voting System Efficiency *(from elsim)*
+- [ ] **Social Utility Efficiency (SUE) / Voter Satisfaction Efficiency (VSE)**:
+  - How often does method elect highest-utility candidate?
+  - VSE = (elected_utility - random_utility) / (optimal_utility - random_utility)
+- [ ] **Condorcet Efficiency** — how often does method elect Condorcet winner (when one exists)?
+- [ ] **Condorcet Cycle Likelihood** — probability of no Condorcet winner
+- [ ] **Utility Winner** — candidate maximizing total voter utility (benchmark)
+
 ---
 
 ## 🌐 SOCIAL NETWORKS & OPINION DYNAMICS
@@ -219,6 +246,20 @@
 - [ ] **Power-law degree distribution**: P(k) ~ k^(-γ), γ ≈ 2-3
 - [ ] **Hubs** — highly connected nodes (influencers)
 - [ ] Robust to random failure, vulnerable to targeted hub removal
+
+#### Stochastic Block Model (SBM) *(from es_simulations)*
+- [ ] **Community-based network generation** — topological communities
+- [ ] **Parameters**:
+  - `q` = number of districts/communities
+  - `n` = total nodes
+  - `avg_deg` = average degree
+  - `ra` = ratio: P(connection within community) / P(connection between)
+- [ ] Districts with variable sizes (`qn`) and seats (`qs`)
+
+#### Distance-Based Planar Model *(from es_simulations)*
+- [ ] **Geographic network** — connection probability based on distance
+- [ ] **planar_c parameter** — fit to real commuting data
+- [ ] More realistic spatial voter distribution
 
 ### Contagion & Diffusion
 
@@ -249,6 +290,31 @@
 - [ ] **DeGroot** — weighted averaging from network neighbors
 - [ ] **Voter Model** — randomly copy neighbor's opinion
 - [ ] **Deffuant-Weisbuch** — pairwise bounded confidence
+
+#### Noisy Voter Model *(from es_simulations)*
+- [ ] **Opinion propagation** — copy neighbor's state (social influence)
+- [ ] **Mutation/noise** — random state change with probability `ε`
+- [ ] **Majority Rule** — adopt local majority opinion
+- [ ] **Minority Rule** — adopt local minority (experimental)
+
+### Zealots & Media Influence *(from es_simulations)*
+
+#### Zealots
+- [ ] **Fixed-opinion agents** — never change their mind regardless of social pressure
+- [ ] **Parameters**:
+  - `zn` = number of zealots
+  - Zealot state/party affiliation
+- [ ] **Zealot susceptibility metric** — how vulnerable is electoral system to zealots?
+
+#### Mass Media Bias
+- [ ] **Media influence probability** `mm` — probability of adopting "media state" during mutation
+- [ ] **Media susceptibility metric** — how vulnerable is electoral system to media bias?
+- [ ] **Media vs Zealots cross-analysis** — interaction effects
+
+### Simulation Dynamics *(from es_simulations)*
+- [ ] **Thermalization** — equilibration period before data collection
+- [ ] **Sampling** — elections after every N steps
+- [ ] **Animation** — visualize state changes over time on network
 
 ---
 

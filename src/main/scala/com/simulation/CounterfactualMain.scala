@@ -9,15 +9,17 @@ import java.io.File
 object CounterfactualMain extends App {
   // Monte Carlo Configuration
   val nAgents = 10000
-  val nTrials = 30    // Reduced for faster iteration with more params
+  val nTrials = 30
   val totalSeats = 500
+
+  // Parameter Sweep Ranges
   val rangeDimensions = Seq(2, 3, 5, 8)
   val rangeParties = Seq(5, 8, 12, 20)
   val rangeThresholds = Seq(0.0, 0.05, 0.10)
   val rangePatronage = Seq(0.0, 0.3, 0.6, 0.9)
   val polarizationTypes = Seq("Uniform", "Symmetric", "Asymmetric")
   val rangeMinkowskiP = Seq(1.0, 2.0, 3.0, 4.0, 5.0)
-  val collapseModels = Seq("sigmoid", "linear", "exponential") // NEW: Collapse model sweep
+  val collapseModels = Seq("sigmoid", "linear", "exponential")
   
   println(s"--- Starting Extended Monte Carlo Simulation ---")
   println(s"Patronage Levels: $rangePatronage")
@@ -38,7 +40,7 @@ object CounterfactualMain extends App {
     patronageLevel <- rangePatronage
     polType <- polarizationTypes
     minkowskiP <- rangeMinkowskiP
-    collapseModel <- collapseModels  // NEW: Loop over collapse models
+    collapseModel <- collapseModels
   } {
     var rawMTTF = Seq.empty[Double]
     var rawGallagher = Seq.empty[Double]

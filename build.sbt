@@ -1,5 +1,5 @@
-name := "ElectoralSimulation"
-version := "0.1.0"
+name := "ElectoralSim"
+version := "0.2.0"
 scalaVersion := "2.13.12"
 
 libraryDependencies ++= Seq(

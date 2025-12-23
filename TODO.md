@@ -1,6 +1,6 @@
 # ElectoralSim - Comprehensive TODO
 
-> **Research Status:** 28 exhaustive web searches + analysis of 2 reference repositories (pcbouman-eur/es_simulations, endolith/elsim). Includes formulas, parameters, and academic references.
+> **Research Status:** 48 exhaustive web searches + analysis of 2 reference repositories (pcbouman-eur/es_simulations, endolith/elsim). Includes formulas, parameters, and academic references.
 
 ---
 
@@ -488,9 +488,160 @@
 
 ---
 
-## 📚 RESEARCH NOTES
+## 🎭 AGENT ARCHITECTURE - CANDIDATE/PARTY
 
-### Searches Completed (28 total, 0 failed)
+### Candidate Attributes
+- [ ] **Charisma** (0-100) — personal appeal, motivates constituents, can be measured via "charismometer"
+- [ ] **Valence** — non-policy competence: integrity, experience, leadership, credibility
+  - Accumulation is costly (campaign spending)
+  - Higher impact when platforms are similar
+- [ ] **Policy Position** — N-dimensional issue space (spatial model)
+- [ ] **Party Affiliation** — major/minor, incumbent/challenger
+
+### Candidate Strategy
+- [ ] **Platform selection** — how candidate chooses policy positions
+- [ ] **Valence investment** — allocating resources to build competence image
+- [ ] **Strategic experimentation** — policy learning, reelection incentives
+- [ ] **Adaptive behavior** — respond to polls, opponents, voter feedback
+
+---
+
+## � CAMPAIGN DYNAMICS
+
+### Campaign Spending
+- [ ] **Spending effects on vote share**:
+  - **94% of House candidates** who outspent opponents won
+  - **82% of Senate** winners outspent
+  - 2020 cycle: **$14.4 billion** (most expensive ever)
+- [ ] **Incumbent vs challenger asymmetry** — challenger spending more effective
+- [ ] **Low-information voter sensitivity** — more responsive to spending
+- [ ] **Diminishing returns** — marginal effect decreases at high spending
+
+### Microtargeting
+- [ ] **Psychological profiling** — Big Five from online behavior (Cambridge Analytica)
+- [ ] **Single-attribute targeting** — 70% more effective than generic ads (party-based)
+- [ ] **Multi-attribute targeting** — diminishing returns on complexity
+- [ ] **AI-generated personalization** — generative AI scales microtargeting
+- [ ] **Polarization risk** — reinforces existing beliefs, echo chambers
+
+---
+
+## 🇮🇳 INDIA-SPECIFIC FEATURES
+
+### NOTA (None of the Above)
+- [ ] **Supreme Court mandated (2013)** — PUCL v. Union of India
+- [ ] **Current legal status**: NOTA votes counted but don't affect result
+  - Candidate with next-highest votes wins even if NOTA > all candidates
+- [ ] **Higher in reserved constituencies**:
+  - General: **0.95%** | SC-reserved: **1.1%** | ST-reserved: **2.18%**
+  - May indicate voter dissatisfaction or caste-bias
+- [ ] **State-level exceptions**: Maharashtra, Haryana, Delhi (local body) — fresh elections if NOTA wins
+
+### Reserved Constituencies
+- [ ] **Constitutional reservation** — seats reserved for SC, ST, Anglo-Indian
+- [ ] **Rotation policy** — delimitation-based rotation
+- [ ] **Representation dynamics** — higher NOTA, different candidate pools
+
+### Electronic Voting Machines (EVMs) & VVPAT
+- [ ] **EVM security features**:
+  - Standalone, battery-powered, **no network connectivity**
+  - One-time programmable microcontrollers (write-once)
+  - M3 model: tamper detection, self-diagnostics
+  - Double randomization for EVM allocation
+- [ ] **VVPAT (Voter Verifiable Paper Audit Trail)**:
+  - Paper slip visible for 7 seconds, drops into sealed box
+  - VVPAT slips authoritative over electronic tally
+  - **5 polling stations per constituency** randomly verified (Supreme Court mandate)
+- [ ] **2024 ECI protocol**: Losing candidates can request 5% microcontroller audit
+
+---
+
+## 🗺️ ELECTORAL GEOGRAPHY
+
+### Redistricting Algorithms
+- [ ] **Shortest Splitline** (rangevoting.org):
+  - Recursively divide with shortest straight line
+  - Politically/demographically blind
+  - Ignores communities of interest
+- [ ] **Compactness metrics** — Polsby-Popper, Reock, Convex Hull
+  - **Compactness ≠ fairness** — can be compact and gerrymandered
+- [ ] **Multi-objective optimization** — balance compactness + fairness criteria
+
+### Fairness Criteria
+- [ ] **Neutral process** — draw without partisan data
+- [ ] **Vote-seat proportionality** — minimize efficiency gap
+- [ ] **Partisan symmetry** — equal gains/losses for vote shifts
+- [ ] **Competitiveness** — create more competitive districts
+
+---
+
+## 🗳️ NOVEL VOTING MECHANISMS
+
+### Quadratic Voting (Weyl)
+- [ ] **Cost function**: cost = votes² (1 vote = 1 credit, 2 votes = 4 credits)
+- [ ] **Intensity revelation** — voters spend more on issues they care about
+- [ ] **Anti-tyranny mechanism** — minorities with strong preferences can outweigh apathetic majority
+- [ ] **Applications**: Colorado legislature pilot, corporate governance, blockchain DAOs
+- [ ] **Book**: "Radical Markets" (Weyl & Posner)
+
+### Liquid Democracy
+- [ ] **Transitive delegation** — A delegates to B, B delegates to C, C gets A's vote
+- [ ] **Direct + representative hybrid** — vote directly OR delegate
+- [ ] **Revocable at any time** — promotes accountability
+- [ ] **Issue-specific delegation** — different delegates for different topics
+- [ ] **Blockchain implementation** — immutable, transparent, dynamic updates
+
+### Cumulative Voting
+- [ ] **Multiple votes per voter** — equal to seats being filled
+- [ ] **Plumping strategy** — concentrate all votes on one candidate
+- [ ] **Semi-proportional representation** — minority groups can elect representatives
+- [ ] **Multi-seat districts required** — not effective in single-member
+- [ ] **Used in**: Illinois (1870-1980), corporate boards, local governments
+
+---
+
+## 📋 BALLOT DESIGN & ADMINISTRATION
+
+### Ballot Effects
+- [ ] **Ordering bias** — first-listed candidate gets ~1-2% advantage
+- [ ] **Butterfly ballot (2000)** — Palm Beach County, ~2,000 mistaken Buchanan votes
+- [ ] **Donkey vote** — rank in ballot order without consideration (Australia)
+- [ ] **Overvotes/undervotes** — design causes voter error
+
+### Election Timing
+- [ ] **Concurrent elections** — federal + state + local simultaneously
+- [ ] **Off-cycle elections** — lower turnout, different voter composition
+- [ ] **Weekend vs weekday voting** — affects working-class turnout
+
+---
+
+## 📜 POLITICAL REALIGNMENT THEORY
+
+### Critical Elections (V.O. Key 1955)
+- [ ] **Definition**: Sharp, durable alteration of electoral divisions
+- [ ] **Characteristics**:
+  - High voter concern/intensity
+  - Profound readjustment of power
+  - New durable electoral groupings
+- [ ] **Examples**: 1896 (McKinley), 1932 (FDR New Deal), 1968 (Southern Strategy)
+
+### Types of Realignment
+- [ ] **Critical election realignment** — sudden, within 1-2 cycles
+- [ ] **Secular realignment** — gradual separation over decades
+- [ ] **Dealignment** — voters abandon parties, become independent
+
+### Key's Party Components
+- [ ] **Party-in-electorate** — voters who identify with party
+- [ ] **Party organization** — committees, staff, infrastructure
+- [ ] **Party-in-government** — elected officials, officeholders
+
+---
+
+## �📚 RESEARCH NOTES
+
+### Searches Completed (48 total, 0 failed)
+
+#### Session 1: Core Models (28)
 1. ✅ Spatial voting (proximity vs directional, Rabinowitz-Macdonald 1989)
 2. ✅ Probabilistic voting (MNL, random utility, McFadden)
 3. ✅ Coalition formation (Laver-Shepsle portfolio allocation)
@@ -520,6 +671,30 @@
 27. ✅ Median Voter Theorem (Downs convergence)
 28. ✅ Party adaptive behavior
 
+#### Session 2: Repository Features (10)
+29. ✅ Stochastic Block Model (SBM, block matrix P_ij, DC-SBM)
+30. ✅ Zealot voter model (fixed agents, susceptibility metrics)
+31. ✅ Noisy voter model (mutation rate ε, consensus prevention)
+32. ✅ Voter Satisfaction Efficiency (VSE, Bayesian Regret, Jameson Quinn)
+33. ✅ Impartial Culture (n! orderings, IAC/IANC variants)
+34. ✅ Yee diagrams (Ka-Ping Yee, non-monotonicity visualization)
+35. ✅ Black's method (Condorcet→Borda hybrid, Duncan Black 1958)
+36. ✅ Coombs method (eliminate most last-place, ~99% Condorcet efficiency)
+37. ✅ Condorcet efficiency (Coombs 99%, Borda 86%, IRV 60%, FPTP 33%)
+38. ✅ Media susceptibility (Raducha 2023, plurality > PR vulnerability)
+
+#### Session 3: Gap Research (10)
+39. ✅ Candidate agent model (charisma, valence, position, strategy, ABM)
+40. ✅ Campaign spending (94% outspent win, $14.4B cycle, microtargeting 70% lift)
+41. ✅ India NOTA (2.18% ST vs 0.95% general, no re-election trigger)
+42. ✅ Redistricting algorithms (shortest splitline, compactness ≠ fairness)
+43. ✅ Quadratic Voting (cost=votes², Weyl, tyranny counter)
+44. ✅ Liquid Democracy (transitive delegation, blockchain implementation)
+45. ✅ Cumulative Voting (plumping, semi-proportional, minorities)
+46. ✅ Political Realignment (V.O. Key 1955, critical elections, 1896/1932)
+47. ✅ Ballot design effects (butterfly 2000, ordering bias, donkey vote)
+48. ✅ India EVM/VVPAT (standalone, 5-station audit, microcontroller verification)
+
 ---
 
 ## 🏷️ LEGEND
@@ -527,3 +702,4 @@
 - [x] = Implemented
 - [ ] = Not implemented
 - **Bold** = Has detailed specification with formula/parameters
+

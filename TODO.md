@@ -1,5 +1,53 @@
 # ElectoralSim - Comprehensive TODO
 
+## 🧠 AGENT ARCHITECTURE (The Voter)
+
+### Cognitive Models
+- [x] Rational Choice / Spatial Voting (implemented)
+- [ ] **Bounded Rationality** — heuristics, limited information
+- [ ] **Quantum Cognition** — superposition, interference effects, order effects
+- [ ] **Generative Agents (LLM-backed)** — memory, reflection, planning via LLMs
+
+### Psychological Profiles
+- [ ] **Big Five Personality Traits** — Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism
+- [ ] **Moral Foundations Theory** — Care, Fairness, Ingroup, Authority, Purity
+- [ ] **Cognitive Biases** — Confirmation Bias, Anchoring, Availability Heuristic
+
+### Voting Decision Logic
+- [x] Proximity voting (implemented)
+- [ ] **Retrospective Voting** — evaluate incumbents on past performance
+- [ ] **Prospective Voting** — forecast future performance
+- [ ] **Strategic Voting** — vote 2nd choice to block worst option
+- [ ] **Directional voting** — vote for party in preferred direction
+- [ ] **Discounting model** — discount extreme positions
+
+---
+
+## 🌐 SOCIAL NETWORK & INFLUENCE DYNAMICS
+
+### Network Topologies
+- [ ] **Small-World Networks (Watts-Strogatz)** — high clustering, short paths
+- [ ] **Scale-Free Networks (Barabási-Albert)** — power-law, influencer hubs
+- [ ] Random networks (Erdős–Rényi)
+- [ ] Lattice/grid networks
+- [ ] Real social network data import
+
+### Contagion Models
+- [ ] **SIR/SEIR Models** — information spread as epidemic
+- [ ] **Independent Cascade** — viral spread
+- [ ] **Linear Threshold** — threshold-based adoption
+- [ ] **Complex Contagion** — require multiple exposures
+
+### Opinion Dynamics
+- [ ] **Bounded Confidence (Hegselmann-Krause)** — only interact with similar
+- [ ] **DeGroot Model** — weighted averaging
+- [ ] **Memetic Evolution** — ideas mutate, replicate, selection
+- [ ] **Social Laser Theory** — coherent mass actions (quantum field analogy)
+- [ ] Voter Model — random adoption from neighbors
+- [ ] Majority rule dynamics
+
+---
+
 ## 🗳️ ELECTORAL SYSTEMS
 
 ### Seat Allocation Methods
@@ -13,77 +61,49 @@
 
 ### Electoral System Types
 - [x] Party-list PR (current)
-- [ ] **FPTP** (First Past The Post) - single-member districts
-- [ ] **MMP** (Mixed-Member Proportional) - Germany/NZ style
-- [ ] **STV** (Single Transferable Vote) - ranked choice, multi-member
-- [ ] **RCV/IRV** (Ranked Choice Voting) - single-winner
-- [ ] **AV** (Alternative Vote) - Australia lower house
-- [ ] **Two-round runoff** - France presidential
-- [ ] **Parallel voting** - Japan style (no compensation)
-- [ ] **Borda count** - points-based ranking
-- [ ] **Approval voting** - vote for all acceptable candidates
-- [ ] **STAR voting** - Score Then Automatic Runoff
-- [ ] **Condorcet methods** - pairwise comparisons
+- [ ] **FPTP** (First Past The Post)
+- [ ] **MMP** (Mixed-Member Proportional)
+- [ ] **STV** (Single Transferable Vote)
+- [ ] **RCV/IRV** (Ranked Choice / Instant Runoff)
+- [ ] **Condorcet Methods** — pairwise head-to-head
+- [ ] **Schulze Method** — graph-theory based Condorcet resolution
+- [ ] **Borda Count** — points by rank
+- [ ] **Two-round runoff** — France style
+- [ ] **Approval voting**
+- [ ] **STAR voting**
+- [ ] **Parallel voting** — Japan (no compensation)
 
 ### Thresholds & Barriers
 - [x] National threshold (implemented)
 - [ ] Regional thresholds
-- [ ] Effective threshold (natural district barrier)
-- [ ] Coalition thresholds (joint lists exempt)
+- [ ] Effective threshold (natural barrier)
+- [ ] Coalition thresholds
 - [ ] Apparentement (list alliances)
-
-### District Structure
-- [x] Single national district (current)
-- [ ] **Multi-district** - regional constituencies
-- [ ] **Variable magnitude** - different seats per district
-- [ ] **Gerrymandering simulation** - biased boundaries
-- [ ] **Malapportionment** - unequal population per seat
 
 ---
 
-## 🧑‍🤝‍🧑 VOTER BEHAVIOR
+## 🗺️ ELECTORAL GEOGRAPHY
 
-### Spatial Voting Models
-- [x] Proximity model (implemented) - vote for closest
-- [ ] **Directional model** - vote for party in preferred direction
-- [ ] **Discounting model** - discount extreme positions
-- [ ] **Unified model** - combine proximity + directional
-- [ ] **Proximity with intensity** - care more about some dimensions
+### District Structure
+- [x] Single national district (current)
+- [ ] Multi-district constituencies
+- [ ] Variable magnitude districts
+- [ ] **MCMC Redistricting** — Markov Chain Monte Carlo map generation
 
-### Vote Choice Mechanisms
-- [x] Deterministic (argmax) (implemented)
-- [ ] **Probabilistic (softmax/logit)** - stochastic choice
-- [ ] **Satisficing** - vote for first "good enough" party
-- [ ] **Lexicographic** - most important issue first
-- [ ] **Compensatory** - trade-offs between issues
+### Gerrymandering Metrics
+- [ ] **Efficiency Gap**
+- [ ] **Compactness scores**
+- [ ] **Polsby-Popper score**
+- [ ] Partisan bias measures
+- [ ] Seats-votes curve
 
-### Voter Heterogeneity
-- [x] Uniform distribution (implemented)
-- [x] Symmetric polarization (implemented)
-- [x] Asymmetric polarization (implemented)
-- [ ] **Multi-modal** - 3+ clusters
-- [ ] **Empirical distributions** - real survey data
-- [x] Patronage affinity (implemented)
-- [ ] **Weighted dimensions** - issue salience per voter
-- [ ] **Partisan attachment** - party ID beyond ideology
-- [ ] **Demographic segments** - age, income, education, region
-
-### Turnout & Abstention
-- [ ] **Alienation** - don't vote if all parties too far
-- [ ] **Indifference** - don't vote if parties too similar
-- [ ] **Rational ignorance** - cost-benefit calculation
-- [ ] **Civic duty** - vote regardless of outcome
-- [ ] **Weather/convenience effects**
-- [ ] **Compulsory voting**
-
-### Information & Psychology
-- [ ] **Imperfect information** - voters don't know party positions
-- [ ] **Bandwagon effect** - vote for expected winner
-- [ ] **Underdog effect** - vote for expected loser
-- [ ] **Strategic voting** - avoid wasted votes
-- [ ] **Expressive voting** - vote to express identity
-- [ ] **Retrospective voting** - reward/punish incumbents
-- [ ] **Economic voting** - based on economy
+### Demographics
+- [ ] Age cohorts
+- [ ] Income distribution
+- [ ] Education levels
+- [ ] Ethnic/religious groups
+- [ ] Urban-rural divide
+- [ ] Geographic clustering
 
 ---
 
@@ -91,25 +111,25 @@
 
 ### Party Positioning
 - [x] Random fixed positions (implemented)
-- [ ] **Downsian convergence** - move to median voter
-- [ ] **Policy-seeking** - maintain ideological integrity
-- [ ] **Vote-maximizing** - adaptive repositioning
-- [ ] **Niche party strategies** - target specific segments
-- [ ] **Valence competition** - non-policy attributes
+- [ ] **Downsian convergence** — move to median voter
+- [ ] **Policy-seeking** — ideological integrity
+- [ ] **Vote-maximizing** — adaptive repositioning
+- [ ] Niche party strategies
+- [ ] Valence competition (non-policy attributes)
 
 ### Party Dynamics
-- [ ] **Party entry/exit** - new parties form, old ones die
-- [ ] **Party splits** - internal factions break away
-- [ ] **Party mergers** - combine to win threshold
-- [ ] **Coalition pre-announcements** - declare partners before election
-- [ ] **Candidate selection** - primary elections
+- [ ] Party entry/exit
+- [ ] Party splits
+- [ ] Party mergers
+- [ ] Coalition pre-announcements
+- [ ] Candidate selection / primaries
 
 ### Party Resources
 - [x] Patronage score (implemented)
-- [ ] **Campaign spending**
-- [ ] **Media access**
-- [ ] **Organizational strength**
-- [ ] **Incumbency advantage**
+- [ ] Campaign spending
+- [ ] Media access
+- [ ] Organizational strength
+- [ ] Incumbency advantage
 
 ---
 
@@ -117,28 +137,20 @@
 
 ### Formation Strategies
 - [x] MCW - Minimum Connected Winning (implemented)
-- [ ] **MWC** - Minimum Winning (size only)
-- [ ] **Policy-seeking** - minimize policy distance
-- [ ] **Office-seeking** - maximize portfolios
-- [ ] **Bargaining model** - sequential negotiations
-- [ ] **Formateur model** - largest party tries first
-- [ ] **Minority government** - govern without majority
-- [ ] **Grand coalition** - left + right
+- [ ] MWC - Minimum Winning (size only)
+- [ ] Policy-seeking coalitions
+- [ ] Office-seeking coalitions
+- [ ] Bargaining model (sequential)
+- [ ] Formateur model
+- [ ] Minority government
+- [ ] Grand coalition
 
 ### Coalition Dynamics
 - [x] Coalition strain (implemented)
-- [ ] **Portfolio allocation** - who gets which ministry
-- [ ] **Policy compromise** - weighted average position
-- [ ] **Junior partner discount** - smaller parties lose support
-- [ ] **Coalition discipline** - voting together
-
-### Government Types
-- [ ] **Single-party majority**
-- [ ] **Single-party minority**
-- [ ] **Multi-party majority coalition**
-- [ ] **Multi-party minority coalition**
-- [ ] **Confidence and supply**
-- [ ] **Technocratic government**
+- [ ] Portfolio allocation
+- [ ] Policy compromise
+- [ ] Junior partner discount
+- [ ] Coalition discipline
 
 ---
 
@@ -148,19 +160,34 @@
 - [x] Sigmoid (implemented)
 - [x] Linear (implemented)
 - [x] Exponential (implemented)
-- [ ] **Hazard/survival analysis** - proper statistical model
-- [ ] **Event-triggered** - specific crises cause collapse
-- [ ] **Cumulative stress** - stress builds over time
+- [ ] **Hazard/survival analysis** — Cox proportional hazards
+- [ ] Event-triggered collapse
+- [ ] Cumulative stress model
 
 ### Stability Factors
 - [x] Coalition strain (implemented)
 - [x] Majority margin (implemented)
-- [x] Coalition penalty (implemented)
-- [ ] **Economic shocks** - GDP, unemployment
-- [ ] **Scandals** - random corruption events
-- [ ] **External crises** - war, pandemic
-- [ ] **Public opinion polls** - approval ratings
-- [ ] **Legislative defeats** - failed votes
+- [ ] Economic shocks
+- [ ] Scandals
+- [ ] External crises
+- [ ] Public opinion / approval
+- [ ] Legislative defeats
+
+---
+
+## 🏢 LOGISTICS & OPERATIONS
+
+### Queueing Theory
+- [ ] **M/M/s Queues** — polling station modeling
+- [ ] Arrival rates (λ), service rates (μ)
+- [ ] **Resource allocation optimization** — voting machine distribution
+- [ ] Wait time minimization
+
+### Failure Modes
+- [ ] **Machine reliability (MTBF)** — voting hardware failures
+- [ ] **Chain of custody** — ballot transport risks
+- [ ] Power outages
+- [ ] Cybersecurity events
 
 ---
 
@@ -174,115 +201,126 @@
 
 ### Fragmentation
 - [ ] **Effective Number of Parties (ENP)**
-- [ ] **Fractionalization Index**
-- [ ] **Concentration ratio** (top 2 parties share)
+- [ ] Fractionalization Index
+- [ ] Concentration ratio
 
 ### Representation
-- [ ] **Voter satisfaction** - how many voters got 1st choice
-- [ ] **Wasted votes** - votes for losing candidates
-- [ ] **Mandates per seat** - votes needed per seat
+- [ ] Voter satisfaction
+- [ ] Wasted votes
+- [ ] Mandates per seat
 
 ### Competitiveness
-- [ ] **Margin of victory**
-- [ ] **Swing ratio** - seats/votes elasticity
-- [ ] **Safe seats** - uncompetitive districts
+- [ ] Margin of victory
+- [ ] Swing ratio
+- [ ] Safe seats count
+
+---
+
+## � MACRO-HISTORICAL DYNAMICS
+
+### Cliodynamics
+- [ ] **Secular Cycles** — 200-300 year oscillations
+- [ ] **Structural Demographic Theory** — population, elites, state
+- [ ] **Political Stress Indicator (Ψ)** — instability prediction
+
+### Chaos Theory
+- [ ] **Nonlinear dynamics** — sensitivity to initial conditions
+- [ ] Butterfly effect in public opinion
+- [ ] Bifurcation analysis
+- [ ] Strange attractors in party systems
+
+---
+
+## ⚔️ ADVERSARIAL TACTICS & EXTERNAL SHOCKS
+
+### Dirty Tricks
+- [ ] **Push Polling** — negative rumors as surveys
+- [ ] **Whisper Campaigns** — unattributable rumors
+- [ ] **Ratf*cking** — opponent logistics sabotage
+
+### Voter Suppression
+- [ ] **Strict ID Laws**
+- [ ] **Voter roll purges**
+- [ ] **Polling place closures**
+- [ ] Long wait times as suppression
+
+### Foreign/Cyber Interference
+- [ ] **Botnets & Astroturfing** — artificial amplification
+- [ ] **Hack-and-Leak Operations** — stolen campaign data
+- [ ] Deepfakes
+- [ ] Social media manipulation
+
+### Stochastic Shocks
+- [ ] **October Surprises** — late campaign events
+- [ ] Economic crashes
+- [ ] Scandals (random)
+- [ ] Natural disasters
+- [ ] Pandemic effects
 
 ---
 
 ## 🔄 TIME EVOLUTION (True ABM)
 
 ### Dynamic Elements
-- [ ] **Multiple election cycles** - simulate 10-20 elections
-- [ ] **Voter preference drift** - gradual ideology change
-- [ ] **Party repositioning** - parties adapt to results
-- [ ] **Generational replacement** - old voters die, new enter
-- [ ] **Issue evolution** - new dimensions emerge
-- [ ] **Social influence** - voters influence neighbors
+- [ ] Multiple election cycles (10-20 elections)
+- [ ] Voter preference drift
+- [ ] Party repositioning
+- [ ] Generational replacement
+- [ ] Issue evolution
+- [ ] Social influence over time
 
-### Network Effects
-- [ ] **Social networks** - voters on graph
-- [ ] **Opinion dynamics** - DeGroot, bounded confidence
-- [ ] **Echo chambers** - homophily in networks
-- [ ] **Media influence** - broadcast effects
-- [ ] **Misinformation spread**
+### Learning & Adaptation
+- [ ] Voter learning from outcomes
+- [ ] Party strategy evolution
+- [ ] Reinforcement learning agents
 
 ---
 
-## 🌍 GEOGRAPHY & DEMOGRAPHICS
+## 🔮 ESOTERIC & FRONTIER CONCEPTS
 
-### Spatial Structure
-- [ ] **Geographic regions** - urban/rural/suburban
-- [ ] **Regional parties** - only compete in some areas
-- [ ] **Federalism** - state vs national elections
-- [ ] **Population distribution** - density maps
-
-### Demographics
-- [ ] **Age cohorts** - young vs old voting patterns
-- [ ] **Income distribution** - class voting
-- [ ] **Education levels**
-- [ ] **Ethnic/religious groups**
-- [ ] **Urban-rural divide**
+- [ ] **Panarchism** — non-territorial governance subscriptions
+- [ ] **Psychohistory** — mass populations as fluid dynamics
+- [ ] Quantum voting protocols
+- [ ] Prediction markets integration
+- [ ] Futarchy — governance by prediction markets
 
 ---
 
 ## 🔧 TECHNICAL INFRASTRUCTURE
 
 ### Performance
-- [ ] **Parallelization** - multi-core simulation
-- [ ] **GPU acceleration** - massive agent counts
-- [ ] **Distributed computing** - cluster support
+- [ ] Parallelization (multi-core)
+- [ ] GPU acceleration
+- [ ] Distributed computing
 
 ### User Interface
-- [ ] **Web UI** - interactive parameter tuning
-- [ ] **Real-time visualization** - watch simulation run
-- [ ] **Configuration files** - YAML/JSON parameters
-- [ ] **CLI interface** - command-line options
+- [ ] Web UI
+- [ ] Real-time visualization
+- [ ] Configuration files (YAML/JSON)
+- [ ] CLI interface
 
 ### Data & Validation
-- [ ] **Real-world calibration** - fit to historical elections
-- [ ] **Manifesto data integration** - real party positions
-- [ ] **Survey data** - real voter distributions
-- [ ] **Sensitivity analysis** - automated sweeps
-- [ ] **Unit tests** - comprehensive test suite
-
-### Output & Analysis
-- [ ] **Interactive dashboards**
-- [ ] **Automatic figure generation**
-- [ ] **Statistical summaries**
-- [ ] **Export to R/Python**
+- [ ] Real-world calibration
+- [ ] Manifesto data integration
+- [ ] Survey data import
+- [ ] Sensitivity analysis
+- [ ] Unit tests
 
 ---
 
 ## 🎓 THEORETICAL FOUNDATIONS
 
 ### Classic Theorems to Test
-- [ ] **Duverger's Law** - FPTP → 2 parties
-- [ ] **Median Voter Theorem** - convergence to center
-- [ ] **Arrow's Impossibility** - no perfect system
-- [ ] **Gibbard-Satterthwaite** - strategic voting inevitable
-- [ ] **May's Theorem** - majority rule uniqueness
-
-### Research Questions
-- [ ] Electoral system → party system mapping
-- [ ] Threshold effects on fragmentation
-- [ ] Clientelism vs accountability trade-off
-- [ ] Coalition stability determinants
-- [ ] Strategic voting under different systems
+- [ ] **Duverger's Law** — FPTP → 2 parties
+- [ ] **Median Voter Theorem** — convergence
+- [ ] **Arrow's Impossibility** — no perfect system
+- [ ] **Gibbard-Satterthwaite** — strategic voting inevitable
+- [ ] May's Theorem
 
 ---
 
-## 📝 DOCUMENTATION & COMMUNITY
-
-- [ ] **API documentation**
-- [ ] **Tutorial notebooks**
-- [ ] **Example scenarios** - replicate real elections
-- [ ] **Contribution guidelines**
-- [ ] **Academic paper** - if ever needed
-
----
-
-## 🏷️ PRIORITY LEGEND
+## 🏷️ LEGEND
 
 - [x] = Implemented
 - [ ] = Not implemented
-- **Bold** = High priority / commonly requested
+- **Bold** = High priority / interesting

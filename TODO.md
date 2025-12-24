@@ -135,19 +135,50 @@
 
 ## 🇮🇳 INDIA-SPECIFIC
 
+### Core (Implemented)
+- [x] **P1** Full Lok Sabha simulation ✓ — 543 constituencies, 30 states
+- [x] **P1** State-wise party weights ✓ — Regional party strongholds
+- [x] **P1** NDA/INDIA alliance tracking ✓
+
 ### NOTA
-- [ ] **P2** NOTA implementation
-- [ ] **P3** Reserved constituency differential
+- [ ] **P2** NOTA vote option
+- [ ] **P3** NOTA impact on close races
 
 ### Reserved Constituencies
-- [ ] **P2** SC, ST reservations
+- [ ] **P2** SC, ST reservation modeling
+- [ ] **P3** Delimitation effects
 
-### EVM & VVPAT
+### Electoral Features
+- [ ] **P2** Phase-wise election simulation (7 phases)
+- [ ] **P2** Anti-incumbency factor
+- [ ] **P3** Wave elections (national mood)
+- [ ] **P3** Alliance seat-sharing agreements
+- [ ] **P3** Historical validation (2014, 2019, 2024)
+- [ ] **P4** Opinion poll simulation
+- [ ] **P4** Exit poll modeling
 - [ ] **P4** EVM simulation
 - [ ] **P5** VVPAT audit modeling
 
 ### Ballot Effects
 - [ ] **P4** Ordering Bias (~1-2%)
+
+---
+
+## 🌍 COUNTRY SIMULATIONS
+
+### Implemented
+- [x] **P1** India ✓ — 543 constituencies, 17 parties
+- [x] **P2** USA preset ✓
+- [x] **P2** UK preset ✓
+- [x] **P2** Germany preset ✓
+
+### Planned
+- [ ] **P3** Brazil — Largest PR system, 513 deputies
+- [ ] **P3** France — Two-round system
+- [ ] **P3** Japan — Mixed-member parallel
+- [ ] **P4** Australia — STV for Senate, IRV for House
+- [ ] **P4** South Africa — Pure PR
+- [ ] **P5** EU Parliament — Multi-country simulation
 
 ---
 
@@ -157,12 +188,29 @@
 
 ---
 
-## 🔧 TECHNICAL
+## � VISUALIZATION
 
-- [ ] **P2** Parallelization, GPU support
+- [ ] **P2** Seat distribution bar chart
+- [ ] **P2** Vote share pie chart
+- [ ] **P3** India constituency map (choropleth)
+- [ ] **P3** Opinion dynamics animation
+- [ ] **P3** Swing analysis dashboard
+- [ ] **P4** Interactive election explorer (Streamlit/Dash)
+
+---
+
+## �🔧 TECHNICAL
+
+### Performance (Implemented)
+- [x] **P1** Numba JIT acceleration ✓ — 89x speedup
+- [x] **P2** Batch elections ✓ — 30 elections/sec
+- [x] **P2** Data caching ✓ — 26% improvement
+
+### Remaining
 - [ ] **P3** 10M+ agent capacity
-- [ ] **P3** Real data integration
-- [ ] **P2** Validation — hindcast 2016, 2020
+- [ ] **P3** Real constituency data integration
+- [ ] **P3** Historical election data loading
+- [ ] **P4** GPU support (CuPy)
 
 ---
 
@@ -170,14 +218,15 @@
 
 | Priority | Count | Done | Remaining |
 |----------|-------|------|-----------|
-| **P1** | 12 | 12 ✅ | 0 |
-| **P2** | 15 | 8 | 7 |
-| **P3** | 18 | 3 | 15 |
-| **P4** | 10 | 0 | 10 |
-| **P5** | 1 | 0 | 1 |
+| **P1** | 16 | 16 ✅ | 0 |
+| **P2** | 20 | 14 | 6 |
+| **P3** | 25 | 3 | 22 |
+| **P4** | 15 | 0 | 15 |
+| **P5** | 3 | 0 | 3 |
 
 ### Implementation Progress
-- **Phase 1 (P1)**: ✅ COMPLETE — Demographics, Party ID, Ideology, MNL, FPTP, ENP, Coalition, Collapse
-- **Phase 2 (P2)**: Networks, Opinion dynamics, MMP/STV, NOTA, Validation
-- **Phase 3 (P3)**: Media, Economic voting, Advanced features
-- **Phase 4 (P4+)**: Campaign effects, EVM simulation
+- **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Numba acceleration
+- **Phase 2 (P2)**: 🔄 IN PROGRESS — Opinion dynamics, IRV/STV done; NOTA, visualization remaining
+- **Phase 3 (P3)**: Country simulations, wave elections, real data
+- **Phase 4 (P4+)**: Campaign effects, interactive dashboards
+

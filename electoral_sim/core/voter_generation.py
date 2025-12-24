@@ -92,10 +92,89 @@ def generate_voter_frame(
         0, 1
     )
     
-    # Turnout influenced by education, age, and political knowledge
+    # =========================================================================
+    # BIG FIVE PERSONALITY (OCEAN) - 0 to 1 scale
+    # =========================================================================
+    # Research shows personality correlates with political orientation:
+    # - Openness: positively correlates with liberal/left views
+    # - Conscientiousness: positively correlates with conservative/right views
+    # - Extraversion: higher political engagement
+    # - Agreeableness: moderate views, conflict avoidance
+    # - Neuroticism: anxiety, can increase political engagement or withdrawal
+    
+    # Openness to Experience (O)
+    # Higher O → more liberal, open to change, diversity
+    openness = np.clip(rng.beta(5, 5, n_voters), 0, 1)
+    
+    # Conscientiousness (C)
+    # Higher C → more conservative, orderly, traditional
+    conscientiousness = np.clip(rng.beta(5, 5, n_voters), 0, 1)
+    
+    # Extraversion (E)
+    # Higher E → more political participation
+    extraversion = np.clip(rng.beta(5, 5, n_voters), 0, 1)
+    
+    # Agreeableness (A)
+    # Higher A → more moderate, cooperative
+    agreeableness = np.clip(rng.beta(5, 5, n_voters), 0, 1)
+    
+    # Neuroticism (N)
+    # Higher N → more anxiety-driven political behavior
+    neuroticism = np.clip(rng.beta(4, 6, n_voters), 0, 1)  # Slightly right-skewed (most people moderate)
+    
+    # Adjust ideology based on personality (research-based correlations)
+    # Openness → liberal (negative x), Conscientiousness → conservative (positive x)
+    personality_ideology_shift = 0.15 * (conscientiousness - openness)
+    ideology_x = np.clip(ideology_x + personality_ideology_shift, -1, 1)
+    
+    # =========================================================================
+    # MORAL FOUNDATIONS (Haidt) - 0 to 1 scale
+    # =========================================================================
+    # 5 foundations that vary by political orientation:
+    # Liberals: Care, Fairness (individualizing foundations)
+    # Conservatives: Loyalty, Authority, Sanctity (binding foundations)
+    
+    # Care/Harm: sensitivity to suffering, empathy
+    # Liberals score higher on average
+    mf_care = np.clip(
+        rng.beta(6, 4, n_voters) - 0.1 * (ideology_x + 1) / 2,  # Higher for liberals
+        0, 1
+    )
+    
+    # Fairness/Cheating: justice, equality, proportionality
+    # Both sides value but interpret differently
+    mf_fairness = np.clip(rng.beta(6, 4, n_voters), 0, 1)
+    
+    # Loyalty/Betrayal: in-group loyalty, patriotism
+    # Conservatives score higher
+    mf_loyalty = np.clip(
+        rng.beta(5, 5, n_voters) + 0.15 * (ideology_x + 1) / 2,  # Higher for conservatives
+        0, 1
+    )
+    
+    # Authority/Subversion: respect for hierarchy, tradition
+    # Conservatives score higher
+    mf_authority = np.clip(
+        rng.beta(5, 5, n_voters) + 0.15 * (ideology_x + 1) / 2,  # Higher for conservatives
+        0, 1
+    )
+    
+    # Sanctity/Degradation: purity, disgust sensitivity
+    # Conservatives score higher
+    mf_sanctity = np.clip(
+        rng.beta(4, 5, n_voters) + 0.2 * (ideology_x + 1) / 2,  # Higher for conservatives
+        0, 1
+    )
+    
+    # Turnout influenced by education, age, political knowledge, and extraversion
     base_turnout = rng.beta(5, 2, n_voters)
     turnout_prob = np.clip(
-        base_turnout + 0.02 * education + 0.002 * np.minimum(age - 18, 50) + 0.002 * (political_knowledge / 100),
+        base_turnout 
+        + 0.02 * education 
+        + 0.002 * np.minimum(age - 18, 50) 
+        + 0.002 * (political_knowledge / 100)
+        + 0.05 * extraversion  # Extraverts more likely to participate
+        - 0.03 * neuroticism,  # High neuroticism can reduce turnout
         0.1, 0.95
     )
     
@@ -111,6 +190,18 @@ def generate_voter_frame(
         "party_id_7pt": party_id_7pt,  # -3 to +3 scale
         "ideology_x": ideology_x,
         "ideology_y": ideology_y,
+        # Big Five (OCEAN)
+        "openness": openness.astype(np.float64),
+        "conscientiousness": conscientiousness.astype(np.float64),
+        "extraversion": extraversion.astype(np.float64),
+        "agreeableness": agreeableness.astype(np.float64),
+        "neuroticism": neuroticism.astype(np.float64),
+        # Moral Foundations
+        "mf_care": mf_care.astype(np.float64),
+        "mf_fairness": mf_fairness.astype(np.float64),
+        "mf_loyalty": mf_loyalty.astype(np.float64),
+        "mf_authority": mf_authority.astype(np.float64),
+        "mf_sanctity": mf_sanctity.astype(np.float64),
         # Knowledge & Behavior
         "political_knowledge": political_knowledge.astype(np.float64),
         "misinfo_susceptibility": misinfo_susceptibility.astype(np.float64),

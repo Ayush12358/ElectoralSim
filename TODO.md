@@ -13,8 +13,8 @@
 - [x] **P3** Affective Polarization ✓ — affective_polarization column (0-1)
 
 ### Psychology
-- [ ] **P3** Big Five (OCEAN) — correlates with political views
-- [ ] **P3** Moral Foundations (Haidt) — Care, Fairness, Loyalty, Authority, Sanctity
+- [x] **P3** Big Five (OCEAN) ✓ — openness, conscientiousness, extraversion, agreeableness, neuroticism columns
+- [x] **P3** Moral Foundations (Haidt) ✓ — mf_care, mf_fairness, mf_loyalty, mf_authority, mf_sanctity columns
 
 ### Information
 - [x] **P2** Political Knowledge (0-100) ✓
@@ -219,13 +219,13 @@
 |----------|-------|------|-----------|
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 21 | 11 | 10 |
+| **P3** | 21 | 13 | 8 |
 | **P4** | 12 | 0 | 12 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: 🔄 52% — 11/21 done: Condorcet, Approval, Misinfo, Wave, Junior partner, Affective polarization, Alienation/Indifference, NOTA close races, Sociotropic/Pocketbook, Wasted vote, Media bias
+- **Phase 3 (P3)**: 🔄 62% — 13/21 done: Previous + Big Five (OCEAN), Moral Foundations (Haidt)
 - **Phase 4 (P4+)**: ⏳ PLANNED — Campaign effects, interactive dashboards
 

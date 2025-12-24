@@ -74,7 +74,7 @@ def sainte_lague_numba(votes: np.ndarray, n_seats: int) -> np.ndarray:
     return seats
 
 
-@jit(nopython=True, cache=True)
+@jit(nopython=True, cache=True, parallel=True)
 def fptp_count_numba(
     constituencies: np.ndarray,
     votes: np.ndarray,
@@ -82,13 +82,14 @@ def fptp_count_numba(
     n_parties: int,
 ) -> np.ndarray:
     """
-    Count FPTP seats - Numba accelerated.
+    Count FPTP seats - Numba parallel accelerated.
     
-    Determines winner in each constituency.
+    Uses parallel processing across constituencies.
     """
     seats = np.zeros(n_parties, dtype=np.int64)
     
-    for c in range(n_constituencies):
+    # Process each constituency in parallel
+    for c in prange(n_constituencies):
         # Count votes per party in this constituency
         party_votes = np.zeros(n_parties, dtype=np.int64)
         
@@ -97,7 +98,7 @@ def fptp_count_numba(
                 party_votes[votes[i]] += 1
         
         # Find winner
-        max_votes = -1
+        max_votes = 0
         winner = 0
         for p in range(n_parties):
             if party_votes[p] > max_votes:
@@ -108,6 +109,70 @@ def fptp_count_numba(
             seats[winner] += 1
     
     return seats
+
+
+@jit(nopython=True, cache=True, parallel=True)
+def compute_utilities_numba(
+    voter_x: np.ndarray,
+    voter_y: np.ndarray,
+    party_x: np.ndarray,
+    party_y: np.ndarray,
+    valence: np.ndarray,
+    valence_weight: float = 0.01,
+) -> np.ndarray:
+    """
+    Compute utility matrix using proximity model - Numba parallel.
+    
+    Utility = -distance + valence_weight * valence
+    """
+    n_voters = len(voter_x)
+    n_parties = len(party_x)
+    utilities = np.zeros((n_voters, n_parties), dtype=np.float64)
+    
+    for i in prange(n_voters):
+        for p in range(n_parties):
+            dist_x = voter_x[i] - party_x[p]
+            dist_y = voter_y[i] - party_y[p]
+            distance = np.sqrt(dist_x * dist_x + dist_y * dist_y)
+            utilities[i, p] = -distance + valence_weight * valence[p]
+    
+    return utilities
+
+
+def fptp_count_fast(
+    constituencies: np.ndarray,
+    votes: np.ndarray,
+    n_constituencies: int,
+    n_parties: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Fast FPTP counting - returns (seats, vote_counts).
+    
+    Uses Numba when available, else vectorized NumPy with bincount.
+    """
+    # Vote counts is always fast with bincount
+    vote_counts = np.bincount(votes, minlength=n_parties).astype(np.int64)
+    
+    if NUMBA_AVAILABLE:
+        seats = fptp_count_numba(
+            constituencies.astype(np.int64),
+            votes.astype(np.int64),
+            n_constituencies,
+            n_parties,
+        )
+    else:
+        # Fallback: use vectorized operations
+        seats = np.zeros(n_parties, dtype=np.int64)
+        for c in range(n_constituencies):
+            mask = constituencies == c
+            if mask.sum() == 0:
+                continue
+            c_votes = votes[mask]
+            party_votes = np.bincount(c_votes, minlength=n_parties)
+            winner = np.argmax(party_votes)
+            seats[winner] += 1
+    
+    return seats, vote_counts
 
 
 # =============================================================================

@@ -13,7 +13,12 @@ from mesa_frames import AgentSet, Model, DataCollector
 
 from electoral_sim.systems.allocation import dhondt_allocation, sainte_lague_allocation
 from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
-from electoral_sim.numba_accel import vote_mnl_fast, fptp_count_numba, NUMBA_AVAILABLE
+from electoral_sim.numba_accel import (
+    vote_mnl_fast, 
+    fptp_count_fast,
+    compute_utilities_numba,
+    NUMBA_AVAILABLE,
+)
 
 
 # =============================================================================
@@ -380,26 +385,28 @@ class ElectionModel(Model):
     def _compute_utilities(self) -> np.ndarray:
         """
         Compute utility matrix (n_voters x n_parties) using proximity model.
+        
+        Uses Numba parallel acceleration when available.
         Utility = -distance + valence_weight * valence
         """
         # Get voter positions
         voter_x = self.voters.df["ideology_x"].to_numpy()
         voter_y = self.voters.df["ideology_y"].to_numpy()
         
-        # Get party positions
+        # Get party positions and valence
         party_positions = self.parties.get_positions()
+        party_x = party_positions[:, 0]
+        party_y = party_positions[:, 1]
         valence = self.parties.df["valence"].to_numpy()
         
-        # Compute distances (n_voters x n_parties)
-        # Using broadcasting: (n_voters, 1) - (1, n_parties)
-        dist_x = voter_x[:, np.newaxis] - party_positions[np.newaxis, :, 0]
-        dist_y = voter_y[:, np.newaxis] - party_positions[np.newaxis, :, 1]
-        distances = np.sqrt(dist_x**2 + dist_y**2)
-        
-        # Utility = -distance + small valence boost
-        utilities = -distances + 0.01 * valence[np.newaxis, :]
-        
-        return utilities
+        if NUMBA_AVAILABLE:
+            return compute_utilities_numba(voter_x, voter_y, party_x, party_y, valence)
+        else:
+            # Fallback to vectorized NumPy
+            dist_x = voter_x[:, np.newaxis] - party_x[np.newaxis, :]
+            dist_y = voter_y[:, np.newaxis] - party_y[np.newaxis, :]
+            distances = np.sqrt(dist_x**2 + dist_y**2)
+            return -distances + 0.01 * valence[np.newaxis, :]
     
     def _vote_mnl(self, utilities: np.ndarray) -> np.ndarray:
         """
@@ -461,23 +468,14 @@ class ElectionModel(Model):
         return results
     
     def _count_fptp(self, constituencies: np.ndarray, votes: np.ndarray) -> dict:
-        """First Past The Post: winner takes all in each constituency."""
-        seats = np.zeros(self.n_parties, dtype=np.int64)
-        vote_counts = np.zeros(self.n_parties, dtype=np.int64)
+        """
+        First Past The Post: winner takes all in each constituency.
         
-        # Count total votes per party (vectorized)
-        vote_counts = np.bincount(votes, minlength=self.n_parties).astype(np.int64)
-        
-        # Determine winner in each constituency
-        for c in range(self.n_constituencies):
-            mask = constituencies == c
-            if mask.sum() == 0:
-                continue
-            
-            constituency_votes = votes[mask]
-            party_votes_in_c = np.bincount(constituency_votes, minlength=self.n_parties)
-            winner = np.argmax(party_votes_in_c)
-            seats[winner] += 1
+        Uses Numba parallel acceleration when available.
+        """
+        seats, vote_counts = fptp_count_fast(
+            constituencies, votes, self.n_constituencies, self.n_parties
+        )
         
         return {
             "system": "FPTP",

@@ -191,15 +191,17 @@ def form_government(
     positions: np.ndarray,
     party_names: Optional[list[str]] = None,
     majority_threshold: float = 0.5,
+    office_weight: Optional[float] = None, # P4: Policy vs Office Tradeoff
 ) -> dict:
     """
-    Form a government by selecting the most stable MCW coalition.
+    Form a government coalition.
     
     Args:
-        seats: Seat counts per party
+        seats: Seat counts
         positions: Policy positions
         party_names: Optional party names for output
         majority_threshold: Fraction needed for majority
+        office_weight: If set, uses utility maximization with this weight for Office (vs Policy).
         
     Returns:
         Dictionary with coalition details
@@ -207,27 +209,45 @@ def form_government(
     total_seats = seats.sum()
     majority = int(np.floor(total_seats * majority_threshold)) + 1
     
-    # Find MCW coalitions
-    mcws = minimum_connected_winning(seats, positions, majority_threshold)
-    
-    if not mcws:
-        # No connected winning coalition - try regular MWC
-        mwcs = minimum_winning_coalitions(seats, majority_threshold)
-        if not mwcs:
-            return {
+    if office_weight is not None:
+        # P4: Utility-based formation
+        coalition_parties, _ = form_coalition_with_utility(
+            seats, positions, office_weight, majority_threshold
+        )
+        if not coalition_parties:
+             return {
                 "success": False,
-                "reason": "No majority coalition possible",
+                "reason": "No majority coalition possible (with utility)",
                 "coalition": [],
                 "seats": 0,
             }
         
-        # Use smallest MWC
-        coalition_parties, coalition_seats = mwcs[0]
+        coalition_seats = sum(seats[p] for p in coalition_parties)
         coalition_positions = positions[coalition_parties]
+        
     else:
-        # Use most cohesive MCW
-        coalition_parties, coalition_seats, policy_range = mcws[0]
-        coalition_positions = positions[coalition_parties]
+        # Default Logic (MCW > MWC)
+        # Find MCW coalitions
+        mcws = minimum_connected_winning(seats, positions, majority_threshold)
+        
+        if not mcws:
+            # No connected winning coalition - try regular MWC
+            mwcs = minimum_winning_coalitions(seats, majority_threshold)
+            if not mwcs:
+                return {
+                    "success": False,
+                    "reason": "No majority coalition possible",
+                    "coalition": [],
+                    "seats": 0,
+                }
+            
+            # Use smallest MWC
+            coalition_parties, coalition_seats = mwcs[0]
+            coalition_positions = positions[coalition_parties]
+        else:
+            # Use most cohesive MCW
+            coalition_parties, coalition_seats, policy_range = mcws[0]
+            coalition_positions = positions[coalition_parties]
     
     # Calculate coalition properties
     strain = coalition_strain(
@@ -375,3 +395,73 @@ def allocate_portfolios_laver_shepsle(
         allocations[pf_name] = median_party_idx
         
     return allocations
+
+
+def form_coalition_with_utility(
+    seats: np.ndarray,
+    positions: np.ndarray,
+    office_weight: float = 0.5,
+    majority_threshold: float = 0.5,
+) -> tuple[list[int], float]:
+    """
+    Form a coalition based on Policy vs Office tradeoffs (P4).
+    
+    Utility Function:
+    U = alpha * OfficeUtility + (1 - alpha) * PolicyUtility
+    
+    - OfficeUtility: majority_threshold / coalition_size (Maximizes when size is minimal)
+    - PolicyUtility: 1.0 - coalition_strain (Maximizes when ideologically compact)
+    
+    Args:
+        seats: Seat counts
+        positions: Party positions
+        office_weight: alpha (0.0 = Pure Policy, 1.0 = Pure Office)
+        majority_threshold: Threshold for majority
+        
+    Returns:
+        (coalition_indices, utility_score)
+    """
+    total_seats = seats.sum()
+    majority_needed = int(np.floor(total_seats * majority_threshold)) + 1
+    
+    # 1. Get Candidate Coalitions (MWCs are usually the only rational candidates for office seekers,
+    # but strictly policy-seeking might tolerate oversized if it pulls policy closer?
+    # For computation, we start with MWCs.
+    # To be robust, we should consider all WCs, but that's O(2^N).
+    # We'll generate MWCs + valid oversized "neighbours"?)
+    # For now, let's stick to MWCs as the base set, as oversized usually drops office utility significantly
+    # without always improving policy utility enough to compensate unless alpha is very low.
+    
+    candidates = minimum_winning_coalitions(seats, majority_threshold)
+    
+    best_coalition = []
+    best_utility = -1.0
+    
+    for parties, size in candidates:
+        # Calculate Office Utility
+        # Normalized: minimal possible size / actual size
+        # Approximated by majority_needed / size
+        office_u = majority_needed / size
+        
+        # Calculate Policy Utility
+        # 1 - strain
+        party_pos = positions[parties]
+        if positions.ndim == 2:
+            party_pos = party_pos[:, 0] # Use primary dimension
+            
+        mean_pos = np.average(party_pos, weights=seats[parties])
+        # Strain: weighted mean distance from coalition center
+        strain = np.average(np.abs(party_pos - mean_pos), weights=seats[parties])
+        
+        # Normalize strain? typically 0 to 0.5.
+        # Let's use simple linear
+        policy_u = max(0.0, 1.0 - (strain * 2.0)) # scale up strain impact
+        
+        # Total Utility
+        utility = (office_weight * office_u) + ((1.0 - office_weight) * policy_u)
+        
+        if utility > best_utility:
+            best_utility = utility
+            best_coalition = parties
+            
+    return best_coalition, best_utility

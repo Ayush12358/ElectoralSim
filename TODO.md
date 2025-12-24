@@ -107,7 +107,7 @@
 - [x] **P1** MCW ✓ — minimum connected winning
 - [x] **P1** MWC ✓ — minimum winning coalition
 - [x] **P3** Laver-Shepsle portfolio allocation ✓ — allocate_portfolios_laver_shepsle()
-- [ ] **P4** Policy vs Office-seeking tradeoffs
+- [x] **P4** Policy vs Office-seeking tradeoffs ✓ — form_coalition_with_utility
 
 ### Dynamics
 - [x] **P1** Coalition Strain ✓
@@ -212,12 +212,12 @@
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
 | **P3** | 18 | 17 | 1 |
-| **P4** | 6 | 3 | 3 |
+| **P4** | 7 | 5 | 2 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
 - **Phase 3 (P3)**: 🔄 94% — 17/18 done, 1 remaining (Maps)
-- **Phase 4 (P4)**: 🔄 50% — 3/6 done
+- **Phase 4 (P4)**: 🔄 71% — 5/7 done
 ```

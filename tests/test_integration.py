@@ -971,6 +971,36 @@ class TestP4Features:
         # We just check it's a float.
         assert isinstance(res["vse"], float)
 
+    def test_policy_office_tradeoff(self):
+        """Test P4 Policy vs Office Tradeoff in Coalition Formation."""
+        from electoral_sim.engine.coalition import form_coalition_with_utility
+        
+        # Scenario:
+        # A: 26 seats, Pos -1.0
+        # B: 26 seats, Pos 1.0
+        # C: 48 seats, Pos 0.0
+        # Total 100. Majority 51.
+        
+        seats = np.array([26, 26, 48])
+        positions = np.array([-1.0, 1.0, 0.0])
+        
+        # Candidates:
+        # 0+1 (A+B): Seats 52. Size=Small => High Office. Strain=High (-1 to 1) => Low Policy.
+        # 0+2 (A+C): Seats 74. Size=Large => Low Office. Strain=Med (-1 to 0) => Med Policy.
+        
+        # 1. Pure Office Seeking (alpha=1.0)
+        # Should pick A+B (52 seats)
+        # Note: A+B is index [0, 1]
+        c1, u1 = form_coalition_with_utility(seats, positions, office_weight=1.0)
+        assert sorted(c1) == [0, 1]
+        
+        # 2. Pure Policy Seeking (alpha=0.0)
+        # Should pick A+C or B+C (Strain 1.0 vs A+B's 2.0)
+        # A+C is [0, 2]
+        c2, u2 = form_coalition_with_utility(seats, positions, office_weight=0.0)
+        assert 2 in c2 # Must include C (center)
+        assert sorted(c2) != [0, 1]
+
 
 # =============================================================================
 # MAIN - Run tests directly

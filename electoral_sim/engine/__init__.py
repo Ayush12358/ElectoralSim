@@ -34,8 +34,11 @@ __all__ = [
     "minimum_connected_winning",
     "coalition_strain",
     "form_government",
+    "calculate_coalition_strain",
     "junior_partner_penalty",
     "allocate_portfolios_laver_shepsle",
+    "form_coalition_with_utility",
+    
     # Government
     "collapse_probability",
     "simulate_government_survival",

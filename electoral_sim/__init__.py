@@ -53,6 +53,8 @@ from electoral_sim.behavior.voter_behavior import (
     ValenceModel,
     RetrospectiveModel,
     StrategicVotingModel,
+    SociotropicPocketbookModel,
+    WastedVoteModel,
 )
 from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
 
@@ -75,6 +77,12 @@ from electoral_sim.presets.india.election import (
     IndiaElectionResult,
     INDIA_STATES,
     INDIA_PARTIES,
+)
+from electoral_sim.presets.eu.election import (
+    simulate_eu_election,
+    EUElectionResult,
+    EU_MEMBER_STATES,
+    EU_POLITICAL_GROUPS,
 )
 
 # Visualization (optional - requires matplotlib)
@@ -122,6 +130,8 @@ __all__ = [
     "ValenceModel",
     "RetrospectiveModel",
     "StrategicVotingModel",
+    "SociotropicPocketbookModel",
+    "WastedVoteModel",
     "OpinionDynamics",
     # Engine
     "minimum_winning_coalitions",
@@ -136,6 +146,11 @@ __all__ = [
     "IndiaElectionResult",
     "INDIA_STATES",
     "INDIA_PARTIES",
+    # EU Parliament
+    "simulate_eu_election",
+    "EUElectionResult",
+    "EU_MEMBER_STATES",
+    "EU_POLITICAL_GROUPS",
     # Visualization
     "plot_seat_distribution",
     "plot_vote_shares",

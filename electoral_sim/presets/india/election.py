@@ -10,7 +10,8 @@ Simulates Lok Sabha elections with:
 
 import numpy as np
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import List
 
 
 # =============================================================================
@@ -149,6 +150,9 @@ class IndiaElectionResult:
     nda_seats: int
     india_seats: int
     others_seats: int
+    # NOTA close race detection
+    nota_contested_seats: int = 0  # Seats where NOTA > victory margin
+    nota_contested_list: List[str] = field(default_factory=list)  # List of "State: Constituency #"
     
     def __str__(self):
         lines = ["=" * 60]
@@ -182,6 +186,11 @@ class IndiaElectionResult:
         else:
             lines.append("⚖️ Hung Parliament - Coalition needed")
         
+        # NOTA impact
+        if self.nota_contested_seats > 0:
+            lines.append(f"\n⚠️ NOTA contested races: {self.nota_contested_seats}")
+            lines.append("(NOTA votes exceeded victory margin)")
+        
         return "\n".join(lines)
 
 
@@ -189,6 +198,7 @@ def simulate_india_election(
     n_voters_per_constituency: int = 10000,
     seed: int | None = None,
     verbose: bool = True,
+    include_nota: bool = False,  # NEW: Enable NOTA tracking
 ) -> IndiaElectionResult:
     """
     Simulate India General Election.
@@ -200,7 +210,8 @@ def simulate_india_election(
             - 100000 = detailed (~5 minutes)
         seed: Random seed for reproducibility
         verbose: Print progress
-        
+        include_nota: Include NOTA (None of the Above) as voting option
+            
     Returns:
         IndiaElectionResult with full results
     """
@@ -220,6 +231,17 @@ def simulate_india_election(
         }
         for name, data in INDIA_PARTIES.items()
     ]
+    
+    # Add NOTA if enabled
+    if include_nota:
+        party_names.append("NOTA")
+        party_data.append({
+            "name": "NOTA",
+            "position_x": 0.0,
+            "position_y": 0.0,
+            "valence": 15,  # Low valence - protest vote
+        })
+    
     n_parties = len(party_names)
     
     # Results storage
@@ -228,6 +250,10 @@ def simulate_india_election(
     state_results = {}
     total_voters = 0
     total_voted = 0
+    
+    # NOTA close race tracking
+    nota_contested_seats = 0
+    nota_contested_list = []
     
     start_time = time.perf_counter()
     
@@ -262,16 +288,23 @@ def simulate_india_election(
         # Compute utilities for each party
         utilities = np.zeros((n_voters, n_parties))
         for p, party in enumerate(party_names):
-            px = INDIA_PARTIES[party]["position_x"]
-            py = INDIA_PARTIES[party]["position_y"]
-            val = INDIA_PARTIES[party]["valence"]
+            # Handle NOTA separately (not in INDIA_PARTIES dict)
+            if party == "NOTA":
+                px, py, val = 0.0, 0.0, 15.0
+            else:
+                px = INDIA_PARTIES[party]["position_x"]
+                py = INDIA_PARTIES[party]["position_y"]
+                val = INDIA_PARTIES[party]["valence"]
             
             # Distance-based utility (smaller weight)
             dist = np.sqrt((base_ideology_x - px)**2 + (base_ideology_y - py)**2)
             utility = -dist * 0.3 + 0.005 * val
             
             # State-specific party strength (main factor)
-            if party in weights:
+            if party == "NOTA":
+                # NOTA is a protest vote - small but universal appeal
+                utility -= 1.0  # Lower than active parties
+            elif party in weights:
                 # Party active in state - strength proportional to vote share
                 utility += weights[party] * 3.0
             else:
@@ -319,7 +352,26 @@ def simulate_india_election(
             # Winner
             winner_idx = np.argmax(vote_counts)
             winner = party_names[winner_idx]
-            state_seats[winner] += 1
+            
+            # NOTA close race detection
+            if include_nota and "NOTA" in party_names:
+                nota_idx = party_names.index("NOTA")
+                nota_votes = vote_counts[nota_idx]
+                
+                # Find runner-up (second highest)
+                sorted_counts = np.sort(vote_counts)[::-1]
+                winner_votes = sorted_counts[0]
+                runner_up_votes = sorted_counts[1] if len(sorted_counts) > 1 else 0
+                margin = winner_votes - runner_up_votes
+                
+                # If NOTA > margin, race is contested
+                if nota_votes > margin and winner != "NOTA":
+                    nota_contested_seats += 1
+                    nota_contested_list.append(f"{state}: Constituency {c+1}")
+            
+            # Award seat (NOTA doesn't win seats)
+            if winner != "NOTA":
+                state_seats[winner] += 1
         
         # Aggregate
         for party in party_names:
@@ -373,6 +425,8 @@ def simulate_india_election(
         nda_seats=nda_seats,
         india_seats=india_seats,
         others_seats=others_seats,
+        nota_contested_seats=nota_contested_seats,
+        nota_contested_list=nota_contested_list,
     )
 
 

@@ -101,6 +101,8 @@ class ElectionModel(Model):
         anti_incumbency: float = 0.0,
         economic_growth: float = 0.0,
         national_mood: float = 0.0,  # Wave election: positive = pro-incumbent, negative = anti-incumbent
+        alienation_threshold: float = -2.0,  # Abstain if max utility below this
+        indifference_threshold: float = 0.3,  # Abstain if utility range below this
     ):
         super().__init__(seed)
         
@@ -120,6 +122,8 @@ class ElectionModel(Model):
         self.economic_growth = economic_growth
         self.anti_incumbency = anti_incumbency
         self.national_mood = national_mood  # Wave election modifier
+        self.alienation_threshold = alienation_threshold
+        self.indifference_threshold = indifference_threshold
         
         if behavior_engine is None:
             # Default behavior: Proximity + Valence
@@ -342,6 +346,23 @@ class ElectionModel(Model):
             0.05, 0.95
         )
         
+        # Affective polarization (0-1) - in-group/out-group favorability gap
+        # 0 = neutral toward all parties, 1 = highly polarized (loves own party, hates others)
+        # Right-skewed: most voters are moderate, fewer are highly polarized
+        # Correlates positively with party_id strength
+        party_id_strength = np.abs(party_id_7pt) / 3.0  # 0 to 1
+        affective_polarization = np.clip(
+            rng.beta(2, 5, n_voters) + 0.3 * party_id_strength,
+            0, 1
+        )
+        
+        # Economic perception type (0-1): 0 = pocketbook, 1 = sociotropic
+        # Higher education correlates with more sociotropic (national) evaluation
+        economic_perception = np.clip(
+            rng.beta(2, 3, n_voters) + 0.15 * (education / 4),
+            0, 1
+        )
+        
         # Turnout influenced by education, age, and political knowledge
         base_turnout = rng.beta(5, 2, n_voters)
         turnout_prob = np.clip(
@@ -364,6 +385,8 @@ class ElectionModel(Model):
             # Knowledge & Behavior
             "political_knowledge": political_knowledge.astype(np.float64),
             "misinfo_susceptibility": misinfo_susceptibility.astype(np.float64),
+            "affective_polarization": affective_polarization.astype(np.float64),
+            "economic_perception": economic_perception.astype(np.float64),
             "turnout_prob": turnout_prob,
         })
     
@@ -449,17 +472,54 @@ class ElectionModel(Model):
         """
         return vote_mnl_fast(utilities, self.temperature, self.random)
     
-    def _decide_turnout(self) -> np.ndarray:
-        """Determine which voters turn out using vectorized Polars operations."""
-        # Use Polars to generate an efficient random mask
-        # This avoid pulling the whole series to numpy if we were already in Polars
-        return (
-            self.voters.df.select(
-                (pl.col("turnout_prob") > pl.lit(self.random.random(len(self.voters))))
+    def _decide_turnout(self, utilities: np.ndarray | None = None) -> np.ndarray:
+        """
+        Determine which voters turn out.
+        
+        Implements three abstention mechanisms:
+        1. Base turnout probability (from voter attributes)
+        2. Alienation: abstain if max utility below threshold (all candidates too far)
+        3. Indifference: abstain if utility range below threshold (all candidates similar)
+        
+        Args:
+            utilities: Optional (n_voters, n_parties) utility matrix for alienation/indifference
+            
+        Returns:
+            Boolean array of who votes
+        """
+        n_voters = len(self.voters)
+        turnout_prob = self.voters.df["turnout_prob"].to_numpy()
+        
+        # Apply alienation and indifference penalties if utilities provided
+        if utilities is not None:
+            # Alienation: abstain if best option is still unacceptable
+            max_utility = utilities.max(axis=1)
+            alienation_penalty = np.where(
+                max_utility < self.alienation_threshold, 
+                0.3,  # 30% reduction in turnout probability
+                0.0
             )
-            .to_series()
-            .to_numpy()
-        )
+            
+            # Indifference: abstain if all options are too similar
+            utility_range = utilities.max(axis=1) - utilities.min(axis=1)
+            indifference_penalty = np.where(
+                utility_range < self.indifference_threshold,
+                0.2,  # 20% reduction in turnout probability
+                0.0
+            )
+            
+            # Adjust turnout probability (vectorized)
+            adjusted_turnout = np.clip(
+                turnout_prob - alienation_penalty - indifference_penalty,
+                0.1,  # Minimum 10% turnout even for alienated voters
+                1.0
+            )
+        else:
+            adjusted_turnout = turnout_prob
+        
+        # Stochastic turnout decision
+        random_vals = self.random.random(n_voters)
+        return adjusted_turnout > random_vals
     
     def run_election(self, **kwargs) -> dict:
         """
@@ -475,8 +535,8 @@ class ElectionModel(Model):
         utilities = self._compute_utilities(**kwargs)
         votes = self._vote_mnl(utilities)
         
-        # Determine turnout
-        will_vote = self._decide_turnout()
+        # Determine turnout (now with alienation/indifference)
+        will_vote = self._decide_turnout(utilities)
         
         # Filter to voters who turned out (use cached constituencies)
         constituencies = self.voters.get_constituencies()

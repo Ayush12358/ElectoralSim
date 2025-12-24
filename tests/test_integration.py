@@ -536,6 +536,195 @@ class TestEndToEndWorkflows:
 
 
 # =============================================================================
+# 8. NEW P3 FEATURES TESTS
+# =============================================================================
+
+class TestP3Features:
+    """Test new P3 features: alienation/indifference, affective polarization, NOTA close races."""
+
+    def test_affective_polarization_column(self):
+        """Voter DataFrame should have affective_polarization column."""
+        from electoral_sim import ElectionModel
+        
+        model = ElectionModel(n_voters=1000, seed=42)
+        voter_df = model.voters.df
+        
+        assert "affective_polarization" in voter_df.columns
+        polarization = voter_df["affective_polarization"].to_numpy()
+        assert polarization.min() >= 0
+        assert polarization.max() <= 1
+
+    def test_alienation_abstention(self):
+        """Voters with low max utility should have reduced turnout."""
+        from electoral_sim import ElectionModel
+        
+        # Create model with low alienation threshold (more voters abstain)
+        model_strict = ElectionModel(
+            n_voters=5000, n_constituencies=5, 
+            alienation_threshold=-0.5,  # Very strict - abstain easily
+            seed=42
+        )
+        # Model with default threshold
+        model_normal = ElectionModel(
+            n_voters=5000, n_constituencies=5,
+            alienation_threshold=-2.0,  # Default
+            seed=42
+        )
+        
+        r_strict = model_strict.run_election()
+        r_normal = model_normal.run_election()
+        
+        # Stricter threshold should reduce turnout
+        assert r_strict["turnout"] <= r_normal["turnout"]
+
+    def test_indifference_abstention(self):
+        """Voters with similar utilities for all parties should have reduced turnout."""
+        from electoral_sim import ElectionModel
+        
+        # Create model with high indifference threshold (more voters abstain)
+        model_high = ElectionModel(
+            n_voters=5000, n_constituencies=5,
+            indifference_threshold=1.0,  # Very high - easier to be indifferent
+            seed=42
+        )
+        # Model with low threshold
+        model_low = ElectionModel(
+            n_voters=5000, n_constituencies=5,
+            indifference_threshold=0.1,  # Low - harder to be indifferent
+            seed=42
+        )
+        
+        r_high = model_high.run_election()
+        r_low = model_low.run_election()
+        
+        # Higher indifference threshold should reduce turnout
+        assert r_high["turnout"] <= r_low["turnout"]
+
+    def test_nota_contested_seats_field(self):
+        """IndiaElectionResult should have nota_contested_seats field."""
+        from electoral_sim import simulate_india_election
+        
+        result = simulate_india_election(
+            n_voters_per_constituency=200,  # Small for speed
+            seed=42, 
+            verbose=False,
+            include_nota=True
+        )
+        
+        assert hasattr(result, 'nota_contested_seats')
+        assert hasattr(result, 'nota_contested_list')
+        assert isinstance(result.nota_contested_seats, int)
+        assert isinstance(result.nota_contested_list, list)
+
+    def test_nota_without_nota_option(self):
+        """When NOTA disabled, contested fields should be zero/empty."""
+        from electoral_sim import simulate_india_election
+        
+        result = simulate_india_election(
+            n_voters_per_constituency=200,
+            seed=42,
+            verbose=False,
+            include_nota=False
+        )
+        
+        assert result.nota_contested_seats == 0
+        assert len(result.nota_contested_list) == 0
+
+    def test_economic_perception_column(self):
+        """Voter DataFrame should have economic_perception column for sociotropic/pocketbook voting."""
+        from electoral_sim import ElectionModel
+        
+        model = ElectionModel(n_voters=1000, seed=42)
+        voter_df = model.voters.df
+        
+        assert "economic_perception" in voter_df.columns
+        perception = voter_df["economic_perception"].to_numpy()
+        assert perception.min() >= 0
+        assert perception.max() <= 1
+
+    def test_sociotropic_pocketbook_model(self):
+        """Test SociotropicPocketbookModel computes utility correctly."""
+        from electoral_sim import SociotropicPocketbookModel
+        import numpy as np
+        
+        model = SociotropicPocketbookModel(sociotropic_weight=0.5, pocketbook_weight=0.5)
+        
+        n_voters = 100
+        n_parties = 3
+        incumbent_mask = np.array([True, False, False])
+        
+        utility = model.compute_utility(
+            n_voters, n_parties, incumbent_mask,
+            economic_growth=0.05,  # 5% growth
+        )
+        
+        assert utility.shape == (n_voters, n_parties)
+        # Growth should help incumbent (column 0)
+        assert np.all(utility[:, 0] > 0)
+        assert np.all(utility[:, 1] == 0)
+
+    def test_wasted_vote_model(self):
+        """Test WastedVoteModel penalizes low-viability parties."""
+        from electoral_sim import WastedVoteModel
+        import numpy as np
+        
+        model = WastedVoteModel(penalty=2.0, viability_threshold=0.05)
+        
+        viability = np.array([0.4, 0.35, 0.02])  # Party 2 below threshold
+        utility = model.compute_utility(n_voters=100, viability=viability)
+        
+        assert utility.shape == (100, 3)
+        # Wasted party should have negative utility
+        assert np.all(utility[:, 2] < 0)
+        # Viable parties should have 0
+        assert np.all(utility[:, 0] == 0)
+        assert np.all(utility[:, 1] == 0)
+
+    def test_media_bias_effect(self):
+        """Test media_bias shifts opinions toward broadcast position."""
+        from electoral_sim import OpinionDynamics
+        import numpy as np
+        
+        od = OpinionDynamics(n_agents=1000, topology="watts_strogatz", k=4, p=0.1, seed=42)
+        
+        # Start with neutral opinions
+        opinions = np.zeros(1000)
+        
+        # Apply media bias toward +0.5
+        for _ in range(10):
+            opinions = od.step(
+                opinions, model="bounded_confidence",
+                media_bias=0.5, media_strength=0.1
+            )
+        
+        # Opinions should shift toward media bias
+        assert opinions.mean() > 0
+
+    def test_eu_parliament_simulation(self):
+        """Test EU Parliament simulation with all 27 member states."""
+        from electoral_sim import simulate_eu_election, EU_MEMBER_STATES
+        
+        result = simulate_eu_election(
+            n_voters_per_mep=200,  # Small for speed
+            seed=42,
+            verbose=False,
+        )
+        
+        # Check all 27 states simulated
+        assert len(result.country_results) == 27
+        assert len(EU_MEMBER_STATES) == 27
+        
+        # Check total seats = 720
+        total_seats = sum(result.seats.values())
+        assert total_seats == 720
+        
+        # Check required fields
+        assert result.pro_eu_seats >= 0
+        assert result.eurosceptic_seats >= 0
+        assert result.turnout > 0 and result.turnout < 1
+
+
+# =============================================================================
 # MAIN - Run tests directly
 # =============================================================================
 

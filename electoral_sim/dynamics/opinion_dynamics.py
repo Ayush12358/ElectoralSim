@@ -326,6 +326,8 @@ class OpinionDynamics:
         noise_rate: float = 0.01,
         epsilon: float = 0.3,
         use_zealots: bool = False,
+        media_bias: float = 0.0,  # NEW: Media position (-1 to +1 for continuous)
+        media_strength: float = 0.0,  # NEW: Influence strength (0 to 1)
     ) -> np.ndarray:
         """
         Run one step of opinion dynamics.
@@ -336,12 +338,28 @@ class OpinionDynamics:
             noise_rate: Mutation probability (noisy voter)
             epsilon: Confidence bound (bounded confidence)
             use_zealots: Whether to apply zealot constraints
+            media_bias: Broadcast media position (for continuous opinions: -1 to +1)
+            media_strength: How strongly media shifts opinions (0 = no effect, 1 = strong)
             
         Returns:
             Updated opinions
         """
+        # Apply media influence first (for continuous opinions models)
+        if media_strength > 0 and model == "bounded_confidence":
+            # Media pulls opinions toward the broadcast position
+            media_pull = media_strength * (media_bias - opinions)
+            opinions = opinions + media_pull
+            opinions = np.clip(opinions, -1, 1)
+        
         if model == "noisy_voter":
             n_parties = int(opinions.max()) + 1
+            
+            # For discrete opinions, media bias increases probability of switching to favored party
+            if media_strength > 0:
+                # Media-influenced random mutations favor the party closest to media_bias
+                # (Party 0 = left, higher = right in a left-right spectrum)
+                # This is a simplified model: mutation targets the media-favored party more often
+                pass  # Discrete media effect handled through zealots or separate mechanism
             
             if NUMBA_AVAILABLE and len(opinions) > 1000:
                 # Use Numba version

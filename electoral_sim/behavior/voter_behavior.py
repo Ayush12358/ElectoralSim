@@ -89,6 +89,80 @@ class StrategicVotingModel:
         return np.tile(penalty, (n_voters, 1))
 
 
+class SociotropicPocketbookModel:
+    """
+    Economic voting with sociotropic vs pocketbook distinction.
+    
+    - Sociotropic: Voters evaluate based on NATIONAL economic conditions
+    - Pocketbook: Voters evaluate based on PERSONAL financial situation
+    
+    Research shows higher-educated voters tend to be more sociotropic.
+    """
+    
+    def __init__(self, sociotropic_weight: float = 0.5, pocketbook_weight: float = 0.5):
+        self.sociotropic_weight = sociotropic_weight
+        self.pocketbook_weight = pocketbook_weight
+    
+    def compute_utility(
+        self, 
+        n_voters: int, 
+        n_parties: int, 
+        incumbent_mask: np.ndarray,
+        economic_growth: float,  # National (sociotropic signal)
+        personal_income_change: np.ndarray | None = None,  # Individual (pocketbook)
+        perception_type: np.ndarray | None = None,  # 0=pocketbook, 1=sociotropic
+        **kwargs
+    ) -> np.ndarray:
+        """
+        Args:
+            economic_growth: National GDP growth rate
+            personal_income_change: (n_voters,) individual income change
+            perception_type: (n_voters,) 0=pocketbook, 1=sociotropic (or blend)
+        """
+        utility = np.zeros((n_voters, n_parties))
+        
+        # Default: everyone uses national (sociotropic)
+        if perception_type is None:
+            perception_type = np.ones(n_voters)
+        if personal_income_change is None:
+            personal_income_change = np.zeros(n_voters)
+        
+        # Blend sociotropic and pocketbook evaluations
+        sociotropic_effect = self.sociotropic_weight * economic_growth * perception_type
+        pocketbook_effect = self.pocketbook_weight * personal_income_change * (1 - perception_type)
+        
+        total_effect = sociotropic_effect + pocketbook_effect
+        
+        # Apply to incumbents
+        utility[:, incumbent_mask] = total_effect[:, np.newaxis]
+        
+        return utility
+
+
+class WastedVoteModel:
+    """
+    Tactical voting based on fear of wasting vote.
+    
+    Voters penalize parties they perceive as having no chance of winning.
+    Threshold-based: parties below viability threshold get a fixed penalty.
+    This is a simpler, more direct version of strategic voting.
+    """
+    
+    def __init__(self, penalty: float = 2.0, viability_threshold: float = 0.05):
+        self.penalty = penalty
+        self.viability_threshold = viability_threshold
+    
+    def compute_utility(self, n_voters: int, viability: np.ndarray, **kwargs) -> np.ndarray:
+        """
+        Args:
+            viability: (n_parties,) expected vote share or probability of winning
+        """
+        # Binary penalty: below threshold → wasted vote
+        is_wasted = viability < self.viability_threshold
+        penalty_vec = np.where(is_wasted, -self.penalty, 0.0)
+        return np.tile(penalty_vec, (n_voters, 1))
+
+
 class BehaviorEngine:
     """Combines multiple behavior models into a single utility matrix."""
     
@@ -111,7 +185,16 @@ class BehaviorEngine:
                 u = model.compute_utility(n_voters, party_data['valence'])
             elif isinstance(model, RetrospectiveModel):
                 u = model.compute_utility(n_voters, n_parties, party_data['incumbents'], kwargs.get('growth', 0.0))
+            elif isinstance(model, SociotropicPocketbookModel):
+                u = model.compute_utility(
+                    n_voters, n_parties, party_data['incumbents'],
+                    economic_growth=kwargs.get('growth', 0.0),
+                    personal_income_change=voter_data.get('personal_income_change'),
+                    perception_type=voter_data.get('economic_perception'),
+                )
             elif isinstance(model, StrategicVotingModel):
+                u = model.compute_utility(n_voters, party_data.get('viability', np.ones(n_parties)))
+            elif isinstance(model, WastedVoteModel):
                 u = model.compute_utility(n_voters, party_data.get('viability', np.ones(n_parties)))
             else:
                 # Generic call if it follows protocol

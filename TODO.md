@@ -10,7 +10,7 @@
 - [x] **P1** Demographics — age, gender, education, income, religion, location ✓
 - [x] **P1** Party ID (7-point) — Strong D → Independent → Strong R ✓
 - [x] **P1** Ideology — multi-dimensional issue positions ✓
-- [ ] **P3** Affective Polarization — in-group/out-group favorability gap
+- [x] **P3** Affective Polarization ✓ — affective_polarization column (0-1)
 
 ### Psychology
 - [ ] **P3** Big Five (OCEAN) — correlates with political views
@@ -40,11 +40,11 @@
 
 ### Turnout
 - [x] **P2** Calculus of Voting: R = pB - C + D ✓ (basic turnout_prob)
-- [ ] **P3** Alienation/Indifference abstention
+- [x] **P3** Alienation/Indifference abstention ✓ — alienation_threshold, indifference_threshold params
 
 ### Strategic
 - [x] **P2** Strategic Voting Model ✓ — StrategicVotingModel class
-- [ ] **P3** Tactical voting, wasted vote fear (advanced)
+- [x] **P3** Tactical voting, wasted vote fear (advanced) ✓ — WastedVoteModel class
 
 ---
 
@@ -99,7 +99,7 @@
 - [x] **P2** Bounded Confidence Model ✓
 
 ### Media
-- [ ] **P3** Mass Media Bias
+- [x] **P3** Mass Media Bias ✓ — media_bias, media_strength params in OpinionDynamics.step()
 - [ ] **P3** Plurality vs PR susceptibility (Raducha)
 
 ---
@@ -130,7 +130,7 @@
 
 ### Economic Voting
 - [x] **P2** Retrospective voting ✓ — RetrospectiveModel + economic_growth param
-- [ ] **P3** Sociotropic vs Pocketbook
+- [x] **P3** Sociotropic vs Pocketbook ✓ — SociotropicPocketbookModel + economic_perception column
 - [x] **P2** Anti-incumbency ✓ — anti_incumbency parameter
 
 ### Campaign
@@ -149,7 +149,7 @@
 
 ### NOTA
 - [x] **P2** NOTA vote option ✓ — include_nota parameter
-- [ ] **P3** NOTA impact on close races
+- [x] **P3** NOTA impact on close races ✓ — nota_contested_seats, nota_contested_list fields
 
 ### Reserved Constituencies
 - [x] **P2** SC, ST reservation modeling ✓ — constituency_constraints parameter
@@ -180,7 +180,7 @@
 - [ ] **P3** Japan — Mixed-member parallel
 - [ ] **P4** Australia — STV for Senate, IRV for House
 - [ ] **P4** South Africa — Pure PR
-- [ ] **P5** EU Parliament — Multi-country simulation
+- [x] **P5** EU Parliament ✓ — 27 member states, 720 MEPs, 8 political groups
 
 ---
 
@@ -219,13 +219,13 @@
 |----------|-------|------|-----------|
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 21 | 5 | 16 |
+| **P3** | 21 | 11 | 10 |
 | **P4** | 12 | 0 | 12 |
-| **P5** | 1 | 0 | 1 |
+| **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: 🔄 24% — Condorcet, Approval, Misinfo susceptibility, Wave elections, Junior partner penalty done
+- **Phase 3 (P3)**: 🔄 52% — 11/21 done: Condorcet, Approval, Misinfo, Wave, Junior partner, Affective polarization, Alienation/Indifference, NOTA close races, Sociotropic/Pocketbook, Wasted vote, Media bias
 - **Phase 4 (P4+)**: ⏳ PLANNED — Campaign effects, interactive dashboards
 

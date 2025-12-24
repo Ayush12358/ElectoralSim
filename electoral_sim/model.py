@@ -88,6 +88,26 @@ class ElectionModel(Model):
         - Multinomial logit voting model
         - Opinion dynamics (placeholder)
     
+    Examples:
+        # Simple usage
+        model = ElectionModel(n_voters=100_000)
+        results = model.run_election()
+        
+        # Using Config
+        from electoral_sim import Config
+        config = Config(n_voters=100_000, electoral_system="PR")
+        model = ElectionModel.from_config(config)
+        
+        # Using presets
+        model = ElectionModel.from_preset("india")
+        
+        # Chainable API
+        results = (
+            ElectionModel(n_voters=100_000)
+            .with_system("PR")
+            .run_election()
+        )
+    
     Parameters
     ----------
     n_voters : int
@@ -118,6 +138,8 @@ class ElectionModel(Model):
         threshold: float = 0.0,
         temperature: float = 0.5,
         seed: int | None = None,
+        *,
+        _from_config: bool = False,  # Internal flag
     ):
         super().__init__(seed)
         
@@ -127,6 +149,7 @@ class ElectionModel(Model):
         self.allocation_method = allocation_method
         self.threshold = threshold
         self.temperature = temperature
+
         
         # Default parties if not provided
         if parties is None:
@@ -162,6 +185,118 @@ class ElectionModel(Model):
             },
         )
         self.datacollector.collect()
+    
+    # =========================================================================
+    # CLASS METHODS (Factory methods)
+    # =========================================================================
+    
+    @classmethod
+    def from_config(cls, config: "Config") -> "ElectionModel":
+        """
+        Create model from a Config object.
+        
+        Args:
+            config: Config instance with all parameters
+            
+        Returns:
+            ElectionModel instance
+        
+        Example:
+            config = Config(n_voters=100_000, electoral_system="PR")
+            model = ElectionModel.from_config(config)
+        """
+        from electoral_sim.config import Config
+        
+        return cls(
+            n_voters=config.n_voters,
+            n_constituencies=config.n_constituencies,
+            parties=config.get_party_dicts(),
+            electoral_system=config.electoral_system,
+            allocation_method=config.allocation_method,
+            threshold=config.threshold,
+            temperature=config.temperature,
+            seed=config.seed,
+        )
+    
+    @classmethod
+    def from_preset(cls, preset: str, **kwargs) -> "ElectionModel":
+        """
+        Create model from a country preset.
+        
+        Args:
+            preset: One of 'india', 'usa', 'uk', 'germany'
+            **kwargs: Override any preset parameters
+            
+        Returns:
+            ElectionModel instance
+        
+        Example:
+            model = ElectionModel.from_preset("india", n_voters=500_000)
+        """
+        from electoral_sim.config import PRESETS
+        
+        if preset.lower() not in PRESETS:
+            available = list(PRESETS.keys())
+            raise ValueError(f"Unknown preset: {preset}. Available: {available}")
+        
+        config = PRESETS[preset.lower()](**kwargs)
+        return cls.from_config(config)
+    
+    # =========================================================================
+    # CHAINABLE API
+    # =========================================================================
+    
+    def with_system(self, system: str) -> "ElectionModel":
+        """
+        Set electoral system. Chainable.
+        
+        Args:
+            system: 'FPTP' or 'PR'
+            
+        Returns:
+            self for chaining
+        """
+        self.electoral_system = system
+        return self
+    
+    def with_allocation(self, method: str) -> "ElectionModel":
+        """
+        Set PR allocation method. Chainable.
+        
+        Args:
+            method: 'dhondt', 'sainte_lague', 'hare', or 'droop'
+            
+        Returns:
+            self for chaining
+        """
+        self.allocation_method = method
+        return self
+    
+    def with_threshold(self, threshold: float) -> "ElectionModel":
+        """
+        Set electoral threshold. Chainable.
+        
+        Args:
+            threshold: 0-1 (e.g., 0.05 for 5%)
+            
+        Returns:
+            self for chaining
+        """
+        self.threshold = threshold
+        return self
+    
+    def with_temperature(self, temperature: float) -> "ElectionModel":
+        """
+        Set MNL temperature. Chainable.
+        
+        Args:
+            temperature: Lower = more deterministic voting
+            
+        Returns:
+            self for chaining
+        """
+        self.temperature = temperature
+        return self
     
     def _generate_voter_frame(self, n_voters: int) -> pl.DataFrame:
         """

@@ -1052,6 +1052,23 @@ class TestP4Features:
         assert "seats" in res_sa
         assert len(res_sa["seats"]) == len(config_sa.parties)
 
+    def test_country_presets_p3(self):
+        """Test the final P3 country presets (Brazil, France, Japan)."""
+        from electoral_sim import ElectionModel, brazil_config, france_config, japan_config
+        
+        for name, config_func in [("Brazil", brazil_config), ("France", france_config), ("Japan", japan_config)]:
+            config = config_func(n_voters=2000)
+            model = ElectionModel(
+                n_voters=config.n_voters,
+                n_constituencies=config.n_constituencies,
+                parties=config.get_party_dicts(),
+                electoral_system=config.electoral_system,
+                seed=42
+            )
+            res = model.run_election()
+            assert "seats" in res, f"{name} failed"
+            assert len(res["seats"]) == len(config.parties), f"{name} party count mismatch"
+
 
 # =============================================================================
 # MAIN - Run tests directly

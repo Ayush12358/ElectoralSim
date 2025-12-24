@@ -101,6 +101,9 @@ from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.australia.config import australia_house_config, australia_senate_config
 from electoral_sim.presets.south_africa.config import south_africa_config
+from electoral_sim.presets.brazil.config import brazil_config
+from electoral_sim.presets.france.config import france_config
+from electoral_sim.presets.japan.config import japan_config
 
 # Backward compatible india_config (just calls the generic one)
 def india_config(n_voters: int = 1_000_000, n_constituencies: int = 543, **kwargs) -> Config:
@@ -134,4 +137,7 @@ PRESETS = {
     "australia_house": australia_house_config,
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
+    "brazil": brazil_config,
+    "france": france_config,
+    "japan": japan_config,
 }

@@ -199,6 +199,7 @@ def simulate_india_election(
     seed: int | None = None,
     verbose: bool = True,
     include_nota: bool = False,  # NEW: Enable NOTA tracking
+    use_real_names: bool = True, # TECHNICAL: Use real constituency names
 ) -> IndiaElectionResult:
     """
     Simulate India General Election.
@@ -211,12 +212,16 @@ def simulate_india_election(
         seed: Random seed for reproducibility
         verbose: Print progress
         include_nota: Include NOTA (None of the Above) as voting option
+        use_real_names: Use real PC names instead of IDs
             
     Returns:
         IndiaElectionResult with full results
     """
     from electoral_sim.core.model import ElectionModel
     from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
+    from electoral_sim.data.india_pc import get_india_constituencies
+    
+    manager = get_india_constituencies() if use_real_names else None
     
     rng = np.random.default_rng(seed)
     
@@ -257,6 +262,7 @@ def simulate_india_election(
     
     start_time = time.perf_counter()
     
+    global_const_id = 0
     # Simulate each state
     for state, n_constituencies in INDIA_STATES.items():
         if verbose:
@@ -367,7 +373,8 @@ def simulate_india_election(
                 # If NOTA > margin, race is contested
                 if nota_votes > margin and winner != "NOTA":
                     nota_contested_seats += 1
-                    nota_contested_list.append(f"{state}: Constituency {c+1}")
+                    c_name = manager.get_name(global_const_id + c) if manager else f"Constituency {c+1}"
+                    nota_contested_list.append(f"{state}: {c_name}")
             
             # Award seat (NOTA doesn't win seats)
             if winner != "NOTA":
@@ -388,6 +395,8 @@ def simulate_india_election(
         if verbose:
             top_party = max(state_seats.items(), key=lambda x: x[1])
             print(f"done ({state_time*1000:.0f}ms) - {top_party[0]}: {top_party[1]} seats")
+        
+        global_const_id += n_constituencies
     
     # Calculate metrics
     total_votes = sum(all_votes.values())

@@ -109,6 +109,7 @@ class ElectionModel(Model):
         indifference_threshold: float = 0.3,  # Abstain if utility range below this
         event_probs: dict[str, float] | None = None,  # P4: Dynamic events
         use_adaptive_strategy: bool = False,  # P4: Strategy
+        constituency_manager: Optional["ConstituencyManager"] = None, # TECHNICAL: Real data integration
     ):
         super().__init__(seed)
         
@@ -123,6 +124,7 @@ class ElectionModel(Model):
         self.temperature = temperature
         self.include_nota = include_nota
         self.constituency_constraints = constituency_constraints or {}
+        self.constituency_manager = constituency_manager
         
         # Behavior & Dynamics
         from electoral_sim.behavior.voter_behavior import (

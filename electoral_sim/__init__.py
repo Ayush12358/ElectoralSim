@@ -1,6 +1,9 @@
 """
-ElectoralSim - India Electoral Simulation
-==========================================
+ElectoralSim - Generic Electoral Simulation Toolkit
+===================================================
+
+A modular agent-based modeling toolkit for electoral systems, 
+voter behavior, and political dynamics using mesa-frames.
 
 Agent-based electoral simulation using mesa-frames.
 
@@ -138,6 +141,18 @@ from electoral_sim.india_election import (
 )
 
 # =============================================================================
+# VOTER BEHAVIOR
+# =============================================================================
+
+from electoral_sim.voter_behavior import (
+    BehaviorEngine,
+    ProximityModel,
+    ValenceModel,
+    RetrospectiveModel,
+    StrategicVotingModel,
+)
+
+# =============================================================================
 # PUBLIC API
 # =============================================================================
 
@@ -184,4 +199,10 @@ __all__ = [
     "IndiaElectionResult",
     "INDIA_STATES",
     "INDIA_PARTIES",
+    # Voter Behavior
+    "BehaviorEngine",
+    "ProximityModel",
+    "ValenceModel",
+    "RetrospectiveModel",
+    "StrategicVotingModel",
 ]

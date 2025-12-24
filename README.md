@@ -1,19 +1,19 @@
-# ElectoralSim
+# ElectoralSim: Generic Electoral Simulation Toolkit
 
-Agent-based electoral simulation for India using [mesa-frames](https://github.com/mesa/mesa-frames).
+A modular agent-based modeling toolkit for electoral systems, voter behavior, and political dynamics using [mesa-frames](https://github.com/mesa/mesa-frames).
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- **Scale**: Simulate 100K+ voters with mesa-frames vectorization
-- **Electoral Systems**: FPTP, PR (D'Hondt, Sainte-Laguë)
-- **Voting Models**: Proximity, Multinomial Logit
-- **Metrics**: Gallagher Index, ENP, Efficiency Gap
-- **Coalition**: MCW/MWC formation, strain analysis
-- **Government**: Stability models (sigmoid, linear, exponential)
-- **Presets**: India, USA, UK, Germany
+- **Scale**: Simulate 1M+ voters with vectorized mesa-frames & Numba acceleration.
+- **Electoral Systems**: FPTP, PR, STV, IRV, Approval, Condorcet.
+- **Voter Behavior**: Modular engine with Proximity, Valence, Retrospective, and Strategic voting models.
+- **Opinion Dynamics**: Pluggable social networks (Barabási-Albert, Watts-Strogatz) with Bounded Confidence & Noisy Voter models.
+- **Metrics**: Gallagher Index, ENP, Efficiency Gap, HHI.
+- **Coalition & Gov**: MWC/MCW formation models and stability/collapse simulation.
+- **Presets**: High-level configurations for India, USA, UK, and Germany.
 
 ## Installation
 
@@ -90,7 +90,8 @@ electoral_sim/
 
 - **[mesa-frames](https://github.com/mesa/mesa-frames)** — Vectorized agent-based modeling
 - **[Polars](https://pola.rs/)** — High-performance DataFrames
-- **[NetworkX](https://networkx.org/)** — Social networks (planned)
+- **[Numba](https://numba.pydata.org/)** — Just-In-Time acceleration for core loops
+- **[NetworkX](https://networkx.org/)** — Social networks
 - **[NumPy](https://numpy.org/)** — Numerical operations
 
 ## License

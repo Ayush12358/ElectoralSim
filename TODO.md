@@ -151,6 +151,17 @@
 ### Electoral Features
 - [ ] **P2** Phase-wise election simulation (7 phases)
 - [ ] **P2** Anti-incumbency factor
+- [x] Numba acceleration for hot loops ✓
+- [x] Caching for Agent data ✓
+- [/] **Generic Toolkit Modularization**
+    - [x] Generic Voter Behavior Engine ✓
+    - [ ] Modular Opinion Dynamics integration
+    - [ ] Flexible ElectionModel (Strategy Pattern)
+    - [ ] Generic Geography/Network support
+- [ ] Alternative Scaling (MWC limitation)
+- [ ] P2 Feature implementations (MMP, STV, IRV, etc.) ✓
+- [ ] Stress Test ✓
+- [ ] India Election Simulator Example ✓
 - [ ] **P3** Wave elections (national mood)
 - [ ] **P3** Alliance seat-sharing agreements
 - [ ] **P3** Historical validation (2014, 2019, 2024)

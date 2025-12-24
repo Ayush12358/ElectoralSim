@@ -72,6 +72,10 @@ class VoterAgents(AgentSet):
             self._constituency_cache = self.df["constituency"].to_numpy()
         return self._constituency_cache
     
+    def get_positions(self) -> np.ndarray:
+        """Return voter positions as (n_voters, 2) array."""
+        return np.column_stack([self.get_ideology_x(), self.get_ideology_y()])
+    
     def invalidate_cache(self) -> None:
         """Clear cached values (call after modifying voter data)."""
         self._ideology_x_cache = None
@@ -174,6 +178,10 @@ class ElectionModel(Model):
         Number of electoral constituencies
     parties : list[dict]
         Party configurations with name, position_x, position_y, valence
+    voter_frame : pl.DataFrame | None
+        Optional pre-built voter DataFrame (bypasses automatic generation)
+    party_frame : pl.DataFrame | None
+        Optional pre-built party DataFrame
     electoral_system : str
         'FPTP' or 'PR'
     allocation_method : str
@@ -191,11 +199,15 @@ class ElectionModel(Model):
         n_voters: int = 100_000,
         n_constituencies: int = 10,
         parties: list[dict] | None = None,
+        voter_frame: pl.DataFrame | None = None,
+        party_frame: pl.DataFrame | None = None,
         electoral_system: str = "FPTP",
         allocation_method: str = "dhondt",
         threshold: float = 0.0,
         temperature: float = 0.5,
         seed: int | None = None,
+        behavior_engine: "BehaviorEngine" | None = None,
+        opinion_dynamics: "OpinionDynamics" | None = None,
     ):
         super().__init__(seed)
         
@@ -205,25 +217,41 @@ class ElectionModel(Model):
         self.allocation_method = allocation_method
         self.threshold = threshold
         self.temperature = temperature
-
         
-        # Default parties if not provided
-        if parties is None:
+        # Behavior & Dynamics
+        from electoral_sim.voter_behavior import BehaviorEngine, ProximityModel, ValenceModel
+        if behavior_engine is None:
+            # Default behavior: Proximity + Valence
+            self.behavior_engine = BehaviorEngine()
+            self.behavior_engine.add_model(ProximityModel())
+            self.behavior_engine.add_model(ValenceModel())
+        else:
+            self.behavior_engine = behavior_engine
+            
+        self.opinion_dynamics = opinion_dynamics
+
+        # Default parties if not provided and no party_frame
+        if parties is None and party_frame is None:
             parties = [
                 {"name": "Party A", "position_x": -0.3, "position_y": 0.1, "valence": 50},
                 {"name": "Party B", "position_x": 0.3, "position_y": -0.1, "valence": 50},
                 {"name": "Party C", "position_x": 0.0, "position_y": 0.3, "valence": 45},
             ]
         
-        self.n_parties = len(parties)
-        
-        # Create agent DataFrames using model's random generator
-        voter_frame = self._generate_voter_frame(n_voters)
-        party_frame = self._generate_party_frame(parties)
-        
-        # Create agent sets
-        self.voters = VoterAgents(self, voter_frame)
-        self.parties = PartyAgents(self, party_frame)
+        # Create or use DataFrames
+        if voter_frame is not None:
+            self.voters = VoterAgents(self, voter_frame)
+            if "constituency" in voter_frame.columns:
+                self.n_constituencies = int(voter_frame["constituency"].max() + 1)
+        else:
+            self.voters = VoterAgents(self, self._generate_voter_frame(n_voters))
+            
+        if party_frame is not None:
+            self.parties = PartyAgents(self, party_frame)
+            self.n_parties = len(party_frame)
+        else:
+            self.parties = PartyAgents(self, self._generate_party_frame(parties))
+            self.n_parties = len(self.parties)
         
         # Register agent sets with model
         self.sets += self.voters
@@ -426,39 +454,36 @@ class ElectionModel(Model):
         """Generate party DataFrame from configuration."""
         n = len(parties)
         return pl.DataFrame({
-            "name": [p["name"] for p in parties],
+            "name": [p.get("name", f"Party {i}") for i, p in enumerate(parties)],
             "position_x": [float(p.get("position_x", 0.0)) for p in parties],
             "position_y": [float(p.get("position_y", 0.0)) for p in parties],
             "valence": [float(p.get("valence", 50.0)) for p in parties],
+            "incumbent": [bool(p.get("incumbent", False)) for p in parties],
             "seats": np.zeros(n, dtype=np.int64),
             "vote_share": np.zeros(n, dtype=np.float64),
         })
     
-    def _compute_utilities(self) -> np.ndarray:
+    def _compute_utilities(self, **kwargs) -> np.ndarray:
         """
-        Compute utility matrix (n_voters x n_parties) using proximity model.
-        
-        Uses Numba parallel acceleration when available.
-        Utility = -distance + valence_weight * valence
+        Compute utility matrix using the configured behavior engine.
         """
-        # Get voter positions (cached)
-        voter_x = self.voters.get_ideology_x()
-        voter_y = self.voters.get_ideology_y()
+        voter_data = {
+            'n_voters': len(self.voters),
+            'positions': self.voters.get_positions(),  # Need to add this to VoterAgents
+            'ideology_x': self.voters.get_ideology_x(),
+            'ideology_y': self.voters.get_ideology_y(),
+            'df': self.voters.df
+        }
         
-        # Get party positions and valence (cached)
-        party_positions = self.parties.get_positions()
-        party_x = party_positions[:, 0]
-        party_y = party_positions[:, 1]
-        valence = self.parties.get_valence()
+        party_data = {
+            'n_parties': len(self.parties),
+            'positions': self.parties.get_positions(),
+            'valence': self.parties.get_valence(),
+            'incumbents': self.parties.df["incumbent"].to_numpy() if "incumbent" in self.parties.df else np.zeros(len(self.parties), dtype=bool),
+            'df': self.parties.df
+        }
         
-        if NUMBA_AVAILABLE:
-            return compute_utilities_numba(voter_x, voter_y, party_x, party_y, valence)
-        else:
-            # Fallback to vectorized NumPy
-            dist_x = voter_x[:, np.newaxis] - party_x[np.newaxis, :]
-            dist_y = voter_y[:, np.newaxis] - party_y[np.newaxis, :]
-            distances = np.sqrt(dist_x**2 + dist_y**2)
-            return -distances + 0.01 * valence[np.newaxis, :]
+        return self.behavior_engine.compute_all(voter_data, party_data, **kwargs)
     
     def _vote_mnl(self, utilities: np.ndarray) -> np.ndarray:
         """
@@ -476,15 +501,18 @@ class ElectionModel(Model):
         random_vals = self.random.random(len(turnout_probs))
         return random_vals < turnout_probs
     
-    def run_election(self) -> dict:
+    def run_election(self, **kwargs) -> dict:
         """
         Run a single election and return results.
         
+        Args:
+            **kwargs: Extra parameters passed to the behavior engine (e.g. growth=0.03)
+            
         Returns:
             Dictionary with vote counts, seats, turnout, and metrics
         """
         # Compute utilities and cast votes
-        utilities = self._compute_utilities()
+        utilities = self._compute_utilities(**kwargs)
         votes = self._vote_mnl(utilities)
         
         # Determine turnout
@@ -555,6 +583,27 @@ class ElectionModel(Model):
     
     def step(self) -> None:
         """Run one simulation step (for opinion dynamics)."""
+        if self.opinion_dynamics:
+            # Update ideologies based on social network
+            current_ideologies = self.voters.df["ideology_x"].to_numpy() # Example for 1D
+            # Actually OpinionDynamics.step expects opinions as class labels usually, 
+            # but we can use bounded_confidence for continuous ideologies.
+            # Let's assume we use ideology_x for now as a proof of concept.
+            new_ideologies_x = self.opinion_dynamics.step(
+                self.voters.get_ideology_x(), 
+                model="bounded_confidence"
+            )
+            new_ideologies_y = self.opinion_dynamics.step(
+                self.voters.get_ideology_y(), 
+                model="bounded_confidence"
+            )
+            # Update the frame
+            self.voters.df = self.voters.df.with_columns([
+                pl.Series("ideology_x", new_ideologies_x),
+                pl.Series("ideology_y", new_ideologies_y),
+            ])
+            self.voters.invalidate_cache()
+            
         self.sets.do("step")
         self.datacollector.collect()
     
@@ -576,7 +625,7 @@ class ElectionModel(Model):
         """Return all election results."""
         return self.election_results
     
-    def run_elections_batch(self, n_elections: int = 10, reset_voters: bool = False) -> list[dict]:
+    def run_elections_batch(self, n_elections: int = 10, reset_voters: bool = False, **kwargs) -> list[dict]:
         """
         Run multiple elections in batch for Monte Carlo analysis.
         
@@ -586,6 +635,7 @@ class ElectionModel(Model):
         Args:
             n_elections: Number of elections to run
             reset_voters: If True, regenerate voters between elections
+            **kwargs: Extra parameters passed to the behavior engine
             
         Returns:
             List of election result dictionaries
@@ -599,7 +649,7 @@ class ElectionModel(Model):
                 voter_frame = self._generate_voter_frame(n_voters)
                 self.voters.df = voter_frame
             
-            results = self.run_election()
+            results = self.run_election(**kwargs)
             batch_results.append(results)
         
         return batch_results

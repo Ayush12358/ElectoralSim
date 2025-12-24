@@ -110,8 +110,15 @@ class ElectionModel(Model):
         event_probs: dict[str, float] | None = None,  # P4: Dynamic events
         use_adaptive_strategy: bool = False,  # P4: Strategy
         constituency_manager: Optional["ConstituencyManager"] = None, # TECHNICAL: Real data integration
+        use_gpu: bool = False, # P4: GPU acceleration (CuPy)
     ):
         super().__init__(seed)
+        
+        # Initialize GPU support
+        from electoral_sim.engine.gpu_accel import is_gpu_available
+        self.use_gpu = use_gpu and is_gpu_available()
+        if use_gpu and not self.use_gpu:
+            print("Warning: GPU requested but not available. Falling back to CPU/Numba.")
         
         # Initialize Random Generator
         self.rng = np.random.default_rng(seed)
@@ -410,7 +417,7 @@ class ElectionModel(Model):
         }
         
         # Pass economic growth to behavior engine for retrospective voting
-        return self.behavior_engine.compute_all(voter_data, party_data, growth=effective_growth, **kwargs)
+        return self.behavior_engine.compute_all(voter_data, party_data, growth=effective_growth, use_gpu=self.use_gpu, **kwargs)
     
     def _vote_mnl(self, utilities: np.ndarray) -> np.ndarray:
         """
@@ -420,6 +427,10 @@ class ElectionModel(Model):
         
         Returns array of vote choices (party indices).
         """
+        if self.use_gpu:
+            from electoral_sim.engine.gpu_accel import mnl_sample_gpu
+            return mnl_sample_gpu(utilities, self.temperature)
+            
         return vote_mnl_fast(utilities, self.temperature, self.random)
     
     def _decide_turnout(self, utilities: np.ndarray | None = None) -> np.ndarray:

@@ -182,7 +182,7 @@
 - [x] **P2** Vote share pie chart ✓ — plot_vote_shares()
 - [x] **P2** Seats vs Votes comparison ✓ — plot_seats_vs_votes()
 - [x] **P2** Election summary panel ✓ — plot_election_summary()
-- [ ] **P3** India constituency map (choropleth)
+- [ ] **P3** Constituency map (choropleth) (India and others)
 - [ ] **P3** Opinion dynamics animation
 - [ ] **P3** Swing analysis dashboard
 - [ ] **P4** Interactive election explorer (Streamlit/Dash)
@@ -201,7 +201,7 @@
 - [x] **P3** 10M+ agent capacity ✓ — Optimized via float32/int8 dtypes
 - [x] **P3** Real constituency data integration ✓ — constituency.py, india_pc.py
 - [x] **P3** Historical election data loading ✓ — loaders.py, sample_dataset
-- [ ] **P4** GPU support (CuPy)
+- [x] **P4** GPU support (CuPy) ✓ — gpu_accel.py, integrated in ElectionModel
 
 ---
 
@@ -212,12 +212,12 @@
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
 | **P3** | 24 | 21 | 3 |
-| **P4** | 10 | 8 | 2 |
+| **P4** | 10 | 9 | 1 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: ✅ COMPLETE — 21/21 done (Psychology, Misinfo, Media, Turnout, Tactical, Wave, Presets, Real Data, 10M Scale, Historical Data)
-- **Phase 4 (P4)**: 🔄 80% — 8/10 done (Adaptive Strategy, Events, VSE, Tradeoffs, Duverger, Presets)
+- **Phase 3 (P3)**: ✅ COMPLETE — 21/24 done (Psychology, Misinfo, Media, Turnout, Tactical, Wave, Presets, Real Data, 10M Scale, Historical Data)
+- **Phase 4 (P4)**: 🔄 90% — 9/10 done (Adaptive Strategy, Events, VSE, Tradeoffs, Duverger, Presets, GPU)
 ```

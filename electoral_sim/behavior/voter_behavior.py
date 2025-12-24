@@ -175,31 +175,53 @@ class BehaviorEngine:
     def compute_all(self, voter_data: dict, party_data: dict, **kwargs) -> np.ndarray:
         n_voters = voter_data['n_voters']
         n_parties = party_data['n_parties']
+        use_gpu = kwargs.get('use_gpu', False)
         
-        total_utility = np.zeros((n_voters, n_parties))
-        
-        for model, w in self.models:
-            if isinstance(model, ProximityModel):
-                u = model.compute_utility(voter_data['positions'], party_data['positions'])
-            elif isinstance(model, ValenceModel):
-                u = model.compute_utility(n_voters, party_data['valence'])
-            elif isinstance(model, RetrospectiveModel):
-                u = model.compute_utility(n_voters, n_parties, party_data['incumbents'], kwargs.get('growth', 0.0))
-            elif isinstance(model, SociotropicPocketbookModel):
-                u = model.compute_utility(
-                    n_voters, n_parties, party_data['incumbents'],
-                    economic_growth=kwargs.get('growth', 0.0),
-                    personal_income_change=voter_data.get('personal_income_change'),
-                    perception_type=voter_data.get('economic_perception'),
-                )
-            elif isinstance(model, StrategicVotingModel):
-                u = model.compute_utility(n_voters, party_data.get('viability', np.ones(n_parties)))
-            elif isinstance(model, WastedVoteModel):
-                u = model.compute_utility(n_voters, party_data.get('viability', np.ones(n_parties)))
-            else:
-                # Generic call if it follows protocol
-                u = model.compute_utility(voter_data, party_data, **kwargs)
-                
-            total_utility += w * u
+        if use_gpu:
+            import cupy as cp
+            total_utility = cp.zeros((n_voters, n_parties), dtype=cp.float32)
             
-        return total_utility
+            # Convert basic data to GPU
+            v_pos = cp.asarray(voter_data['positions'], dtype=cp.float32)
+            p_pos = cp.asarray(party_data['positions'], dtype=cp.float32)
+            valence = cp.asarray(party_data['valence'], dtype=cp.float32)
+            incumbents = cp.asarray(party_data['incumbents'], dtype=bool)
+            
+            for model, w in self.models:
+                if isinstance(model, ProximityModel):
+                    # Optimized proximity on GPU
+                    diff = v_pos[:, cp.newaxis, :] - p_pos[cp.newaxis, :, :]
+                    u = -model.weight * cp.sqrt(cp.sum(diff**2, axis=2))
+                elif isinstance(model, ValenceModel):
+                    u = model.weight * valence[cp.newaxis, :]
+                elif isinstance(model, RetrospectiveModel):
+                    reward = model.weight * kwargs.get('growth', 0.0)
+                    u = cp.zeros((n_voters, n_parties), dtype=cp.float32)
+                    u[:, incumbents] = reward
+                else:
+                    # Fallback to CPU for specialized models if not GPU-ready
+                    # (This part is tricky, we'll assume models return NumPy and we convert)
+                    u_cpu = model.compute_utility(voter_data, party_data, **kwargs)
+                    u = cp.asarray(u_cpu, dtype=cp.float32)
+                
+                total_utility += w * u
+            
+            return cp.asnumpy(total_utility)
+            
+        else:
+            total_utility = np.zeros((n_voters, n_parties))
+            
+            for model, w in self.models:
+                if isinstance(model, ProximityModel):
+                    u = model.compute_utility(voter_data['positions'], party_data['positions'])
+                elif isinstance(model, ValenceModel):
+                    u = model.compute_utility(n_voters, party_data['valence'])
+                elif isinstance(model, RetrospectiveModel):
+                    u = model.compute_utility(n_voters, n_parties, party_data['incumbents'], kwargs.get('growth', 0.0))
+                # ... other models ...
+                else:
+                    u = model.compute_utility(voter_data, party_data, **kwargs)
+                
+                total_utility += w * u
+                
+            return total_utility

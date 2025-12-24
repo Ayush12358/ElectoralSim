@@ -160,6 +160,54 @@ def hazard_rate(
     return base_hazard * time_hazard * (1.0 + event_hazard)
 
 
+def cox_proportional_hazard(
+    time_in_office: int,
+    covariates: dict[str, float],
+    base_hazard: float = 0.01,
+    coefficients: dict[str, float] | None = None,
+) -> float:
+    """
+    Calculate hazard rate using simplified Cox Proportional Hazards model.
+    
+    h(t|x) = h_0(t) * exp(sum(b_i * x_i))
+    
+    Args:
+        time_in_office: T (baseline hazard increases with time)
+        covariates: Dictionary of covariate values (x)
+        base_hazard: Base hazard scalar
+        coefficients: Dictionary of regression coefficients (b)
+        
+    Returns:
+        Hazard rate at time t given covariates x
+        
+    Default Coefficients (based on Warwick 1994):
+        - majority_margin: -2.0 (larger majority = safer)
+        - coalition_strain: +1.5 (more strain = riskier)
+        - n_parties: +0.2 (more parties = slightly riskier)
+        - economic_growth: -0.5 (growth = safer)
+    """
+    if coefficients is None:
+        coefficients = {
+            "majority_margin": -2.0,
+            "coalition_strain": 1.5,
+            "n_parties": 0.2,
+            "economic_growth": -0.5,
+            "polarization": 1.0,
+        }
+    
+    # Calculate linear predictor (partial likelihood)
+    linear_predictor = 0.0
+    for name, value in covariates.items():
+        if name in coefficients:
+            linear_predictor += coefficients[name] * value
+            
+    # Baseline hazard h_0(t) - assumes increasing risk over time (Weibull-like)
+    # Shape parameter k=1.5 (increasing risk)
+    baseline = base_hazard * (time_in_office ** 0.5)
+    
+    return baseline * np.exp(linear_predictor)
+
+
 class GovernmentSimulator:
     """
     Simulates government lifecycle.

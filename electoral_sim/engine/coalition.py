@@ -307,3 +307,71 @@ def junior_partner_penalty(
             penalties[party] = -base_penalty * (1 - relative_size * 0.5)
     
     return penalties
+
+
+def allocate_portfolios_laver_shepsle(
+    coalition_parties: list[int],
+    party_seats: np.ndarray,
+    party_positions: np.ndarray,
+    dimensions: list[str] | None = None,
+) -> dict[str, int]:
+    """
+    Allocate cabinet portfolios using Laver-Shepsle (1996) logic.
+    
+    Principle:
+    For each policy dimension (portfolio), the party holding the 
+    median legislator position *within the coalition* controls that ministry.
+    
+    Args:
+        coalition_parties: Indices of parties in coalition
+        party_seats: Array of seats for all parties
+        party_positions: Array of positions (parties x dimensions)
+        dimensions: Names of dimensions/portfolios (default: "Dim 1", "Dim 2"...)
+        
+    Returns:
+        Dictionary mapping Portfolio Name -> Party Index
+        
+    Example:
+        If Dim 1 is "Economy", the party with the median position on economy
+        within the coalition gets the "Economy" portfolio.
+    """
+    n_dims = party_positions.shape[1]
+    
+    if dimensions is None:
+        dimensions = [f"Ministry {i+1}" for i in range(n_dims)]
+    elif len(dimensions) != n_dims:
+        # Fallback if dimensions don't match
+        dimensions = [f"Ministry {i+1}" for i in range(n_dims)]
+        
+    allocations = {}
+    
+    # Filter coalition data
+    c_seats = party_seats[coalition_parties]
+    c_positions = party_positions[coalition_parties]
+    total_seats = c_seats.sum()
+    median_threshold = total_seats / 2
+    
+    for dim_idx, pf_name in enumerate(dimensions):
+        # customized logic for 1D case handling
+        if n_dims == 1:
+            dim_positions = c_positions  # already 1D
+        else:
+            dim_positions = c_positions[:, dim_idx]
+            
+        # Sort parties by position on this dimension
+        sorted_indices = np.argsort(dim_positions)
+        
+        # Find accumulated seats to locate median
+        cumulative_seats = 0
+        median_party_idx = -1
+        
+        for i in sorted_indices:
+            cumulative_seats += c_seats[i]
+            if cumulative_seats > median_threshold:
+                # This party contains the median legislator
+                median_party_idx = coalition_parties[i]
+                break
+        
+        allocations[pf_name] = median_party_idx
+        
+    return allocations

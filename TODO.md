@@ -98,7 +98,7 @@
 
 ### Media
 - [x] **P3** Mass Media Bias ✓ — media_bias, media_strength params in OpinionDynamics.step()
-- [ ] **P3** Plurality vs PR susceptibility (Raducha)
+- [x] **P3** Plurality vs PR susceptibility (Raducha) ✓ — system parameter in OpinionDynamics.step()
 
 ---
 
@@ -106,7 +106,7 @@
 
 - [x] **P1** MCW ✓ — minimum connected winning
 - [x] **P1** MWC ✓ — minimum winning coalition
-- [ ] **P3** Laver-Shepsle portfolio allocation
+- [x] **P3** Laver-Shepsle portfolio allocation ✓ — allocate_portfolios_laver_shepsle()
 - [ ] **P4** Policy vs Office-seeking tradeoffs
 
 ### Dynamics
@@ -119,7 +119,7 @@
 
 - [x] **P1** Collapse Models ✓ (Sigmoid, Linear, Exponential)
 - [x] **P2** Government Simulator ✓ — Monte Carlo survival
-- [ ] **P3** Survival Analysis — Cox hazard
+- [x] **P3** Survival Analysis — Cox hazard ✓ — cox_proportional_hazard() function
 - [ ] **P4** Economic shocks, Scandals
 
 ---
@@ -210,12 +210,12 @@
 |----------|-------|------|-----------|
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 18 | 13 | 5 |
+| **P3** | 18 | 16 | 2 |
 | **P4** | 6 | 0 | 6 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: 🔄 72% — 13/18 done, 5 remaining
+- **Phase 3 (P3)**: 🔄 88% — 16/18 done, 2 remaining (Media Diet, Maps)
 - **Phase 4 (P4+)**: ⏳ PLANNED — 6 remaining

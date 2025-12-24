@@ -64,10 +64,14 @@ from electoral_sim.engine.coalition import (
     minimum_connected_winning,
     coalition_strain,
     form_government,
+    junior_partner_penalty,
+    allocate_portfolios_laver_shepsle,
 )
 from electoral_sim.engine.government import (
     collapse_probability,
     simulate_government_survival,
+    hazard_rate,
+    cox_proportional_hazard,
     GovernmentSimulator,
 )
 
@@ -138,8 +142,12 @@ __all__ = [
     "minimum_connected_winning",
     "coalition_strain",
     "form_government",
+    "junior_partner_penalty",
+    "allocate_portfolios_laver_shepsle",
     "collapse_probability",
     "simulate_government_survival",
+    "hazard_rate",
+    "cox_proportional_hazard",
     "GovernmentSimulator",
     # India Election
     "simulate_india_election",

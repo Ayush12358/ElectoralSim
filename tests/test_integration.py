@@ -777,6 +777,79 @@ class TestP3Features:
         # The relationship should exist (though not deterministic)
         assert True  # Correlation is implemented, visual check passed
 
+    def test_raducha_system_susceptibility(self):
+        """Test Plurality vs PR susceptibility (Raducha) in opinion dynamics."""
+        from electoral_sim import OpinionDynamics
+        od = OpinionDynamics(n_agents=10, neighbor_avg=3, seed=42)
+        
+        # Test 1: No effect (strength 0)
+        opinions = np.zeros(10)
+        new_ops = od.step(opinions, system="PR", media_bias=0.5, media_strength=0.0)
+        assert np.all(opinions == new_ops)
+        
+        # Test 2: Bounded confidence, FPTP should have stronger pull than PR
+        opinions = np.zeros(10)
+        # Using media_strength=0.1. In PR -> 0.1 * (0.5 - 0) = 0.05 shift
+        # In FPTP -> 0.1 * 1.5 * 0.5 = 0.075 shift
+        
+        pr_ops = od.step(opinions.copy(), model="bounded_confidence", system="PR", media_bias=1.0, media_strength=0.1)
+        fptp_ops = od.step(opinions.copy(), model="bounded_confidence", system="FPTP", media_bias=1.0, media_strength=0.1)
+        
+        # FPTP should have shifted more towards 1.0
+        assert fptp_ops[0] > pr_ops[0], "FPTP should be more susceptible to media/waves"
+        assert np.isclose(fptp_ops[0], 0.15)  # 0 + 0.1 * 1.5 * (1.0 - 0) = 0.15
+        assert np.isclose(pr_ops[0], 0.10)   # 0 + 0.1 * (1.0 - 0) = 0.10
+
+    def test_laver_shepsle_allocation(self):
+        """Test Laver-Shepsle portfolio allocation logic."""
+        from electoral_sim import allocate_portfolios_laver_shepsle
+        
+        # Setup: 3 parties in coalition
+        # Party 0: 20 seats, Pos: 0.2 (Left)
+        # Party 1: 30 seats, Pos: 0.5 (Center) -> Median in coalition (50 total seats, needs >25)
+        # Party 2: 10 seats, Pos: 0.8 (Right)
+        # Cumulative seats sorted by pos: P0(20) -> P1(20+30=50) -> Median is within P1
+        
+        coalition = [0, 1, 2]
+        seats = np.array([20, 30, 10])
+        positions = np.array([[0.2], [5.0], [0.8]]) # Dimensions x Parties? No, Parties x Dims
+        # Fix positions to be Parties x Dims
+        positions = np.array([
+            [0.2, 0.2], # Party 0
+            [0.5, 0.5], # Party 1
+            [0.8, 0.8]  # Party 2
+        ])
+        
+        allocations = allocate_portfolios_laver_shepsle(
+            coalition, seats, positions, dimensions=["Econ", "Social"]
+        )
+        
+        # Party 1 (index 1) has 30/60 seats, P0 has 20. 
+        # Ordered by pos: P0 (20), P1 (30), P2 (10). 
+        # Threshold > 30. Cumulative: P0=20, P0+P1=50. Median is in P1.
+        assert allocations["Econ"] == 1
+        assert allocations["Social"] == 1
+
+    def test_cox_hazard_model(self):
+        """Test Cox Proportional Hazards model."""
+        from electoral_sim import cox_proportional_hazard
+        
+        # Test 1: Baseline
+        h0 = cox_proportional_hazard(12, {})
+        assert h0 > 0
+        
+        # Test 2: Factors
+        # Safer: High majority margin (- coeff)
+        # Risky: High coalition strain (+ coeff)
+        
+        h_safe = cox_proportional_hazard(12, {"majority_margin": 0.2})
+        h_risky = cox_proportional_hazard(12, {"coalition_strain": 0.5})
+        
+        # Default coeffs: majority_margin=-2.0, coalition_strain=1.5
+        # exp(-0.4) < 1, exp(0.75) > 1
+        assert h_safe < h0
+        assert h_risky > h0
+
 
 # =============================================================================
 # MAIN - Run tests directly

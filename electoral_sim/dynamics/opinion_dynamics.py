@@ -326,8 +326,9 @@ class OpinionDynamics:
         noise_rate: float = 0.01,
         epsilon: float = 0.3,
         use_zealots: bool = False,
-        media_bias: float = 0.0,  # NEW: Media position (-1 to +1 for continuous)
-        media_strength: float = 0.0,  # NEW: Influence strength (0 to 1)
+        media_bias: float = 0.0,
+        media_strength: float = 0.0,
+        system: str = "PR",  # NEW: 'FPTP' or 'PR' (affects susceptibility)
     ) -> np.ndarray:
         """
         Run one step of opinion dynamics.
@@ -338,16 +339,25 @@ class OpinionDynamics:
             noise_rate: Mutation probability (noisy voter)
             epsilon: Confidence bound (bounded confidence)
             use_zealots: Whether to apply zealot constraints
-            media_bias: Broadcast media position (for continuous opinions: -1 to +1)
-            media_strength: How strongly media shifts opinions (0 = no effect, 1 = strong)
+            media_bias: Broadcast media position (-1 to +1)
+            media_strength: How strongly media shifts opinions (0-1)
+            system: "FPTP" or "PR". Raducha et al. suggest Plurality systems
+                   are more susceptible to polarization/waves.
             
         Returns:
             Updated opinions
         """
+        # Apply Electoral System Susceptibility (Raducha et al.)
+        # Plurality (FPTP) systems are more susceptible to mobilization/media effects
+        # due to the "mechanical effect" amplifying perceived swings.
+        effective_media_strength = media_strength
+        if system == "FPTP":
+            effective_media_strength *= 1.5  # Higher susceptibility in Plurality
+            
         # Apply media influence first (for continuous opinions models)
-        if media_strength > 0 and model == "bounded_confidence":
+        if effective_media_strength > 0 and model == "bounded_confidence":
             # Media pulls opinions toward the broadcast position
-            media_pull = media_strength * (media_bias - opinions)
+            media_pull = effective_media_strength * (media_bias - opinions)
             opinions = opinions + media_pull
             opinions = np.clip(opinions, -1, 1)
         
@@ -355,7 +365,7 @@ class OpinionDynamics:
             n_parties = int(opinions.max()) + 1
             
             # For discrete opinions, media bias increases probability of switching to favored party
-            if media_strength > 0:
+            if effective_media_strength > 0:
                 # Media-influenced random mutations favor the party closest to media_bias
                 # (Party 0 = left, higher = right in a left-right spectrum)
                 # This is a simplified model: mutation targets the media-favored party more often

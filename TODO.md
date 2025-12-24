@@ -80,7 +80,7 @@
 - [x] **P2** Efficiency Gap ✓
 - [x] **P2** Loosemore-Hanby Index ✓
 - [x] **P2** Herfindahl-Hirschman Index ✓
-- [ ] **P4** VSE — voting system efficiency
+- [x] **P4** VSE ✓ — voting system efficiency (vse.py)
 
 ---
 

@@ -961,6 +961,16 @@ class TestP4Features:
         # Parties should be closer to center now (lower absolute sum)
         assert final_dist < init_dist
 
+    def test_vse_metric(self):
+        """Test VSE calculation integration."""
+        from electoral_sim import ElectionModel
+        model = ElectionModel(n_voters=50, seed=42)
+        res = model.run_election()
+        assert "vse" in res
+        # VSE is usually between -1 and 1, but bounded by optimal (1).
+        # We just check it's a float.
+        assert isinstance(res["vse"], float)
+
 
 # =============================================================================
 # MAIN - Run tests directly

@@ -170,8 +170,8 @@
 - [ ] **P3** Brazil — Largest PR system, 513 deputies
 - [ ] **P3** France — Two-round system
 - [ ] **P3** Japan — Mixed-member parallel
-- [ ] **P4** Australia — STV for Senate, IRV for House
-- [ ] **P4** South Africa — Pure PR
+- [x] **P4** Australia — STV for Senate, IRV for House ✓
+- [x] **P4** South Africa — Pure PR ✓
 - [x] **P5** EU Parliament ✓ — 27 member states, 720 MEPs, 8 political groups
 
 ---
@@ -212,12 +212,12 @@
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
 | **P3** | 18 | 17 | 1 |
-| **P4** | 7 | 6 | 1 |
+| **P4** | 10 | 8 | 2 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
 - **Phase 3 (P3)**: 🔄 94% — 17/18 done, 1 remaining (Maps)
-- **Phase 4 (P4)**: 🔄 86% — 6/7 done
+- **Phase 4 (P4)**: 🔄 80% — 8/10 done (Adaptive Strategy, Events, VSE, Tradeoffs, Duverger, Presets)
 ```

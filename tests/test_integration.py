@@ -1022,6 +1022,36 @@ class TestP4Features:
         assert "vote_shares" in history_fptp[0]
         assert "enp" in history_fptp[0]
 
+    def test_country_presets_p4(self):
+        """Test the new P4 country presets (Australia, South Africa)."""
+        from electoral_sim import ElectionModel, australia_house_config, south_africa_config
+        
+        # Test Australia House
+        config_au = australia_house_config(n_voters=2000)
+        model_au = ElectionModel(
+            n_voters=config_au.n_voters,
+            n_constituencies=config_au.n_constituencies,
+            parties=config_au.get_party_dicts(),
+            electoral_system=config_au.electoral_system,
+            seed=42
+        )
+        res_au = model_au.run_election()
+        assert "seats" in res_au
+        assert len(res_au["seats"]) == len(config_au.parties)
+        
+        # Test South Africa
+        config_sa = south_africa_config(n_voters=2000)
+        model_sa = ElectionModel(
+            n_voters=config_sa.n_voters,
+            n_constituencies=config_sa.n_constituencies,
+            parties=config_sa.get_party_dicts(),
+            electoral_system=config_sa.electoral_system,
+            seed=42
+        )
+        res_sa = model_sa.run_election()
+        assert "seats" in res_sa
+        assert len(res_sa["seats"]) == len(config_sa.parties)
+
 
 # =============================================================================
 # MAIN - Run tests directly

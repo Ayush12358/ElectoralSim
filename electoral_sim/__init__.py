@@ -20,6 +20,9 @@ from electoral_sim.core.config import (
     usa_config,
     uk_config,
     germany_config,
+    australia_house_config,
+    australia_senate_config,
+    south_africa_config,
     PRESETS,
 )
 
@@ -111,6 +114,9 @@ __all__ = [
     "usa_config", 
     "uk_config",
     "germany_config",
+    "australia_house_config",
+    "australia_senate_config",
+    "south_africa_config",
     "PRESETS",
     # Allocation
     "allocate_seats",

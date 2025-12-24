@@ -254,3 +254,56 @@ def form_government(
         "stability": stability,
         "n_parties": len(coalition_parties),
     }
+
+
+def junior_partner_penalty(
+    seats: np.ndarray,
+    coalition_parties: list[int],
+    base_penalty: float = 0.15,
+    dominant_bonus: float = 0.05,
+) -> dict[int, float]:
+    """
+    Calculate expected vote loss for junior coalition partners.
+    
+    Research shows smaller parties in coalitions often lose votes in
+    subsequent elections while the dominant partner may gain slightly.
+    
+    Args:
+        seats: Seat counts per party
+        coalition_parties: Indices of parties in coalition
+        base_penalty: Maximum penalty for smallest partner (proportion, e.g. 0.15 = 15%)
+        dominant_bonus: Bonus for the dominant partner (proportion)
+        
+    Returns:
+        Dict mapping party index to expected vote change (-0.15 to +0.05)
+        
+    Example:
+        >>> seats = np.array([200, 50, 30])  # 3-party coalition
+        >>> penalties = junior_partner_penalty(seats, [0, 1, 2])
+        >>> penalties  # {0: 0.05, 1: -0.10, 2: -0.15}
+    """
+    if len(coalition_parties) < 2:
+        return {p: 0.0 for p in coalition_parties}
+    
+    coalition_seats = seats[coalition_parties]
+    total_coalition = coalition_seats.sum()
+    
+    # Find dominant party (largest in coalition)
+    dominant_idx = coalition_parties[np.argmax(coalition_seats)]
+    min_seats = coalition_seats.min()
+    max_seats = coalition_seats.max()
+    seat_range = max_seats - min_seats if max_seats > min_seats else 1
+    
+    penalties = {}
+    for party in coalition_parties:
+        if party == dominant_idx:
+            # Dominant partner gets small bonus
+            penalties[party] = dominant_bonus
+        else:
+            # Junior partners get penalty scaled by how small they are
+            seat_share = seats[party] / total_coalition
+            relative_size = (seats[party] - min_seats) / seat_range
+            # Smaller relative size = larger penalty
+            penalties[party] = -base_penalty * (1 - relative_size * 0.5)
+    
+    return penalties

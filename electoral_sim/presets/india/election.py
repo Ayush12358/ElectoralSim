@@ -116,6 +116,25 @@ STATE_PARTY_WEIGHTS = {
 # Default weights for states not specified
 DEFAULT_WEIGHTS = {"BJP": 0.40, "INC": 0.35, "Others": 0.25}
 
+# Phase-wise election schedule (2024 pattern)
+# 7 phases spanning ~6 weeks
+INDIA_ELECTION_PHASES = {
+    1: ["Assam", "Arunachal Pradesh", "Meghalaya", "Manipur", "Mizoram", "Nagaland", 
+        "Tripura", "Sikkim", "Uttarakhand", "Jammu & Kashmir", "Rajasthan"],
+    2: ["Kerala", "Karnataka", "Madhya Pradesh", "Chhattisgarh", "Maharashtra"],
+    3: ["Gujarat", "Bihar", "Jharkhand", "Odisha", "West Bengal"],
+    4: ["Andhra Pradesh", "Telangana", "Tamil Nadu", "Puducherry"],
+    5: ["Uttar Pradesh", "Punjab", "Haryana", "Delhi", "Chandigarh", 
+        "Himachal Pradesh", "Ladakh"],
+    6: ["Uttar Pradesh"],  # UP votes across multiple phases (simplified here)
+    7: ["Bihar", "Uttar Pradesh", "West Bengal"],  # Remaining constituencies
+}
+
+
+def get_phase_states() -> dict[int, list[str]]:
+    """Get states voting in each phase."""
+    return INDIA_ELECTION_PHASES.copy()
+
 
 @dataclass
 class IndiaElectionResult:
@@ -185,7 +204,7 @@ def simulate_india_election(
     Returns:
         IndiaElectionResult with full results
     """
-    from electoral_sim import ElectionModel
+    from electoral_sim.core.model import ElectionModel
     from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
     
     rng = np.random.default_rng(seed)

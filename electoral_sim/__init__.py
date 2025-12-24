@@ -4,65 +4,16 @@ ElectoralSim - Generic Electoral Simulation Toolkit
 
 A modular agent-based modeling toolkit for electoral systems, 
 voter behavior, and political dynamics using mesa-frames.
-
-Agent-based electoral simulation using mesa-frames.
-
-Quick Start
------------
-    # Simple usage
-    from electoral_sim import ElectionModel
-    
-    model = ElectionModel(n_voters=100_000)
-    results = model.run_election()
-    print(f"Turnout: {results['turnout']:.1%}")
-    print(f"Gallagher Index: {results['gallagher']:.2f}")
-
-    # Using preset
-    model = ElectionModel.from_preset("india", n_voters=500_000)
-    
-    # Using Config
-    from electoral_sim import Config
-    
-    config = Config(
-        n_voters=100_000,
-        electoral_system="PR",
-        threshold=0.05,
-    )
-    model = ElectionModel.from_config(config)
-
-    # Chainable API
-    results = (
-        ElectionModel(n_voters=100_000)
-        .with_system("PR")
-        .with_allocation("sainte_lague")
-        .run_election()
-    )
-
-Available Presets
------------------
-    - india: 543 constituencies, BJP/INC/AAP/etc
-    - usa: 435 districts, Democratic/Republican
-    - uk: 650 constituencies, Conservative/Labour/LibDem/etc
-    - germany: 299 districts, CDU/SPD/Grüne/etc with 5% threshold
-
-Modules
--------
-    - electoral_sim.model: ElectionModel, VoterAgents, PartyAgents
-    - electoral_sim.config: Config, PartyConfig, presets
-    - electoral_sim.systems: Seat allocation methods
-    - electoral_sim.metrics: Gallagher, ENP, Efficiency Gap
-    - electoral_sim.coalition: MCW, MWC, strain
-    - electoral_sim.government: Collapse models, stability
 """
 
 __version__ = "0.1.0"
 
 # =============================================================================
-# CORE API
+# FACADE API (Backward Compatibility)
 # =============================================================================
 
-from electoral_sim.model import ElectionModel
-from electoral_sim.config import (
+from electoral_sim.core.model import ElectionModel
+from electoral_sim.core.config import (
     Config,
     PartyConfig,
     india_config,
@@ -72,10 +23,7 @@ from electoral_sim.config import (
     PRESETS,
 )
 
-# =============================================================================
-# ELECTORAL SYSTEMS
-# =============================================================================
-
+# Electoral Systems
 from electoral_sim.systems.allocation import (
     dhondt_allocation,
     sainte_lague_allocation,
@@ -83,38 +31,6 @@ from electoral_sim.systems.allocation import (
     droop_quota_allocation,
     allocate_seats,
 )
-
-# =============================================================================
-# METRICS
-# =============================================================================
-
-from electoral_sim.metrics.indices import (
-    gallagher_index,
-    effective_number_of_parties,
-    efficiency_gap,
-)
-
-# =============================================================================
-# COALITION & GOVERNMENT
-# =============================================================================
-
-from electoral_sim.coalition import (
-    minimum_winning_coalitions,
-    minimum_connected_winning,
-    coalition_strain,
-    form_government,
-)
-
-from electoral_sim.government import (
-    collapse_probability,
-    simulate_government_survival,
-    GovernmentSimulator,
-)
-
-# =============================================================================
-# ALTERNATIVE VOTING SYSTEMS
-# =============================================================================
-
 from electoral_sim.systems.alternative import (
     irv_election,
     stv_election,
@@ -123,38 +39,55 @@ from electoral_sim.systems.alternative import (
     generate_rankings,
 )
 
-# =============================================================================
-# OPINION DYNAMICS
-# =============================================================================
-
-from electoral_sim.opinion_dynamics import OpinionDynamics
-
-# =============================================================================
-# INDIA ELECTION SIMULATOR
-# =============================================================================
-
-from electoral_sim.india_election import (
-    simulate_india_election,
-    IndiaElectionResult,
-    INDIA_STATES,
-    INDIA_PARTIES,
+# Metrics
+from electoral_sim.metrics.indices import (
+    gallagher_index,
+    effective_number_of_parties,
+    efficiency_gap,
 )
 
-# =============================================================================
-# VOTER BEHAVIOR
-# =============================================================================
-
-from electoral_sim.voter_behavior import (
+# Behavior & Dynamics
+from electoral_sim.behavior.voter_behavior import (
     BehaviorEngine,
     ProximityModel,
     ValenceModel,
     RetrospectiveModel,
     StrategicVotingModel,
 )
+from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
 
-# =============================================================================
-# PUBLIC API
-# =============================================================================
+# Engine & Logic
+from electoral_sim.engine.coalition import (
+    minimum_winning_coalitions,
+    minimum_connected_winning,
+    coalition_strain,
+    form_government,
+)
+from electoral_sim.engine.government import (
+    collapse_probability,
+    simulate_government_survival,
+    GovernmentSimulator,
+)
+
+# Presets
+from electoral_sim.presets.india.election import (
+    simulate_india_election,
+    IndiaElectionResult,
+    INDIA_STATES,
+    INDIA_PARTIES,
+)
+
+# Visualization (optional - requires matplotlib)
+try:
+    from electoral_sim.visualization.charts import (
+        plot_seat_distribution,
+        plot_vote_shares,
+        plot_seats_vs_votes,
+        plot_election_summary,
+    )
+    _VIZ_AVAILABLE = True
+except ImportError:
+    _VIZ_AVAILABLE = False
 
 __all__ = [
     # Core
@@ -183,26 +116,29 @@ __all__ = [
     "gallagher_index",
     "effective_number_of_parties",
     "efficiency_gap",
-    # Coalition
-    "minimum_winning_coalitions",
-    "minimum_connected_winning",
-    "coalition_strain",
-    "form_government",
-    # Government
-    "collapse_probability",
-    "simulate_government_survival",
-    "GovernmentSimulator",
-    # Opinion Dynamics
-    "OpinionDynamics",
-    # India Election
-    "simulate_india_election",
-    "IndiaElectionResult",
-    "INDIA_STATES",
-    "INDIA_PARTIES",
-    # Voter Behavior
+    # Behavior & Dynamics
     "BehaviorEngine",
     "ProximityModel",
     "ValenceModel",
     "RetrospectiveModel",
     "StrategicVotingModel",
+    "OpinionDynamics",
+    # Engine
+    "minimum_winning_coalitions",
+    "minimum_connected_winning",
+    "coalition_strain",
+    "form_government",
+    "collapse_probability",
+    "simulate_government_survival",
+    "GovernmentSimulator",
+    # India Election
+    "simulate_india_election",
+    "IndiaElectionResult",
+    "INDIA_STATES",
+    "INDIA_PARTIES",
+    # Visualization
+    "plot_seat_distribution",
+    "plot_vote_shares",
+    "plot_seats_vs_votes",
+    "plot_election_summary",
 ]

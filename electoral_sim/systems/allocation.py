@@ -214,7 +214,7 @@ def allocate_seats(
     """
     # Try Numba-accelerated versions for dhondt/sainte_lague
     try:
-        from electoral_sim.numba_accel import dhondt_fast, sainte_lague_fast, NUMBA_AVAILABLE
+        from electoral_sim.engine.numba_accel import dhondt_fast, sainte_lague_fast, NUMBA_AVAILABLE
         if NUMBA_AVAILABLE and method in ("dhondt", "sainte_lague"):
             if method == "dhondt":
                 return dhondt_fast(votes, n_seats, threshold)

@@ -87,7 +87,7 @@ def main():
 
 def list_presets():
     """List available country presets."""
-    from electoral_sim.config import PRESETS
+    from electoral_sim.core.config import PRESETS
     
     print("Available presets:")
     print("-" * 40)

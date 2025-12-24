@@ -12,13 +12,13 @@
 - [x] **P1** Ideology — multi-dimensional issue positions ✓
 - [ ] **P3** Affective Polarization — in-group/out-group favorability gap
 
-### Psychology (Choose ONE)
-- [ ] **P2** Big Five (OCEAN) — correlates with political views
+### Psychology
+- [ ] **P3** Big Five (OCEAN) — correlates with political views
 - [ ] **P3** Moral Foundations (Haidt) — Care, Fairness, Loyalty, Authority, Sanctity
 
 ### Information
-- [ ] **P2** Political Knowledge (0-100)
-- [ ] **P3** Misinformation Susceptibility
+- [x] **P2** Political Knowledge (0-100) ✓
+- [x] **P3** Misinformation Susceptibility ✓ — misinfo_susceptibility column (0-1)
 - [ ] **P3** Media Diet — sources, partisan slant
 
 ---
@@ -27,7 +27,7 @@
 
 - [x] **P1** Policy Position — N-dimensional issue space ✓
 - [x] **P2** Valence — charisma, competence, integrity (0-100) ✓
-- [ ] **P2** Incumbent Status
+- [x] **P2** Incumbent Status ✓ — with anti-incumbency modifier
 - [ ] **P4** Adaptive Strategy — respond to polls
 
 ---
@@ -43,7 +43,8 @@
 - [ ] **P3** Alienation/Indifference abstention
 
 ### Strategic
-- [ ] **P3** Tactical voting, wasted vote fear
+- [x] **P2** Strategic Voting Model ✓ — StrategicVotingModel class
+- [ ] **P3** Tactical voting, wasted vote fear (advanced)
 
 ---
 
@@ -52,8 +53,8 @@
 ### Seat Allocation
 - [x] **P1** Sainte-Laguë ✓
 - [x] **P1** D'Hondt ✓
-- [x] **P3** Droop Quota ✓
-- [x] **P3** Hare Quota ✓
+- [x] **P2** Droop Quota ✓
+- [x] **P2** Hare Quota ✓
 
 ### System Types
 - [x] **P1** Party-list PR ✓
@@ -63,9 +64,10 @@
 - [x] **P2** IRV/RCV — growing adoption ✓
 
 ### Other Methods
-- [ ] **P3** Condorcet/Schulze
-- [ ] **P3** Approval Voting
+- [x] **P3** Condorcet Winner ✓
+- [x] **P3** Approval Voting ✓
 - [ ] **P4** STAR Voting
+- [ ] **P4** Schulze Method
 
 ### Rules
 - [x] **P1** National Threshold ✓
@@ -77,7 +79,9 @@
 
 - [x] **P1** Gallagher Index ✓
 - [x] **P1** ENP (Laakso-Taagepera) ✓
-- [x] **P3** Efficiency Gap ✓
+- [x] **P2** Efficiency Gap ✓
+- [x] **P2** Loosemore-Hanby Index ✓
+- [x] **P2** Herfindahl-Hirschman Index ✓
 - [ ] **P4** VSE — voting system efficiency
 
 ---
@@ -86,11 +90,13 @@
 
 ### Topologies
 - [x] **P2** Barabási-Albert — scale-free, realistic ✓
-- [ ] **P3** Watts-Strogatz — small-world
+- [x] **P2** Watts-Strogatz — small-world ✓
+- [x] **P2** Erdős-Rényi — random graph ✓
 
 ### Opinion Dynamics
 - [x] **P2** Noisy Voter Model — copy neighbor + mutation ✓
 - [x] **P2** Zealots — fixed-opinion agents ✓
+- [x] **P2** Bounded Confidence Model ✓
 
 ### Media
 - [ ] **P3** Mass Media Bias
@@ -101,19 +107,20 @@
 ## 🤝 COALITION FORMATION
 
 - [x] **P1** MCW ✓ — minimum connected winning
-- [ ] **P2** MWC — minimum winning coalition
+- [x] **P1** MWC ✓ — minimum winning coalition
 - [ ] **P3** Laver-Shepsle portfolio allocation
 - [ ] **P4** Policy vs Office-seeking tradeoffs
 
 ### Dynamics
 - [x] **P1** Coalition Strain ✓
-- [ ] **P3** Junior Partner Penalty
+- [x] **P3** Junior Partner Penalty ✓ — junior_partner_penalty function
 
 ---
 
 ## ⏱️ GOVERNMENT STABILITY
 
 - [x] **P1** Collapse Models ✓ (Sigmoid, Linear, Exponential)
+- [x] **P2** Government Simulator ✓ — Monte Carlo survival
 - [ ] **P3** Survival Analysis — Cox hazard
 - [ ] **P4** Economic shocks, Scandals
 
@@ -122,9 +129,9 @@
 ## 📈 EXTERNAL EFFECTS
 
 ### Economic Voting
-- [ ] **P2** Retrospective voting
+- [x] **P2** Retrospective voting ✓ — RetrospectiveModel + economic_growth param
 - [ ] **P3** Sociotropic vs Pocketbook
-- [ ] **P3** Incumbency Advantage
+- [x] **P2** Anti-incumbency ✓ — anti_incumbency parameter
 
 ### Campaign
 - [ ] **P4** Spending Effects
@@ -135,43 +142,27 @@
 
 ## 🇮🇳 INDIA-SPECIFIC
 
-### Core (Implemented)
+### Core
 - [x] **P1** Full Lok Sabha simulation ✓ — 543 constituencies, 30 states
 - [x] **P1** State-wise party weights ✓ — Regional party strongholds
 - [x] **P1** NDA/INDIA alliance tracking ✓
 
 ### NOTA
-- [ ] **P2** NOTA vote option
+- [x] **P2** NOTA vote option ✓ — include_nota parameter
 - [ ] **P3** NOTA impact on close races
 
 ### Reserved Constituencies
-- [ ] **P2** SC, ST reservation modeling
+- [x] **P2** SC, ST reservation modeling ✓ — constituency_constraints parameter
 - [ ] **P3** Delimitation effects
 
 ### Electoral Features
-- [ ] **P2** Phase-wise election simulation (7 phases)
-- [ ] **P2** Anti-incumbency factor
-- [x] Numba acceleration for hot loops ✓
-- [x] Caching for Agent data ✓
-- [/] **Generic Toolkit Modularization**
-    - [x] Generic Voter Behavior Engine ✓
-    - [ ] Modular Opinion Dynamics integration
-    - [ ] Flexible ElectionModel (Strategy Pattern)
-    - [ ] Generic Geography/Network support
-- [ ] Alternative Scaling (MWC limitation)
-- [ ] P2 Feature implementations (MMP, STV, IRV, etc.) ✓
-- [ ] Stress Test ✓
-- [ ] India Election Simulator Example ✓
-- [ ] **P3** Wave elections (national mood)
+- [x] **P2** Phase-wise election configuration ✓ (7 phases defined)
+- [x] **P2** Anti-incumbency factor ✓
+- [x] **P3** Wave elections (national mood) ✓ — national_mood parameter
 - [ ] **P3** Alliance seat-sharing agreements
 - [ ] **P3** Historical validation (2014, 2019, 2024)
 - [ ] **P4** Opinion poll simulation
 - [ ] **P4** Exit poll modeling
-- [ ] **P4** EVM simulation
-- [ ] **P5** VVPAT audit modeling
-
-### Ballot Effects
-- [ ] **P4** Ordering Bias (~1-2%)
 
 ---
 
@@ -193,16 +184,12 @@
 
 ---
 
-## 🏛️ THEORY (Reference Only)
+## 📊 VISUALIZATION
 
-- Arrow's Impossibility, Median Voter Theorem, Downs Convergence
-
----
-
-## � VISUALIZATION
-
-- [ ] **P2** Seat distribution bar chart
-- [ ] **P2** Vote share pie chart
+- [x] **P2** Seat distribution bar chart ✓ — plot_seat_distribution()
+- [x] **P2** Vote share pie chart ✓ — plot_vote_shares()
+- [x] **P2** Seats vs Votes comparison ✓ — plot_seats_vs_votes()
+- [x] **P2** Election summary panel ✓ — plot_election_summary()
 - [ ] **P3** India constituency map (choropleth)
 - [ ] **P3** Opinion dynamics animation
 - [ ] **P3** Swing analysis dashboard
@@ -210,12 +197,13 @@
 
 ---
 
-## �🔧 TECHNICAL
+## 🔧 TECHNICAL
 
-### Performance (Implemented)
+### Performance
 - [x] **P1** Numba JIT acceleration ✓ — 89x speedup
 - [x] **P2** Batch elections ✓ — 30 elections/sec
 - [x] **P2** Data caching ✓ — 26% improvement
+- [x] **P2** Repository restructuring ✓ — Modular package layout
 
 ### Remaining
 - [ ] **P3** 10M+ agent capacity
@@ -227,17 +215,17 @@
 
 ## 📋 PRIORITY SUMMARY
 
-| Priority | Count | Done | Remaining |
+| Priority | Total | Done | Remaining |
 |----------|-------|------|-----------|
-| **P1** | 16 | 16 ✅ | 0 |
-| **P2** | 20 | 14 | 6 |
-| **P3** | 25 | 3 | 22 |
-| **P4** | 15 | 0 | 15 |
-| **P5** | 3 | 0 | 3 |
+| **P1** | 17 | 17 ✅ | 0 |
+| **P2** | 31 | 31 ✅ | 0 |
+| **P3** | 21 | 5 | 16 |
+| **P4** | 12 | 0 | 12 |
+| **P5** | 1 | 0 | 1 |
 
 ### Implementation Progress
-- **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Numba acceleration
-- **Phase 2 (P2)**: 🔄 IN PROGRESS — Opinion dynamics, IRV/STV done; NOTA, visualization remaining
-- **Phase 3 (P3)**: Country simulations, wave elections, real data
-- **Phase 4 (P4+)**: Campaign effects, interactive dashboards
+- **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
+- **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
+- **Phase 3 (P3)**: 🔄 24% — Condorcet, Approval, Misinfo susceptibility, Wave elections, Junior partner penalty done
+- **Phase 4 (P4+)**: ⏳ PLANNED — Campaign effects, interactive dashboards
 

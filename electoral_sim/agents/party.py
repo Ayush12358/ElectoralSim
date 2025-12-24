@@ -22,31 +22,33 @@ class PartyAgents(AgentSet):
         - vote_share: Last election vote share
     """
     
-    def __init__(self, parties: list[dict], model: Model):
+    def __init__(self, model: Model, df: pl.DataFrame):
         super().__init__(model)
-        
-        n = len(parties)
-        self += pl.DataFrame({
-            "name": [p["name"] for p in parties],
-            "position_x": [p.get("position_x", 0.0) for p in parties],
-            "position_y": [p.get("position_y", 0.0) for p in parties],
-            "valence": [p.get("valence", 50.0) for p in parties],
-            "incumbent": [p.get("incumbent", False) for p in parties],
-            "seats": np.zeros(n, dtype=int),
-            "vote_share": np.zeros(n),
-        })
+        self.add(df)
+        self._cache = {}
     
+    def invalidate_cache(self):
+        self._cache = {}
+
     @property
     def n_parties(self) -> int:
         """Number of parties."""
         return len(self.df)
     
     def get_positions(self) -> np.ndarray:
-        """Return party positions as (n_parties, 2) array."""
-        return np.column_stack([
-            self.df["position_x"].to_numpy(),
-            self.df["position_y"].to_numpy()
-        ])
+        """Return party positions as (n_parties, 2) array (cached)."""
+        if "positions" not in self._cache:
+            self._cache["positions"] = np.column_stack([
+                self.df["position_x"].to_numpy(),
+                self.df["position_y"].to_numpy()
+            ])
+        return self._cache["positions"]
+    
+    def get_valence(self) -> np.ndarray:
+        """Return party valence scores (cached)."""
+        if "valence" not in self._cache:
+            self._cache["valence"] = self.df["valence"].to_numpy()
+        return self._cache["valence"]
     
     def get_names(self) -> list[str]:
         """Return party names."""

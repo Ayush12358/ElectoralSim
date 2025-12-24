@@ -69,7 +69,7 @@
 
 ### Rules
 - [x] **P1** National Threshold ✓
-- [ ] **P4** Duverger's Law simulation
+- [x] **P4** Duverger's Law simulation ✓ — duverger.py
 
 ---
 
@@ -212,12 +212,12 @@
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
 | **P3** | 18 | 17 | 1 |
-| **P4** | 7 | 5 | 2 |
+| **P4** | 7 | 6 | 1 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
 - **Phase 3 (P3)**: 🔄 94% — 17/18 done, 1 remaining (Maps)
-- **Phase 4 (P4)**: 🔄 71% — 5/7 done
+- **Phase 4 (P4)**: 🔄 86% — 6/7 done
 ```

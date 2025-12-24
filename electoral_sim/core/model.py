@@ -23,7 +23,6 @@ from electoral_sim.core.voter_generation import generate_voter_frame, generate_p
 from electoral_sim.core.counting import count_fptp, count_pr
 from electoral_sim.events.event_manager import EventManager
 from electoral_sim.agents.party_strategy import adaptive_strategy_step
-from electoral_sim.analysis.vse import calculate_vse
 
 from electoral_sim.agents.voter import VoterAgents
 from electoral_sim.agents.party import PartyAgents
@@ -404,7 +403,8 @@ class ElectionModel(Model):
             'positions': self.parties.get_positions(),
             'valence': valence,
             'incumbents': self.parties.df["incumbent"].to_numpy() if "incumbent" in self.parties.df.columns else np.zeros(len(self.parties), dtype=bool),
-            'df': self.parties.df
+            'df': self.parties.df,
+            'viability': kwargs.get('viability')  # P4: Support for strategic voting inputs
         }
         
         # Pass economic growth to behavior engine for retrospective voting
@@ -554,6 +554,7 @@ class ElectionModel(Model):
             else:
                 seat_shares = np.array(results["vote_counts"]) / np.sum(results["vote_counts"])
             
+            from electoral_sim.analysis.vse import calculate_vse
             vse_score = calculate_vse(utilities, seat_shares)
             results["vse"] = vse_score
 

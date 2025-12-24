@@ -1001,6 +1001,27 @@ class TestP4Features:
         assert 2 in c2 # Must include C (center)
         assert sorted(c2) != [0, 1]
 
+    def test_duvergers_law_simulation(self):
+        """Test Duverger's Law simulation runs and ENP trends."""
+        from electoral_sim.analysis.duverger import run_duverger_experiment
+        
+        # Run FPTP simulation: 5 parties, strategic voting
+        history_fptp = run_duverger_experiment(
+            n_voters=500, n_parties=5, n_steps=8, system="FPTP", seed=42
+        )
+        
+        assert len(history_fptp) == 8
+        init_enp = history_fptp[0]["enp"]
+        final_enp = history_fptp[-1]["enp"]
+        
+        # ENP should drop significantly (Initial is ~4.8-5)
+        # With strategic voting, it should drop well below 4.
+        assert final_enp < 4.0
+        
+        # Check structure
+        assert "vote_shares" in history_fptp[0]
+        assert "enp" in history_fptp[0]
+
 
 # =============================================================================
 # MAIN - Run tests directly

@@ -138,8 +138,6 @@ class ElectionModel(Model):
         threshold: float = 0.0,
         temperature: float = 0.5,
         seed: int | None = None,
-        *,
-        _from_config: bool = False,  # Internal flag
     ):
         super().__init__(seed)
         
@@ -475,9 +473,8 @@ class ElectionModel(Model):
         seats = np.zeros(self.n_parties, dtype=np.int64)
         vote_counts = np.zeros(self.n_parties, dtype=np.int64)
         
-        # Count total votes per party
-        for p in range(self.n_parties):
-            vote_counts[p] = (votes == p).sum()
+        # Count total votes per party (vectorized)
+        vote_counts = np.bincount(votes, minlength=self.n_parties).astype(np.int64)
         
         # Determine winner in each constituency
         for c in range(self.n_constituencies):
@@ -499,16 +496,12 @@ class ElectionModel(Model):
     
     def _count_pr(self, votes: np.ndarray) -> dict:
         """Proportional Representation with seat allocation."""
-        vote_counts = np.zeros(self.n_parties, dtype=np.int64)
+        # Vectorized vote counting
+        vote_counts = np.bincount(votes, minlength=self.n_parties).astype(np.int64)
         
-        for p in range(self.n_parties):
-            vote_counts[p] = (votes == p).sum()
-        
-        # Allocate seats
-        if self.allocation_method == "sainte_lague":
-            seats = sainte_lague_allocation(vote_counts, self.n_constituencies, self.threshold)
-        else:
-            seats = dhondt_allocation(vote_counts, self.n_constituencies, self.threshold)
+        # Allocate seats using registry for all methods
+        from electoral_sim.systems.allocation import allocate_seats
+        seats = allocate_seats(vote_counts, self.n_constituencies, self.allocation_method, self.threshold)
         
         return {
             "system": "PR",
@@ -542,19 +535,7 @@ class ElectionModel(Model):
         return self.election_results
 
 
-# =============================================================================
-# PRESET PARTY CONFIGURATIONS
-# =============================================================================
-
-INDIA_PARTIES = [
-    {"name": "BJP", "position_x": 0.4, "position_y": 0.5, "valence": 70},
-    {"name": "INC", "position_x": -0.2, "position_y": -0.1, "valence": 55},
-    {"name": "AAP", "position_x": -0.3, "position_y": -0.3, "valence": 50},
-    {"name": "TMC", "position_x": -0.1, "position_y": 0.1, "valence": 45},
-    {"name": "DMK", "position_x": -0.4, "position_y": -0.4, "valence": 45},
-    {"name": "SP", "position_x": -0.2, "position_y": 0.2, "valence": 40},
-    {"name": "Others", "position_x": 0.0, "position_y": 0.0, "valence": 30},
-]
+# Party presets moved to electoral_sim.config
 
 
 # =============================================================================

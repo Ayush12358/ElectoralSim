@@ -213,8 +213,8 @@ class GovernmentSimulator:
             model=self.model,
         )
         
-        # Adjust for recent events
-        recent_events = [e for e in self.events if e["month"] >= self.months_in_office - 3]
+        # Adjust for recent events (within last 3 months)
+        recent_events = [e for e in self.events if e["month"] >= self.months_in_office - 3 and e["month"] <= self.months_in_office]
         if recent_events:
             event_boost = sum(e["severity"] * 0.1 for e in recent_events)
             prob = min(1.0, prob + event_boost)

@@ -11,7 +11,8 @@ Simulates Lok Sabha elections with:
 import numpy as np
 import time
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Dict, Any, Optional
+import polars as pl
 
 
 # =============================================================================
@@ -153,6 +154,8 @@ class IndiaElectionResult:
     # NOTA close race detection
     nota_contested_seats: int = 0  # Seats where NOTA > victory margin
     nota_contested_list: List[str] = field(default_factory=list)  # List of "State: Constituency #"
+    voter_df: Optional[pl.DataFrame] = None
+    party_positions: Optional[np.ndarray] = None
     
     def __str__(self):
         lines = ["=" * 60]
@@ -277,6 +280,7 @@ def simulate_india_election(
     start_time = time.perf_counter()
     
     global_const_id = 0
+    voter_df_sample = None
     # Simulate each state
     for state, n_constituencies in INDIA_STATES.items():
         if verbose:
@@ -414,6 +418,19 @@ def simulate_india_election(
             top_party = max(state_seats.items(), key=lambda x: x[1])
             print(f"done ({state_time*1000:.0f}ms) - {top_party[0]}: {top_party[1]} seats")
         
+        # Sample for visualization
+        state_voter_df = pl.DataFrame({
+            "ideology_x": base_ideology_x,
+            "ideology_y": base_ideology_y,
+            "vote": [party_names[v] for v in votes],
+            "state": state
+        })
+        state_sample = state_voter_df.sample(min(100, len(state_voter_df)), seed=seed)
+        if voter_df_sample is None:
+            voter_df_sample = state_sample
+        else:
+            voter_df_sample = pl.concat([voter_df_sample, state_sample])
+
         global_const_id += n_constituencies
     
     # Calculate metrics
@@ -440,6 +457,11 @@ def simulate_india_election(
     
     if verbose:
         print(f"\nTotal simulation time: {elapsed:.2f}s")
+        
+    # Collect party positions for mapping
+    # We take the positions from the last used config logic
+    # (Since INDIA_PARTIES is global, we can use that)
+    party_pos = np.array([[p["position_x"], p["position_y"]] for p in INDIA_PARTIES.values()])
     
     return IndiaElectionResult(
         seats=all_seats,
@@ -454,6 +476,8 @@ def simulate_india_election(
         others_seats=others_seats,
         nota_contested_seats=nota_contested_seats,
         nota_contested_list=nota_contested_list,
+        voter_df=voter_df_sample if 'voter_df_sample' in locals() else None,
+        party_positions=party_pos
     )
 
 

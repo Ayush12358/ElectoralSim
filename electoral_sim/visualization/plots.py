@@ -311,6 +311,54 @@ def plot_election_summary(
     return fig
 
 
+def plot_ideological_space(
+    voter_positions: np.ndarray,
+    party_positions: np.ndarray,
+    party_names: list[str],
+    colors: Optional[list[str]] = None,
+    title: str = "Ideological Space (Economic vs Social)",
+    figsize: tuple = (10, 8),
+) -> "plt.Figure":
+    """
+    Plot 2D scatter of voter opinions and party positions.
+    """
+    _check_matplotlib()
+    
+    if colors is None:
+        colors = DEFAULT_COLORS[:len(party_names)]
+    
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    # Plot voters with low alpha to show density
+    ax.scatter(
+        voter_positions[:, 0], voter_positions[:, 1], 
+        c='gray', alpha=0.1, s=2, label="Voters"
+    )
+    
+    # Plot parties with large markers
+    for i, name in enumerate(party_names):
+        ax.scatter(
+            party_positions[i, 0], party_positions[i, 1], 
+            marker='*', s=300, color=colors[i % len(colors)],
+            edgecolor='black', label=name, zorder=5
+        )
+    
+    ax.set_xlabel("Economic Axis (Left <-> Right)")
+    ax.set_ylabel("Social Axis (Lib <-> Auth)")
+    ax.set_title(title, fontsize=14, fontweight='bold')
+    ax.grid(alpha=0.3)
+    ax.axhline(0, color='black', alpha=0.2)
+    ax.axvline(0, color='black', alpha=0.2)
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+    
+    # Legend outside to the right
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    plt.tight_layout()
+    return fig
+
+
 # =============================================================================
 # Quick test
 # =============================================================================

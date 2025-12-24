@@ -13,6 +13,7 @@ from mesa_frames import AgentSet, Model, DataCollector
 
 from electoral_sim.systems.allocation import dhondt_allocation, sainte_lague_allocation
 from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
+from electoral_sim.numba_accel import vote_mnl_fast, fptp_count_numba, NUMBA_AVAILABLE
 
 
 # =============================================================================
@@ -404,20 +405,11 @@ class ElectionModel(Model):
         """
         Multinomial logit voting: P(j) = exp(U_j/τ) / Σexp(U_k/τ)
         
+        Uses Numba acceleration when available (~10x faster).
+        
         Returns array of vote choices (party indices).
         """
-        # Softmax with temperature (numerically stable)
-        scaled = utilities / self.temperature
-        scaled -= scaled.max(axis=1, keepdims=True)
-        exp_utils = np.exp(scaled)
-        probs = exp_utils / exp_utils.sum(axis=1, keepdims=True)
-        
-        # Vectorized multinomial sampling
-        cumprobs = np.cumsum(probs, axis=1)
-        random_vals = self.random.random((len(probs), 1))
-        votes = (random_vals > cumprobs).sum(axis=1)
-        
-        return votes
+        return vote_mnl_fast(utilities, self.temperature, self.random)
     
     def _decide_turnout(self) -> np.ndarray:
         """Determine which voters turn out based on turnout probability."""

@@ -201,6 +201,8 @@ def allocate_seats(
     """
     Allocate seats using specified method.
     
+    Uses Numba acceleration when available for dhondt/sainte_lague.
+    
     Args:
         votes: Vote counts per party
         n_seats: Total seats
@@ -210,6 +212,18 @@ def allocate_seats(
     Returns:
         Seats per party
     """
+    # Try Numba-accelerated versions for dhondt/sainte_lague
+    try:
+        from electoral_sim.numba_accel import dhondt_fast, sainte_lague_fast, NUMBA_AVAILABLE
+        if NUMBA_AVAILABLE and method in ("dhondt", "sainte_lague"):
+            if method == "dhondt":
+                return dhondt_fast(votes, n_seats, threshold)
+            else:
+                return sainte_lague_fast(votes, n_seats, threshold)
+    except ImportError:
+        pass
+    
+    # Fallback to Python implementations
     if method not in ALLOCATION_METHODS:
         raise ValueError(f"Unknown method: {method}. Use one of {list(ALLOCATION_METHODS.keys())}")
     

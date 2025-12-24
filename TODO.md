@@ -198,7 +198,7 @@
 - [x] **P2** Repository restructuring ✓ — Modular package layout
 
 ### Remaining
-- [ ] **P3** 10M+ agent capacity
+- [x] **P3** 10M+ agent capacity ✓ — Optimized via float32/int8 dtypes
 - [x] **P3** Real constituency data integration ✓ — constituency.py, india_pc.py
 - [ ] **P3** Historical election data loading
 - [ ] **P4** GPU support (CuPy)
@@ -211,13 +211,13 @@
 |----------|-------|------|-----------|
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 19 | 19 ✅ | 0 |
+| **P3** | 20 | 20 ✅ | 0 |
 | **P4** | 10 | 8 | 2 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: ✅ COMPLETE — 19/19 done (Affective Polarization, Big Five, Moral Foundations, Misinfo, Media Diet, Turnout, Tactical Voting, Wave Elections, Presets, Real Data)
+- **Phase 3 (P3)**: ✅ COMPLETE — 20/20 done (Psychology, Misinfo, Media, Turnout, Tactical, Wave, Presets, Real Data, 10M Scale)
 - **Phase 4 (P4)**: 🔄 80% — 8/10 done (Adaptive Strategy, Events, VSE, Tradeoffs, Duverger, Presets)
 ```

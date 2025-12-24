@@ -218,37 +218,37 @@ def generate_voter_frame(
     
     return pl.DataFrame({
         # Demographics
-        "constituency": rng.integers(0, n_constituencies, size=n_voters),
-        "age": age,
-        "gender": gender,
-        "education": education,
-        "income": income.astype(np.float64),
-        "religion": religion,
+        "constituency": rng.integers(0, n_constituencies, size=n_voters).astype(np.int32),
+        "age": age.astype(np.int8),
+        "gender": gender.astype(np.int8),
+        "education": education.astype(np.int8),
+        "income": income.astype(np.float32),
+        "religion": religion.astype(np.int8),
         # Political identity
-        "party_id_7pt": party_id_7pt,  # -3 to +3 scale
-        "ideology_x": ideology_x,
-        "ideology_y": ideology_y,
+        "party_id_7pt": party_id_7pt.astype(np.int8),  # -3 to +3 scale
+        "ideology_x": ideology_x.astype(np.float32),
+        "ideology_y": ideology_y.astype(np.float32),
         # Big Five (OCEAN)
-        "openness": openness.astype(np.float64),
-        "conscientiousness": conscientiousness.astype(np.float64),
-        "extraversion": extraversion.astype(np.float64),
-        "agreeableness": agreeableness.astype(np.float64),
-        "neuroticism": neuroticism.astype(np.float64),
+        "openness": openness.astype(np.float32),
+        "conscientiousness": conscientiousness.astype(np.float32),
+        "extraversion": extraversion.astype(np.float32),
+        "agreeableness": agreeableness.astype(np.float32),
+        "neuroticism": neuroticism.astype(np.float32),
         # Moral Foundations
-        "mf_care": mf_care.astype(np.float64),
-        "mf_fairness": mf_fairness.astype(np.float64),
-        "mf_loyalty": mf_loyalty.astype(np.float64),
-        "mf_authority": mf_authority.astype(np.float64),
-        "mf_sanctity": mf_sanctity.astype(np.float64),
+        "mf_care": mf_care.astype(np.float32),
+        "mf_fairness": mf_fairness.astype(np.float32),
+        "mf_loyalty": mf_loyalty.astype(np.float32),
+        "mf_authority": mf_authority.astype(np.float32),
+        "mf_sanctity": mf_sanctity.astype(np.float32),
         # Media Diet
-        "media_source_id": media_choice_idx,
-        "media_bias": media_bias_values,
+        "media_source_id": media_choice_idx.astype(np.int8),
+        "media_bias": media_bias_values.astype(np.float32),
         # Knowledge & Behavior
-        "political_knowledge": political_knowledge.astype(np.float64),
-        "misinfo_susceptibility": misinfo_susceptibility.astype(np.float64),
-        "affective_polarization": affective_polarization.astype(np.float64),
-        "economic_perception": economic_perception.astype(np.float64),
-        "turnout_prob": turnout_prob,
+        "political_knowledge": political_knowledge.astype(np.float32),
+        "misinfo_susceptibility": misinfo_susceptibility.astype(np.float32),
+        "affective_polarization": affective_polarization.astype(np.float32),
+        "economic_perception": economic_perception.astype(np.float32),
+        "turnout_prob": turnout_prob.astype(np.float32),
     })
 
 

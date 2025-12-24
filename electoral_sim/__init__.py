@@ -109,6 +109,24 @@ from electoral_sim.government import (
 )
 
 # =============================================================================
+# ALTERNATIVE VOTING SYSTEMS
+# =============================================================================
+
+from electoral_sim.systems.alternative import (
+    irv_election,
+    stv_election,
+    approval_voting,
+    condorcet_winner,
+    generate_rankings,
+)
+
+# =============================================================================
+# OPINION DYNAMICS
+# =============================================================================
+
+from electoral_sim.opinion_dynamics import OpinionDynamics
+
+# =============================================================================
 # PUBLIC API
 # =============================================================================
 
@@ -129,6 +147,12 @@ __all__ = [
     "sainte_lague_allocation",
     "hare_quota_allocation",
     "droop_quota_allocation",
+    # Alternative Systems
+    "irv_election",
+    "stv_election",
+    "approval_voting",
+    "condorcet_winner",
+    "generate_rankings",
     # Metrics
     "gallagher_index",
     "effective_number_of_parties",
@@ -142,4 +166,6 @@ __all__ = [
     "collapse_probability",
     "simulate_government_survival",
     "GovernmentSimulator",
+    # Opinion Dynamics
+    "OpinionDynamics",
 ]

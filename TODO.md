@@ -58,9 +58,9 @@
 ### System Types
 - [x] **P1** Party-list PR ✓
 - [x] **P1** FPTP ✓
-- [ ] **P2** MMP — Germany model
-- [ ] **P2** STV — Ireland, Australia
-- [ ] **P2** IRV/RCV — growing adoption
+- [x] **P2** MMP — Germany model ✓ (via preset)
+- [x] **P2** STV — Ireland, Australia ✓
+- [x] **P2** IRV/RCV — growing adoption ✓
 
 ### Other Methods
 - [ ] **P3** Condorcet/Schulze
@@ -85,12 +85,12 @@
 ## 🌐 SOCIAL NETWORKS
 
 ### Topologies
-- [ ] **P2** Barabási-Albert — scale-free, realistic
+- [x] **P2** Barabási-Albert — scale-free, realistic ✓
 - [ ] **P3** Watts-Strogatz — small-world
 
 ### Opinion Dynamics
-- [ ] **P2** Noisy Voter Model — copy neighbor + mutation
-- [ ] **P2** Zealots — fixed-opinion agents
+- [x] **P2** Noisy Voter Model — copy neighbor + mutation ✓
+- [x] **P2** Zealots — fixed-opinion agents ✓
 
 ### Media
 - [ ] **P3** Mass Media Bias
@@ -171,7 +171,7 @@
 | Priority | Count | Done | Remaining |
 |----------|-------|------|-----------|
 | **P1** | 12 | 12 ✅ | 0 |
-| **P2** | 15 | 3 | 12 |
+| **P2** | 15 | 8 | 7 |
 | **P3** | 18 | 3 | 15 |
 | **P4** | 10 | 0 | 10 |
 | **P5** | 1 | 0 | 1 |

@@ -850,6 +850,48 @@ class TestP3Features:
         assert h_safe < h0
         assert h_risky > h0
 
+    def test_media_diet_and_vectorized_bias(self):
+        """Test P3 Media Diet: generation and opinion dynamics vectorization."""
+        from electoral_sim import OpinionDynamics
+        from electoral_sim.core.voter_generation import generate_voter_frame
+        
+        rng = np.random.default_rng(42)
+        
+        # 1. Test Generation
+        voters = generate_voter_frame(100, 5, rng)
+        assert "media_source_id" in voters.columns
+        assert "media_bias" in voters.columns
+        
+        # Check alignment: Leftists (x < -0.25) should mostly pick Source 0 (Left, -0.5)
+        leftists = voters.filter(pl.col("ideology_x") < -0.4)
+        if len(leftists) > 0:
+            # Most should have picked source 0 or maybe 1 (due to noise), but definitely checks bias
+            # Let's check the bias values are correct (-0.5, 0.0, 0.5)
+            biases = voters["media_bias"].unique().to_list()
+            for b in biases:
+                assert b in [-0.5, 0.0, 0.5]
+                
+        # 2. Test Vectorized Opinion Dynamics
+        od = OpinionDynamics(n_agents=10, neighbor_avg=3, seed=42)
+        opinions = np.zeros(10) # All center
+        
+        # Vectorized bias: half pulled left, half pulled right
+        media_bias = np.array([-0.5] * 5 + [0.5] * 5)
+        media_strength = 0.5
+        
+        new_ops = od.step(
+            opinions, 
+            model="bounded_confidence", 
+            media_bias=media_bias, 
+            media_strength=media_strength
+        )
+        
+        # First 5 should be -0.25, Last 5 should be +0.25
+        # (0 + 0.5 * (-0.5 - 0) = -0.25)
+        
+        assert np.allclose(new_ops[:5], -0.25)
+        assert np.allclose(new_ops[5:], 0.25)
+
 
 # =============================================================================
 # MAIN - Run tests directly

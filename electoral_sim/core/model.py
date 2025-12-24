@@ -555,17 +555,33 @@ class ElectionModel(Model):
         """Run one simulation step (for opinion dynamics)."""
         if self.opinion_dynamics:
             # Update ideologies based on social network
-            current_ideologies = self.voters.df["ideology_x"].to_numpy() # Example for 1D
-            # Actually OpinionDynamics.step expects opinions as class labels usually, 
-            # but we can use bounded_confidence for continuous ideologies.
-            # Let's assume we use ideology_x for now as a proof of concept.
+            # Update ideologies based on social network
+            current_ideologies_x = self.voters.get_ideology_x()
+            current_ideologies_y = self.voters.get_ideology_y()
+            
+            # Get media bias vector if available (Media Diet P3)
+            if "media_bias" in self.voters.df.columns:
+                media_bias_vector = self.voters.df["media_bias"].to_numpy()
+                media_strength = 0.05  # Standard media influence per step
+            else:
+                media_bias_vector = 0.0
+                media_strength = 0.0
+            
+            # Update X dimension (Left-Right)
             new_ideologies_x = self.opinion_dynamics.step(
-                self.voters.get_ideology_x(), 
-                model="bounded_confidence"
+                current_ideologies_x, 
+                model="bounded_confidence",
+                media_bias=media_bias_vector,
+                media_strength=media_strength
             )
+            
+            # Update Y dimension (Lib-Auth) - assume standard media centers on 0.0 for Y or reuse X
+            # For now, let's say media only affects Left-Right dimension strongly
             new_ideologies_y = self.opinion_dynamics.step(
-                self.voters.get_ideology_y(), 
-                model="bounded_confidence"
+                current_ideologies_y, 
+                model="bounded_confidence",
+                media_bias=0.0,
+                media_strength=0.0  # Minimal effect on Y
             )
             # Update the frame
             self.voters.df = self.voters.df.with_columns([

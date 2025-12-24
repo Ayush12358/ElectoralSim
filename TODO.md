@@ -19,7 +19,7 @@
 ### Information
 - [x] **P2** Political Knowledge (0-100) ✓
 - [x] **P3** Misinformation Susceptibility ✓ — misinfo_susceptibility column (0-1)
-- [ ] **P3** Media Diet — sources, partisan slant
+- [x] **P3** Media Diet ✓ — media_source_id/media_bias columns + vectorized opinion dynamics
 
 ---
 
@@ -217,5 +217,5 @@
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: 🔄 88% — 16/18 done, 2 remaining (Media Diet, Maps)
-- **Phase 4 (P4+)**: ⏳ PLANNED — 6 remaining
+- **Phase 3 (P3)**: 🔄 94% — 17/18 done, 1 remaining (Maps)
+- **Phase 4 (P4+)**: ⏳ STARTING — 6 remaining

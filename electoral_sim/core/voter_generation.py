@@ -166,6 +166,44 @@ def generate_voter_frame(
         0, 1
     )
     
+    # =========================================================================
+    # MEDIA DIET - Selective Exposure
+    # =========================================================================
+    # Voters tend to consume media that aligns with their existing views (echo chamber).
+    # Define 4 generic media sources:
+    # 0: Left-leaning (-0.5)
+    # 1: Centrist (0.0)
+    # 2: Right-leaning (0.5)
+    # 3: Alternative/Extreme (skewed based on sub-population, usually anti-establishment)
+    
+    # Calculate distance to each source
+    dist_left = np.abs(ideology_x - (-0.5))
+    dist_center = np.abs(ideology_x - 0.0)
+    dist_right = np.abs(ideology_x - 0.5)
+    
+    # Assign primary source based on proximity (probabilistic to allow some cross-cutting)
+    # We use a simple argmin for the primary source, but add noise
+    media_noise = rng.normal(0, 0.2, n_voters)
+    noisy_x = ideology_x + media_noise
+    
+    # 0=Left, 1=Center, 2=Right
+    media_choice_idx = np.zeros(n_voters, dtype=int)
+    
+    # Vectorized assignment
+    conditions = [
+        (noisy_x < -0.25),
+        (noisy_x >= -0.25) & (noisy_x <= 0.25),
+        (noisy_x > 0.25)
+    ]
+    choices = [0, 1, 2]
+    media_choice_idx = np.select(conditions, choices)
+    
+    # Assign bias values
+    media_bias_values = np.zeros(n_voters)
+    media_bias_values[media_choice_idx == 0] = -0.5
+    media_bias_values[media_choice_idx == 1] = 0.0
+    media_bias_values[media_choice_idx == 2] = 0.5
+    
     # Turnout influenced by education, age, political knowledge, and extraversion
     base_turnout = rng.beta(5, 2, n_voters)
     turnout_prob = np.clip(
@@ -202,6 +240,9 @@ def generate_voter_frame(
         "mf_loyalty": mf_loyalty.astype(np.float64),
         "mf_authority": mf_authority.astype(np.float64),
         "mf_sanctity": mf_sanctity.astype(np.float64),
+        # Media Diet
+        "media_source_id": media_choice_idx,
+        "media_bias": media_bias_values,
         # Knowledge & Behavior
         "political_knowledge": political_knowledge.astype(np.float64),
         "misinfo_susceptibility": misinfo_susceptibility.astype(np.float64),

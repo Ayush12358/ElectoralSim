@@ -42,6 +42,42 @@ class VoterAgents(AgentSet):
         """Initialize VoterAgents with a pre-built DataFrame."""
         super().__init__(model)
         self.add(agent_frame.clone())
+        # Cache for numpy arrays (invalidated on changes)
+        self._ideology_x_cache: np.ndarray | None = None
+        self._ideology_y_cache: np.ndarray | None = None
+        self._turnout_cache: np.ndarray | None = None
+        self._constituency_cache: np.ndarray | None = None
+    
+    def get_ideology_x(self) -> np.ndarray:
+        """Get ideology_x as numpy array. Cached."""
+        if self._ideology_x_cache is None:
+            self._ideology_x_cache = self.df["ideology_x"].to_numpy()
+        return self._ideology_x_cache
+    
+    def get_ideology_y(self) -> np.ndarray:
+        """Get ideology_y as numpy array. Cached."""
+        if self._ideology_y_cache is None:
+            self._ideology_y_cache = self.df["ideology_y"].to_numpy()
+        return self._ideology_y_cache
+    
+    def get_turnout_prob(self) -> np.ndarray:
+        """Get turnout_prob as numpy array. Cached."""
+        if self._turnout_cache is None:
+            self._turnout_cache = self.df["turnout_prob"].to_numpy()
+        return self._turnout_cache
+    
+    def get_constituencies(self) -> np.ndarray:
+        """Get constituency assignments as numpy array. Cached."""
+        if self._constituency_cache is None:
+            self._constituency_cache = self.df["constituency"].to_numpy()
+        return self._constituency_cache
+    
+    def invalidate_cache(self) -> None:
+        """Clear cached values (call after modifying voter data)."""
+        self._ideology_x_cache = None
+        self._ideology_y_cache = None
+        self._turnout_cache = None
+        self._constituency_cache = None
     
     def step(self) -> None:
         """Called each simulation step for opinion dynamics."""
@@ -67,13 +103,29 @@ class PartyAgents(AgentSet):
         """Initialize PartyAgents with a pre-built DataFrame."""
         super().__init__(model)
         self.add(agent_frame.clone())
+        # Cache for positions (invalidated on changes)
+        self._positions_cache: np.ndarray | None = None
+        self._valence_cache: np.ndarray | None = None
     
     def get_positions(self) -> np.ndarray:
-        """Return party positions as (n_parties, 2) array."""
-        return np.column_stack([
-            self.df["position_x"].to_numpy(),
-            self.df["position_y"].to_numpy()
-        ])
+        """Return party positions as (n_parties, 2) array. Cached."""
+        if self._positions_cache is None:
+            self._positions_cache = np.column_stack([
+                self.df["position_x"].to_numpy(),
+                self.df["position_y"].to_numpy()
+            ])
+        return self._positions_cache
+    
+    def get_valence(self) -> np.ndarray:
+        """Return party valence array. Cached."""
+        if self._valence_cache is None:
+            self._valence_cache = self.df["valence"].to_numpy()
+        return self._valence_cache
+    
+    def invalidate_cache(self) -> None:
+        """Clear cached values (call after modifying positions/valence)."""
+        self._positions_cache = None
+        self._valence_cache = None
     
     def step(self) -> None:
         """Called each step for party adaptation."""
@@ -389,15 +441,15 @@ class ElectionModel(Model):
         Uses Numba parallel acceleration when available.
         Utility = -distance + valence_weight * valence
         """
-        # Get voter positions
-        voter_x = self.voters.df["ideology_x"].to_numpy()
-        voter_y = self.voters.df["ideology_y"].to_numpy()
+        # Get voter positions (cached)
+        voter_x = self.voters.get_ideology_x()
+        voter_y = self.voters.get_ideology_y()
         
-        # Get party positions and valence
+        # Get party positions and valence (cached)
         party_positions = self.parties.get_positions()
         party_x = party_positions[:, 0]
         party_y = party_positions[:, 1]
-        valence = self.parties.df["valence"].to_numpy()
+        valence = self.parties.get_valence()
         
         if NUMBA_AVAILABLE:
             return compute_utilities_numba(voter_x, voter_y, party_x, party_y, valence)
@@ -420,7 +472,7 @@ class ElectionModel(Model):
     
     def _decide_turnout(self) -> np.ndarray:
         """Determine which voters turn out based on turnout probability."""
-        turnout_probs = self.voters.df["turnout_prob"].to_numpy()
+        turnout_probs = self.voters.get_turnout_prob()
         random_vals = self.random.random(len(turnout_probs))
         return random_vals < turnout_probs
     
@@ -438,8 +490,8 @@ class ElectionModel(Model):
         # Determine turnout
         will_vote = self._decide_turnout()
         
-        # Filter to voters who turned out
-        constituencies = self.voters.df["constituency"].to_numpy()
+        # Filter to voters who turned out (use cached constituencies)
+        constituencies = self.voters.get_constituencies()
         voted_constituencies = constituencies[will_vote]
         voted_choices = votes[will_vote]
         
@@ -523,6 +575,67 @@ class ElectionModel(Model):
     def get_results(self) -> list[dict]:
         """Return all election results."""
         return self.election_results
+    
+    def run_elections_batch(self, n_elections: int = 10, reset_voters: bool = False) -> list[dict]:
+        """
+        Run multiple elections in batch for Monte Carlo analysis.
+        
+        More efficient than calling run_election() in a loop because it
+        reuses cached data and avoids repeated overhead.
+        
+        Args:
+            n_elections: Number of elections to run
+            reset_voters: If True, regenerate voters between elections
+            
+        Returns:
+            List of election result dictionaries
+        """
+        batch_results = []
+        
+        for i in range(n_elections):
+            if reset_voters and i > 0:
+                # Regenerate voter positions/turnout (expensive)
+                n_voters = len(self.voters)
+                voter_frame = self._generate_voter_frame(n_voters)
+                self.voters.df = voter_frame
+            
+            results = self.run_election()
+            batch_results.append(results)
+        
+        return batch_results
+    
+    def get_aggregate_stats(self, results: list[dict] | None = None) -> dict:
+        """
+        Compute aggregate statistics across multiple elections.
+        
+        Args:
+            results: List of election results (default: use stored results)
+            
+        Returns:
+            Dictionary with mean/std of key metrics
+        """
+        if results is None:
+            results = self.election_results
+        
+        if not results:
+            return {}
+        
+        turnouts = np.array([r["turnout"] for r in results])
+        gallaghers = np.array([r["gallagher"] for r in results])
+        enp_votes = np.array([r["enp_votes"] for r in results])
+        enp_seats = np.array([r["enp_seats"] for r in results])
+        
+        return {
+            "n_elections": len(results),
+            "turnout_mean": float(turnouts.mean()),
+            "turnout_std": float(turnouts.std()),
+            "gallagher_mean": float(gallaghers.mean()),
+            "gallagher_std": float(gallaghers.std()),
+            "enp_votes_mean": float(enp_votes.mean()),
+            "enp_votes_std": float(enp_votes.std()),
+            "enp_seats_mean": float(enp_seats.mean()),
+            "enp_seats_std": float(enp_seats.std()),
+        }
 
 
 # Party presets moved to electoral_sim.config

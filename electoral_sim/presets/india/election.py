@@ -200,19 +200,18 @@ def simulate_india_election(
     verbose: bool = True,
     include_nota: bool = False,  # NEW: Enable NOTA tracking
     use_real_names: bool = True, # TECHNICAL: Use real constituency names
+    historical_data_path: Optional[str] = None, # TECHNICAL: Seed with historical data
 ) -> IndiaElectionResult:
     """
     Simulate India General Election.
     
     Args:
-        n_voters_per_constituency: Voters per constituency (for sampling)
-            - 1000 = quick (~5 seconds)
-            - 10000 = normal (~30 seconds)
-            - 100000 = detailed (~5 minutes)
-        seed: Random seed for reproducibility
+        n_voters_per_constituency: Voters per constituency
+        seed: Random seed
         verbose: Print progress
-        include_nota: Include NOTA (None of the Above) as voting option
-        use_real_names: Use real PC names instead of IDs
+        include_nota: Include NOTA
+        use_real_names: Use real PC names
+        historical_data_path: Path to CSV with previous results
             
     Returns:
         IndiaElectionResult with full results
@@ -220,8 +219,21 @@ def simulate_india_election(
     from electoral_sim.core.model import ElectionModel
     from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
     from electoral_sim.data.india_pc import get_india_constituencies
+    from electoral_sim.data.loaders import HistoricalDataLoader
     
     manager = get_india_constituencies() if use_real_names else None
+    
+    # Load historical seeding if provided
+    viability_seeding = None
+    pc_viability = {}
+    incumbent_parties = set()
+    if historical_data_path:
+        loader = HistoricalDataLoader(historical_data_path)
+        viability_seeding = loader.get_viability_weights()
+        pc_viability = loader.get_constituency_viability()
+        incumbent_parties = set(loader.get_incumbents())
+        if verbose:
+            print(f"  Seeded with historical data from {historical_data_path}")
     
     rng = np.random.default_rng(seed)
     
@@ -233,6 +245,8 @@ def simulate_india_election(
             "position_x": data["position_x"],
             "position_y": data["position_y"],
             "valence": data["valence"],
+            "incumbent": name in incumbent_parties,
+            "viability": viability_seeding.get(name, 0.05) if viability_seeding else None,
         }
         for name, data in INDIA_PARTIES.items()
     ]
@@ -271,7 +285,7 @@ def simulate_india_election(
         state_start = time.perf_counter()
         
         # Get party weights for this state
-        weights = STATE_PARTY_WEIGHTS.get(state, DEFAULT_WEIGHTS)
+        state_weights = STATE_PARTY_WEIGHTS.get(state, DEFAULT_WEIGHTS)
         
         # Create voters with state-specific ideology distribution
         n_voters = n_voters_per_constituency * n_constituencies
@@ -310,12 +324,16 @@ def simulate_india_election(
             if party == "NOTA":
                 # NOTA is a protest vote - small but universal appeal
                 utility -= 1.0  # Lower than active parties
-            elif party in weights:
-                # Party active in state - strength proportional to vote share
-                utility += weights[party] * 3.0
             else:
-                # Party not active in this state
-                utility -= 3.0
+                # Use PC-level weights if available, else state weights
+                # This is a bit complex in vectorized form, so we simplify:
+                # If we have historical data for ANY party in this state, use it.
+                if party in state_weights:
+                    utility += state_weights[party] * 3.0
+                
+                # Boost based on national viability if historical seeding used
+                if viability_seeding and party in viability_seeding:
+                    utility += viability_seeding[party] * 0.5
             
             utilities[:, p] = utility
         

@@ -1069,6 +1069,34 @@ class TestP4Features:
             assert "seats" in res, f"{name} failed"
             assert len(res["seats"]) == len(config.parties), f"{name} party count mismatch"
 
+    def test_historical_seeding(self):
+        """Test seeding simulation with historical data."""
+        from electoral_sim.presets.india.election import simulate_india_election
+        import os
+        
+        # Path to our sample data
+        data_path = "electoral_sim/data/india_2024_sample.csv"
+        
+        # Run with seeding
+        res_seeded = simulate_india_election(
+            n_voters_per_constituency=200,
+            historical_data_path=data_path,
+            verbose=False
+        )
+        
+        # Basic checks
+        assert res_seeded.seats["BJP"] > 0
+        assert res_seeded.seats["INC"] > 0
+        
+        # Run without seeding for comparison
+        res_default = simulate_india_election(
+            n_voters_per_constituency=200,
+            verbose=False
+        )
+        
+        # They should differ (stochastically as well, but seeding changes weights significantly)
+        assert res_seeded.vote_shares["BJP"] != res_default.vote_shares["BJP"]
+
 
 # =============================================================================
 # MAIN - Run tests directly

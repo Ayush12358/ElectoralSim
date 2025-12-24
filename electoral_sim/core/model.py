@@ -21,6 +21,8 @@ from electoral_sim.engine.numba_accel import (
 )
 from electoral_sim.core.voter_generation import generate_voter_frame, generate_party_frame
 from electoral_sim.core.counting import count_fptp, count_pr
+from electoral_sim.events.event_manager import EventManager
+from electoral_sim.agents.party_strategy import adaptive_strategy_step
 
 from electoral_sim.agents.voter import VoterAgents
 from electoral_sim.agents.party import PartyAgents
@@ -105,8 +107,13 @@ class ElectionModel(Model):
         national_mood: float = 0.0,  # Wave election: positive = pro-incumbent, negative = anti-incumbent
         alienation_threshold: float = -2.0,  # Abstain if max utility below this
         indifference_threshold: float = 0.3,  # Abstain if utility range below this
+        event_probs: dict[str, float] | None = None,  # P4: Dynamic events
+        use_adaptive_strategy: bool = False,  # P4: Strategy
     ):
         super().__init__(seed)
+        
+        # Initialize Random Generator
+        self.rng = np.random.default_rng(seed)
         
         # Store configuration
         self.n_constituencies = n_constituencies
@@ -139,6 +146,16 @@ class ElectionModel(Model):
             self.behavior_engine = behavior_engine
             
         self.opinion_dynamics = opinion_dynamics
+
+        # Event Manager (P4)
+        if event_probs is not None:
+             scandal_p = event_probs.get("scandal", 0.01)
+             shock_p = event_probs.get("shock", 0.005)
+             self.event_manager = EventManager(self.rng, prob_scandal=scandal_p, prob_shock=shock_p)
+        else:
+             self.event_manager = None
+             
+        self.use_adaptive_strategy = use_adaptive_strategy
 
         # Default parties if not provided and no party_frame
         if parties is None and party_frame is None:
@@ -368,6 +385,19 @@ class ElectionModel(Model):
             if self.national_mood != 0.0:
                 valence[incumbent_mask] += self.national_mood
         
+        # P4: Apply event modifiers (Scandals, Economic Shocks)
+        effective_growth = self.economic_growth
+        if self.event_manager:
+            # Valence modifiers (e.g. Scanal penalties)
+            valence_modifiers = self.event_manager.get_valence_modifiers()
+            for pid, mod in valence_modifiers.items():
+                if pid < len(valence):
+                     valence[pid] += mod
+            
+            # Economic modifiers (e.g. Shocks)
+            eco_mod = self.event_manager.get_economic_modifier()
+            effective_growth += eco_mod
+
         party_data = {
             'n_parties': len(self.parties),
             'positions': self.parties.get_positions(),
@@ -377,7 +407,7 @@ class ElectionModel(Model):
         }
         
         # Pass economic growth to behavior engine for retrospective voting
-        return self.behavior_engine.compute_all(voter_data, party_data, growth=self.economic_growth, **kwargs)
+        return self.behavior_engine.compute_all(voter_data, party_data, growth=effective_growth, **kwargs)
     
     def _vote_mnl(self, utilities: np.ndarray) -> np.ndarray:
         """
@@ -589,6 +619,23 @@ class ElectionModel(Model):
                 pl.Series("ideology_y", new_ideologies_y),
             ])
             self.voters.invalidate_cache()
+            
+        # P4: Dynamic Events
+        if self.event_manager:
+            new_events = self.event_manager.step(self.n_parties)
+            # Could log new_events here
+            
+        # P4: Adaptive Strategy
+        if self.use_adaptive_strategy:
+            # print("DEBUG: Calling adaptive strategy") # Debugging
+            self.parties.df = adaptive_strategy_step(
+                self.parties.df,
+                self.voters.df,
+                strategy="median_voter",
+                learning_rate=0.005, # Small shift per month/step
+                rng=self.rng
+            )
+            self.parties.invalidate_cache()
             
         self.sets.do("step")
         self.datacollector.collect()

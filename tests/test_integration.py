@@ -893,6 +893,75 @@ class TestP3Features:
         assert np.allclose(new_ops[5:], 0.25)
 
 
+class TestP4Features:
+    """Tests for Phase 4 features (Events, Strategy)."""
+    
+    def test_p4_events_scandal(self):
+        """Test P4 Scandal event reduces party vote share."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.events.event_manager import Event
+        
+        seed = 42
+        # Setup: Party A (left), Party B (right). Voters centered.
+        # Party A gets hit by scandal.
+        model = ElectionModel(
+            n_voters=500, 
+            seed=seed, 
+            event_probs={"scandal": 0.0, "shock": 0.0} # No random events
+        )
+        
+        # Baseline election
+        res_base = model.run_election()["vote_counts"]
+        
+        # Inject Scandal for Party 0 (Party A)
+        scandal = Event(
+            id=1, type="scandal", start_step=0, duration=10, 
+            severity=50.0, target_party_id=0
+        )
+        model.event_manager.active_events.append(scandal)
+        
+        # Run election with scandal active
+        res_scandal = model.run_election()["vote_counts"]
+        
+        # Party 0 should lose votes
+        assert res_scandal[0] < res_base[0]
+
+    def test_p4_adaptive_strategy(self):
+        """Test P4 Adaptive Strategy (Median Voter Theorem)."""
+        from electoral_sim import ElectionModel
+        import polars as pl
+        
+        # Setup: Voters at 0.0. Party A at -0.5, Party B at 0.5.
+        # Over time, they should converge towards 0.0.
+        model = ElectionModel(
+            n_voters=200,
+            seed=42,
+            use_adaptive_strategy=True
+        )
+        
+        # Force voters to be exactly at 0.0 (center) to ensure clear signal
+        model.voters.df = model.voters.df.with_columns([
+            pl.Series("ideology_x", np.zeros(200)),
+            pl.Series("ideology_y", np.zeros(200))
+        ])
+        
+        # Initial positions
+        initial_pos = model.parties.get_positions()
+        
+        # Run 50 steps
+        for _ in range(50):
+            model.step()
+            
+        final_pos = model.parties.get_positions()
+        
+        # Calculate distance to center (0.0)
+        init_dist = np.abs(initial_pos).sum()
+        final_dist = np.abs(final_pos).sum()
+        
+        # Parties should be closer to center now (lower absolute sum)
+        assert final_dist < init_dist
+
+
 # =============================================================================
 # MAIN - Run tests directly
 # =============================================================================

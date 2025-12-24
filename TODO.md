@@ -28,7 +28,7 @@
 - [x] **P1** Policy Position — N-dimensional issue space ✓
 - [x] **P2** Valence — charisma, competence, integrity (0-100) ✓
 - [x] **P2** Incumbent Status ✓ — with anti-incumbency modifier
-- [ ] **P4** Adaptive Strategy — respond to polls
+- [x] **P4** Adaptive Strategy ✓ — Median Voter Theorem implementation (party_strategy.py)
 
 ---
 
@@ -120,7 +120,7 @@
 - [x] **P1** Collapse Models ✓ (Sigmoid, Linear, Exponential)
 - [x] **P2** Government Simulator ✓ — Monte Carlo survival
 - [x] **P3** Survival Analysis — Cox hazard ✓ — cox_proportional_hazard() function
-- [ ] **P4** Economic shocks, Scandals
+- [x] **P4** Economic shocks, Scandals ✓ — EventManager module (event_manager.py)
 
 ---
 
@@ -132,7 +132,8 @@
 - [x] **P2** Anti-incumbency ✓ — anti_incumbency parameter
 
 ### Campaign
-- [ ] **P4** Scandal Penalty
+- [x] **P4** Scandal Penalty ✓ — via EventManager
+
 
 ---
 
@@ -210,12 +211,13 @@
 |----------|-------|------|-----------|
 | **P1** | 17 | 17 ✅ | 0 |
 | **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 18 | 16 | 2 |
-| **P4** | 6 | 0 | 6 |
+| **P3** | 18 | 17 | 1 |
+| **P4** | 6 | 3 | 3 |
 | **P5** | 1 | 1 ✅ | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
 - **Phase 3 (P3)**: 🔄 94% — 17/18 done, 1 remaining (Maps)
-- **Phase 4 (P4+)**: ⏳ STARTING — 6 remaining
+- **Phase 4 (P4)**: 🔄 50% — 3/6 done
+```

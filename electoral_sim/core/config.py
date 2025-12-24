@@ -95,20 +95,15 @@ class Config:
         return len(self.parties)
 
 
-# =============================================================================
-# PRESET CONFIGURATIONS
-# =============================================================================
+# Re-export country configs from presets for backward compatibility
+from electoral_sim.presets.usa.config import usa_config
+from electoral_sim.presets.uk.config import uk_config
+from electoral_sim.presets.germany.config import germany_config
 
-def india_config(
-    n_voters: int = 1_000_000,
-    n_constituencies: int = 543,
-    **kwargs,
-) -> Config:
-    """
-    Preset configuration for India (Lok Sabha).
-    
-    543 constituencies, major national parties.
-    """
+# Backward compatible india_config (just calls the generic one)
+def india_config(n_voters: int = 1_000_000, n_constituencies: int = 543, **kwargs) -> Config:
+    """Preset configuration for India (Lok Sabha). For full simulation use simulate_india_election()."""
+    from electoral_sim.core.config import PartyConfig
     parties = [
         PartyConfig("BJP", 0.4, 0.5, 70),
         PartyConfig("INC", -0.2, -0.1, 55),
@@ -119,93 +114,11 @@ def india_config(
         PartyConfig("BSP", -0.1, 0.3, 35),
         PartyConfig("Others", 0.0, 0.0, 30),
     ]
-    
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,
         parties=parties,
         electoral_system="FPTP",
-        **kwargs,
-    )
-
-
-def usa_config(
-    n_voters: int = 500_000,
-    n_constituencies: int = 435,
-    **kwargs,
-) -> Config:
-    """
-    Preset configuration for USA (House of Representatives).
-    
-    435 districts, two-party system.
-    """
-    parties = [
-        PartyConfig("Democratic", -0.4, -0.2, 50),
-        PartyConfig("Republican", 0.4, 0.3, 50),
-    ]
-    
-    return Config(
-        n_voters=n_voters,
-        n_constituencies=n_constituencies,
-        parties=parties,
-        electoral_system="FPTP",
-        **kwargs,
-    )
-
-
-def uk_config(
-    n_voters: int = 500_000,
-    n_constituencies: int = 650,
-    **kwargs,
-) -> Config:
-    """
-    Preset configuration for UK (House of Commons).
-    
-    650 constituencies, multi-party FPTP.
-    """
-    parties = [
-        PartyConfig("Conservative", 0.3, 0.2, 45),
-        PartyConfig("Labour", -0.3, -0.1, 50),
-        PartyConfig("Liberal Democrats", 0.0, -0.2, 40),
-        PartyConfig("SNP", -0.2, -0.3, 45),
-        PartyConfig("Green", -0.5, -0.4, 35),
-    ]
-    
-    return Config(
-        n_voters=n_voters,
-        n_constituencies=n_constituencies,
-        parties=parties,
-        electoral_system="FPTP",
-        **kwargs,
-    )
-
-
-def germany_config(
-    n_voters: int = 500_000,
-    n_constituencies: int = 299,  # Direct mandates
-    **kwargs,
-) -> Config:
-    """
-    Preset configuration for Germany (Bundestag).
-    
-    MMP system with 5% threshold.
-    """
-    parties = [
-        PartyConfig("CDU/CSU", 0.2, 0.1, 50),
-        PartyConfig("SPD", -0.2, -0.1, 48),
-        PartyConfig("Grüne", -0.3, -0.4, 45),
-        PartyConfig("FDP", 0.3, -0.2, 40),
-        PartyConfig("AfD", 0.5, 0.5, 35),
-        PartyConfig("Linke", -0.5, -0.2, 35),
-    ]
-    
-    return Config(
-        n_voters=n_voters,
-        n_constituencies=n_constituencies,
-        parties=parties,
-        electoral_system="PR",
-        allocation_method="sainte_lague",
-        threshold=0.05,
         **kwargs,
     )
 

@@ -19,6 +19,8 @@ from electoral_sim.engine.numba_accel import (
     compute_utilities_numba,
     NUMBA_AVAILABLE,
 )
+from electoral_sim.core.voter_generation import generate_voter_frame, generate_party_frame
+from electoral_sim.core.counting import count_fptp, count_pr
 
 from electoral_sim.agents.voter import VoterAgents
 from electoral_sim.agents.party import PartyAgents

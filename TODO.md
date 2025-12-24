@@ -66,8 +66,8 @@
 ### Other Methods
 - [x] **P3** Condorcet Winner ✓
 - [x] **P3** Approval Voting ✓
-- [ ] **P4** STAR Voting
-- [ ] **P4** Schulze Method
+- [~] **P4** STAR Voting — SKIPPED (rare electoral system)
+- [~] **P4** Schulze Method — SKIPPED (academic/dev voting only)
 
 ### Rules
 - [x] **P1** National Threshold ✓
@@ -134,8 +134,8 @@
 - [x] **P2** Anti-incumbency ✓ — anti_incumbency parameter
 
 ### Campaign
-- [ ] **P4** Spending Effects
-- [ ] **P4** Microtargeting
+- [~] **P4** Spending Effects — SKIPPED (complex campaign modeling)
+- [~] **P4** Microtargeting — SKIPPED (complex campaign modeling)
 - [ ] **P4** Scandal Penalty
 
 ---
@@ -153,16 +153,16 @@
 
 ### Reserved Constituencies
 - [x] **P2** SC, ST reservation modeling ✓ — constituency_constraints parameter
-- [ ] **P3** Delimitation effects
+- [~] **P3** Delimitation effects — SKIPPED (complex India-specific)
 
 ### Electoral Features
 - [x] **P2** Phase-wise election configuration ✓ (7 phases defined)
 - [x] **P2** Anti-incumbency factor ✓
 - [x] **P3** Wave elections (national mood) ✓ — national_mood parameter
-- [ ] **P3** Alliance seat-sharing agreements
-- [ ] **P3** Historical validation (2014, 2019, 2024)
-- [ ] **P4** Opinion poll simulation
-- [ ] **P4** Exit poll modeling
+- [~] **P3** Alliance seat-sharing agreements — SKIPPED (political negotiation)
+- [~] **P3** Historical validation (2014, 2019, 2024) — SKIPPED (data collection intensive)
+- [~] **P4** Opinion poll simulation — SKIPPED (new infrastructure needed)
+- [~] **P4** Exit poll modeling — SKIPPED (new infrastructure needed)
 
 ---
 
@@ -215,17 +215,17 @@
 
 ## 📋 PRIORITY SUMMARY
 
-| Priority | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| **P1** | 17 | 17 ✅ | 0 |
-| **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 21 | 13 | 8 |
-| **P4** | 12 | 0 | 12 |
-| **P5** | 1 | 1 ✅ | 0 |
+| Priority | Total | Done | Skipped | Remaining |
+|----------|-------|------|---------|----------|
+| **P1** | 17 | 17 ✅ | 0 | 0 |
+| **P2** | 31 | 31 ✅ | 0 | 0 |
+| **P3** | 21 | 13 | 3 | 5 |
+| **P4** | 12 | 0 | 6 | 6 |
+| **P5** | 1 | 1 ✅ | 0 | 0 |
 
 ### Implementation Progress
 - **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
 - **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: 🔄 62% — 13/21 done: Previous + Big Five (OCEAN), Moral Foundations (Haidt)
-- **Phase 4 (P4+)**: ⏳ PLANNED — Campaign effects, interactive dashboards
+- **Phase 3 (P3)**: 🔄 76% — 13/21 done, 3 skipped, 5 remaining
+- **Phase 4 (P4+)**: ⏳ 50% skipped — 6 remaining: dashboards, country presets, scandal
 

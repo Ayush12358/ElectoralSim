@@ -127,6 +127,17 @@ from electoral_sim.systems.alternative import (
 from electoral_sim.opinion_dynamics import OpinionDynamics
 
 # =============================================================================
+# INDIA ELECTION SIMULATOR
+# =============================================================================
+
+from electoral_sim.india_election import (
+    simulate_india_election,
+    IndiaElectionResult,
+    INDIA_STATES,
+    INDIA_PARTIES,
+)
+
+# =============================================================================
 # PUBLIC API
 # =============================================================================
 
@@ -168,4 +179,9 @@ __all__ = [
     "GovernmentSimulator",
     # Opinion Dynamics
     "OpinionDynamics",
+    # India Election
+    "simulate_india_election",
+    "IndiaElectionResult",
+    "INDIA_STATES",
+    "INDIA_PARTIES",
 ]

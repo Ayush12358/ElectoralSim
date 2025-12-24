@@ -7,9 +7,9 @@
 ## 🧠 VOTER AGENT
 
 ### Core Attributes
-- [ ] **P1** Demographics — age, gender, education, income, religion, location
-- [ ] **P1** Party ID (7-point) — Strong D → Independent → Strong R
-- [ ] **P1** Ideology — multi-dimensional issue positions
+- [x] **P1** Demographics — age, gender, education, income, religion, location ✓
+- [x] **P1** Party ID (7-point) — Strong D → Independent → Strong R ✓
+- [x] **P1** Ideology — multi-dimensional issue positions ✓
 - [ ] **P3** Affective Polarization — in-group/out-group favorability gap
 
 ### Psychology (Choose ONE)
@@ -25,8 +25,8 @@
 
 ## 🎭 CANDIDATE/PARTY AGENT
 
-- [ ] **P1** Policy Position — N-dimensional issue space
-- [ ] **P2** Valence — charisma, competence, integrity (0-100)
+- [x] **P1** Policy Position — N-dimensional issue space ✓
+- [x] **P2** Valence — charisma, competence, integrity (0-100) ✓
 - [ ] **P2** Incumbent Status
 - [ ] **P4** Adaptive Strategy — respond to polls
 
@@ -36,10 +36,10 @@
 
 ### Core
 - [x] **P1** Proximity Model ✓
-- [ ] **P1** Multinomial Logit — P(j) = exp(V_j/τ) / Σexp(V_k/τ)
+- [x] **P1** Multinomial Logit — P(j) = exp(V_j/τ) / Σexp(V_k/τ) ✓
 
 ### Turnout
-- [ ] **P2** Calculus of Voting: R = pB - C + D
+- [x] **P2** Calculus of Voting: R = pB - C + D ✓ (basic turnout_prob)
 - [ ] **P3** Alienation/Indifference abstention
 
 ### Strategic
@@ -52,11 +52,12 @@
 ### Seat Allocation
 - [x] **P1** Sainte-Laguë ✓
 - [x] **P1** D'Hondt ✓
-- [ ] **P3** Droop Quota
+- [x] **P3** Droop Quota ✓
+- [x] **P3** Hare Quota ✓
 
 ### System Types
 - [x] **P1** Party-list PR ✓
-- [ ] **P1** FPTP — most common worldwide
+- [x] **P1** FPTP ✓
 - [ ] **P2** MMP — Germany model
 - [ ] **P2** STV — Ireland, Australia
 - [ ] **P2** IRV/RCV — growing adoption
@@ -75,8 +76,8 @@
 ## 📊 METRICS
 
 - [x] **P1** Gallagher Index ✓
-- [ ] **P1** ENP (Laakso-Taagepera) — party fragmentation
-- [ ] **P3** Efficiency Gap — gerrymandering
+- [x] **P1** ENP (Laakso-Taagepera) ✓
+- [x] **P3** Efficiency Gap ✓
 - [ ] **P4** VSE — voting system efficiency
 
 ---
@@ -167,16 +168,16 @@
 
 ## 📋 PRIORITY SUMMARY
 
-| Priority | Count | Description |
-|----------|-------|-------------|
-| **P1** | 12 | Must-have for MVP |
-| **P2** | 15 | Core functionality |
-| **P3** | 18 | Important extensions |
-| **P4** | 10 | Nice additions |
-| **P5** | 1 | Future scope |
+| Priority | Count | Done | Remaining |
+|----------|-------|------|-----------|
+| **P1** | 12 | 12 ✅ | 0 |
+| **P2** | 15 | 3 | 12 |
+| **P3** | 18 | 3 | 15 |
+| **P4** | 10 | 0 | 10 |
+| **P5** | 1 | 0 | 1 |
 
-### Recommended Implementation Order
-1. **Phase 1 (P1)**: Demographics, Party ID, Ideology, MNL, FPTP, ENP
-2. **Phase 2 (P2)**: Valence, Turnout, Networks, Coalition dynamics, Validation
-3. **Phase 3 (P3)**: Opinion dynamics, Media, Economic voting, India features
-4. **Phase 4 (P4+)**: Campaign effects, Advanced metrics, EVM simulation
+### Implementation Progress
+- **Phase 1 (P1)**: ✅ COMPLETE — Demographics, Party ID, Ideology, MNL, FPTP, ENP, Coalition, Collapse
+- **Phase 2 (P2)**: Networks, Opinion dynamics, MMP/STV, NOTA, Validation
+- **Phase 3 (P3)**: Media, Economic voting, Advanced features
+- **Phase 4 (P4+)**: Campaign effects, EVM simulation

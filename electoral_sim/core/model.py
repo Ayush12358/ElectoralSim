@@ -703,8 +703,8 @@ class ElectionModel(Model):
             )
             self.parties.invalidate_cache()
 
-        self.sets.do("step")
-        self.datacollector.collect()
+        # Collect step data (Mesa 3.0 compatible)
+        self._collect_data()
 
     def run(self, n_steps: int = 100, election_interval: int = 10) -> None:
         """

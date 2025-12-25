@@ -98,7 +98,15 @@
 
 ## Version History
 
-### v0.1.0 (Current)
+## Version History
+
+### v0.0.2 (Current)
+- Migrated from `mesa-frames` to `Mesa 3.0+` + `Polars`
+- Comprehensive test suite (225 tests, ~70% coverage)
+- Fixed Mesa 3.0 API compatibility
+- Improved RNG consistency and performance
+
+### v0.0.1
 - Initial release with all P1-P4 features
 - 11 country presets + EU Parliament
 - Comprehensive documentation

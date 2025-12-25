@@ -10,7 +10,7 @@ def australia_house_config(
 ) -> Config:
     """
     Preset configuration for Australia (House of Representatives).
-    
+
     151 districts, IRV (Instant Runoff Voting).
     """
     parties = [
@@ -20,7 +20,7 @@ def australia_house_config(
         PartyConfig("One Nation", 0.8, 0.6, 40),
         PartyConfig("Independent", 0.0, 0.0, 45),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,
@@ -37,7 +37,7 @@ def australia_senate_config(
 ) -> Config:
     """
     Preset configuration for Australia (Senate).
-    
+
     8 districts (states/territories), STV (Single Transferable Vote).
     """
     parties = [
@@ -46,7 +46,7 @@ def australia_senate_config(
         PartyConfig("Greens", -0.7, -0.4, 45),
         PartyConfig("One Nation", 0.8, 0.6, 40),
     ]
-    
+
     # 76 seats total, usually 12 per state
     return Config(
         n_voters=n_voters,

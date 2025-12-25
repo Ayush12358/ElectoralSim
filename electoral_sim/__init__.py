@@ -2,7 +2,7 @@
 ElectoralSim - Generic Electoral Simulation Toolkit
 ===================================================
 
-A modular agent-based modeling toolkit for electoral systems, 
+A modular agent-based modeling toolkit for electoral systems,
 voter behavior, and political dynamics using mesa-frames.
 """
 
@@ -103,6 +103,7 @@ try:
         plot_seats_vs_votes,
         plot_election_summary,
     )
+
     _VIZ_AVAILABLE = True
 except ImportError:
     _VIZ_AVAILABLE = False
@@ -114,7 +115,7 @@ __all__ = [
     "PartyConfig",
     # Presets
     "india_config",
-    "usa_config", 
+    "usa_config",
     "uk_config",
     "germany_config",
     "australia_house_config",

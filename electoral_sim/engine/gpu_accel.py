@@ -10,6 +10,7 @@ import numpy as np
 try:
     import cupy as cp
     import cupyx as cpx
+
     CUPY_AVAILABLE = True
 except ImportError:
     cp = None
@@ -39,7 +40,7 @@ def compute_utilities_gpu(
 ) -> np.ndarray:
     """
     Compute utility matrix using GPU acceleration.
-    
+
     Logic:
         U = -sqrt((v_x - p_x)^2 + (v_y - p_y)^2) + valence_weight * valence
     """
@@ -57,13 +58,13 @@ def compute_utilities_gpu(
     # Reshape vectors to (N_VOTERS, 1) and (1, N_PARTIES)
     dx = v_x[:, None] - p_x[None, :]
     dy = v_y[:, None] - p_y[None, :]
-    
+
     # Euclidean distance
     dist = cp.sqrt(dx**2 + dy**2)
-    
+
     # Utility calculation
     utilities = -dist + valence_weight * val[None, :]
-    
+
     # Transfer back to Host (CPU) memory
     return cp.asnumpy(utilities)
 
@@ -74,7 +75,7 @@ def mnl_sample_gpu(
 ) -> np.ndarray:
     """
     Multinomial logit sampling using GPU.
-    
+
     P(j) = exp(U_j/τ) / Σexp(U_k/τ)
     """
     if not CUPY_AVAILABLE:
@@ -82,26 +83,26 @@ def mnl_sample_gpu(
 
     # Transfer to GPU
     u = cp.asarray(utilities, dtype=cp.float32)
-    
+
     # Scaled utilities
     scaled = u / temperature
-    
+
     # Numerical stability: subtract max per row
     u_max = scaled.max(axis=1, keepdims=True)
     exp_u = cp.exp(scaled - u_max)
-    
+
     # Calculate probabilities
     probs = exp_u / exp_u.sum(axis=1, keepdims=True)
-    
+
     # Cumulative sums for sampling
     cumprobs = cp.cumsum(probs, axis=1)
-    
+
     # Generate random values on GPU
     random_vals = cp.random.random((utilities.shape[0], 1), dtype=cp.float32)
-    
+
     # Perform sampling (find first index where random_val < cumprob)
     votes = (random_vals > cumprobs).sum(axis=1)
-    
+
     return cp.asnumpy(votes).astype(np.int64)
 
 
@@ -119,17 +120,17 @@ def fptp_count_gpu(
 
     c = cp.asarray(constituencies, dtype=cp.int32)
     v = cp.asarray(votes, dtype=cp.int32)
-    
+
     # Global vote counts
     vote_counts = cp.asnumpy(cp.bincount(v, minlength=n_parties))
-    
+
     # For constituency counting, we can use a custom kernel or a loop
     # For now, we'll keep the loop but use CuPy operations inside
     seats = np.zeros(n_parties, dtype=np.int64)
-    
-    # Note: For small number of constituencies, CPU loop is fine if 
+
+    # Note: For small number of constituencies, CPU loop is fine if
     # the filtering is fast. For 543, we might want a parallel approach.
-    # Currently, we just return the counts and the CPU handles the rest 
+    # Currently, we just return the counts and the CPU handles the rest
     # of the system-specific allocation to keep simplicity.
-    
+
     return seats, vote_counts.astype(np.int64)

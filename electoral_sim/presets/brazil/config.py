@@ -5,12 +5,12 @@ from electoral_sim.core.config import Config, PartyConfig
 
 def brazil_config(
     n_voters: int = 300_000,
-    n_constituencies: int = 26, # 26 states + Federal District
+    n_constituencies: int = 26,  # 26 states + Federal District
     **kwargs,
 ) -> Config:
     """
     Preset configuration for Brazil (Chamber of Deputies).
-    
+
     513 seats, Open-list PR (D'Hondt).
     """
     parties = [
@@ -22,7 +22,7 @@ def brazil_config(
         PartyConfig("PSD", 0.1, 0.1, 45),
         PartyConfig("Republicanos", 0.3, 0.2, 45),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,

@@ -5,13 +5,13 @@ from electoral_sim.core.config import Config, PartyConfig
 
 def japan_config(
     n_voters: int = 250_000,
-    n_constituencies: int = 289, # FPTP districts (total 465 seats with 176 PR)
+    n_constituencies: int = 289,  # FPTP districts (total 465 seats with 176 PR)
     **kwargs,
 ) -> Config:
     """
     Preset configuration for Japan (House of Representatives).
-    
-    Parallel system (289 FPTP + 176 PR). Defaulting here to FPTP base 
+
+    Parallel system (289 FPTP + 176 PR). Defaulting here to FPTP base
     for the primary constituency model.
     """
     parties = [
@@ -21,12 +21,12 @@ def japan_config(
         PartyConfig("Komeito", 0.2, 0.3, 45),
         PartyConfig("JCP", -0.7, 0.1, 40),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,
         parties=parties,
-        electoral_system="FPTP", # Parallel system base
+        electoral_system="FPTP",  # Parallel system base
         **kwargs,
     )
 

@@ -10,7 +10,7 @@ import numpy as np
 class PartyAgents(AgentSet):
     """
     Party agents stored as Polars DataFrame.
-    
+
     Attributes (DataFrame columns):
         - unique_id: Party identifier
         - name: Party name
@@ -21,12 +21,12 @@ class PartyAgents(AgentSet):
         - seats: Current seat count
         - vote_share: Last election vote share
     """
-    
+
     def __init__(self, model: Model, df: pl.DataFrame):
         super().__init__(model)
         self.add(df)
         self._cache = {}
-    
+
     def invalidate_cache(self):
         self._cache = {}
 
@@ -34,33 +34,34 @@ class PartyAgents(AgentSet):
     def n_parties(self) -> int:
         """Number of parties."""
         return len(self.df)
-    
+
     def get_positions(self) -> np.ndarray:
         """Return party positions as (n_parties, 2) array (cached)."""
         if "positions" not in self._cache:
-            self._cache["positions"] = np.column_stack([
-                self.df["position_x"].to_numpy(),
-                self.df["position_y"].to_numpy()
-            ])
+            self._cache["positions"] = np.column_stack(
+                [self.df["position_x"].to_numpy(), self.df["position_y"].to_numpy()]
+            )
         return self._cache["positions"]
-    
+
     def get_valence(self) -> np.ndarray:
         """Return party valence scores (cached)."""
         if "valence" not in self._cache:
             self._cache["valence"] = self.df["valence"].to_numpy()
         return self._cache["valence"]
-    
+
     def get_names(self) -> list[str]:
         """Return party names."""
         return self.df["name"].to_list()
-    
+
     def update_results(self, seats: np.ndarray, vote_shares: np.ndarray):
         """Update party results after election."""
-        self.df = self.df.with_columns([
-            pl.Series("seats", seats),
-            pl.Series("vote_share", vote_shares),
-        ])
-    
+        self.df = self.df.with_columns(
+            [
+                pl.Series("seats", seats),
+                pl.Series("vote_share", vote_shares),
+            ]
+        )
+
     def step(self):
         """Called each simulation step for party adaptation."""
         pass  # Placeholder for adaptive behavior

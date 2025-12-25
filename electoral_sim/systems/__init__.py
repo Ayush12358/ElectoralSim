@@ -21,7 +21,7 @@ from electoral_sim.systems.alternative import (
 __all__ = [
     # PR allocation
     "dhondt_allocation",
-    "sainte_lague_allocation", 
+    "sainte_lague_allocation",
     "hare_quota_allocation",
     "droop_quota_allocation",
     "fptp_allocation",

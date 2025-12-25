@@ -10,14 +10,14 @@ def usa_config(
 ) -> Config:
     """
     Preset configuration for USA (House of Representatives).
-    
+
     435 districts, two-party system (FPTP).
     """
     parties = [
         PartyConfig("Democratic", -0.4, -0.2, 50),
         PartyConfig("Republican", 0.4, 0.3, 50),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,

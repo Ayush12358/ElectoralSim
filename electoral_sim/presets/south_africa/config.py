@@ -10,7 +10,7 @@ def south_africa_config(
 ) -> Config:
     """
     Preset configuration for South Africa (National Assembly).
-    
+
     Pure PR (Proportional Representation).
     """
     parties = [
@@ -20,7 +20,7 @@ def south_africa_config(
         PartyConfig("EFF", -0.8, 0.5, 40),
         PartyConfig("IFP", 0.5, 0.3, 35),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,

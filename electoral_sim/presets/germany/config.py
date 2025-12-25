@@ -10,7 +10,7 @@ def germany_config(
 ) -> Config:
     """
     Preset configuration for Germany (Bundestag).
-    
+
     MMP system with 5% threshold.
     """
     parties = [
@@ -21,7 +21,7 @@ def germany_config(
         PartyConfig("AfD", 0.5, 0.5, 35),
         PartyConfig("Linke", -0.5, -0.2, 35),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,

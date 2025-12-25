@@ -121,19 +121,74 @@ EU_POLITICAL_GROUPS = {
 # Maps countries to their dominant political group leanings
 COUNTRY_GROUP_WEIGHTS = {
     # Western Europe - center-right/center-left balance
-    "Germany": {"EPP": 0.28, "S&D": 0.20, "Greens/EFA": 0.15, "Renew": 0.12, "Left": 0.08, "ECR": 0.10, "ID": 0.05, "NI": 0.02},
-    "France": {"Renew": 0.22, "ID": 0.25, "EPP": 0.10, "S&D": 0.15, "Greens/EFA": 0.08, "Left": 0.10, "ECR": 0.05, "NI": 0.05},
-    "Italy": {"ECR": 0.30, "S&D": 0.20, "EPP": 0.10, "Renew": 0.08, "Greens/EFA": 0.05, "Left": 0.05, "ID": 0.15, "NI": 0.07},
-    "Spain": {"EPP": 0.35, "S&D": 0.30, "Renew": 0.05, "Greens/EFA": 0.05, "Left": 0.12, "ECR": 0.08, "ID": 0.03, "NI": 0.02},
-    "Poland": {"EPP": 0.35, "ECR": 0.30, "S&D": 0.10, "Renew": 0.08, "Left": 0.05, "Greens/EFA": 0.02, "ID": 0.05, "NI": 0.05},
+    "Germany": {
+        "EPP": 0.28,
+        "S&D": 0.20,
+        "Greens/EFA": 0.15,
+        "Renew": 0.12,
+        "Left": 0.08,
+        "ECR": 0.10,
+        "ID": 0.05,
+        "NI": 0.02,
+    },
+    "France": {
+        "Renew": 0.22,
+        "ID": 0.25,
+        "EPP": 0.10,
+        "S&D": 0.15,
+        "Greens/EFA": 0.08,
+        "Left": 0.10,
+        "ECR": 0.05,
+        "NI": 0.05,
+    },
+    "Italy": {
+        "ECR": 0.30,
+        "S&D": 0.20,
+        "EPP": 0.10,
+        "Renew": 0.08,
+        "Greens/EFA": 0.05,
+        "Left": 0.05,
+        "ID": 0.15,
+        "NI": 0.07,
+    },
+    "Spain": {
+        "EPP": 0.35,
+        "S&D": 0.30,
+        "Renew": 0.05,
+        "Greens/EFA": 0.05,
+        "Left": 0.12,
+        "ECR": 0.08,
+        "ID": 0.03,
+        "NI": 0.02,
+    },
+    "Poland": {
+        "EPP": 0.35,
+        "ECR": 0.30,
+        "S&D": 0.10,
+        "Renew": 0.08,
+        "Left": 0.05,
+        "Greens/EFA": 0.02,
+        "ID": 0.05,
+        "NI": 0.05,
+    },
     # Default for other countries
-    "_default": {"EPP": 0.25, "S&D": 0.20, "Renew": 0.15, "Greens/EFA": 0.10, "ECR": 0.12, "ID": 0.08, "Left": 0.05, "NI": 0.05},
+    "_default": {
+        "EPP": 0.25,
+        "S&D": 0.20,
+        "Renew": 0.15,
+        "Greens/EFA": 0.10,
+        "ECR": 0.12,
+        "ID": 0.08,
+        "Left": 0.05,
+        "NI": 0.05,
+    },
 }
 
 
 @dataclass
 class EUElectionResult:
     """Results of EU Parliament election simulation."""
+
     seats: dict[str, int]  # Group -> seats
     vote_shares: dict[str, float]
     country_results: dict[str, dict]
@@ -145,7 +200,7 @@ class EUElectionResult:
     pro_eu_seats: int  # EPP + S&D + Renew + Greens
     eurosceptic_seats: int  # ECR + ID + NI
     majority_threshold: int = 361  # 720 / 2 + 1
-    
+
     def __str__(self):
         lines = ["=" * 60]
         lines.append("EUROPEAN PARLIAMENT ELECTION RESULTS")
@@ -156,13 +211,13 @@ class EUElectionResult:
         lines.append(f"ENP (seats): {self.enp_seats:.2f}")
         lines.append(f"\n{'Group':20} {'Seats':>8} {'Vote %':>8}")
         lines.append("-" * 40)
-        
+
         sorted_groups = sorted(self.seats.items(), key=lambda x: -x[1])
         for group, seats in sorted_groups:
             if seats > 0:
                 vote_pct = self.vote_shares.get(group, 0) * 100
                 lines.append(f"{group:20} {seats:>8} {vote_pct:>7.1f}%")
-        
+
         lines.append("\n" + "-" * 40)
         lines.append(f"{'Pro-EU (EPP+S&D+Renew+Greens)':30} {self.pro_eu_seats:>5}")
         lines.append(f"{'Eurosceptic (ECR+ID+NI)':30} {self.eurosceptic_seats:>5}")
@@ -170,12 +225,12 @@ class EUElectionResult:
         lines.append("-" * 40)
         lines.append(f"{'TOTAL':30} {sum(self.seats.values()):>5}")
         lines.append(f"\nMajority threshold: {self.majority_threshold}")
-        
+
         if self.pro_eu_seats >= self.majority_threshold:
             lines.append("🇪🇺 Pro-EU coalition has majority!")
         else:
             lines.append("⚖️ Grand coalition needed for majority")
-        
+
         return "\n".join(lines)
 
 
@@ -186,7 +241,7 @@ def simulate_eu_election(
 ) -> EUElectionResult:
     """
     Simulate European Parliament Election.
-    
+
     Args:
         n_voters_per_mep: Voters simulated per MEP seat (affects accuracy vs speed)
             - 1000 = quick (~5 seconds)
@@ -194,150 +249,150 @@ def simulate_eu_election(
             - 20000 = detailed (~60 seconds)
         seed: Random seed for reproducibility
         verbose: Print progress
-        
+
     Returns:
         EUElectionResult with full results
     """
     from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
-    
+
     rng = np.random.default_rng(seed)
-    
+
     # Prepare group list
     group_names = list(EU_POLITICAL_GROUPS.keys())
     n_groups = len(group_names)
-    
+
     # Results storage
     all_seats = {name: 0 for name in group_names}
     all_votes = {name: 0 for name in group_names}
     country_results = {}
     total_voters = 0
     total_voted = 0
-    
+
     start_time = time.perf_counter()
-    
+
     if verbose:
         print("🇪🇺 Simulating EU Parliament Election (720 MEPs, 27 States)")
         print("=" * 60)
-    
+
     # Simulate each member state
     for country, n_meps in EU_MEMBER_STATES.items():
         if verbose:
             print(f"  {country} ({n_meps} MEPs)...", end=" ", flush=True)
-        
+
         country_start = time.perf_counter()
-        
+
         # Get group weights for this country
         weights = COUNTRY_GROUP_WEIGHTS.get(country, COUNTRY_GROUP_WEIGHTS["_default"])
-        
+
         # Normalize weights to include all groups
         normalized_weights = {}
         for g in group_names:
             normalized_weights[g] = weights.get(g, 0.05)  # Default 5% for missing
         total_w = sum(normalized_weights.values())
-        normalized_weights = {k: v/total_w for k, v in normalized_weights.items()}
-        
+        normalized_weights = {k: v / total_w for k, v in normalized_weights.items()}
+
         # Create voters
         n_voters = n_voters_per_mep * n_meps
         total_voters += n_voters
-        
+
         # Generate voter ideologies
         ideology_x = rng.normal(0, 0.3, n_voters)
         ideology_y = rng.normal(0, 0.3, n_voters)
-        
+
         # Compute utilities for each group
         utilities = np.zeros((n_voters, n_groups))
         for g, group in enumerate(group_names):
             gx = EU_POLITICAL_GROUPS[group]["position_x"]
             gy = EU_POLITICAL_GROUPS[group]["position_y"]
             val = EU_POLITICAL_GROUPS[group]["valence"]
-            
+
             # Distance-based utility
-            dist = np.sqrt((ideology_x - gx)**2 + (ideology_y - gy)**2)
+            dist = np.sqrt((ideology_x - gx) ** 2 + (ideology_y - gy) ** 2)
             utility = -dist * 0.3 + 0.005 * val
-            
+
             # Country-specific group strength
             weight = normalized_weights.get(group, 0.05)
             utility += weight * 3.0
-            
+
             utilities[:, g] = utility
-        
+
         # MNL voting
         temperature = 0.5
         scaled = utilities / temperature
         scaled -= scaled.max(axis=1, keepdims=True)
         exp_utils = np.exp(scaled)
         probs = exp_utils / exp_utils.sum(axis=1, keepdims=True)
-        
+
         # Sample votes
         cumprobs = np.cumsum(probs, axis=1)
         random_vals = rng.random((n_voters, 1))
         votes = (random_vals > cumprobs).sum(axis=1)
-        
+
         # Turnout (EU average ~50%, varies by country)
         base_turnout = 0.50 + rng.normal(0, 0.1)  # Country variation
         turnout_prob = np.clip(rng.beta(3, 3, n_voters) * base_turnout * 2, 0.2, 0.9)
         will_vote = rng.random(n_voters) < turnout_prob
         voted_count = will_vote.sum()
         total_voted += voted_count
-        
+
         # Count votes
         country_votes = {name: 0 for name in group_names}
         valid_votes = votes[will_vote]
         for v in valid_votes:
             country_votes[group_names[v]] += 1
-        
+
         # Allocate seats using D'Hondt (most common in EU)
         vote_counts = np.array([country_votes[g] for g in group_names])
-        
+
         # D'Hondt allocation
         seats = np.zeros(n_groups, dtype=int)
         for _ in range(n_meps):
             quotients = vote_counts / (seats + 1)
             winner = np.argmax(quotients)
             seats[winner] += 1
-        
+
         country_seats = {group_names[i]: int(seats[i]) for i in range(n_groups)}
-        
+
         # Aggregate
         for group in group_names:
             all_seats[group] += country_seats[group]
             all_votes[group] += country_votes[group]
-        
+
         country_results[country] = {
             "seats": country_seats,
             "votes": country_votes,
             "turnout": voted_count / n_voters,
         }
-        
+
         country_time = time.perf_counter() - country_start
         if verbose:
             top_group = max(country_seats.items(), key=lambda x: x[1])
             print(f"done ({country_time*1000:.0f}ms) - {top_group[0]}: {top_group[1]}")
-    
+
     # Calculate metrics
     total_votes_cast = sum(all_votes.values())
     vote_shares = {g: v / total_votes_cast for g, v in all_votes.items()}
     seat_shares = {g: s / 720 for g, s in all_seats.items()}
-    
+
     vote_array = np.array(list(vote_shares.values()))
     seat_array = np.array(list(seat_shares.values()))
-    
+
     gal_idx = gallagher_index(vote_array, seat_array)
     enp_v = effective_number_of_parties(vote_array)
     enp_s = effective_number_of_parties(seat_array)
-    
+
     # Coalition analysis
     pro_eu_groups = {"EPP", "S&D", "Renew", "Greens/EFA"}
     eurosceptic_groups = {"ECR", "ID", "NI"}
-    
+
     pro_eu_seats = sum(all_seats.get(g, 0) for g in pro_eu_groups)
     eurosceptic_seats = sum(all_seats.get(g, 0) for g in eurosceptic_groups)
-    
+
     elapsed = time.perf_counter() - start_time
-    
+
     if verbose:
         print(f"\nTotal simulation time: {elapsed:.2f}s")
-    
+
     return EUElectionResult(
         seats=all_seats,
         vote_shares=vote_shares,

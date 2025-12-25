@@ -10,7 +10,7 @@ def uk_config(
 ) -> Config:
     """
     Preset configuration for UK (House of Commons).
-    
+
     650 constituencies, multi-party FPTP.
     """
     parties = [
@@ -20,7 +20,7 @@ def uk_config(
         PartyConfig("SNP", -0.2, -0.3, 45),
         PartyConfig("Green", -0.5, -0.4, 35),
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,

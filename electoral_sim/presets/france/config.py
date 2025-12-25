@@ -10,16 +10,16 @@ def france_config(
 ) -> Config:
     """
     Preset configuration for France (National Assembly).
-    
+
     577 constituencies, Two-Round System (simulated as FPTP with major alliances).
     """
     parties = [
-        PartyConfig("NFP", -0.5, 0.3, 60), # Left Alliance
-        PartyConfig("Ensemble", 0.0, -0.1, 55), # Center (Macron)
-        PartyConfig("RN", 0.6, 0.5, 65), # Far Right (Le Pen)
-        PartyConfig("LR", 0.3, 0.1, 45), # Traditional Right
+        PartyConfig("NFP", -0.5, 0.3, 60),  # Left Alliance
+        PartyConfig("Ensemble", 0.0, -0.1, 55),  # Center (Macron)
+        PartyConfig("RN", 0.6, 0.5, 65),  # Far Right (Le Pen)
+        PartyConfig("LR", 0.3, 0.1, 45),  # Traditional Right
     ]
-    
+
     return Config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,

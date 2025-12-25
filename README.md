@@ -263,11 +263,12 @@ pytest tests/test_integration.py -v
 python tests/stress_test.py
 ```
 
-**Test coverage:** 142 tests with ~65% code coverage, including:
-- Smoke tests (imports, structure)
-- Unit tests (electoral systems, metrics, config)
-- Integration tests (full election simulations)
-- Advanced tests (coalitions, edge cases, reproducibility)
+**Test coverage:** 222 tests with ~70% code coverage, including:
+- **Property-based tests** (Hypothesis) - random input generation
+- **Parameterized tests** - all systems, presets, allocation methods
+- **Performance benchmarks** - 1K, 10K voters timing
+- **Error handling** - invalid inputs, edge cases
+- **Real-world validation** - UK, US, Germany metrics
 
 ---
 

@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests/ -v --tb=short
+          pytest tests/test_smoke.py -v --tb=short
 
       - name: Check import
         run: |

@@ -6,10 +6,13 @@
 
 <p align="center">
   <a href="https://github.com/Ayush12358/electoral-simulation-india/actions/workflows/tests.yml"><img src="https://github.com/Ayush12358/electoral-simulation-india/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+  <a href="https://github.com/Ayush12358/electoral-simulation-india/actions/workflows/lint.yml"><img src="https://github.com/Ayush12358/electoral-simulation-india/actions/workflows/lint.yml/badge.svg" alt="Lint"></a>
   <a href="https://pypi.org/project/electoral-sim/"><img src="https://img.shields.io/pypi/v/electoral-sim.svg" alt="PyPI"></a>
   <a href="https://pypi.org/project/electoral-sim/"><img src="https://img.shields.io/pypi/pyversions/electoral-sim.svg" alt="Python"></a>
+  <a href="https://pepy.tech/project/electoral-sim"><img src="https://static.pepy.tech/badge/electoral-sim" alt="Downloads"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://ayush12358.github.io/electoral-simulation-india/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Documentation"></a>
+  <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
 </p>
 
 <p align="center">

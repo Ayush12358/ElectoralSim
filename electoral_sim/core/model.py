@@ -116,7 +116,7 @@ class ElectionModel(Model):
         ] = None,  # TECHNICAL: Real data integration
         use_gpu: bool = False,  # P4: GPU acceleration (CuPy)
     ):
-        super().__init__(seed)
+        super().__init__()
 
         # Initialize GPU support
         from electoral_sim.engine.gpu_accel import is_gpu_available
@@ -125,7 +125,9 @@ class ElectionModel(Model):
         if use_gpu and not self.use_gpu:
             print("Warning: GPU requested but not available. Falling back to CPU/Numba.")
 
-        # Initialize Random Generator
+        # Initialize Random Generator (Mesa 3.0+ compatible)
+        if seed is not None:
+            self.random.seed(seed)
         self.rng = np.random.default_rng(seed)
 
         # Store configuration
@@ -339,7 +341,7 @@ class ElectionModel(Model):
             - Behavioral attributes: political knowledge, misinformation susceptibility, etc.
             - Turnout probability
         """
-        return generate_voter_frame(n_voters, self.n_constituencies, self.random)
+        return generate_voter_frame(n_voters, self.n_constituencies, self.rng)
 
     def _generate_party_frame(self, parties: list[dict]) -> pl.DataFrame:
         """Generate party DataFrame from configuration, optionally adding NOTA."""
@@ -450,7 +452,7 @@ class ElectionModel(Model):
 
             return mnl_sample_gpu(utilities, self.temperature)
 
-        return vote_mnl_fast(utilities, self.temperature, self.random)
+        return vote_mnl_fast(utilities, self.temperature, self.rng)
 
     def _decide_turnout(self, utilities: np.ndarray | None = None) -> np.ndarray:
         """
@@ -498,7 +500,7 @@ class ElectionModel(Model):
             adjusted_turnout = turnout_prob
 
         # Stochastic turnout decision
-        random_vals = self.random.random(n_voters)
+        random_vals = self.rng.random(n_voters)
         return adjusted_turnout > random_vals
 
     def run_election(self, **kwargs) -> dict:

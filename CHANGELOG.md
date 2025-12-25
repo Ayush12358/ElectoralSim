@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.2] - 2024-12-25
+
+### Changed
+- **Breaking**: Migrated from `mesa-frames` to `Mesa 3.0+` with `Polars` DataFrames
+- Updated minimum Python version to 3.11
+
+### Added
+- **Comprehensive Test Suite** - 225 tests with ~70% coverage
+  - Property-based tests using Hypothesis
+  - Parameterized tests for all systems and presets
+  - Performance benchmarks
+  - Real-world validation tests (UK, US, Germany metrics)
+- Added `hypothesis` to dev dependencies
+
+### Fixed
+- Mesa 3.0 API compatibility (Model.__init__ signature changes)
+- RNG consistency using `self.rng` (NumPy Generator) throughout
+- Removed all legacy `mesa-frames` references from code and docs
+
+### Removed
+- `mesa-frames` dependency (replaced with pure Mesa + Polars)
+
+---
+
 ## [0.0.1] - 2024-12-25
 
 ### Added

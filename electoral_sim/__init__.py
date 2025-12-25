@@ -3,7 +3,7 @@ ElectoralSim - Generic Electoral Simulation Toolkit
 ===================================================
 
 A modular agent-based modeling toolkit for electoral systems,
-voter behavior, and political dynamics using mesa-frames.
+voter behavior, and political dynamics using Mesa + Polars.
 """
 
 __version__ = "0.0.1"

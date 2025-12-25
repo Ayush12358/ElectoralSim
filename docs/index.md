@@ -14,7 +14,7 @@ Welcome to the ElectoralSim documentation. This toolkit provides a comprehensive
 
 ## What is ElectoralSim?
 
-ElectoralSim is an agent-based modeling toolkit for electoral simulations, built on top of [mesa-frames](https://github.com/mesa/mesa-frames). It enables researchers and developers to:
+ElectoralSim is an agent-based modeling toolkit for electoral simulations, built on top of [Mesa](https://mesa.readthedocs.io/) with Polars DataFrames. It enables researchers and developers to:
 
 - **Simulate elections** at scale (1M+ voters) with multiple electoral systems
 - **Model voter behavior** using established political science theories

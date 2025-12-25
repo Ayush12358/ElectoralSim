@@ -22,14 +22,14 @@
   <a href="#quick-start">Quick Start</a>
 </p>
 
-A modular, high-performance simulation toolkit for electoral systems, voter behavior, and political dynamics. Built on [mesa-frames](https://github.com/projectmesa/mesa-frames) for vectorized agent-based modeling at scale.
+A modular, high-performance simulation toolkit for electoral systems, voter behavior, and political dynamics. Built on [Mesa](https://mesa.readthedocs.io/) with Polars DataFrames for vectorized agent-based modeling at scale.
 
 ---
 
 ## Key Features
 
 ### Performance
-- **1M+ voters** with vectorized mesa-frames & Numba JIT acceleration (89x speedup)
+- **1M+ voters** with vectorized Polars DataFrames & Numba JIT acceleration (89x speedup)
 - **30 elections/second** batch simulation capability
 - **Optional GPU support** via CuPy for massive-scale simulations
 
@@ -281,7 +281,7 @@ python tests/stress_test.py
 
 | Component | Library |
 |-----------|---------|
-| Agent-Based Modeling | [mesa-frames](https://github.com/mesa/mesa-frames) |
+| Agent-Based Modeling | [Mesa](https://mesa.readthedocs.io/) |
 | DataFrames | [Polars](https://pola.rs/) |
 | JIT Acceleration | [Numba](https://numba.pydata.org/) |
 | GPU Support | [CuPy](https://cupy.dev/) |
@@ -299,7 +299,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Acknowledgments
 
-- [mesa-frames](https://github.com/mesa/mesa-frames) for the vectorized ABM framework
+- [Mesa](https://mesa.readthedocs.io/) for the agent-based modeling framework
 - Political science research on spatial voting, opinion dynamics, and coalition theory
 - Electoral data from various national election commissions
 

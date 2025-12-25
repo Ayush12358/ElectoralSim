@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.10 or higher
+- Python 3.11 or higher
 - pip (Python package manager)
 
 ## Basic Installation
@@ -59,9 +59,9 @@ print(f"Installation successful! Turnout: {results['turnout']:.1%}")
 
 ## Troubleshooting
 
-### ImportError: No module named 'mesa_frames'
+### ImportError: No module named 'mesa'
 ```bash
-pip install mesa-frames
+pip install mesa>=3.0.0
 ```
 
 ### Numba warnings

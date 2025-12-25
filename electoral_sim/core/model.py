@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 
 class ElectionModel(Model):
     """
-    Main election simulation model using mesa-frames.
+    Main election simulation model using Mesa + Polars.
 
     Supports:
         - Multiple constituencies (default: 543 for Lok Sabha)

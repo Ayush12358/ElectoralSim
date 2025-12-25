@@ -1,7 +1,7 @@
 # ElectoralSim
 
 <p align="center">
-  <strong>🗳️ Advanced Agent-Based Electoral Simulation Toolkit</strong>
+  <strong>Advanced Agent-Based Electoral Simulation Toolkit</strong>
 </p>
 
 <p align="center">
@@ -16,23 +16,23 @@
 </p>
 
 <p align="center">
-  <a href="https://ayush12358.github.io/ElectoralSim/">📚 Documentation</a> •
-  <a href="https://pypi.org/project/electoral-sim/">📦 PyPI</a> •
-  <a href="#-quick-start">🚀 Quick Start</a>
+  <a href="https://ayush12358.github.io/ElectoralSim/">Documentation</a> •
+  <a href="https://pypi.org/project/electoral-sim/">PyPI</a> •
+  <a href="#quick-start">Quick Start</a>
 </p>
 
 A modular, high-performance simulation toolkit for electoral systems, voter behavior, and political dynamics. Built on [mesa-frames](https://github.com/projectmesa/mesa-frames) for vectorized agent-based modeling at scale.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 🚀 Performance
+### Performance
 - **1M+ voters** with vectorized mesa-frames & Numba JIT acceleration (89x speedup)
 - **30 elections/second** batch simulation capability
 - **Optional GPU support** via CuPy for massive-scale simulations
 
-### 🗳️ Electoral Systems
+### Electoral Systems
 | System | Methods |
 |--------|---------|
 | **Plurality** | First Past The Post (FPTP) |
@@ -40,36 +40,36 @@ A modular, high-performance simulation toolkit for electoral systems, voter beha
 | **Ranked Choice** | IRV/RCV, STV (Single Transferable Vote) |
 | **Other** | Approval Voting, Condorcet Winner |
 
-### 🧠 Voter Behavior Models
+### Voter Behavior Models
 - **Proximity Model** — Spatial voting based on ideological distance
 - **Valence Model** — Non-policy candidate appeal (charisma, competence)
 - **Retrospective Model** — Economic voting (reward/punish incumbents)
 - **Strategic Voting** — Duverger's Law, wasted vote model
 - **Sociotropic/Pocketbook** — National vs personal economic evaluation
 
-### 🧬 Voter Psychology
+### Voter Psychology
 - **Big Five (OCEAN)** — Personality traits influencing ideology
 - **Moral Foundations** — Haidt's Care, Fairness, Loyalty, Authority, Sanctity
 - **Media Diet** — Voter-specific media bias and misinformation susceptibility
 - **Affective Polarization** — In-group/out-group sentiment
 
-### 🌐 Opinion Dynamics
+### Opinion Dynamics
 - **Network Topologies** — Barabási-Albert, Watts-Strogatz, Erdős-Rényi
 - **Models** — Bounded Confidence, Noisy Voter, Zealots
 - **Media Effects** — Mass media bias with Raducha susceptibility model
 
-### 🤝 Coalition & Government
+### Coalition & Government
 - **Formation** — MWC, MCW, Laver-Shepsle portfolio allocation
 - **Stability** — Sigmoid/Linear/Exponential collapse models
 - **Analysis** — Coalition strain, junior partner penalty, Cox hazard
 
-### 📊 Metrics
+### Metrics
 - Gallagher Index (disproportionality)
 - Effective Number of Parties (Laakso-Taagepera)
 - Efficiency Gap, Loosemore-Hanby, Herfindahl-Hirschman Index
 - Voter Satisfaction Efficiency (VSE)
 
-### 🌍 Country Presets (11 Countries)
+### Country Presets (11 Countries)
 | Region | Countries |
 |--------|-----------|
 | **Asia** | 🇮🇳 India (543 Lok Sabha), 🇯🇵 Japan |
@@ -79,7 +79,7 @@ A modular, high-performance simulation toolkit for electoral systems, voter beha
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 pip install electoral-sim
@@ -101,7 +101,7 @@ pip install electoral-sim[all]   # Everything
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Basic Election
 
@@ -197,7 +197,7 @@ print(f"Stability: {gov['stability']:.2f}")
 
 ---
 
-## 📊 Streamlit Dashboard
+## Streamlit Dashboard
 
 Launch the interactive election explorer:
 
@@ -235,7 +235,7 @@ electoral_sim/
 
 ---
 
-## ⚡ Performance Benchmarks
+## Performance Benchmarks
 
 | Scale | Create Time | Election Time | Memory |
 |-------|-------------|---------------|--------|
@@ -249,7 +249,7 @@ electoral_sim/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -266,7 +266,7 @@ python tests/stress_test.py
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 - [Usage Guide](USAGE.md) — Detailed API usage examples
 - [docs/](docs/) — Full documentation
@@ -276,7 +276,7 @@ python tests/stress_test.py
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component | Library |
 |-----------|---------|
@@ -290,13 +290,13 @@ python tests/stress_test.py
 
 ---
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [mesa-frames](https://github.com/mesa/mesa-frames) for the vectorized ABM framework
 - Political science research on spatial voting, opinion dynamics, and coalition theory
@@ -305,5 +305,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-  <sub>Built with ❤️ for computational political science</sub>
+  <sub>Built with love for computational political science</sub>
 </p>

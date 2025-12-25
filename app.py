@@ -15,7 +15,7 @@ from electoral_sim.visualization.specialized import (
 # Page configuration
 st.set_page_config(
     page_title="ElectoralSim | Interactive Explorer",
-    page_icon="🗳️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -38,7 +38,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🗳️ ElectoralSim: Advanced Simulation Engine")
+st.title("ElectoralSim: Advanced Simulation Engine")
 st.markdown("---")
 
 # Sidebar settings
@@ -54,7 +54,7 @@ national_mood = st.sidebar.slider("National Mood (Wave)", -5.0, 5.0, 0.0)
 anti_incumbency = st.sidebar.slider("Anti-Incumbency Penalty", -2.0, 0.0, -0.1)
 
 # Run simulation
-if st.button("🚀 Run Simulation", type="primary"):
+if st.button("Run Simulation", type="primary"):
     with st.spinner("Processing voters and ballots..."):
         if preset == "India (Lok Sabha)":
             # Use the specialized India simulation

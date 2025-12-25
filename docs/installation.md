@@ -54,7 +54,7 @@ from electoral_sim import ElectionModel
 
 model = ElectionModel(n_voters=1000, seed=42)
 results = model.run_election()
-print(f"✅ Installation successful! Turnout: {results['turnout']:.1%}")
+print(f"Installation successful! Turnout: {results['turnout']:.1%}")
 ```
 
 ## Troubleshooting

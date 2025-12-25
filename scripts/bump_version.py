@@ -33,9 +33,9 @@ def bump_version(current: str, bump_type: str) -> str:
     """Calculate new version."""
     if re.match(r"^\d+\.\d+\.\d+$", bump_type):
         return bump_type  # Explicit version
-    
+
     parts = list(map(int, current.split(".")))
-    
+
     if bump_type == "major":
         parts[0] += 1
         parts[1] = 0
@@ -47,7 +47,7 @@ def bump_version(current: str, bump_type: str) -> str:
         parts[2] += 1
     else:
         raise ValueError(f"Unknown bump type: {bump_type}")
-    
+
     return ".".join(map(str, parts))
 
 
@@ -63,10 +63,10 @@ def update_changelog(new_version: str) -> None:
     """Add new version section to changelog."""
     content = CHANGELOG.read_text()
     today = datetime.now().strftime("%Y-%m-%d")
-    
+
     # Add new version header after the title section
     new_section = f"\n## [{new_version}] - {today}\n\n### Changed\n- Version bump\n"
-    
+
     # Insert after the first ## section marker pattern
     if f"## [{new_version}]" not in content:
         # Find the first version section and insert before it
@@ -86,37 +86,37 @@ def main():
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(0)
-    
+
     bump_type = sys.argv[1].lower()
     current = get_current_version()
     new_version = bump_version(current, bump_type)
-    
-    print(f"\n📦 Bumping version: {current} → {new_version}\n")
-    
+
+    print(f"\nBumping version: {current} -> {new_version}\n")
+
     # Update pyproject.toml
     update_file(
         PYPROJECT,
         r'version = ".+?"',
         f'version = "{new_version}"'
     )
-    
+
     # Update __init__.py
     update_file(
         INIT,
         r'__version__ = ".+?"',
         f'__version__ = "{new_version}"'
     )
-    
+
     # Update changelog
     update_changelog(new_version)
-    
-    print(f"\n✅ Version bumped to {new_version}")
+
+    print(f"\n[OK] Version bumped to {new_version}")
     print(f"\nNext steps:")
     print(f"  1. Review and update CHANGELOG.md with actual changes")
     print(f"  2. git add -A && git commit -m 'chore: release v{new_version}'")
     print(f"  3. git tag v{new_version}")
     print(f"  4. git push origin master --tags")
-    print(f"  5. Create GitHub Release → auto-publishes to PyPI")
+    print(f"  5. Create GitHub Release -> auto-publishes to PyPI")
 
 
 if __name__ == "__main__":

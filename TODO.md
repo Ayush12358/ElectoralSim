@@ -4,7 +4,7 @@
 
 ---
 
-## 🔮 Future Development
+## Future Development
 
 ### Research Features
 
@@ -52,16 +52,16 @@
 
 ---
 
-## ✅ Completed Features Summary
+## Completed Features Summary
 
-### Core (P1) — 17/17 ✅
+### Core (P1) — 17/17 [DONE]
 - ElectionModel, Config, Voter/Party agents
 - FPTP, PR (D'Hondt, Sainte-Laguë)
 - Gallagher Index, ENP
 - Coalition formation (MWC, MCW, strain)
 - Numba acceleration
 
-### High Priority (P2) — 31/31 ✅
+### High Priority (P2) — 31/31 [DONE]
 - Valence model, incumbent status
 - Hare/Droop quotas, IRV, STV
 - Opinion dynamics (BA, WS, ER networks)
@@ -69,7 +69,7 @@
 - NOTA, reserved constituencies
 - All visualization
 
-### Medium Priority (P3) — 24/24 ✅
+### Medium Priority (P3) — 24/24 [DONE]
 - Big Five personality, Moral Foundations
 - Misinformation susceptibility, media diet
 - Affective polarization
@@ -81,7 +81,7 @@
 - Laver-Shepsle portfolio allocation
 - 10M+ agent capacity
 
-### Low Priority (P4) — 10/10 ✅
+### Low Priority (P4) — 10/10 [DONE]
 - Adaptive strategy (MVT)
 - Event manager (scandals, shocks)
 - VSE metric
@@ -91,12 +91,12 @@
 - GPU acceleration (CuPy)
 - Interactive Streamlit dashboard
 
-### Nice-to-Have (P5) — 1/1 ✅
+### Nice-to-Have (P5) — 1/1 [DONE]
 - EU Parliament (27 states, 720 MEPs)
 
 ---
 
-## 📊 Version History
+## Version History
 
 ### v0.1.0 (Current)
 - Initial release with all P1-P4 features
@@ -105,7 +105,7 @@
 
 ---
 
-## 📝 Contributing
+## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute new features.
 

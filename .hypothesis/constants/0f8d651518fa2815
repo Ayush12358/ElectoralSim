@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\south_africa\config.py
+# hypothesis_version: 6.148.8
+
+[-0.8, -0.4, -0.2, 0.1, 0.3, 0.4, 0.5, 200000, 'ANC', 'DA', 'EFF', 'IFP', 'MK', 'PR', 'dhondt', 'position_x', 'position_y', 'valence']

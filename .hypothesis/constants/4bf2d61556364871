@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\agents\party_strategy.py
+# hypothesis_version: 6.148.8
+
+[0.0, 0.01, 'ideology_x', 'ideology_y', 'median_voter', 'position_x', 'position_y', 'random_walk', 'stick_to_base']

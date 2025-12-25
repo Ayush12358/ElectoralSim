@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\uk\config.py
+# hypothesis_version: 6.148.8
+
+[-0.5, -0.4, -0.3, -0.2, -0.1, 0.0, 0.2, 0.3, 650, 500000, 'Conservative', 'FPTP', 'Green', 'Labour', 'Liberal Democrats', 'SNP', 'position_x', 'position_y', 'valence']

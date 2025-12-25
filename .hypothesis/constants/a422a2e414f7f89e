@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\engine\__init__.py
+# hypothesis_version: 6.148.8
+
+['GovernmentSimulator', 'NUMBA_AVAILABLE', 'coalition_strain', 'collapse_probability', 'form_government', 'fptp_count_fast', 'hazard_rate', 'vote_mnl_fast']

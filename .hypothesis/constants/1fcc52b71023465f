@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\__init__.py
+# hypothesis_version: 6.148.8
+
+['EUElectionResult', 'EU_MEMBER_STATES', 'EU_POLITICAL_GROUPS', 'GERMANY_PARTIES', 'INDIA_PARTIES', 'INDIA_STATES', 'IndiaElectionResult', 'UK_PARTIES', 'USA_PARTIES', 'germany', 'germany_config', 'india', 'simulate_eu_election', 'uk', 'uk_config', 'usa', 'usa_config']

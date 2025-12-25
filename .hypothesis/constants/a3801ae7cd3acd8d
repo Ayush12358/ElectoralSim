@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\eu\election.py
+# hypothesis_version: 6.148.8
+
+[-0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0.0, 0.005, 0.02, 0.03, 0.05, 0.07, 0.08, 0.1, 0.12, 0.15, 0.2, 0.22, 0.25, 0.28, 0.3, 0.35, 0.5, 0.6, 0.9, 3.0, 100, 361, 720, 2024, 5000, '#003366', '#003399', '#0054A5', '#00A651', '#808080', '#990000', '#ED1B24', '#FFD700', '-', '=', 'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'ECR', 'EPP', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Greens/EFA', 'Hungary', 'ID', 'Ireland', 'Italy', 'Latvia', 'Left', 'Lithuania', 'Luxembourg', 'Malta', 'NI', 'Netherlands', 'Poland', 'Portugal', 'Renew', 'Renew Europe', 'Romania', 'S&D', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'The Left (GUE/NGL)', '__main__', '_default', 'color', 'name', 'position_x', 'position_y', 'seats', 'turnout', 'valence', 'votes']

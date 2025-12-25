@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\behavior\voter_behavior.py
+# hypothesis_version: 6.148.8
+
+[0.0, 1e-06, 0.01, 0.05, 0.5, 1.0, 2.0, 'columns', 'df', 'economic_perception', 'growth', 'incumbents', 'n_parties', 'n_voters', 'positions', 'use_gpu', 'valence', 'viability']

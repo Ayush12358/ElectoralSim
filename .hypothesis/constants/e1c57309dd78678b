@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\brazil\config.py
+# hypothesis_version: 6.148.8
+
+[-0.4, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 300000, 'MDB', 'PL', 'PP', 'PR', 'PSD', 'PT', 'Republicanos', 'União', 'União Brasil', 'dhondt', 'position_x', 'position_y', 'valence']

@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\core\model.py
+# hypothesis_version: 6.148.8
+
+[-2.0, -0.3, -0.1, 0.0, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0, 50.0, 100, 100000, '\n  Party Results:', '\nResults:', '-', '=', 'All tests passed!', 'FPTP', 'NOTA', 'PR', 'Party A', 'Party B', 'Party C', '__main__', 'bounded_confidence', 'constituency', 'df', 'dhondt', 'enp_seats', 'enp_seats_mean', 'enp_seats_std', 'enp_votes', 'enp_votes_mean', 'enp_votes_std', 'gallagher', 'gallagher_mean', 'gallagher_std', 'ideology_x', 'ideology_y', 'incumbent', 'incumbents', 'is_nota', 'mean_turnout', 'media_bias', 'median_voter', 'method', 'n_constituencies', 'n_elections', 'n_parties', 'n_voters', 'name', 'position_x', 'position_y', 'positions', 'scandal', 'seats', 'shock', 'step', 'system', 'temp_idx', 'turnout', 'turnout_mean', 'turnout_prob', 'turnout_std', 'valence', 'viability', 'vote_counts', 'vote_share', 'vse']

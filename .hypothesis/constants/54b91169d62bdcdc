@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\metrics\indices.py
+# hypothesis_version: 6.148.8
+
+[0.0, 0.5, 1.0, 1.5, 100, 10000]

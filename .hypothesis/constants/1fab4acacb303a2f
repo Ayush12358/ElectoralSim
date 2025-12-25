@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\systems\__init__.py
+# hypothesis_version: 6.148.8
+
+['ALLOCATION_METHODS', 'allocate_seats', 'approval_voting', 'condorcet_winner', 'dhondt_allocation', 'fptp_allocation', 'generate_rankings', 'irv_election', 'stv_election']

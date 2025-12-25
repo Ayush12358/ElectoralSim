@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\core\voter_generation.py
+# hypothesis_version: 6.148.8
+
+[-0.5, -0.25, 0.0, 0.002, 0.003, 0.005, 0.02, 0.03, 0.05, 0.1, 0.14, 0.15, 0.2, 0.25, 0.3, 0.5, 0.65, 0.8, 0.95, 1.2, 3.0, 3.5, 50.0, 100, 'NOTA', 'age', 'agreeableness', 'conscientiousness', 'constituency', 'economic_perception', 'education', 'extraversion', 'gender', 'ideology_x', 'ideology_y', 'income', 'incumbent', 'is_nota', 'media_bias', 'media_source_id', 'mf_authority', 'mf_care', 'mf_fairness', 'mf_loyalty', 'mf_sanctity', 'name', 'neuroticism', 'openness', 'party_id_7pt', 'political_knowledge', 'position_x', 'position_y', 'religion', 'turnout_prob', 'valence']

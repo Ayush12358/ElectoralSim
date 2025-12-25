@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\engine\government.py
+# hypothesis_version: 6.148.8
+
+[-2.0, -0.5, 0.0, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.8, 1.0, 1.5, 1000, 'Government', 'coalition', 'coalition_strain', 'collapse_reason', 'collapsed', 'defection', 'early_collapse_prob', 'economic_crisis', 'economic_growth', 'exponential', 'full_term_prob', 'leadership_challenge', 'linear', 'majority_margin', 'max_survival', 'mean_survival', 'median_survival', 'min_survival', 'month', 'months_in_office', 'n_events', 'n_parties', 'other', 'polarization', 'policy_strain', 'scandal', 'severity', 'sigmoid', 'stability', 'std_survival', 'strain', 'time_in_office', 'type']

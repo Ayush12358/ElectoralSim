@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\agents\voter.py
+# hypothesis_version: 6.148.8
+
+['constituency', 'ideology_x', 'ideology_y', 'positions', 'turnout_prob']

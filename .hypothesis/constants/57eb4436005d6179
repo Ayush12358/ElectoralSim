@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\core\config.py
+# hypothesis_version: 6.148.8
+
+[-0.4, -0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 50.0, 543, 100000, 1000000, 'AAP', 'BJP', 'BSP', 'DMK', 'FPTP', 'INC', 'Others', 'PR', 'Party A', 'Party B', 'Party C', 'SP', 'TMC', 'australia_house', 'australia_senate', 'brazil', 'dhondt', 'droop', 'france', 'germany', 'hare', 'incumbent', 'india', 'japan', 'name', 'position_x', 'position_y', 'sainte_lague', 'south_africa', 'uk', 'usa', 'valence']

@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\dynamics\opinion_dynamics.py
+# hypothesis_version: 6.148.8
+
+[0.0, 0.01, 0.1, 0.3, 0.5, 1.5, 100, 500, 1000, 10000, '\nNetwork stats:', '=', 'FPTP', 'PR', '__main__', 'avg_degree', 'barabasi_albert', 'bounded_confidence', 'clustering_coeff', 'd', 'erdos_renyi', 'k', 'm', 'max_degree', 'n_edges', 'n_nodes', 'noisy_voter', 'p', 'random_regular', 'watts_strogatz']

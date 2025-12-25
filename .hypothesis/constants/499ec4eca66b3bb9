@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\systems\allocation.py
+# hypothesis_version: 6.148.8
+
+[0.0, 'constituency', 'dhondt', 'droop', 'hare', 'party', 'sainte_lague', 'votes']

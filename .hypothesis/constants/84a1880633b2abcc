@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\agents\__init__.py
+# hypothesis_version: 6.148.8
+
+['INDIA_PARTIES', 'PartyAgents', 'UK_PARTIES', 'US_PARTIES', 'VoterAgents']

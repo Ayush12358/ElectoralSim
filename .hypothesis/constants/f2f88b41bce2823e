@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\eu\__init__.py
+# hypothesis_version: 6.148.8
+
+['EUElectionResult', 'EU_MEMBER_STATES', 'EU_POLITICAL_GROUPS', 'simulate_eu_election']

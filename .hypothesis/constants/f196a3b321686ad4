@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\japan\config.py
+# hypothesis_version: 6.148.8
+
+[-0.7, -0.3, -0.1, 0.1, 0.2, 0.3, 0.4, 0.5, 289, 250000, 'CDP', 'FPTP', 'Ishin', 'JCP', 'Komeito', 'LDP', 'position_x', 'position_y', 'valence']

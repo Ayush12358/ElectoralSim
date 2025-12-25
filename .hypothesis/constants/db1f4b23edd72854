@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\core\counting.py
+# hypothesis_version: 6.148.8
+
+[0.0, 'FPTP', 'PR', 'dhondt', 'droop', 'hare', 'method', 'n_constituencies', 'n_seats', 'sainte_lague', 'seats', 'system', 'vote_counts']

@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\engine\coalition.py
+# hypothesis_version: 6.148.8
+
+[-1.0, 0.0, 0.05, 0.15, 0.5, 1.0, 2.0, 'coalition', 'coalition_names', 'exponential', 'majority', 'margin', 'n_parties', 'reason', 'seats', 'sigmoid', 'stability', 'strain', 'success']

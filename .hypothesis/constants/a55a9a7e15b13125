@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\metrics\__init__.py
+# hypothesis_version: 6.148.8
+
+['efficiency_gap', 'gallagher_index', 'seat_share', 'seats_votes_ratio', 'turnout_rate', 'vote_share']

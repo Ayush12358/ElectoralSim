@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\agents\party.py
+# hypothesis_version: 6.148.8
+
+[-0.4, -0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 'AAP', 'BJP', 'Conservative', 'DMK', 'Democratic', 'INC', 'Labour', 'LibDem', 'Others', 'Republican', 'SNP', 'SP', 'TMC', 'name', 'position_x', 'position_y', 'positions', 'seats', 'valence', 'vote_share']

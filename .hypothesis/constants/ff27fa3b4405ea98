@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\engine\numba_accel.py
+# hypothesis_version: 6.148.8
+
+[-1.0, 0.0, 0.01, 0.5, 100, 500, 1000, 2000, 3000, 5000, 8000, 10000, 100000, '=', '__main__']

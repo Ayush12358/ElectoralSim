@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\core\__init__.py
+# hypothesis_version: 6.148.8
+
+['Config', 'ElectionModel', 'PRESETS', 'PartyConfig', 'count_fptp', 'count_pr', 'generate_party_frame', 'generate_voter_frame']

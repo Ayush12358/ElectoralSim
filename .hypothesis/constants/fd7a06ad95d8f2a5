@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\events\event_manager.py
+# hypothesis_version: 6.148.8
+
+[0.0, 0.005, 0.01, 0.7, 1.0, 5.0, 'economic_shock', 'international_crisis', 'scandal']

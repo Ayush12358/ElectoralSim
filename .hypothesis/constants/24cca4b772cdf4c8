@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\presets\usa\config.py
+# hypothesis_version: 6.148.8
+
+[-0.4, -0.2, 0.3, 0.4, 435, 500000, 'Democratic', 'FPTP', 'Republican', 'position_x', 'position_y', 'valence']

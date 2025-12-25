@@ -1,0 +1,4 @@
+# file: C:\masti\try\electoral_sim\systems\alternative.py
+# hypothesis_version: 6.148.8
+
+[999, 1000, '\n1. IRV/RCV:', '\n2. STV (3 seats):', '\n3. Condorcet:', '\n4. Approval Voting:', '=', '__main__', 'approval_counts', 'approval_shares', 'condorcet_winner', 'elected', 'eliminated', 'elimination_order', 'final_votes', 'has_condorcet', 'inf', 'n_seats', 'pairwise_matrix', 'quota', 'rounds', 'vote_counts', 'winner']

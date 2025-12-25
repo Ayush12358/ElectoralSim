@@ -263,7 +263,11 @@ pytest tests/test_integration.py -v
 python tests/stress_test.py
 ```
 
-**Test coverage:** 63 tests covering all P1-P4 features
+**Test coverage:** 142 tests with ~65% code coverage, including:
+- Smoke tests (imports, structure)
+- Unit tests (electoral systems, metrics, config)
+- Integration tests (full election simulations)
+- Advanced tests (coalitions, edge cases, reproducibility)
 
 ---
 

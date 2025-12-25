@@ -7,26 +7,26 @@ Based on mesa-frames patterns from the official tutorials.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 import polars as pl
-from mesa_frames import AgentSet, Model, DataCollector
+from mesa_frames import DataCollector, Model
 
-from electoral_sim.systems.allocation import dhondt_allocation, sainte_lague_allocation
-from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
-from electoral_sim.engine.numba_accel import (
-    vote_mnl_fast,
-    fptp_count_fast,
-    compute_utilities_numba,
-    NUMBA_AVAILABLE,
-)
-from electoral_sim.core.voter_generation import generate_voter_frame, generate_party_frame
-from electoral_sim.core.counting import count_fptp, count_pr
-from electoral_sim.events.event_manager import EventManager
-from electoral_sim.agents.party_strategy import adaptive_strategy_step
-
-from electoral_sim.agents.voter import VoterAgents
 from electoral_sim.agents.party import PartyAgents
+from electoral_sim.agents.party_strategy import adaptive_strategy_step
+from electoral_sim.agents.voter import VoterAgents
+from electoral_sim.core.voter_generation import generate_voter_frame
+from electoral_sim.engine.numba_accel import (
+    fptp_count_fast,
+    vote_mnl_fast,
+)
+from electoral_sim.events.event_manager import EventManager
+from electoral_sim.metrics.indices import effective_number_of_parties, gallagher_index
 
+if TYPE_CHECKING:
+    from electoral_sim.behavior.voter_behavior import BehaviorEngine
+    from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
 
 # =============================================================================
 # ELECTION MODEL
@@ -99,8 +99,8 @@ class ElectionModel(Model):
         threshold: float = 0.0,
         temperature: float = 0.5,
         seed: int | None = None,
-        behavior_engine: "BehaviorEngine" | None = None,
-        opinion_dynamics: "OpinionDynamics" | None = None,
+        behavior_engine: BehaviorEngine | None = None,
+        opinion_dynamics: OpinionDynamics | None = None,
         include_nota: bool = False,
         constituency_constraints: dict[int, list[str]] | None = None,
         anti_incumbency: float = 0.0,
@@ -111,7 +111,7 @@ class ElectionModel(Model):
         event_probs: dict[str, float] | None = None,  # P4: Dynamic events
         use_adaptive_strategy: bool = False,  # P4: Strategy
         constituency_manager: Optional[
-            "ConstituencyManager"
+            ConstituencyManager
         ] = None,  # TECHNICAL: Real data integration
         use_gpu: bool = False,  # P4: GPU acceleration (CuPy)
     ):
@@ -141,8 +141,8 @@ class ElectionModel(Model):
         from electoral_sim.behavior.voter_behavior import (
             BehaviorEngine,
             ProximityModel,
-            ValenceModel,
             RetrospectiveModel,
+            ValenceModel,
         )
 
         self.economic_growth = economic_growth
@@ -219,7 +219,7 @@ class ElectionModel(Model):
     # =========================================================================
 
     @classmethod
-    def from_config(cls, config: "Config") -> "ElectionModel":
+    def from_config(cls, config: Config) -> ElectionModel:
         """
         Create model from a Config object.
 
@@ -233,7 +233,6 @@ class ElectionModel(Model):
             config = Config(n_voters=100_000, electoral_system="PR")
             model = ElectionModel.from_config(config)
         """
-        from electoral_sim.core.config import Config
 
         return cls(
             n_voters=config.n_voters,
@@ -247,7 +246,7 @@ class ElectionModel(Model):
         )
 
     @classmethod
-    def from_preset(cls, preset: str, **kwargs) -> "ElectionModel":
+    def from_preset(cls, preset: str, **kwargs) -> ElectionModel:
         """
         Create model from a country preset.
 
@@ -274,7 +273,7 @@ class ElectionModel(Model):
     # CHAINABLE API
     # =========================================================================
 
-    def with_system(self, system: str) -> "ElectionModel":
+    def with_system(self, system: str) -> ElectionModel:
         """
         Set electoral system. Chainable.
 
@@ -287,7 +286,7 @@ class ElectionModel(Model):
         self.electoral_system = system
         return self
 
-    def with_allocation(self, method: str) -> "ElectionModel":
+    def with_allocation(self, method: str) -> ElectionModel:
         """
         Set PR allocation method. Chainable.
 
@@ -300,7 +299,7 @@ class ElectionModel(Model):
         self.allocation_method = method
         return self
 
-    def with_threshold(self, threshold: float) -> "ElectionModel":
+    def with_threshold(self, threshold: float) -> ElectionModel:
         """
         Set electoral threshold. Chainable.
 
@@ -313,7 +312,7 @@ class ElectionModel(Model):
         self.threshold = threshold
         return self
 
-    def with_temperature(self, temperature: float) -> "ElectionModel":
+    def with_temperature(self, temperature: float) -> ElectionModel:
         """
         Set MNL temperature. Chainable.
 
@@ -814,14 +813,14 @@ if __name__ == "__main__":
     print("\nRunning FPTP election...")
     results = model.run_election()
 
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"  Turnout: {results['turnout']:.1%}")
     print(f"  Gallagher Index: {results['gallagher']:.2f}")
     print(f"  ENP (votes): {results['enp_votes']:.2f}")
     print(f"  ENP (seats): {results['enp_seats']:.2f}")
 
     party_names = model.parties.df["name"].to_list()
-    print(f"\n  Party Results:")
+    print("\n  Party Results:")
     for i, name in enumerate(party_names):
         votes = results["vote_counts"][i]
         seats = results["seats"][i]

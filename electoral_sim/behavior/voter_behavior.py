@@ -5,8 +5,9 @@ Implements different factors that influence voter utility and choice.
 Modular and pluggable.
 """
 
-import numpy as np
 from typing import Protocol, runtime_checkable
+
+import numpy as np
 
 
 @runtime_checkable

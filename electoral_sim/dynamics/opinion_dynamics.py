@@ -8,8 +8,9 @@ Implements:
 - Bounded confidence model
 """
 
-import numpy as np
 from typing import Literal
+
+import numpy as np
 
 try:
     import networkx as nx
@@ -451,7 +452,7 @@ if __name__ == "__main__":
 
     # Create network
     od = OpinionDynamics(n_agents=10_000, topology="barabasi_albert", m=3, seed=42)
-    print(f"\nNetwork stats:")
+    print("\nNetwork stats:")
     for k, v in od.stats.items():
         print(f"  {k}: {v:.2f}" if isinstance(v, float) else f"  {k}: {v}")
 

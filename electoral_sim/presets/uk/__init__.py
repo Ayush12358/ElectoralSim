@@ -1,5 +1,5 @@
 """UK Preset."""
 
-from electoral_sim.presets.uk.config import uk_config, UK_PARTIES
+from electoral_sim.presets.uk.config import UK_PARTIES, uk_config
 
 __all__ = ["uk_config", "UK_PARTIES"]

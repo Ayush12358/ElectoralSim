@@ -6,7 +6,8 @@ names, states, types (reserved/general), and geographic coordinates.
 """
 
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Any
+from typing import Any
+
 import polars as pl
 
 
@@ -19,9 +20,9 @@ class ConstituencyMetadata:
     state: str
     seats: int = 1
     type: str = "General"  # e.g., SC, ST, General
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    lat: Optional[float] = None
-    lon: Optional[float] = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    lat: float | None = None
+    lon: float | None = None
 
 
 class ConstituencyManager:

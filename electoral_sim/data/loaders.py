@@ -5,10 +5,9 @@ Provides utilities for loading real-world election results to seed
 the simulation with viability and incumbency data.
 """
 
-import polars as pl
-import numpy as np
-from typing import Dict, List, Optional, Any
 from pathlib import Path
+
+import polars as pl
 
 
 class HistoricalDataLoader:
@@ -30,7 +29,7 @@ class HistoricalDataLoader:
 
         self.df = pl.read_csv(self.path)
 
-    def get_viability_weights(self, year: Optional[int] = None) -> Dict[str, float]:
+    def get_viability_weights(self, year: int | None = None) -> dict[str, float]:
         """
         Calculate global viability weights (vote shares) per party.
         """
@@ -48,7 +47,7 @@ class HistoricalDataLoader:
 
         return weights
 
-    def get_incumbents(self, year: Optional[int] = None) -> List[str]:
+    def get_incumbents(self, year: int | None = None) -> list[str]:
         """
         Get list of parties that won seats in the historical data.
         """
@@ -69,7 +68,7 @@ class HistoricalDataLoader:
 
         return incumbents
 
-    def get_constituency_viability(self, year: Optional[int] = None) -> Dict[str, Dict[str, float]]:
+    def get_constituency_viability(self, year: int | None = None) -> dict[str, dict[str, float]]:
         """
         Get state/constituency specific party strengths.
         Returns: {constituency_name: {party_name: vote_share}}

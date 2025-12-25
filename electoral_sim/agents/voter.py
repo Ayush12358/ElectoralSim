@@ -3,10 +3,9 @@ Voter Agent for Electoral Simulation
 Uses mesa-frames AgentSet with Polars DataFrame backend
 """
 
-from mesa_frames import AgentSet, Model
-import polars as pl
 import numpy as np
-from typing import Optional
+import polars as pl
+from mesa_frames import AgentSet, Model
 
 
 class VoterAgents(AgentSet):

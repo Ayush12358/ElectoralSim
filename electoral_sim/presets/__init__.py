@@ -1,29 +1,28 @@
 """Electoral Simulation Presets - Country-specific configurations."""
 
 # India
-from electoral_sim.presets.india.election import (
-    simulate_india_election,
-    IndiaElectionResult,
-    INDIA_STATES,
-    INDIA_PARTIES,
-)
-
 # EU Parliament
 from electoral_sim.presets.eu.election import (
-    simulate_eu_election,
-    EUElectionResult,
     EU_MEMBER_STATES,
     EU_POLITICAL_GROUPS,
+    EUElectionResult,
+    simulate_eu_election,
 )
 
-# USA
-from electoral_sim.presets.usa.config import usa_config, USA_PARTIES
+# Germany
+from electoral_sim.presets.germany.config import GERMANY_PARTIES, germany_config
+from electoral_sim.presets.india.election import (
+    INDIA_PARTIES,
+    INDIA_STATES,
+    IndiaElectionResult,
+    simulate_india_election,
+)
 
 # UK
-from electoral_sim.presets.uk.config import uk_config, UK_PARTIES
+from electoral_sim.presets.uk.config import UK_PARTIES, uk_config
 
-# Germany
-from electoral_sim.presets.germany.config import germany_config, GERMANY_PARTIES
+# USA
+from electoral_sim.presets.usa.config import USA_PARTIES, usa_config
 
 __all__ = [
     # India

@@ -4,8 +4,9 @@ Vote Counting Module
 Contains functions for counting votes under different electoral systems.
 """
 
-import numpy as np
 from typing import Literal
+
+import numpy as np
 
 from electoral_sim.engine.numba_accel import fptp_count_fast
 

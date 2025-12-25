@@ -4,21 +4,22 @@ Advanced Visualizations for ElectoralSim.
 Includes animations, cartograms, and interactive dashboards.
 """
 
-import matplotlib.pyplot as plt
+from typing import Any
+
 import matplotlib.animation as animation
+import matplotlib.pyplot as plt
 import numpy as np
-import polars as pl
 import plotly.express as px
 import plotly.graph_objects as go
-from typing import List, Dict, Any, Optional
+import polars as pl
 
 
 def animate_opinion_dynamics(
-    history: List[pl.DataFrame],
+    history: list[pl.DataFrame],
     party_pos: np.ndarray,
-    party_names: List[str],
+    party_names: list[str],
     interval: int = 100,
-    filename: Optional[str] = None,
+    filename: str | None = None,
 ):
     """
     Create an animation of the opinion space as voters move.
@@ -59,7 +60,7 @@ def animate_opinion_dynamics(
 
 
 def plot_swing_analysis(
-    results: Dict[str, Any],
+    results: dict[str, Any],
     swing_range: np.ndarray = np.arange(-5, 6, 1),
     target_party: str = "BJP",
 ):
@@ -102,7 +103,7 @@ def plot_swing_analysis(
     return fig
 
 
-def plot_india_state_map(results_summary: Dict[str, Any]):
+def plot_india_state_map(results_summary: dict[str, Any]):
     """
     Plot a bubble map of India states showing seat distribution.
     """

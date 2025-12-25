@@ -6,8 +6,9 @@ Implements:
 - Survival time estimation
 """
 
-import numpy as np
 from typing import Literal
+
+import numpy as np
 
 
 def collapse_probability(

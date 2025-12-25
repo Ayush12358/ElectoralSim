@@ -4,7 +4,6 @@ Electoral Systems: Seat allocation methods and electoral rules
 
 import numpy as np
 import polars as pl
-from typing import Optional
 
 
 def dhondt_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0.0) -> np.ndarray:
@@ -206,7 +205,7 @@ def allocate_seats(
     """
     # Try Numba-accelerated versions for dhondt/sainte_lague
     try:
-        from electoral_sim.engine.numba_accel import dhondt_fast, sainte_lague_fast, NUMBA_AVAILABLE
+        from electoral_sim.engine.numba_accel import NUMBA_AVAILABLE, dhondt_fast, sainte_lague_fast
 
         if NUMBA_AVAILABLE and method in ("dhondt", "sainte_lague"):
             if method == "dhondt":

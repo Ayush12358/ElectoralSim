@@ -4,7 +4,7 @@ India Constituency Data (Lok Sabha)
 Provides real names and states for all 543 PCs.
 """
 
-from electoral_sim.core.constituency import ConstituencyMetadata, ConstituencyManager
+from electoral_sim.core.constituency import ConstituencyManager, ConstituencyMetadata
 
 # Sample of major constituencies across states for the 543 seats
 # Format: (State, [Const Names])

@@ -7,9 +7,9 @@ Implements:
 - Coalition strain calculation
 """
 
-import numpy as np
 from itertools import combinations
-from typing import Optional
+
+import numpy as np
 
 
 def minimum_winning_coalitions(
@@ -104,7 +104,7 @@ def minimum_connected_winning(
 
 def coalition_strain(
     positions: np.ndarray,
-    weights: Optional[np.ndarray] = None,
+    weights: np.ndarray | None = None,
 ) -> float:
     """
     Calculate policy strain within a coalition.
@@ -189,9 +189,9 @@ def predict_coalition_stability(
 def form_government(
     seats: np.ndarray,
     positions: np.ndarray,
-    party_names: Optional[list[str]] = None,
+    party_names: list[str] | None = None,
     majority_threshold: float = 0.5,
-    office_weight: Optional[float] = None,  # P4: Policy vs Office Tradeoff
+    office_weight: float | None = None,  # P4: Policy vs Office Tradeoff
 ) -> dict:
     """
     Form a government coalition.
@@ -307,7 +307,7 @@ def junior_partner_penalty(
         >>> penalties  # {0: 0.05, 1: -0.10, 2: -0.15}
     """
     if len(coalition_parties) < 2:
-        return {p: 0.0 for p in coalition_parties}
+        return dict.fromkeys(coalition_parties, 0.0)
 
     coalition_seats = seats[coalition_parties]
     total_coalition = coalition_seats.sum()

@@ -3,7 +3,6 @@ Metrics and Indices for Electoral Analysis
 """
 
 import numpy as np
-from typing import Optional
 
 
 def gallagher_index(vote_shares: np.ndarray, seat_shares: np.ndarray) -> float:

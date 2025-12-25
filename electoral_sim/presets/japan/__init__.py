@@ -1,3 +1,3 @@
-from electoral_sim.presets.japan.config import japan_config, JAPAN_PARTIES
+from electoral_sim.presets.japan.config import JAPAN_PARTIES, japan_config
 
 __all__ = ["japan_config", "JAPAN_PARTIES"]

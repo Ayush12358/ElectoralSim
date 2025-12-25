@@ -1,6 +1,6 @@
 from electoral_sim.presets.south_africa.config import (
-    south_africa_config,
     SOUTH_AFRICA_PARTIES,
+    south_africa_config,
 )
 
 __all__ = [

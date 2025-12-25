@@ -9,7 +9,6 @@ Implements:
 """
 
 import numpy as np
-from typing import Literal
 
 
 def irv_election(

@@ -12,96 +12,95 @@ __version__ = "0.0.1"
 # FACADE API (Backward Compatibility)
 # =============================================================================
 
-from electoral_sim.core.model import ElectionModel
-from electoral_sim.core.config import (
-    Config,
-    PartyConfig,
-    india_config,
-    usa_config,
-    uk_config,
-    germany_config,
-    australia_house_config,
-    australia_senate_config,
-    south_africa_config,
-    brazil_config,
-    france_config,
-    japan_config,
-    PRESETS,
-)
-
-# Electoral Systems
-from electoral_sim.systems.allocation import (
-    dhondt_allocation,
-    sainte_lague_allocation,
-    hare_quota_allocation,
-    droop_quota_allocation,
-    allocate_seats,
-)
-from electoral_sim.systems.alternative import (
-    irv_election,
-    stv_election,
-    approval_voting,
-    condorcet_winner,
-    generate_rankings,
-)
-
-# Metrics
-from electoral_sim.metrics.indices import (
-    gallagher_index,
-    effective_number_of_parties,
-    efficiency_gap,
-)
-
 # Behavior & Dynamics
 from electoral_sim.behavior.voter_behavior import (
     BehaviorEngine,
     ProximityModel,
-    ValenceModel,
     RetrospectiveModel,
-    StrategicVotingModel,
     SociotropicPocketbookModel,
+    StrategicVotingModel,
+    ValenceModel,
     WastedVoteModel,
 )
+from electoral_sim.core.config import (
+    PRESETS,
+    Config,
+    PartyConfig,
+    australia_house_config,
+    australia_senate_config,
+    brazil_config,
+    france_config,
+    germany_config,
+    india_config,
+    japan_config,
+    south_africa_config,
+    uk_config,
+    usa_config,
+)
+from electoral_sim.core.model import ElectionModel
 from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
 
 # Engine & Logic
 from electoral_sim.engine.coalition import (
-    minimum_winning_coalitions,
-    minimum_connected_winning,
+    allocate_portfolios_laver_shepsle,
     coalition_strain,
     form_government,
     junior_partner_penalty,
-    allocate_portfolios_laver_shepsle,
+    minimum_connected_winning,
+    minimum_winning_coalitions,
 )
 from electoral_sim.engine.government import (
-    collapse_probability,
-    simulate_government_survival,
-    hazard_rate,
-    cox_proportional_hazard,
     GovernmentSimulator,
+    collapse_probability,
+    cox_proportional_hazard,
+    hazard_rate,
+    simulate_government_survival,
+)
+
+# Metrics
+from electoral_sim.metrics.indices import (
+    effective_number_of_parties,
+    efficiency_gap,
+    gallagher_index,
+)
+from electoral_sim.presets.eu.election import (
+    EU_MEMBER_STATES,
+    EU_POLITICAL_GROUPS,
+    EUElectionResult,
+    simulate_eu_election,
 )
 
 # Presets
 from electoral_sim.presets.india.election import (
-    simulate_india_election,
-    IndiaElectionResult,
-    INDIA_STATES,
     INDIA_PARTIES,
+    INDIA_STATES,
+    IndiaElectionResult,
+    simulate_india_election,
 )
-from electoral_sim.presets.eu.election import (
-    simulate_eu_election,
-    EUElectionResult,
-    EU_MEMBER_STATES,
-    EU_POLITICAL_GROUPS,
+
+# Electoral Systems
+from electoral_sim.systems.allocation import (
+    allocate_seats,
+    dhondt_allocation,
+    droop_quota_allocation,
+    hare_quota_allocation,
+    sainte_lague_allocation,
+)
+from electoral_sim.systems.alternative import (
+    approval_voting,
+    condorcet_winner,
+    generate_rankings,
+    irv_election,
+    stv_election,
 )
 
 # Visualization (optional - requires matplotlib)
 try:
     from electoral_sim.visualization.charts import (
-        plot_seat_distribution,
-        plot_vote_shares,
-        plot_seats_vs_votes,
         plot_election_summary,
+        plot_seat_distribution,
+        plot_seats_vs_votes,
+        plot_vote_shares,
     )
 
     _VIZ_AVAILABLE = True

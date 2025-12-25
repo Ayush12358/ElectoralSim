@@ -1,15 +1,15 @@
 """Electoral metrics and indices"""
 
 from electoral_sim.metrics.indices import (
-    gallagher_index,
-    loosemore_hanby_index,
     effective_number_of_parties,
-    herfindahl_hirschman_index,
     efficiency_gap,
-    turnout_rate,
-    vote_share,
+    gallagher_index,
+    herfindahl_hirschman_index,
+    loosemore_hanby_index,
     seat_share,
     seats_votes_ratio,
+    turnout_rate,
+    vote_share,
 )
 
 __all__ = [

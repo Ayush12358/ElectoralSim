@@ -8,12 +8,11 @@ Simulates Lok Sabha elections with:
 - State-wise vote patterns
 """
 
-import numpy as np
 import time
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional
-import polars as pl
 
+import numpy as np
+import polars as pl
 
 # =============================================================================
 # INDIA ELECTION DATA
@@ -198,9 +197,9 @@ class IndiaElectionResult:
     others_seats: int
     # NOTA close race detection
     nota_contested_seats: int = 0  # Seats where NOTA > victory margin
-    nota_contested_list: List[str] = field(default_factory=list)  # List of "State: Constituency #"
-    voter_df: Optional[pl.DataFrame] = None
-    party_positions: Optional[np.ndarray] = None
+    nota_contested_list: list[str] = field(default_factory=list)  # List of "State: Constituency #"
+    voter_df: pl.DataFrame | None = None
+    party_positions: np.ndarray | None = None
 
     def __str__(self):
         lines = ["=" * 60]
@@ -225,7 +224,7 @@ class IndiaElectionResult:
         lines.append(f"{'Others Total':15} {self.others_seats:>8}")
         lines.append("-" * 35)
         lines.append(f"{'TOTAL':15} {sum(self.seats.values()):>8}")
-        lines.append(f"\nMajority mark: 272")
+        lines.append("\nMajority mark: 272")
 
         if self.nda_seats >= 272:
             lines.append("🏆 NDA wins majority!")
@@ -248,7 +247,7 @@ def simulate_india_election(
     verbose: bool = True,
     include_nota: bool = False,  # NEW: Enable NOTA tracking
     use_real_names: bool = True,  # TECHNICAL: Use real constituency names
-    historical_data_path: Optional[str] = None,  # TECHNICAL: Seed with historical data
+    historical_data_path: str | None = None,  # TECHNICAL: Seed with historical data
 ) -> IndiaElectionResult:
     """
     Simulate India General Election.
@@ -264,10 +263,9 @@ def simulate_india_election(
     Returns:
         IndiaElectionResult with full results
     """
-    from electoral_sim.core.model import ElectionModel
-    from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
     from electoral_sim.data.india_pc import get_india_constituencies
     from electoral_sim.data.loaders import HistoricalDataLoader
+    from electoral_sim.metrics.indices import effective_number_of_parties, gallagher_index
 
     manager = get_india_constituencies() if use_real_names else None
 
@@ -314,8 +312,8 @@ def simulate_india_election(
     n_parties = len(party_names)
 
     # Results storage
-    all_seats = {name: 0 for name in party_names}
-    all_votes = {name: 0 for name in party_names}
+    all_seats = dict.fromkeys(party_names, 0)
+    all_votes = dict.fromkeys(party_names, 0)
     state_results = {}
     total_voters = 0
     total_voted = 0
@@ -407,8 +405,8 @@ def simulate_india_election(
         total_voted += voted_count
 
         # FPTP counting
-        state_seats = {name: 0 for name in party_names}
-        state_votes = {name: 0 for name in party_names}
+        state_seats = dict.fromkeys(party_names, 0)
+        state_votes = dict.fromkeys(party_names, 0)
 
         for c in range(n_constituencies):
             c_mask = (constituencies == c) & will_vote

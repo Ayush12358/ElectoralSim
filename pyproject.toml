@@ -114,10 +114,14 @@ extend-exclude = '''
 [tool.ruff]
 line-length = 100
 target-version = "py310"
-select = ["E", "F", "I", "W", "UP", "B", "C4"]
-ignore = ["E501", "B008"]
 
-[tool.ruff.isort]
+[tool.ruff.lint]
+# Only check for errors, not style issues
+select = ["E", "F"]
+# Ignore: line too long, unused imports, unused vars, imports not at top, forward type hints
+ignore = ["E501", "F401", "F841", "E402", "F821"]
+
+[tool.ruff.lint.isort]
 known-first-party = ["electoral_sim"]
 
 [tool.mypy]

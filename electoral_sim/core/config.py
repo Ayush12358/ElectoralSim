@@ -94,14 +94,14 @@ class Config:
 
 
 # Re-export country configs from presets for backward compatibility
-from electoral_sim.presets.usa.config import usa_config
-from electoral_sim.presets.uk.config import uk_config
-from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.australia.config import australia_house_config, australia_senate_config
-from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.brazil.config import brazil_config
 from electoral_sim.presets.france.config import france_config
+from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.japan.config import japan_config
+from electoral_sim.presets.south_africa.config import south_africa_config
+from electoral_sim.presets.uk.config import uk_config
+from electoral_sim.presets.usa.config import usa_config
 
 
 # Backward compatible india_config (just calls the generic one)

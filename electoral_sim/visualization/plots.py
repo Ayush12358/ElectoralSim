@@ -6,11 +6,10 @@ for further customization or saving.
 """
 
 import numpy as np
-from typing import Optional
 
 try:
-    import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
+    import matplotlib.pyplot as plt
 
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
@@ -43,7 +42,7 @@ DEFAULT_COLORS = [
 def plot_seat_distribution(
     results: dict,
     party_names: list[str],
-    colors: Optional[list[str]] = None,
+    colors: list[str] | None = None,
     title: str = "Seat Distribution",
     figsize: tuple = (10, 6),
     show_values: bool = True,
@@ -106,7 +105,7 @@ def plot_seat_distribution(
 def plot_vote_shares(
     results: dict,
     party_names: list[str],
-    colors: Optional[list[str]] = None,
+    colors: list[str] | None = None,
     title: str = "Vote Share",
     figsize: tuple = (8, 8),
     threshold: float = 0.02,
@@ -172,7 +171,7 @@ def plot_vote_shares(
 def plot_seats_vs_votes(
     results: dict,
     party_names: list[str],
-    colors: Optional[list[str]] = None,
+    colors: list[str] | None = None,
     title: str = "Seats vs Votes",
     figsize: tuple = (10, 6),
 ) -> "plt.Figure":
@@ -245,7 +244,7 @@ def plot_seats_vs_votes(
 def plot_election_summary(
     results: dict,
     party_names: list[str],
-    colors: Optional[list[str]] = None,
+    colors: list[str] | None = None,
     title: str = "Election Summary",
     figsize: tuple = (14, 6),
 ) -> "plt.Figure":
@@ -329,7 +328,7 @@ def plot_ideological_space(
     voter_positions: np.ndarray,
     party_positions: np.ndarray,
     party_names: list[str],
-    colors: Optional[list[str]] = None,
+    colors: list[str] | None = None,
     title: str = "Ideological Space (Economic vs Social)",
     figsize: tuple = (10, 8),
 ) -> "plt.Figure":

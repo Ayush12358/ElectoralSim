@@ -2,9 +2,9 @@
 Party/Candidate Agents for Electoral Simulation
 """
 
-from mesa_frames import AgentSet, Model
-import polars as pl
 import numpy as np
+import polars as pl
+from mesa_frames import AgentSet, Model
 
 
 class PartyAgents(AgentSet):

@@ -6,7 +6,8 @@ that affect election outcomes.
 """
 
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import Literal
+
 import numpy as np
 
 
@@ -19,7 +20,7 @@ class Event:
     start_step: int
     duration: int
     severity: float  # 0.0 to 1.0 (or higher)
-    target_party_id: Optional[int] = None
+    target_party_id: int | None = None
     description: str = ""
 
     @property

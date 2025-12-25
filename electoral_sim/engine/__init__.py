@@ -5,27 +5,25 @@ Contains core logic for coalition formation, government stability, and accelerat
 """
 
 from electoral_sim.engine.coalition import (
-    minimum_winning_coalitions,
-    minimum_connected_winning,
+    allocate_portfolios_laver_shepsle,
     coalition_strain,
     form_government,
     junior_partner_penalty,
-    allocate_portfolios_laver_shepsle,
+    minimum_connected_winning,
+    minimum_winning_coalitions,
 )
-
 from electoral_sim.engine.government import (
-    collapse_probability,
-    simulate_government_survival,
-    hazard_rate,
-    cox_proportional_hazard,
     GovernmentSimulator,
+    collapse_probability,
+    cox_proportional_hazard,
+    hazard_rate,
+    simulate_government_survival,
 )
-
 from electoral_sim.engine.numba_accel import (
-    vote_mnl_fast,
-    fptp_count_fast,
-    compute_utilities_numba,
     NUMBA_AVAILABLE,
+    compute_utilities_numba,
+    fptp_count_fast,
+    vote_mnl_fast,
 )
 
 __all__ = [

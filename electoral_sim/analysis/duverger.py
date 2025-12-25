@@ -10,12 +10,12 @@ Duverger's Law mechanics rely on:
 2. Psychological Effect: Strategic voting to avoid wasted votes.
 """
 
-import numpy as np
-import polars as pl
-from electoral_sim.core.model import ElectionModel
-from electoral_sim.core.config import Config
-from electoral_sim.behavior.voter_behavior import WastedVoteModel, BehaviorEngine, ProximityModel
 from typing import Literal
+
+import numpy as np
+
+from electoral_sim.behavior.voter_behavior import BehaviorEngine, ProximityModel, WastedVoteModel
+from electoral_sim.core.model import ElectionModel
 
 
 def run_duverger_experiment(

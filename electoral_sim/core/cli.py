@@ -9,7 +9,6 @@ Usage:
 
 import argparse
 import json
-import sys
 
 
 def main():
@@ -146,13 +145,13 @@ def run_simulation(args):
 
     # Display results
     if not args.quiet:
-        print(f"\nResults:")
+        print("\nResults:")
         print(f"  Turnout: {results['turnout']:.1%}")
         print(f"  Gallagher Index: {results['gallagher']:.2f}")
         print(f"  ENP (votes): {results['enp_votes']:.2f}")
         print(f"  ENP (seats): {results['enp_seats']:.2f}")
 
-        print(f"\nParty Results:")
+        print("\nParty Results:")
         party_names = model.parties.df["name"].to_list()
         for i, name in enumerate(party_names):
             votes = results["vote_counts"][i]

@@ -5,9 +5,10 @@ Implements adaptive strategies for political parties to update
 their policy positions based on voter distribution and polling.
 """
 
+from typing import Literal
+
 import numpy as np
 import polars as pl
-from typing import Literal
 
 
 def adaptive_strategy_step(

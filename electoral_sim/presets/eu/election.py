@@ -8,11 +8,10 @@ Simulates EU Parliament elections with:
 - 7 main political groups + non-attached
 """
 
-import numpy as np
 import time
-from dataclasses import dataclass, field
-from typing import List
+from dataclasses import dataclass
 
+import numpy as np
 
 # =============================================================================
 # EU PARLIAMENT DATA
@@ -253,7 +252,7 @@ def simulate_eu_election(
     Returns:
         EUElectionResult with full results
     """
-    from electoral_sim.metrics.indices import gallagher_index, effective_number_of_parties
+    from electoral_sim.metrics.indices import effective_number_of_parties, gallagher_index
 
     rng = np.random.default_rng(seed)
 
@@ -262,8 +261,8 @@ def simulate_eu_election(
     n_groups = len(group_names)
 
     # Results storage
-    all_seats = {name: 0 for name in group_names}
-    all_votes = {name: 0 for name in group_names}
+    all_seats = dict.fromkeys(group_names, 0)
+    all_votes = dict.fromkeys(group_names, 0)
     country_results = {}
     total_voters = 0
     total_voted = 0
@@ -336,7 +335,7 @@ def simulate_eu_election(
         total_voted += voted_count
 
         # Count votes
-        country_votes = {name: 0 for name in group_names}
+        country_votes = dict.fromkeys(group_names, 0)
         valid_votes = votes[will_vote]
         for v in valid_votes:
             country_votes[group_names[v]] += 1

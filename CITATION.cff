@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "ElectoralSim"
+abstract: "High-performance agent-based electoral simulation toolkit with support for multiple countries, voting systems, and advanced voter behavior models."
+authors:
+  - family-names: "Maurya"
+    given-names: "Ayush"
+    orcid: "https://orcid.org/"
+repository-code: "https://github.com/Ayush12358/ElectoralSim"
+url: "https://ayush12358.github.io/ElectoralSim/"
+license: MIT
+version: "0.0.1"
+date-released: "2024-12-25"
+keywords:
+  - election-simulation
+  - agent-based-modeling
+  - voting-systems
+  - political-science
+  - computational-social-science
+  - mesa
+  - python

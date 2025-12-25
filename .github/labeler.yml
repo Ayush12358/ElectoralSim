@@ -1,0 +1,45 @@
+# Labels configuration for auto-labeling PRs based on file paths
+# Used by .github/workflows/labeler.yml
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**'
+      - '*.md'
+      - 'mkdocs.yml'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'tests/**'
+
+core:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'electoral_sim/core/**'
+
+behavior:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'electoral_sim/behavior/**'
+
+analysis:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'electoral_sim/analysis/**'
+
+visualization:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'electoral_sim/visualization/**'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/**'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'pyproject.toml'
+      - 'requirements.txt'

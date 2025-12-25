@@ -7,6 +7,7 @@
 <p align="center">
   <a href="https://github.com/Ayush12358/ElectoralSim/actions/workflows/tests.yml"><img src="https://github.com/Ayush12358/ElectoralSim/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
   <a href="https://github.com/Ayush12358/ElectoralSim/actions/workflows/lint.yml"><img src="https://github.com/Ayush12358/ElectoralSim/actions/workflows/lint.yml/badge.svg" alt="Lint"></a>
+  <a href="https://codecov.io/gh/Ayush12358/ElectoralSim"><img src="https://codecov.io/gh/Ayush12358/ElectoralSim/branch/master/graph/badge.svg" alt="Coverage"></a>
   <a href="https://pypi.org/project/electoral-sim/"><img src="https://img.shields.io/pypi/v/electoral-sim.svg" alt="PyPI"></a>
   <a href="https://pypi.org/project/electoral-sim/"><img src="https://img.shields.io/pypi/pyversions/electoral-sim.svg" alt="Python"></a>
   <a href="https://pepy.tech/project/electoral-sim"><img src="https://static.pepy.tech/badge/electoral-sim" alt="Downloads"></a>

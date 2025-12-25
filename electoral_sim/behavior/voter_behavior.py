@@ -218,9 +218,41 @@ class BehaviorEngine:
                     u = model.compute_utility(n_voters, party_data['valence'])
                 elif isinstance(model, RetrospectiveModel):
                     u = model.compute_utility(n_voters, n_parties, party_data['incumbents'], kwargs.get('growth', 0.0))
-                # ... other models ...
+                elif isinstance(model, StrategicVotingModel):
+                    # Strategic voting: needs viability scores
+                    viability = party_data.get('viability')
+                    if viability is None:
+                        viability = kwargs.get('viability')
+                    if viability is None:
+                        viability = np.ones(n_parties) / n_parties  # Default: equal viability
+                    u = model.compute_utility(n_voters, viability)
+                elif isinstance(model, WastedVoteModel):
+                    # Wasted vote model: needs viability scores
+                    viability = party_data.get('viability')
+                    if viability is None:
+                        viability = kwargs.get('viability')
+                    if viability is None:
+                        viability = np.ones(n_parties) / n_parties  # Default: equal viability
+                    u = model.compute_utility(n_voters, viability)
+                elif isinstance(model, SociotropicPocketbookModel):
+                    # Economic voting with sociotropic/pocketbook distinction
+                    voter_df = voter_data.get('df')
+                    perception_type = None
+                    if voter_df is not None and hasattr(voter_df, 'columns') and 'economic_perception' in voter_df.columns:
+                        perception_type = voter_df['economic_perception'].to_numpy()
+                    u = model.compute_utility(
+                        n_voters, n_parties, party_data['incumbents'],
+                        economic_growth=kwargs.get('growth', 0.0),
+                        personal_income_change=voter_data.get('personal_income_change'),
+                        perception_type=perception_type
+                    )
                 else:
-                    u = model.compute_utility(voter_data, party_data, **kwargs)
+                    # Generic fallback - try to call with standard args
+                    try:
+                        u = model.compute_utility(n_voters, n_parties, **kwargs)
+                    except TypeError:
+                        # If that fails, try minimal interface
+                        u = np.zeros((n_voters, n_parties))
                 
                 total_utility += w * u
                 

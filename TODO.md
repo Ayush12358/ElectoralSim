@@ -1,223 +1,116 @@
-# ElectoralSim - TODO
+# ElectoralSim - Future Roadmap
 
-> Priority: **P1** = Critical | **P2** = High | **P3** = Medium | **P4** = Low | **P5** = Nice-to-have
-
----
-
-## 🧠 VOTER AGENT
-
-### Core Attributes
-- [x] **P1** Demographics — age, gender, education, income, religion, location ✓
-- [x] **P1** Party ID (7-point) — Strong D → Independent → Strong R ✓
-- [x] **P1** Ideology — multi-dimensional issue positions ✓
-- [x] **P3** Affective Polarization ✓ — affective_polarization column (0-1)
-
-### Psychology
-- [x] **P3** Big Five (OCEAN) ✓ — openness, conscientiousness, extraversion, agreeableness, neuroticism columns
-- [x] **P3** Moral Foundations (Haidt) ✓ — mf_care, mf_fairness, mf_loyalty, mf_authority, mf_sanctity columns
-
-### Information
-- [x] **P2** Political Knowledge (0-100) ✓
-- [x] **P3** Misinformation Susceptibility ✓ — misinfo_susceptibility column (0-1)
-- [x] **P3** Media Diet ✓ — media_source_id/media_bias columns + vectorized opinion dynamics
+> All Phase 1-4 features are complete. See [README.md](README.md) for the full feature list.
 
 ---
 
-## 🎭 CANDIDATE/PARTY AGENT
+## 🔮 Future Development
 
-- [x] **P1** Policy Position — N-dimensional issue space ✓
-- [x] **P2** Valence — charisma, competence, integrity (0-100) ✓
-- [x] **P2** Incumbent Status ✓ — with anti-incumbency modifier
-- [x] **P4** Adaptive Strategy ✓ — Median Voter Theorem implementation (party_strategy.py)
+### Research Features
 
----
+- [ ] **P5** Redistricting/Gerrymandering simulation
+- [ ] **P5** Campaign finance modeling
+- [ ] **P5** Primary election systems
+- [ ] **P5** Compulsory voting effects
+- [ ] **P5** Electoral college (weighted) systems
 
-## 🗳️ VOTING MODELS
+### Machine Learning Integration
 
-### Core
-- [x] **P1** Proximity Model ✓
-- [x] **P1** Multinomial Logit — P(j) = exp(V_j/τ) / Σexp(V_k/τ) ✓
+- [ ] **P5** Train voter behavior models on real survey data
+- [ ] **P5** Predict election outcomes from poll data
+- [ ] **P5** Synthetic population generation from census data
 
-### Turnout
-- [x] **P2** Calculus of Voting: R = pB - C + D ✓ (basic turnout_prob)
-- [x] **P3** Alienation/Indifference abstention ✓ — alienation_threshold, indifference_threshold params
+### Additional Countries
 
-### Strategic
-- [x] **P2** Strategic Voting Model ✓ — StrategicVotingModel class
-- [x] **P3** Tactical voting, wasted vote fear (advanced) ✓ — WastedVoteModel class
+- [ ] **P5** Canada (FPTP + STV Senate)
+- [ ] **P5** Israel (Single nationwide PR)
+- [ ] **P5** Netherlands (Pure PR, low threshold)
+- [ ] **P5** Switzerland (Referendums + PR)
+- [ ] **P5** Mexico (Mixed system)
 
----
+### Advanced Modeling
 
-## 🗳️ ELECTORAL SYSTEMS
+- [ ] **P5** Multi-level elections (simultaneous national + regional)
+- [ ] **P5** Time-series election dynamics
+- [ ] **P5** Voter registration and eligibility
+- [ ] **P5** Polling place accessibility
 
-### Seat Allocation
-- [x] **P1** Sainte-Laguë ✓
-- [x] **P1** D'Hondt ✓
-- [x] **P2** Droop Quota ✓
-- [x] **P2** Hare Quota ✓
+### Technical Improvements
 
-### System Types
-- [x] **P1** Party-list PR ✓
-- [x] **P1** FPTP ✓
-- [x] **P2** MMP — Germany model ✓ (via preset)
-- [x] **P2** STV — Ireland, Australia ✓
-- [x] **P2** IRV/RCV — growing adoption ✓
+- [ ] **P5** Distributed computing support (Dask/Ray)
+- [ ] **P5** Real-time visualization dashboard
+- [ ] **P5** REST API for web integration
+- [ ] **P5** Docker containerization
+- [ ] **P5** Jupyter notebook integration
 
-### Other Methods
-- [x] **P3** Condorcet Winner ✓
-- [x] **P3** Approval Voting ✓
+### Data & Validation
 
-### Rules
-- [x] **P1** National Threshold ✓
-- [x] **P4** Duverger's Law simulation ✓ — duverger.py
+- [ ] **P5** Historical election data for all countries
+- [ ] **P5** Calibration against real election results
+- [ ] **P5** Sensitivity analysis tools
+- [ ] **P5** Uncertainty quantification
 
 ---
 
-## 📊 METRICS
+## ✅ Completed Features Summary
 
-- [x] **P1** Gallagher Index ✓
-- [x] **P1** ENP (Laakso-Taagepera) ✓
-- [x] **P2** Efficiency Gap ✓
-- [x] **P2** Loosemore-Hanby Index ✓
-- [x] **P2** Herfindahl-Hirschman Index ✓
-- [x] **P4** VSE ✓ — voting system efficiency (vse.py)
+### Core (P1) — 17/17 ✅
+- ElectionModel, Config, Voter/Party agents
+- FPTP, PR (D'Hondt, Sainte-Laguë)
+- Gallagher Index, ENP
+- Coalition formation (MWC, MCW, strain)
+- Numba acceleration
 
----
+### High Priority (P2) — 31/31 ✅
+- Valence model, incumbent status
+- Hare/Droop quotas, IRV, STV
+- Opinion dynamics (BA, WS, ER networks)
+- Government stability simulation
+- NOTA, reserved constituencies
+- All visualization
 
-## 🌐 SOCIAL NETWORKS
+### Medium Priority (P3) — 24/24 ✅
+- Big Five personality, Moral Foundations
+- Misinformation susceptibility, media diet
+- Affective polarization
+- Alienation/indifference abstention
+- Wave elections (national mood)
+- Junior partner penalty
+- Country presets (Brazil, France, Japan)
+- Cox proportional hazards
+- Laver-Shepsle portfolio allocation
+- 10M+ agent capacity
 
-### Topologies
-- [x] **P2** Barabási-Albert — scale-free, realistic ✓
-- [x] **P2** Watts-Strogatz — small-world ✓
-- [x] **P2** Erdős-Rényi — random graph ✓
+### Low Priority (P4) — 10/10 ✅
+- Adaptive strategy (MVT)
+- Event manager (scandals, shocks)
+- VSE metric
+- Policy vs office tradeoffs
+- Duverger's Law simulation
+- Australia, South Africa presets
+- GPU acceleration (CuPy)
+- Interactive Streamlit dashboard
 
-### Opinion Dynamics
-- [x] **P2** Noisy Voter Model — copy neighbor + mutation ✓
-- [x] **P2** Zealots — fixed-opinion agents ✓
-- [x] **P2** Bounded Confidence Model ✓
-
-### Media
-- [x] **P3** Mass Media Bias ✓ — media_bias, media_strength params in OpinionDynamics.step()
-- [x] **P3** Plurality vs PR susceptibility (Raducha) ✓ — system parameter in OpinionDynamics.step()
-
----
-
-## 🤝 COALITION FORMATION
-
-- [x] **P1** MCW ✓ — minimum connected winning
-- [x] **P1** MWC ✓ — minimum winning coalition
-- [x] **P3** Laver-Shepsle portfolio allocation ✓ — allocate_portfolios_laver_shepsle()
-- [x] **P4** Policy vs Office-seeking tradeoffs ✓ — form_coalition_with_utility
-
-### Dynamics
-- [x] **P1** Coalition Strain ✓
-- [x] **P3** Junior Partner Penalty ✓ — junior_partner_penalty function
-
----
-
-## ⏱️ GOVERNMENT STABILITY
-
-- [x] **P1** Collapse Models ✓ (Sigmoid, Linear, Exponential)
-- [x] **P2** Government Simulator ✓ — Monte Carlo survival
-- [x] **P3** Survival Analysis — Cox hazard ✓ — cox_proportional_hazard() function
-- [x] **P4** Economic shocks, Scandals ✓ — EventManager module (event_manager.py)
+### Nice-to-Have (P5) — 1/1 ✅
+- EU Parliament (27 states, 720 MEPs)
 
 ---
 
-## 📈 EXTERNAL EFFECTS
+## 📊 Version History
 
-### Economic Voting
-- [x] **P2** Retrospective voting ✓ — RetrospectiveModel + economic_growth param
-- [x] **P3** Sociotropic vs Pocketbook ✓ — SociotropicPocketbookModel + economic_perception column
-- [x] **P2** Anti-incumbency ✓ — anti_incumbency parameter
-
-### Campaign
-- [x] **P4** Scandal Penalty ✓ — via EventManager
-
+### v0.1.0 (Current)
+- Initial release with all P1-P4 features
+- 11 country presets + EU Parliament
+- Comprehensive documentation
 
 ---
 
-## 🇮🇳 INDIA-SPECIFIC
+## 📝 Contributing
 
-### Core
-- [x] **P1** Full Lok Sabha simulation ✓ — 543 constituencies, 30 states
-- [x] **P1** State-wise party weights ✓ — Regional party strongholds
-- [x] **P1** NDA/INDIA alliance tracking ✓
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute new features.
 
-### NOTA
-- [x] **P2** NOTA vote option ✓ — include_nota parameter
-- [x] **P3** NOTA impact on close races ✓ — nota_contested_seats, nota_contested_list fields
-
-### Reserved Constituencies
-- [x] **P2** SC, ST reservation modeling ✓ — constituency_constraints parameter
-
-### Electoral Features
-- [x] **P2** Phase-wise election configuration ✓ (7 phases defined)
-- [x] **P2** Anti-incumbency factor ✓
-- [x] **P3** Wave elections (national mood) ✓ — national_mood parameter
-
----
-
-## 🌍 COUNTRY SIMULATIONS
-
-### Implemented
-- [x] **P1** India ✓ — 543 constituencies, 17 parties
-- [x] **P2** USA preset ✓
-- [x] **P2** UK preset ✓
-- [x] **P2** Germany preset ✓
-
-### Planned
-- [x] **P3** Brazil — Largest PR system, 513 deputies ✓
-- [x] **P3** France — Two-round system ✓
-- [x] **P3** Japan — Mixed-member parallel ✓
-- [x] **P4** Australia — STV for Senate, IRV for House ✓
-- [x] **P4** South Africa — Pure PR ✓
-- [x] **P5** EU Parliament ✓ — 27 member states, 720 MEPs, 8 political groups
-
----
-
-## 📊 VISUALIZATION
-
-- [x] **P2** Seat distribution bar chart ✓ — plot_seat_distribution()
-- [x] **P2** Vote share pie chart ✓ — plot_vote_shares()
-- [x] **P2** Seats vs Votes comparison ✓ — plot_seats_vs_votes()
-- [x] **P2** Election summary panel ✓ — plot_election_summary()
-- [x] **P3** Constituency map (choropleth) (India and others) ✓ — State-wise bubble maps
-- [x] **P3** Opinion dynamics animation ✓ — animate_opinion_dynamics, demo_animation.py
-- [x] **P3** Swing analysis dashboard ✓ — Integrated in app.py
-- [x] **P4** Interactive election explorer (Streamlit/Dash) ✓ — app.py dashboard
-
----
-
-## 🔧 TECHNICAL
-
-### Performance
-- [x] **P1** Numba JIT acceleration ✓ — 89x speedup
-- [x] **P2** Batch elections ✓ — 30 elections/sec
-- [x] **P2** Data caching ✓ — 26% improvement
-- [x] **P2** Repository restructuring ✓ — Modular package layout
-
-### Remaining
-- [x] **P3** 10M+ agent capacity ✓ — Optimized via float32/int8 dtypes
-- [x] **P3** Real constituency data integration ✓ — constituency.py, india_pc.py
-- [x] **P3** Historical election data loading ✓ — loaders.py, sample_dataset
-- [x] **P4** GPU support (CuPy) ✓ — gpu_accel.py, integrated in ElectionModel
-
----
-
-## 📋 PRIORITY SUMMARY
-
-| Priority | Total | Done | Remaining |
-|----------|-------|------|-----------|
-| **P1** | 17 | 17 ✅ | 0 |
-| **P2** | 31 | 31 ✅ | 0 |
-| **P3** | 24 | 24 ✅ | 0 |
-| **P4** | 10 | 10 ✅ | 0 |
-| **P5** | 1 | 1 ✅ | 0 |
-
-### Implementation Progress
-- **Phase 1 (P1)**: ✅ COMPLETE — Core model, India election, Coalition, Numba
-- **Phase 2 (P2)**: ✅ COMPLETE — Opinion dynamics, all voting systems, NOTA, visualization
-- **Phase 3 (P3)**: ✅ COMPLETE — 24/24 done (Psychology, Misinfo, Media, Turnout, Tactical, Wave, Presets, Real Data, 10M Scale, Historical Data, Visualization)
-- **Phase 4 (P4)**: ✅ COMPLETE — 10/10 done (Adaptive Strategy, Events, VSE, Tradeoffs, Duverger, Presets, GPU, Explorer)
-```
+Priority areas:
+1. Additional country presets with real party data
+2. Validation against historical elections
+3. Performance optimizations
+4. Documentation improvements

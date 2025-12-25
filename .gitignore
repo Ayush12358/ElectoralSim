@@ -14,8 +14,14 @@ out/
 __pycache__/
 *.py[cod]
 *$py.class
+.venv/
 venv/
 ENV/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.eggs/
 
 # LaTeX
 *.aux

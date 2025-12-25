@@ -6,7 +6,7 @@ A modular agent-based modeling toolkit for electoral systems,
 voter behavior, and political dynamics using mesa-frames.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.0.1"
 
 # =============================================================================
 # FACADE API (Backward Compatibility)

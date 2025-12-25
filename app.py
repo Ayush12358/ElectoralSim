@@ -128,21 +128,36 @@ if st.button("🚀 Run Simulation", type="primary"):
                 
         else:
             # Multi-country fallback using the generic Config
+            from electoral_sim.core.config import PRESETS
+            
             config_map = {
                 "USA": "usa", "UK": "uk", "Germany": "germany", 
                 "Brazil": "brazil", "France": "france", "Japan": "japan"
             }
             preset_key = config_map[preset]
             
+            # Get the preset config
+            config = PRESETS[preset_key](n_voters=n_voters, seed=seed)
+            
+            # Create model with both config params and dynamic params  
             model = ElectionModel(
-                n_voters=n_voters, 
-                preset=preset_key,
-                seed=seed,
-                economic_growth=economic_growth,
+                n_voters=config.n_voters,
+                n_constituencies=config.n_constituencies,
+                parties=config.get_party_dicts(),
+                electoral_system=config.electoral_system,
+                allocation_method=config.allocation_method,
+                threshold=config.threshold,
+                temperature=config.temperature,
+                seed=config.seed,
+                economic_growth=economic_growth / 100.0,  # Convert percentage
                 national_mood=national_mood,
                 anti_incumbency=anti_incumbency
             )
             results = model.run_election()
+            
+            party_names = model.parties.df["name"].to_list()
+            vote_shares = {p: s for p, s in zip(party_names, results['vote_counts'] / results['vote_counts'].sum())}
+            seat_shares = {p: s for p, s in zip(party_names, results['seats'])}
             
             m1, m2, m3 = st.columns(3)
             m1.metric("Turnout", f"{results['turnout']:.1%}")
@@ -152,9 +167,9 @@ if st.button("🚀 Run Simulation", type="primary"):
             st.markdown("### Election Outcome")
             col1, col2 = st.columns(2)
             with col1:
-                st.plotly_chart(plot_seat_distribution(results['seats']), use_container_width=True)
+                st.plotly_chart(plot_seat_distribution(seat_shares), use_container_width=True)
             with col2:
-                st.plotly_chart(plot_vote_shares({p: s for p, s in zip(results['parties'], results['vote_shares'])}), use_container_width=True)
+                st.plotly_chart(plot_vote_shares(vote_shares), use_container_width=True)
 
 else:
     st.info("Click 'Run Simulation' to start the analysis.")

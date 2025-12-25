@@ -5,13 +5,20 @@
 </p>
 
 <p align="center">
-  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
+  <a href="https://github.com/Ayush12358/electoral-simulation-india/actions/workflows/tests.yml"><img src="https://github.com/Ayush12358/electoral-simulation-india/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+  <a href="https://pypi.org/project/electoral-sim/"><img src="https://img.shields.io/pypi/v/electoral-sim.svg" alt="PyPI"></a>
+  <a href="https://pypi.org/project/electoral-sim/"><img src="https://img.shields.io/pypi/pyversions/electoral-sim.svg" alt="Python"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-  <a href="#"><img src="https://img.shields.io/badge/tests-63%20passed-brightgreen.svg" alt="Tests"></a>
-  <a href="#"><img src="https://img.shields.io/badge/coverage-P1--P4%20complete-success.svg" alt="Coverage"></a>
+  <a href="https://ayush12358.github.io/electoral-simulation-india/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Documentation"></a>
 </p>
 
-A modular, high-performance simulation toolkit for electoral systems, voter behavior, and political dynamics. Built on [mesa-frames](https://github.com/mesa/mesa-frames) for vectorized agent-based modeling at scale.
+<p align="center">
+  <a href="https://ayush12358.github.io/electoral-simulation-india/">📚 Documentation</a> •
+  <a href="https://pypi.org/project/electoral-sim/">📦 PyPI</a> •
+  <a href="#-quick-start">🚀 Quick Start</a>
+</p>
+
+A modular, high-performance simulation toolkit for electoral systems, voter behavior, and political dynamics. Built on [mesa-frames](https://github.com/projectmesa/mesa-frames) for vectorized agent-based modeling at scale.
 
 ---
 
@@ -72,6 +79,11 @@ A modular, high-performance simulation toolkit for electoral systems, voter beha
 ## 📦 Installation
 
 ```bash
+pip install electoral-sim
+```
+
+**From source:**
+```bash
 git clone https://github.com/Ayush12358/electoral-simulation-india.git
 cd electoral-simulation-india
 pip install -e .
@@ -79,9 +91,9 @@ pip install -e .
 
 **Optional dependencies:**
 ```bash
-pip install -e ".[viz]"      # Visualization (matplotlib, plotly)
-pip install -e ".[gpu]"      # GPU acceleration (cupy)
-pip install -e ".[dev]"      # Development tools (pytest, etc.)
+pip install electoral-sim[viz]   # Visualization (matplotlib, plotly)
+pip install electoral-sim[gpu]   # GPU acceleration (cupy)
+pip install electoral-sim[all]   # Everything
 ```
 
 ---

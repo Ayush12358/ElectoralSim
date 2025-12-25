@@ -80,11 +80,11 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Ayush12358/electoral-simulation-india"
-Documentation = "https://github.com/Ayush12358/electoral-simulation-india#readme"
-Repository = "https://github.com/Ayush12358/electoral-simulation-india"
-Issues = "https://github.com/Ayush12358/electoral-simulation-india/issues"
-Changelog = "https://github.com/Ayush12358/electoral-simulation-india/releases"
+Homepage = "https://github.com/Ayush12358/ElectoralSim"
+Documentation = "https://github.com/Ayush12358/ElectoralSim#readme"
+Repository = "https://github.com/Ayush12358/ElectoralSim"
+Issues = "https://github.com/Ayush12358/ElectoralSim/issues"
+Changelog = "https://github.com/Ayush12358/ElectoralSim/releases"
 
 [project.scripts]
 electoral-sim = "electoral_sim.core.cli:main"

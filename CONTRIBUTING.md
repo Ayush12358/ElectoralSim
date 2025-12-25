@@ -8,8 +8,8 @@ Thank you for your interest in contributing to ElectoralSim!
 
 ```bash
 # Clone the repository
-git clone https://github.com/Ayush12358/electoral-simulation-india.git
-cd electoral-simulation-india
+git clone https://github.com/Ayush12358/ElectoralSim.git
+cd ElectoralSim
 
 # Create virtual environment
 python -m venv .venv

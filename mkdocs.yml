@@ -1,8 +1,8 @@
 site_name: ElectoralSim
 site_description: High-performance agent-based electoral simulation toolkit
-site_url: https://ayush12358.github.io/electoral-simulation-india/
-repo_url: https://github.com/Ayush12358/electoral-simulation-india
-repo_name: Ayush12358/electoral-simulation-india
+site_url: https://ayush12358.github.io/ElectoralSim
+repo_url: https://github.com/Ayush12358/ElectoralSim
+repo_name: Ayush12358/ElectoralSim
 
 theme:
   name: material

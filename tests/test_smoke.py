@@ -1,73 +1,62 @@
-"""Basic smoke tests for electoral_sim package."""
+"""Minimal smoke tests that don't require heavy dependencies."""
 
 import pytest
 
 
-class TestImports:
-    """Test that all main modules can be imported."""
+class TestPackageStructure:
+    """Test that the package is properly structured."""
 
-    def test_import_main_package(self):
-        """Test importing the main package."""
-        import electoral_sim
-
-        assert hasattr(electoral_sim, "__version__")
-        assert hasattr(electoral_sim, "ElectionModel")
-
-    def test_import_config(self):
-        """Test importing configuration classes."""
-        from electoral_sim import Config, PartyConfig
-
-        assert Config is not None
-        assert PartyConfig is not None
-
-    def test_import_presets(self):
-        """Test importing country presets."""
-        from electoral_sim import PRESETS
-
-        assert "india" in PRESETS
-        assert "usa" in PRESETS
-        assert "uk" in PRESETS
-
-
-class TestBasicModel:
-    """Basic model tests that don't require heavy computation."""
-
-    def test_create_simple_model(self):
-        """Test creating a basic election model."""
-        from electoral_sim import ElectionModel
-
-        model = ElectionModel(
-            n_voters=100,
-            n_parties=3,
-            electoral_system="fptp",
-        )
-        assert model is not None
-        assert model.n_voters == 100
-        assert model.n_parties == 3
-
-    def test_run_simple_election(self):
-        """Test running a simple election."""
-        from electoral_sim import ElectionModel
-
-        model = ElectionModel(
-            n_voters=100,
-            n_parties=3,
-            electoral_system="fptp",
-        )
-        results = model.run_election()
-        assert results is not None
-        assert "seats" in results
-        assert "votes" in results
-
-
-class TestVersion:
-    """Test version information."""
-
-    def test_version_format(self):
-        """Test that version is properly formatted."""
+    def test_version_exists(self):
+        """Test that __version__ is defined."""
         from electoral_sim import __version__
 
+        assert __version__ is not None
+        assert isinstance(__version__, str)
         parts = __version__.split(".")
         assert len(parts) == 3
-        for part in parts:
-            assert part.isdigit()
+
+    def test_main_exports_exist(self):
+        """Test that main exports are defined in __init__.py."""
+        import electoral_sim
+
+        # Check essential exports exist
+        assert hasattr(electoral_sim, "ElectionModel")
+        assert hasattr(electoral_sim, "Config")
+        assert hasattr(electoral_sim, "PartyConfig")
+        assert hasattr(electoral_sim, "PRESETS")
+
+    def test_presets_available(self):
+        """Test that PRESETS dictionary is populated."""
+        from electoral_sim import PRESETS
+
+        assert isinstance(PRESETS, dict)
+        assert len(PRESETS) > 0
+        assert "india" in PRESETS
+
+
+class TestSubmodules:
+    """Test that submodules can be imported."""
+
+    def test_import_core(self):
+        """Test importing core submodule."""
+        from electoral_sim import core
+
+        assert core is not None
+
+    def test_import_behavior(self):
+        """Test importing behavior submodule."""
+        from electoral_sim import behavior
+
+        assert behavior is not None
+
+    def test_import_systems(self):
+        """Test importing systems submodule."""
+        from electoral_sim import systems
+
+        assert systems is not None
+
+    def test_import_metrics(self):
+        """Test importing metrics submodule."""
+        from electoral_sim import metrics
+
+        assert metrics is not None

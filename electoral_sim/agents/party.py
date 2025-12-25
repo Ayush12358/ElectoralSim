@@ -1,15 +1,25 @@
 """
 Party/Candidate Agents for Electoral Simulation
+Uses Polars DataFrame for high-performance vectorized operations
 """
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import numpy as np
 import polars as pl
-from mesa_frames import AgentSet, Model
+
+if TYPE_CHECKING:
+    from electoral_sim.core.model import ElectionModel
 
 
-class PartyAgents(AgentSet):
+class PartyAgents:
     """
     Party agents stored as Polars DataFrame.
+
+    This class wraps a Polars DataFrame to provide high-performance
+    party data storage without depending on mesa-frames.
 
     Attributes (DataFrame columns):
         - unique_id: Party identifier
@@ -22,10 +32,13 @@ class PartyAgents(AgentSet):
         - vote_share: Last election vote share
     """
 
-    def __init__(self, model: Model, df: pl.DataFrame):
-        super().__init__(model)
-        self.add(df)
-        self._cache = {}
+    def __init__(self, model: ElectionModel, df: pl.DataFrame):
+        self.model = model
+        self.df = df
+        self._cache: dict = {}
+
+    def __len__(self) -> int:
+        return len(self.df)
 
     def invalidate_cache(self):
         self._cache = {}

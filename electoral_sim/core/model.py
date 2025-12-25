@@ -1,8 +1,9 @@
 """
-ElectionModel - Main simulation model using mesa-frames
+ElectionModel - Main simulation model using Mesa
 Implements India-scale electoral simulation with constituency-based structure
 
-Based on mesa-frames patterns from the official tutorials.
+Uses Mesa for model orchestration with Polars DataFrames for high-performance
+agent storage and Numba for accelerated voting calculations.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import polars as pl
-from mesa_frames import DataCollector, Model
+from mesa import Model
 
 from electoral_sim.agents.party import PartyAgents
 from electoral_sim.agents.party_strategy import adaptive_strategy_step
@@ -197,22 +198,12 @@ class ElectionModel(Model):
             self.parties = PartyAgents(self, self._generate_party_frame(parties))
             self.n_parties = len(self.parties)
 
-        # Register agent sets with model
-        self.sets += self.voters
-        self.sets += self.parties
-
         # Results storage
         self.election_results: list[dict] = []
 
-        # Set up data collector
-        self.datacollector = DataCollector(
-            model=self,
-            model_reporters={
-                "n_voters": lambda m: len(m.voters),
-                "mean_turnout": lambda m: float(m.voters.df["turnout_prob"].mean()),
-            },
-        )
-        self.datacollector.collect()
+        # Simple data collection (replaces mesa-frames DataCollector)
+        self.collected_data: list[dict] = []
+        self._collect_data()
 
     # =========================================================================
     # CLASS METHODS (Factory methods)
@@ -324,6 +315,16 @@ class ElectionModel(Model):
         """
         self.temperature = temperature
         return self
+
+    def _collect_data(self):
+        """Collect model data for analysis (replaces mesa-frames DataCollector)."""
+        self.collected_data.append(
+            {
+                "step": len(self.collected_data),
+                "n_voters": len(self.voters),
+                "mean_turnout": float(self.voters.df["turnout_prob"].mean()),
+            }
+        )
 
     def _generate_voter_frame(self, n_voters: int) -> pl.DataFrame:
         """

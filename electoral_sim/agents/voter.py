@@ -1,16 +1,25 @@
 """
 Voter Agent for Electoral Simulation
-Uses mesa-frames AgentSet with Polars DataFrame backend
+Uses Polars DataFrame for high-performance vectorized operations
 """
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import numpy as np
 import polars as pl
-from mesa_frames import AgentSet, Model
+
+if TYPE_CHECKING:
+    from electoral_sim.core.model import ElectionModel
 
 
-class VoterAgents(AgentSet):
+class VoterAgents:
     """
     Voter agents stored as Polars DataFrame for vectorized operations.
+
+    This class wraps a Polars DataFrame to provide high-performance
+    agent data storage without depending on mesa-frames.
 
     Attributes (DataFrame columns):
         - unique_id: Agent identifier (auto-generated)
@@ -26,12 +35,15 @@ class VoterAgents(AgentSet):
 
     def __init__(
         self,
-        model: Model,
+        model: ElectionModel,
         df: pl.DataFrame,
     ):
-        super().__init__(model)
-        self.add(df)
-        self._cache = {}
+        self.model = model
+        self.df = df
+        self._cache: dict = {}
+
+    def __len__(self) -> int:
+        return len(self.df)
 
     def invalidate_cache(self):
         """Invalidate the cached arrays."""

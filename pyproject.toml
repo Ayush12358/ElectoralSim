@@ -46,7 +46,6 @@ classifiers = [
 requires-python = ">=3.11"
 dependencies = [
     "mesa>=3.0.0",
-    "mesa-frames",
     "polars>=0.20.0",
     "numpy>=1.24.0",
     "networkx>=3.0",

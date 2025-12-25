@@ -201,7 +201,7 @@ class ElectionModel(Model):
         # Results storage
         self.election_results: list[dict] = []
 
-        # Simple data collection (replaces mesa-frames DataCollector)
+        # Simple data collection
         self.collected_data: list[dict] = []
         self._collect_data()
 
@@ -317,7 +317,7 @@ class ElectionModel(Model):
         return self
 
     def _collect_data(self):
-        """Collect model data for analysis (replaces mesa-frames DataCollector)."""
+        """Collect model data for analysis."""
         self.collected_data.append(
             {
                 "step": len(self.collected_data),

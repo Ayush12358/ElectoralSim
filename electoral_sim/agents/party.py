@@ -19,7 +19,7 @@ class PartyAgents:
     Party agents stored as Polars DataFrame.
 
     This class wraps a Polars DataFrame to provide high-performance
-    party data storage without depending on mesa-frames.
+    party data storage with high performance.
 
     Attributes (DataFrame columns):
         - unique_id: Party identifier

@@ -19,7 +19,7 @@ class VoterAgents:
     Voter agents stored as Polars DataFrame for vectorized operations.
 
     This class wraps a Polars DataFrame to provide high-performance
-    agent data storage without depending on mesa-frames.
+    agent data storage with high performance.
 
     Attributes (DataFrame columns):
         - unique_id: Agent identifier (auto-generated)

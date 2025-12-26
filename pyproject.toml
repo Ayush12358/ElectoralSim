@@ -47,9 +47,9 @@ requires-python = ">=3.12"
 dependencies = [
     "mesa>=3.4.0",
     "polars>=0.20.0",
-    "numpy>=1.24.0",
+    "numpy>=1.24.0,<2.0.0",
     "networkx>=3.0",
-    "numba>=0.58.0",
+    "numba>=0.60.1",
 ]
 
 [project.optional-dependencies]

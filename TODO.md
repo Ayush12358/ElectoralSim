@@ -15,6 +15,11 @@
 - [ ] **P1** Update man pages and help for CLI
 - [ ] **P1** Update documentation (API reference and guides)
 - [ ] **P1** Test the API on a separate machine
+- [ ] **P1** Check and add features from other electoral sims:
+    - [ ] Johnh865/election_sim
+    - [ ] endolith/elsim
+    - [ ] ElectionSim on arxiv
+    - [ ] es_simulations
 
 ### Research Features
 

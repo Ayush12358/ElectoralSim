@@ -94,6 +94,9 @@ from electoral_sim.systems.alternative import (
     stv_election,
 )
 
+# Analysis tools
+from electoral_sim.analysis import BatchRunner, ParameterSweep
+
 # Visualization (optional - requires matplotlib)
 try:
     from electoral_sim.visualization.charts import (
@@ -176,4 +179,7 @@ __all__ = [
     "plot_vote_shares",
     "plot_seats_vs_votes",
     "plot_election_summary",
+    # Analysis
+    "BatchRunner",
+    "ParameterSweep",
 ]

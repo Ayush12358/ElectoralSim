@@ -9,7 +9,7 @@
 ### High Priority (P1) — Upcoming
 
 - [ ] **P1** Test CuPy GPU implementations
-- [ ] **P1** Implement a batch runner suite for running several simulations with varying parameters
+- [x] **P1** Implement a batch runner suite for running several simulations with varying parameters
 - [ ] **P1** Look into Adway Mitra's paper (Electoral Systems and Representation in India)
 - [ ] **P1** Add citations for papers that have the concepts
 - [ ] **P1** Update man pages and help for CLI

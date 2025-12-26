@@ -1,19 +1,18 @@
-# Core
+# Core dependencies (matches pyproject.toml)
 mesa>=3.0.0
 polars>=0.20.0
 numpy>=1.24.0
 networkx>=3.0
-
-# Acceleration
 numba>=0.58.0
 
-# Visualization
+# Visualization (optional)
 matplotlib>=3.7.0
 plotly>=5.18.0
-
-# Data
-pandas>=2.0.0
+streamlit>=1.30.0
 
 # Development
 pytest>=7.0.0
+pytest-cov>=4.0.0
+hypothesis>=6.0.0
 black>=23.0.0
+ruff>=0.1.0

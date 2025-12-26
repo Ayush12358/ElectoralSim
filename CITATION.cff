@@ -6,11 +6,10 @@ abstract: "High-performance agent-based electoral simulation toolkit with suppor
 authors:
   - family-names: "Maurya"
     given-names: "Ayush"
-    orcid: "https://orcid.org/"
 repository-code: "https://github.com/Ayush12358/ElectoralSim"
 url: "https://ayush12358.github.io/ElectoralSim/"
 license: MIT
-version: "0.0.1"
+version: "0.0.2"
 date-released: "2024-12-25"
 keywords:
   - election-simulation

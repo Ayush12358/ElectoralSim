@@ -20,6 +20,7 @@
     - [ ] endolith/elsim
     - [ ] ElectionSim on arxiv
     - [ ] es_simulations
+- [ ] **P1** Migrate Licence from MIT to Apache 2.0
 
 ### Research Features
 

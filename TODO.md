@@ -21,7 +21,7 @@
     - [ ] ElectionSim on arxiv
     - [ ] es_simulations
 - [x] **P1** Migrate Licence from MIT to Apache 2.0
-- [ ] **P1** Upgrade to Mesa v3.4.0 and make changes accordingly. Adopt model.time and check batch reproducibility features.
+- [x] **P1** Upgrade to Mesa v3.4.0 and make changes accordingly. Adopt model.time and check batch reproducibility features.
 
 ### Research Features
 

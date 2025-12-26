@@ -31,6 +31,8 @@ A modular, high-performance simulation toolkit for electoral systems, voter beha
 ### Performance
 - **1M+ voters** with vectorized Polars DataFrames & Numba JIT acceleration (89x speedup)
 - **30 elections/second** batch simulation capability
+- **Batch parameter sweeps** for systematic exploration
+- **Parallel execution** with multiprocessing
 - **Optional GPU support** via CuPy for massive-scale simulations
 
 ### Electoral Systems
@@ -102,6 +104,28 @@ pip install electoral-sim[all]   # Everything
 
 ---
 
+## Command-Line Interface
+
+Run simulations directly from the command line:
+
+```bash
+# Basic simulation
+electoral-sim run --voters 50000 --constituencies 10
+
+# Use country preset
+electoral-sim run --preset india --output results.json
+
+# Batch parameter sweeps
+electoral-sim batch --config batch_config.json --output results.csv
+
+# List available presets
+electoral-sim list-presets
+```
+
+See the [CLI Guide](https://ayush12358.github.io/ElectoralSim/cli/) for comprehensive usage.
+
+---
+
 ## Quick Start
 
 ### Basic Election
@@ -145,6 +169,32 @@ results = (
     .with_temperature(0.3)  # More deterministic voting
     .run_election()
 )
+```
+
+### Batch Runner - Parameter Sweeps
+
+Systematic parameter exploration for sensitivity analysis:
+
+```python
+from electoral_sim.analysis import BatchRunner, ParameterSweep
+
+# Define parameter sweep
+sweep = ParameterSweep({
+    'n_voters': [10_000, 50_000, 100_000],
+    'temperature': [0.3, 0.5, 0.7],
+    'economic_growth': [-0.02, 0.0, 0.02]
+})
+
+# Run batch with parallel execution  
+runner = BatchRunner(
+    model_class=ElectionModel,
+    parameter_sweep=sweep,
+    n_runs_per_config=5,
+    n_jobs=4
+)
+
+results_df = runner.run()
+runner.export_results('results.csv')
 ```
 
 ### Custom Behavior Engine

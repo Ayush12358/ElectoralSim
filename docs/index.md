@@ -6,7 +6,9 @@ Welcome to the ElectoralSim documentation. This toolkit provides a comprehensive
 
 - [Installation](installation.md)
 - [Quick Start](quickstart.md)
+- [CLI Usage](cli.md)
 - [API Reference](api/README.md)
+- [Batch Runner API](api/batch_runner.md)
 - [Country Presets](presets/README.md)
 - [Advanced Topics](advanced/README.md)
 
@@ -18,9 +20,11 @@ ElectoralSim is an agent-based modeling toolkit for electoral simulations, built
 
 - **Simulate elections** at scale (1M+ voters) with multiple electoral systems
 - **Model voter behavior** using established political science theories
-- **Analyze electoral outcomes** with standard metrics (Gallagher, ENP, etc.)
+- **Analyze electoral outcomes** with standard metrics (Gallagher, ENP, VSE)
+- **Run parameter sweeps** for sensitivity analysis with the batch runner
 - **Study coalition dynamics** and government stability
 - **Explore opinion dynamics** through social network models
+- **Use CLI tools** for batch simulations and analysis
 
 ## Core Concepts
 

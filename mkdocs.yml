@@ -51,6 +51,7 @@ nav:
   - API Reference:
     - Overview: api/README.md
     - ElectionModel: api/election_model.md
+    - Batch Runner: api/batch_runner.md
     - Behavior Models: api/behavior_models.md
     - Electoral Systems: api/electoral_systems.md
     - Metrics: api/metrics.md

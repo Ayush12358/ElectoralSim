@@ -114,25 +114,86 @@ results = (
 )
 ```
 
-## Multiple Elections
+## Batch Simulations & Parameter Sweeps
 
-Run batch simulations for Monte Carlo analysis:
+For systematic parameter exploration and sensitivity analysis, use the `BatchRunner`:
+
+```python
+from electoral_sim import ElectionModel
+from electoral_sim.analysis import BatchRunner, ParameterSweep
+
+# Define parameter sweep
+sweep = ParameterSweep({
+    'n_voters': [10_000, 50_000, 100_000],
+    'temperature': [0.3, 0.5, 0.7],
+    'economic_growth': [-0.02, 0.0, 0.02]
+}, fixed_params={
+    'n_constituencies': 10,
+    'electoral_system': 'FPTP'
+})
+
+# Create batch runner with parallel execution
+runner = BatchRunner(
+    model_class=ElectionModel,
+    parameter_sweep=sweep,
+    n_runs_per_config=5,  # Monte Carlo iterations
+    n_jobs=4,  # Parallel workers
+    seed=42
+)
+
+# Run all configurations
+results_df = runner.run()
+
+# Export results
+runner.export_results('batch_results.csv')
+runner.export_summary('summary_stats.csv')
+
+# Get summary statistics
+summary = runner.get_summary_stats()
+print(summary.select(['n_voters', 'turnout_mean', 'gallagher_mean']))
+```
+
+### Simple Monte Carlo Analysis
+
+For multiple runs of the same configuration:
 
 ```python
 model = ElectionModel(n_voters=10_000, seed=42)
 
-# Run 100 elections
+# Run 100 elections with the same parameters
 batch_results = model.run_elections_batch(n_elections=100)
 
-# Get aggregate statistics
-stats = model.get_aggregate_stats(batch_results)
-print(f"Mean turnout: {stats['turnout_mean']:.1%} ± {stats['turnout_std']:.1%}")
-print(f"Mean Gallagher: {stats['gallagher_mean']:.2f} ± {stats['gallagher_std']:.2f}")
+# Analyze variance
+import numpy as np
+turnouts = [r['turnout'] for r in batch_results]
+print(f"Mean turnout: {np.mean(turnouts):.1%} ± {np.std(turnouts):.1%}")
 ```
+
+## Command-Line Interface
+
+Run simulations from the terminal:
+
+```bash
+# Basic simulation
+electoral-sim run --voters 50000 --constituencies 10
+
+# Use country preset
+electoral-sim run --preset india --output results.json
+
+# Batch simulations
+electoral-sim batch --config batch_config.json --output results.csv
+
+# List all presets
+electoral-sim list-presets
+```
+
+See the [CLI Guide](cli.md) for comprehensive usage.
 
 ## Next Steps
 
 - [API Reference](api/README.md) — Full documentation of all classes and functions
+- [Batch Runner API](api/batch_runner.md) — Parameter sweeping and batch execution
+- [CLI Usage](cli.md) — Command-line interface guide
 - [Behavior Models](api/behavior_models.md) — Custom voter behavior
 - [Country Presets](presets/README.md) — Available country configurations
 - [Advanced Topics](advanced/README.md) — Voter psychology, performance tuning

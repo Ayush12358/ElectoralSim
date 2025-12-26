@@ -9,8 +9,8 @@ authors:
 repository-code: "https://github.com/Ayush12358/ElectoralSim"
 url: "https://ayush12358.github.io/ElectoralSim/"
 license: Apache-2.0
-version: "0.0.2"
-date-released: "2024-12-25"
+version: "0.1.0"
+date-released: "2025-12-26"
 keywords:
   - election-simulation
   - agent-based-modeling

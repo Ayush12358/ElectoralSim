@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2025-12-26
+
+### Added
+- **BatchRunner Suite**: A powerful tool for running parallel Monte Carlo simulations and parameter sweeps.
+  - Parallel execution using `ProcessPoolExecutor`.
+  - Result aggregation into Polars DataFrames.
+  - Progress tracking with `tqdm`.
+  - Flattened CSV/Parquet export for downstream analysis.
+- **CLI Enhanced**: New `batch` command for running sweeps from the terminal.
+- **Mesa v3.4.0 Support**: Full adoption of Mesa 3.4.0 features, including universal time (`model.time`).
+- **Python 3.12/3.13 Compatibility**: Modernized codebase for the latest Python versions.
+
+### Changed
+- **Breaking**: Dropped support for Python 3.11. Minimum requirement is now Python 3.12.
+- **Breaking**: Migrated project license from MIT to **Apache License 2.0**.
+- **Mesa Upgrade**: Standardized on Mesa v3.4.0+.
+
+### Fixed
+- **Reproducibility**: Guaranteed deterministic results in `BatchRunner` through hierarchical seeding.
+- **CI Stability**: Resolved version conflicts between `numba`, `numpy`, and `scipy` in GitHub Actions.
+- **Linting**: Cleaned up codebase to comply with modern `ruff` and `black` standards.
+
 ## [0.0.2] - 2024-12-25
 
 ### Changed

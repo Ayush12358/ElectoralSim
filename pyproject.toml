@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "electoral-sim"
-version = "0.0.2"
+version = "0.1.0"
 description = "High-performance agent-based electoral simulation toolkit with support for 11+ countries, multiple voting systems, and advanced voter behavior models"
 readme = "README.md"
 license = {text = "Apache-2.0"}

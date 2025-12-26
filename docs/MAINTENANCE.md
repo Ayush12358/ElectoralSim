@@ -9,7 +9,7 @@ Complete reference for maintaining `electoral-sim` as a professional Python pack
 ### Required Files (Complete)
 - `pyproject.toml` - Modern Python packaging configuration
 - `README.md` - Project overview with badges and examples
-- `LICENSE` - MIT license file
+- `LICENSE` - Apache License 2.0 file
 - `CHANGELOG.md` - Version history following Keep a Changelog format
 - `CONTRIBUTING.md` - Contributor guidelines
 - `.gitignore` - Version control ignore patterns

@@ -20,7 +20,8 @@
     - [ ] endolith/elsim
     - [ ] ElectionSim on arxiv
     - [ ] es_simulations
-- [ ] **P1** Migrate Licence from MIT to Apache 2.0
+- [x] **P1** Migrate Licence from MIT to Apache 2.0
+- [ ] **P1** Upgrade to Mesa v3.4.0 and make changes accordingly. Analyse the new version and suggest and implement changes.
 
 ### Research Features
 

@@ -207,6 +207,7 @@ class ElectionModel(Model):
         self.collected_data: list[dict] = []
         self._collect_data()
 
+
     # =========================================================================
     # CLASS METHODS (Factory methods)
     # =========================================================================
@@ -322,7 +323,7 @@ class ElectionModel(Model):
         """Collect model data for analysis."""
         self.collected_data.append(
             {
-                "step": len(self.collected_data),
+                "step": self.time,
                 "n_voters": len(self.voters),
                 "mean_turnout": float(self.voters.df["turnout_prob"].mean()),
             }

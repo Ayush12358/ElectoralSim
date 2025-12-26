@@ -24,6 +24,7 @@ build/
 .eggs/
 .hypothesis/
 .coverage
+coverage.xml
 htmlcov/
 .ruff_cache/
 

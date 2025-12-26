@@ -47,6 +47,7 @@ nav:
   - Getting Started:
     - Installation: installation.md
     - Quick Start: quickstart.md
+    - CLI Usage: cli.md
   - API Reference:
     - Overview: api/README.md
     - ElectionModel: api/election_model.md
@@ -62,3 +63,4 @@ nav:
   - Advanced:
     - Voter Psychology: advanced/voter_psychology.md
     - Performance: advanced/performance.md
+    - Maintenance: MAINTENANCE.md

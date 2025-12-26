@@ -1,0 +1,229 @@
+.TH ELECTORAL-SIM 1 "December 2024" "electoral-sim 0.0.2" "User Commands"
+.SH NAME
+electoral-sim \- High-performance agent-based electoral simulation toolkit
+.SH SYNOPSIS
+.B electoral-sim
+[\fB\-h\fR] [\fB\-\-version\fR] \fICOMMAND\fR [\fIOPTIONS\fR]
+.SH DESCRIPTION
+.B electoral-sim
+is a modular agent-based modeling toolkit for simulating electoral systems, voter behavior, and political dynamics. Built on Mesa with Polars DataFrames, it supports 1M+ voters with vectorized operations and Numba JIT acceleration.
+
+The toolkit provides:
+.IP \(bu 2
+Multiple electoral systems (FPTP, PR, IRV, STV)
+.IP \(bu 2
+11 country presets + EU Parliament
+.IP \(bu 2
+Advanced voter behavior models (proximity, valence, strategic voting)
+.IP \(bu 2
+Opinion dynamics on social networks
+.IP \(bu 2
+Coalition and government stability simulation
+.IP \(bu 2
+Comprehensive metrics (Gallagher Index, ENP, VSE, etc.)
+.IP \(bu 2
+Batch parameter sweeping for sensitivity analysis
+
+.SH COMMANDS
+.TP
+.B run
+Run a single election simulation with custom or preset parameters
+.TP
+.B batch  
+Execute multiple simulations with parameter sweeps for sensitivity analysis
+.TP
+.B list-presets
+List all available country and region electoral system presets
+
+.SH OPTIONS
+.SS General Options
+.TP
+.B \-h, \-\-help
+Show help message and exit
+.TP
+.B \-\-version
+Show program version and exit
+
+.SS Run Command Options
+.TP
+.BR \-n ", " \-\-voters " \fINUMBER\fR"
+Number of voters (default: 100,000)
+.TP
+.BR \-c ", " \-\-constituencies " \fINUMBER\fR"
+Number of constituencies (default: 10)
+.TP
+.BR \-s ", " \-\-system " \fISYSTEM\fR"
+Electoral system: FPTP, PR, IRV, or STV (default: FPTP)
+.TP
+.BR \-a ", " \-\-allocation " \fIMETHOD\fR"
+PR allocation method: dhondt, sainte_lague, hare, or droop (default: dhondt)
+.TP
+.BR \-t ", " \-\-threshold " \fIFLOAT\fR"
+Electoral threshold 0-1, e.g., 0.05 for 5% (default: 0)
+.TP
+.BR \-p ", " \-\-preset " \fICOUNTRY\fR"
+Use country preset (overrides other parameters). Available: india, usa, uk, germany, france, japan, brazil, australia_house, australia_senate, south_africa, eu
+.TP
+.B \-\-seed \fINUMBER\fR
+Random seed for reproducibility
+.TP
+.BR \-o ", " \-\-output " \fIFILE\fR"
+Output file path (JSON format)
+.TP
+.BR \-q ", " \-\-quiet
+Suppress console output
+
+.SS Batch Command Options
+.TP
+.B \-\-config \fIFILE\fR
+JSON configuration file for batch run (required)
+.TP
+.BR \-o ", " \-\-output " \fIFILE\fR"
+Output file: CSV, Parquet, or JSON (required)
+.TP
+.B \-\-summary \fIFILE\fR
+Optional summary statistics output file
+.TP
+.BR \-j ", " \-\-jobs " \fINUMBER\fR"
+Number of parallel workers (default: 1)
+.TP
+.BR \-q ", " \-\-quiet
+Suppress progress output
+
+.SH EXAMPLES
+.SS Basic Simulation
+.PP
+.nf
+.RS
+electoral-sim run --voters 50000 --constituencies 10
+.RE
+.fi
+.PP
+Use a country preset:
+.PP
+.nf
+.RS
+electoral-sim run --preset india --voters 100000
+.RE
+.fi
+
+.SS Proportional Representation
+.PP
+.nf
+.RS
+electoral-sim run --system PR --allocation sainte_lague --threshold 0.05
+.RE
+.fi
+
+.SS Save Results
+.PP
+.nf
+.RS
+electoral-sim run --preset germany --output results.json
+.RE
+.fi
+
+.SS List Available Presets
+.PP
+.nf
+.RS
+electoral-sim list-presets
+.RE
+.fi
+
+.SS Batch Simulation with Parameter Sweep
+.PP
+Create a batch configuration file \fBbatch_config.json\fR:
+.PP
+.nf
+.RS
+{
+  "parameters": {
+    "n_voters": [10000, 50000, 100000],
+    "temperature": [0.3, 0.5, 0.7],
+    "economic_growth": [-0.02, 0.0, 0.02]
+  },
+  "fixed_params": {
+    "n_constituencies": 10,
+    "electoral_system": "FPTP"
+  },
+  "n_runs_per_config": 5,
+  "n_jobs": 4
+}
+.RE
+.fi
+.PP
+Run the batch simulation:
+.PP
+.nf
+.RS
+electoral-sim batch --config batch_config.json --output results.csv
+.RE
+.fi
+
+.SH COUNTRY PRESETS
+.TP
+.B india
+543 constituencies, FPTP, 17 parties (Lok Sabha)
+.TP
+.B usa
+435 districts, FPTP, 2 parties (House of Representatives)
+.TP
+.B uk
+650 constituencies, FPTP, 5+ parties (House of Commons)
+.TP
+.B germany
+299 districts, MMP (PR), 5% threshold, 6 parties (Bundestag)
+.TP
+.B france
+577 constituencies, Two-round system, 5 parties
+.TP
+.B japan
+289 constituencies, Mixed system, 2% threshold
+.TP
+.B brazil
+513 seats, Open-list PR, 8 parties
+.TP
+.B australia_house
+151 electorates, IRV, 5 parties
+.TP
+.B australia_senate
+76 seats, STV, 5 parties
+.TP
+.B south_africa
+400 seats, Closed-list PR, 1.5% threshold, 8 parties
+.TP
+.B eu
+720 MEPs, 27 member states, D'Hondt allocation (EU Parliament)
+
+.SH FILES
+.TP
+.I ~/.electoral_sim/config
+User configuration directory (if exists)
+.TP
+.I ./electoral_sim_results.json
+Default output file location
+
+.SH EXIT STATUS
+.TP
+.B 0
+Success
+.TP
+.B 1
+Error (invalid arguments, file not found, etc.)
+
+.SH AUTHOR
+Written by Ayush Maurya <ayush12358@users.noreply.github.com>
+
+.SH REPORTING BUGS
+Report bugs at: https://github.com/Ayush12358/ElectoralSim/issues
+
+.SH COPYRIGHT
+Copyright \(co 2024 Ayush Maurya. License MIT.
+
+.SH SEE ALSO
+Full documentation: https://ayush12358.github.io/ElectoralSim/
+
+Python API documentation: https://ayush12358.github.io/ElectoralSim/api/
+
+GitHub repository: https://github.com/Ayush12358/ElectoralSim

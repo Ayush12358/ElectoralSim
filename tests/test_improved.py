@@ -14,6 +14,7 @@ import time
 # Hypothesis for property-based testing
 try:
     from hypothesis import given, strategies as st, settings, assume
+
     HYPOTHESIS_AVAILABLE = True
 except ImportError:
     HYPOTHESIS_AVAILABLE = False
@@ -22,6 +23,7 @@ except ImportError:
 # ============================================================================
 # PROPERTY-BASED TESTS (Hypothesis)
 # ============================================================================
+
 
 @pytest.mark.skipif(not HYPOTHESIS_AVAILABLE, reason="Hypothesis not installed")
 class TestPropertyBased:
@@ -34,10 +36,7 @@ class TestPropertyBased:
         from electoral_sim import ElectionModel
 
         model = ElectionModel(
-            n_voters=n_voters,
-            n_constituencies=n_const,
-            electoral_system="FPTP",
-            seed=42
+            n_voters=n_voters, n_constituencies=n_const, electoral_system="FPTP", seed=42
         )
         results = model.run_election()
         assert sum(results["seats"]) <= n_const
@@ -69,18 +68,11 @@ class TestPropertyBased:
         """Any valid threshold should work with PR system."""
         from electoral_sim import ElectionModel
 
-        model = ElectionModel(
-            n_voters=1000,
-            electoral_system="PR",
-            threshold=threshold,
-            seed=42
-        )
+        model = ElectionModel(n_voters=1000, electoral_system="PR", threshold=threshold, seed=42)
         results = model.run_election()
         assert results is not None
 
-    @given(
-        votes=st.lists(st.integers(min_value=1, max_value=100000), min_size=2, max_size=10)
-    )
+    @given(votes=st.lists(st.integers(min_value=1, max_value=100000), min_size=2, max_size=10))
     @settings(max_examples=20, deadline=None)
     def test_allocation_sums_to_total_seats(self, votes):
         """PR allocation should always sum to exactly total seats."""
@@ -95,6 +87,7 @@ class TestPropertyBased:
 # ============================================================================
 # PARAMETERIZED TESTS
 # ============================================================================
+
 
 class TestParameterized:
     """Parameterized tests to reduce code duplication."""
@@ -114,18 +107,25 @@ class TestParameterized:
         from electoral_sim import ElectionModel
 
         model = ElectionModel(
-            n_voters=1000,
-            electoral_system="PR",
-            allocation_method=method,
-            seed=42
+            n_voters=1000, electoral_system="PR", allocation_method=method, seed=42
         )
         results = model.run_election()
         assert results is not None
 
-    @pytest.mark.parametrize("preset", [
-        "india", "usa", "uk", "germany", "france",
-        "australia_house", "brazil", "japan", "south_africa"
-    ])
+    @pytest.mark.parametrize(
+        "preset",
+        [
+            "india",
+            "usa",
+            "uk",
+            "germany",
+            "france",
+            "australia_house",
+            "brazil",
+            "japan",
+            "south_africa",
+        ],
+    )
     def test_all_presets_run(self, preset):
         """Test all country presets can run elections."""
         from electoral_sim import ElectionModel
@@ -165,6 +165,7 @@ class TestParameterized:
 # ============================================================================
 # PERFORMANCE BENCHMARK TESTS
 # ============================================================================
+
 
 @pytest.mark.slow
 class TestPerformance:
@@ -209,6 +210,7 @@ class TestPerformance:
 # ERROR HANDLING TESTS
 # ============================================================================
 
+
 class TestErrorHandling:
     """Tests for proper error handling."""
 
@@ -230,9 +232,7 @@ class TestErrorHandling:
 
         with pytest.raises((ValueError, KeyError)):
             model = ElectionModel(
-                n_voters=100,
-                electoral_system="PR",
-                allocation_method="invalid_method"
+                n_voters=100, electoral_system="PR", allocation_method="invalid_method"
             )
             model.run_election()
 
@@ -268,6 +268,7 @@ class TestErrorHandling:
 # ============================================================================
 # REAL-WORLD VALIDATION TESTS
 # ============================================================================
+
 
 class TestRealWorldValidation:
     """Tests comparing against real-world data and academic results."""
@@ -349,6 +350,7 @@ class TestRealWorldValidation:
 # ============================================================================
 # INVARIANT TESTS
 # ============================================================================
+
 
 class TestInvariants:
     """Tests for mathematical and logical invariants."""

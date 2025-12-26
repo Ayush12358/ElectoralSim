@@ -34,12 +34,8 @@ def main():
         epilog="For more information, visit: https://github.com/Ayush12358/ElectoralSim",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
-    parser.add_argument(
-        "--version",
-        action="version",
-        version="%(prog)s 0.0.2"
-    )
+
+    parser.add_argument("--version", action="version", version="%(prog)s 0.0.2")
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
@@ -66,7 +62,7 @@ Examples:
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
+
     run_parser.add_argument(
         "--voters",
         "-n",
@@ -105,8 +101,19 @@ Examples:
     run_parser.add_argument(
         "--preset",
         "-p",
-        choices=["india", "usa", "uk", "germany", "france", "japan", "brazil", 
-                 "australia_house", "australia_senate", "south_africa", "eu"],
+        choices=[
+            "india",
+            "usa",
+            "uk",
+            "germany",
+            "france",
+            "japan",
+            "brazil",
+            "australia_house",
+            "australia_senate",
+            "south_africa",
+            "eu",
+        ],
         help="Use country/region preset (overrides other parameters)",
     )
     run_parser.add_argument(
@@ -158,7 +165,7 @@ Config file format (JSON):
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
+
     batch_parser.add_argument(
         "--config",
         help="JSON configuration file for batch run",
@@ -288,7 +295,7 @@ def run_simulation(args):
             print("-" * 60)
             print(f"{'Party':<20} {'Votes':>12} {'Share':>8} {'Seats':>8}")
             print("-" * 60)
-            
+
             party_names = model.parties.df["name"].to_list()
             for i, name in enumerate(party_names):
                 votes = results["vote_counts"][i]
@@ -314,7 +321,9 @@ def run_simulation(args):
                     name: {
                         "votes": int(results["vote_counts"][i]),
                         "seats": int(results["seats"][i]),
-                        "vote_share": float(results["vote_counts"][i] / results["vote_counts"].sum()),
+                        "vote_share": float(
+                            results["vote_counts"][i] / results["vote_counts"].sum()
+                        ),
                     }
                     for i, name in enumerate(model.parties.df["name"].to_list())
                 },
@@ -376,7 +385,7 @@ def run_batch(args):
 
         if not args.quiet:
             print(f"\n{'=' * 60}")
-            print(f"Batch run complete!")
+            print("Batch run complete!")
             print(f"  Configurations: {len(sweep)}")
             print(f"  Total runs: {len(results_df)}")
             print(f"  Results: {args.output}")

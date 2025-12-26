@@ -12,11 +12,13 @@ class TestCoalitionFormation:
     def test_minimum_winning_coalitions_import(self):
         """Test MWC function can be imported."""
         from electoral_sim import minimum_winning_coalitions
+
         assert callable(minimum_winning_coalitions)
 
     def test_coalition_strain_import(self):
         """Test coalition strain import."""
         from electoral_sim import coalition_strain
+
         assert callable(coalition_strain)
 
 
@@ -42,11 +44,13 @@ class TestGovernmentSimulation:
     def test_government_simulator_import(self):
         """Test GovernmentSimulator can be imported."""
         from electoral_sim import GovernmentSimulator
+
         assert GovernmentSimulator is not None
 
     def test_simulate_government_survival_import(self):
         """Test simulate_government_survival import."""
         from electoral_sim import simulate_government_survival
+
         assert callable(simulate_government_survival)
 
 
@@ -56,6 +60,7 @@ class TestFormGovernment:
     def test_form_government_import(self):
         """Test form_government can be imported."""
         from electoral_sim import form_government
+
         assert callable(form_government)
 
 
@@ -96,21 +101,25 @@ class TestIndiaPreset:
     def test_india_states_import(self):
         """Test INDIA_STATES can be imported."""
         from electoral_sim import INDIA_STATES
+
         assert isinstance(INDIA_STATES, dict)
 
     def test_india_parties_import(self):
         """Test INDIA_PARTIES can be imported."""
         from electoral_sim import INDIA_PARTIES
+
         assert isinstance(INDIA_PARTIES, dict)
 
     def test_simulate_india_election_import(self):
         """Test simulate_india_election can be imported."""
         from electoral_sim import simulate_india_election
+
         assert callable(simulate_india_election)
 
     def test_india_election_result_class(self):
         """Test IndiaElectionResult class."""
         from electoral_sim import IndiaElectionResult
+
         assert IndiaElectionResult is not None
 
 

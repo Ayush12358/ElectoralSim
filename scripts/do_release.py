@@ -34,6 +34,7 @@ def main():
 
     # Get new version
     import re
+
     pyproject = (ROOT / "pyproject.toml").read_text()
     match = re.search(r'version = "(.+?)"', pyproject)
     new_version = match.group(1) if match else "unknown"
@@ -55,9 +56,9 @@ def main():
     run("git push origin master --tags")
 
     print(f"\n[OK] Released v{new_version}!")
-    print(f"\nGitHub Actions will now:")
-    print(f"   - Create GitHub Release with auto-generated notes")
-    print(f"   - Publish to PyPI automatically")
+    print("\nGitHub Actions will now:")
+    print("   - Create GitHub Release with auto-generated notes")
+    print("   - Publish to PyPI automatically")
     print(f"\nCheck: https://pypi.org/project/electoral-sim/{new_version}/")
 
 

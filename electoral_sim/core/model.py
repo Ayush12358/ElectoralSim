@@ -207,7 +207,6 @@ class ElectionModel(Model):
         self.collected_data: list[dict] = []
         self._collect_data()
 
-
     # =========================================================================
     # CLASS METHODS (Factory methods)
     # =========================================================================

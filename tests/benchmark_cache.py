@@ -1,4 +1,5 @@
 """Benchmark with caching"""
+
 import time
 from electoral_sim import ElectionModel
 
@@ -15,12 +16,12 @@ for n in [100_000, 500_000, 1_000_000]:
     start = time.perf_counter()
     model.run_election()
     t1 = time.perf_counter() - start
-    
+
     # Second run (cached)
     start = time.perf_counter()
     model.run_election()
     t2 = time.perf_counter() - start
-    
+
     print(f"{n:>10,} voters: {t1*1000:>6.1f} ms (first), {t2*1000:>6.1f} ms (cached)")
 
 print()

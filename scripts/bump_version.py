@@ -75,7 +75,7 @@ def update_changelog(new_version: str) -> None:
             pos = match.start()
             content = content[:pos] + new_section + content[pos:]
             CHANGELOG.write_text(content)
-            print(f"  Updated CHANGELOG.md")
+            print("  Updated CHANGELOG.md")
         else:
             print("  Warning: Could not update CHANGELOG.md automatically")
     else:
@@ -94,29 +94,21 @@ def main():
     print(f"\nBumping version: {current} -> {new_version}\n")
 
     # Update pyproject.toml
-    update_file(
-        PYPROJECT,
-        r'version = ".+?"',
-        f'version = "{new_version}"'
-    )
+    update_file(PYPROJECT, r'version = ".+?"', f'version = "{new_version}"')
 
     # Update __init__.py
-    update_file(
-        INIT,
-        r'__version__ = ".+?"',
-        f'__version__ = "{new_version}"'
-    )
+    update_file(INIT, r'__version__ = ".+?"', f'__version__ = "{new_version}"')
 
     # Update changelog
     update_changelog(new_version)
 
     print(f"\n[OK] Version bumped to {new_version}")
-    print(f"\nNext steps:")
-    print(f"  1. Review and update CHANGELOG.md with actual changes")
+    print("\nNext steps:")
+    print("  1. Review and update CHANGELOG.md with actual changes")
     print(f"  2. git add -A && git commit -m 'chore: release v{new_version}'")
     print(f"  3. git tag v{new_version}")
-    print(f"  4. git push origin master --tags")
-    print(f"  5. Create GitHub Release -> auto-publishes to PyPI")
+    print("  4. git push origin master --tags")
+    print("  5. Create GitHub Release -> auto-publishes to PyPI")
 
 
 if __name__ == "__main__":

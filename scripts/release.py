@@ -41,11 +41,7 @@ def build():
     """Build source distribution and wheel."""
     clean()
     print("\n[BUILD] Building package...")
-    result = subprocess.run(
-        [sys.executable, "-m", "build"],
-        cwd=ROOT,
-        capture_output=False
-    )
+    result = subprocess.run([sys.executable, "-m", "build"], cwd=ROOT, capture_output=False)
     if result.returncode != 0:
         print("[ERROR] Build failed!")
         sys.exit(1)
@@ -79,7 +75,9 @@ def upload(repository: str = "pypi"):
         print("\n[OK] Published to TestPyPI!")
         print("   https://test.pypi.org/project/electoral-sim/")
         print("\n   Test install with:")
-        print("   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ electoral-sim")
+        print(
+            "   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ electoral-sim"
+        )
     else:
         print("\n[OK] Published to PyPI!")
         print("   https://pypi.org/project/electoral-sim/")

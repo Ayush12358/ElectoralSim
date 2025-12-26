@@ -47,11 +47,13 @@ class TestOpinionDynamicsAdvanced:
     def test_opinion_dynamics_import(self):
         """Test OpinionDynamics import."""
         from electoral_sim import OpinionDynamics
+
         assert OpinionDynamics is not None
 
     def test_create_network(self):
         """Test network creation for opinion dynamics."""
         import networkx as nx
+
         G = nx.barabasi_albert_graph(100, 3)
         assert len(G.nodes()) == 100
 
@@ -144,12 +146,7 @@ class TestModelEdgeCases:
         """Test PR with zero threshold."""
         from electoral_sim import ElectionModel
 
-        model = ElectionModel(
-            n_voters=1000,
-            electoral_system="PR",
-            threshold=0.0,
-            seed=42
-        )
+        model = ElectionModel(n_voters=1000, electoral_system="PR", threshold=0.0, seed=42)
         results = model.run_election()
         assert results is not None
 
@@ -158,10 +155,7 @@ class TestModelEdgeCases:
         from electoral_sim import ElectionModel
 
         model = ElectionModel(
-            n_voters=1000,
-            electoral_system="PR",
-            threshold=0.10,  # 10% threshold
-            seed=42
+            n_voters=1000, electoral_system="PR", threshold=0.10, seed=42  # 10% threshold
         )
         results = model.run_election()
         assert results is not None

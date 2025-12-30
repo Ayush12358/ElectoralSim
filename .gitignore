@@ -15,6 +15,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .venv/
+.venv_new/
 venv/
 ENV/
 .pytest_cache/
@@ -55,3 +56,5 @@ scale_test_output.txt
 persona_test_output.txt
 final_publication_data.txt
 scale_validation_results.csv
+.gemini/
+gha-creds-*.json

@@ -264,7 +264,7 @@ Features:
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 electoral_sim/

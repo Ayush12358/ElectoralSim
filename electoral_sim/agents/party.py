@@ -76,8 +76,15 @@ class PartyAgents:
         )
 
     def step(self):
-        """Called each simulation step for party adaptation."""
-        pass  # Placeholder for adaptive behavior
+        """Called each simulation step for party adaptation.
+
+        Note: When ``use_adaptive_strategy=True`` is set on ElectionModel,
+        party positions are updated via ``adaptive_strategy_step()`` in
+        ``electoral_sim.agents.party_strategy``, called from
+        ``ElectionModel.step()``. This method is a Mesa-compatible hook
+        reserved for future inline agent behavior.
+        """
+        pass
 
 
 # Default party configurations

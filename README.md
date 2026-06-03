@@ -1,7 +1,8 @@
 # ElectoralSim
 
 <p align="center">
-  <strong>Advanced Agent-Based Electoral Simulation Toolkit</strong>
+  <strong>High-Performance Electoral Simulation Toolkit</strong>
+  <br><sub>Early-stage • Functional • Under active development</sub>
 </p>
 
 <p align="center">
@@ -22,46 +23,59 @@
   <a href="#quick-start">Quick Start</a>
 </p>
 
-A modular, high-performance simulation toolkit for electoral systems, voter behavior, and political dynamics. Built on [Mesa](https://mesa.readthedocs.io/) with Polars DataFrames for vectorized agent-based modeling at scale.
+> **Disclaimer:** ElectoralSim is a simulation and electoral-system comparison toolkit, **not an election forecasting model**. Default country presets are structural demonstrations unless explicitly marked as calibrated against real election data. See [Limitations](#limitations) for more.
+
+A modular simulation toolkit for electoral systems, voter behavior, and political dynamics. Uses a hybrid approach: voter populations are stored as vectorized Polars DataFrames (not individual Python objects) for million-scale performance, with [Mesa](https://mesa.readthedocs.io/) for model orchestration, Numba for JIT acceleration, and NetworkX for opinion dynamics.
+
+---
+
+## Feature Status
+
+| Area | Status | Notes |
+|------|--------|-------|
+| **FPTP, PR allocation** (D'Hondt, Sainte-Laguë, Hare, Droop) | ✅ Stable | Numba-accelerated, tested |
+| **IRV/RCV, STV, Approval, Condorcet** | ✅ Stable | Algorithmic implementation |
+| **Voter generation** (demographics, ideology) | ✅ Stable | Rich synthetic voter profiles |
+| **Behavior models** (Proximity, Valence, Retrospective) | ✅ Stable | Weighted composition via BehaviorEngine |
+| **Metrics** (Gallagher, ENP, HHI, VSE, etc.) | ✅ Stable | Validated against known values |
+| **BatchRunner** (parameter sweeps) | 🟡 Beta | Sequential stable; parallel has Numba/OpenMP caveat |
+| **Country presets** (11 countries) | 🟡 Beta | Structural presets, not calibrated forecasts |
+| **India simulator** (543 Lok Sabha) | 🟡 Beta | Specialized implementation; being migrated to generic engine |
+| **Strategic/WastedVote models** | 🟡 Beta | Functional; viability inputs are synthetic by default |
+| **Opinion dynamics** (networks, bounded confidence) | 🟡 Beta | Core algorithms tested; needs empirical validation |
+| **Coalition formation & government stability** | 🟡 Beta | MWC, MCW, Laver-Shepsle, collapse models |
+| **Streamlit dashboard** | 🟡 Beta | Interactive explorer for multiple countries |
+| **Sociotropic/Pocketbook model** | 🔶 Experimental | Requires external economic data for realism |
+| **Voter psychology** (Big Five, Moral Foundations, etc.) | 🔶 Experimental | Synthetic features; not survey-calibrated |
+| **Media effects & Raducha susceptibility** | 🔶 Experimental | Simplified models |
+| **Event manager** (scandals, shocks) | 🔶 Experimental | Activated only when explicitly configured |
+| **Adaptive party strategy** | 🔶 Experimental | Median-voter walk; disabled by default |
+| **GPU acceleration** (CuPy) | 🔶 Experimental | Utility computation & MNL sampling only; needs correctness tests |
 
 ---
 
 ## Key Features
 
-### Performance
-- **1M+ voters** with vectorized Polars DataFrames & Numba JIT acceleration (89x speedup)
-- **30 elections/second** batch simulation capability
-- **Batch parameter sweeps** for systematic exploration
-- **Parallel execution** with multiprocessing
-- **Optional GPU support** via CuPy for massive-scale simulations
-
 ### Electoral Systems
-| System | Methods |
-|--------|---------|
-| **Plurality** | First Past The Post (FPTP) |
-| **Proportional** | D'Hondt, Sainte-Laguë, Hare Quota, Droop Quota |
-| **Ranked Choice** | IRV/RCV, STV (Single Transferable Vote) |
-| **Other** | Approval Voting, Condorcet Winner |
+| System | Methods | Status |
+|--------|---------|--------|
+| **Plurality** | First Past The Post (FPTP) | Stable |
+| **Proportional** | D'Hondt, Sainte-Laguë, Hare Quota, Droop Quota | Stable |
+| **Ranked Choice** | IRV/RCV, STV (Single Transferable Vote) | Stable |
+| **Other** | Approval Voting, Condorcet Winner | Stable |
 
 ### Voter Behavior Models
 - **Proximity Model** — Spatial voting based on ideological distance
-- **Valence Model** — Non-policy candidate appeal (charisma, competence)
+- **Valence Model** — Non-policy candidate appeal
 - **Retrospective Model** — Economic voting (reward/punish incumbents)
-- **Strategic Voting** — Duverger's Law, wasted vote model
-- **Sociotropic/Pocketbook** — National vs personal economic evaluation
+- **Strategic Voting** — Wasted vote model (Experimental)
+- **Sociotropic/Pocketbook** — National vs personal economic evaluation (Experimental)
 
-### Voter Psychology
-- **Big Five (OCEAN)** — Personality traits influencing ideology
-- **Moral Foundations** — Haidt's Care, Fairness, Loyalty, Authority, Sanctity
-- **Media Diet** — Voter-specific media bias and misinformation susceptibility
-- **Affective Polarization** — In-group/out-group sentiment
-
-### Opinion Dynamics
+### Opinion Dynamics (Experimental)
 - **Network Topologies** — Barabási-Albert, Watts-Strogatz, Erdős-Rényi
 - **Models** — Bounded Confidence, Noisy Voter, Zealots
-- **Media Effects** — Mass media bias with Raducha susceptibility model
 
-### Coalition & Government
+### Coalition & Government (Beta)
 - **Formation** — MWC, MCW, Laver-Shepsle portfolio allocation
 - **Stability** — Sigmoid/Linear/Exponential collapse models
 - **Analysis** — Coalition strain, junior partner penalty, Cox hazard
@@ -73,12 +87,21 @@ A modular, high-performance simulation toolkit for electoral systems, voter beha
 - Voter Satisfaction Efficiency (VSE)
 
 ### Country Presets (11 Countries)
+
+> These are **structural presets** — they encode electoral-system rules, approximate party positions, and default parameters for demonstration and comparative simulation. They are not calibrated election forecasts.
+
 | Region | Countries |
 |--------|-----------|
 | **Asia** | 🇮🇳 India (543 Lok Sabha), 🇯🇵 Japan |
 | **Europe** | 🇬🇧 UK, 🇩🇪 Germany, 🇫🇷 France, 🇪🇺 EU Parliament (720 MEPs) |
 | **Americas** | 🇺🇸 USA, 🇧🇷 Brazil |
 | **Oceania/Africa** | 🇦🇺 Australia, 🇿🇦 South Africa |
+
+### Performance
+- **Vectorized Polars DataFrames** for voter storage (not individual Python objects)
+- **Numba JIT acceleration** for vote counting and MNL sampling (~10-50x over pure Python)
+- **Batch parameter sweeps** for systematic exploration
+- **Parallel execution** with multiprocessing (see [parallel caveat](#parallel-execution))
 
 ---
 
@@ -288,15 +311,16 @@ electoral_sim/
 
 ## Performance Benchmarks
 
-| Scale | Create Time | Election Time | Memory |
-|-------|-------------|---------------|--------|
-| 10K voters | 18ms | 5ms | 52 MB |
-| 100K voters | 109ms | 35ms | 15 MB |
-| 500K voters | 608ms | 176ms | 95 MB |
-| 1M voters | 1.2s | 316ms | 148 MB |
-| 2M voters | 2.4s | 672ms | 181 MB |
+> Benchmarks below were run on an Intel i5-1135G7 (4C/8T, 16 GB RAM, Ubuntu 22.04, Python 3.12, Numba 0.65). Timings exclude Numba JIT warmup. Memory is RSS delta measured via `psutil`. See `benchmarks/` for reproducible scripts.
 
-**Batch elections:** ~200ms/election at 500K voters (5 elections/sec)
+| Scale | Create Time | Election Time | Memory (RSS delta) |
+|-------|-------------|---------------|---------------------|
+| 10K voters | ~18ms | ~5ms | ~52 MB |
+| 100K voters | ~109ms | ~35ms | ~15 MB |
+| 500K voters | ~608ms | ~176ms | ~95 MB |
+| 1M voters | ~1.2s | ~316ms | ~148 MB |
+
+**Batch throughput:** ~5 elections/sec at 500K voters; up to ~30 elections/sec at smaller 10K-50K configurations (FPTP, default behavior, after JIT warmup).
 
 ---
 
@@ -313,12 +337,13 @@ pytest tests/test_integration.py -v
 python tests/stress_test.py
 ```
 
-**Test coverage:** 222 tests with ~70% code coverage, including:
-- **Property-based tests** (Hypothesis) - random input generation
-- **Parameterized tests** - all systems, presets, allocation methods
-- **Performance benchmarks** - 1K, 10K voters timing
-- **Error handling** - invalid inputs, edge cases
-- **Real-world validation** - UK, US, Germany metrics
+**Test suite:** 237 tests including:
+- **Property-based tests** (Hypothesis) — random input generation
+- **Parameterized tests** — all systems, presets, allocation methods
+- **Performance smoke tests** — 1K, 10K voters timing
+- **Error handling** — invalid inputs, edge cases
+- **Preset smoke tests** — UK, US, Germany, India, etc.
+- **Invariant tests** — seats non-negative, vote shares sum to 1, determinism with seeds
 
 ---
 
@@ -329,6 +354,37 @@ python tests/stress_test.py
   - [API Reference](docs/api/) — Complete function/class documentation
   - [Country Presets](docs/presets/) — India, EU, and other country guides
   - [Advanced Topics](docs/advanced/) — Voter psychology, performance tuning
+
+---
+
+## Limitations
+
+### What ElectoralSim Is
+- A simulation and electoral-system **comparison toolkit**
+- A **teaching and research prototyping** tool
+- A way to explore how different electoral systems and voter assumptions interact
+
+### What ElectoralSim Is Not
+- ❌ An election **forecasting** model
+- ❌ A **calibrated** public-opinion model (by default)
+- ❌ A substitute for survey data or polling
+- ❌ A validated behavioral model for all included countries
+
+### Known Limitations
+- **Country presets** use synthetic party positions and valence values — they are structural demos, not calibrated to real election data.
+- **Voter psychology features** (Big Five, Moral Foundations, affective polarization) are synthetically generated and not derived from survey instruments.
+- **2D ideological space** is a deliberate simplification; complex political systems (India, Brazil, EU) have dimensions (caste, region, language, religion) not captured.
+- **India simulator** currently uses a specialized high-performance path separate from the generic `ElectionModel`; improvements to the core engine do not automatically benefit India.
+- **GPU acceleration** is experimental and limited to utility computation and MNL sampling kernels; it has not been correctness-tested against CPU outputs.
+
+### Parallel Execution Caveat
+On Linux, Numba's OpenMP threading layer conflicts with Python's default `fork()`-based multiprocessing. If using `BatchRunner` with `n_jobs > 1`, you may encounter `BrokenProcessPool`. Workarounds:
+```python
+import multiprocessing
+multiprocessing.set_start_method("spawn")
+# or
+import os; os.environ["OMP_NUM_THREADS"] = "1"
+```
 
 ---
 

@@ -113,16 +113,19 @@ from electoral_sim.analysis import BatchRunner, ParameterSweep
 
 # Visualization (optional - requires matplotlib)
 try:
-    from electoral_sim.visualization.charts import (
+    from electoral_sim.visualization import (
         plot_election_summary,
+        plot_ideological_space,
         plot_seat_distribution,
         plot_seats_vs_votes,
         plot_vote_shares,
     )
 
     _VIZ_AVAILABLE = True
-except ImportError:
+    _VIZ_IMPORT_ERROR = None
+except ImportError as e:
     _VIZ_AVAILABLE = False
+    _VIZ_IMPORT_ERROR = str(e)
 
 __all__ = [
     # Core

@@ -24,6 +24,37 @@
 - [x] **P1** Migrate Licence from MIT to Apache 2.0
 - [x] **P1** Upgrade to Mesa v3.4.0 and make changes accordingly. Adopt model.time and check batch reproducibility features.
 
+### Bugs & Technical Debt (P1) — From Legitimacy Audit
+
+- [ ] **P1** Fix Numba multiprocessing crash in BatchRunner._run_parallel() (OpenMP + fork() unsafe)
+    - Switch to multiprocessing.set_start_method("spawn") or set OMP_NUM_THREADS=1
+    - Remove xfail marker from test_batch_runner.py::test_parallel_execution
+- [ ] **P1** Fix "Opinion dynamics (placeholder)" docstring in ElectionModel (core/model.py line 45)
+- [ ] **P1** Narrow broad try/except in electoral_sim/__init__.py optional imports — capture and expose ImportError details
+- [ ] **P2** GPU fptp_count_gpu() currently raises NotImplementedError — implement or document as experimental
+- [ ] **P2** Separate stable vs experimental public API surface (top-level __init__.py exports too broadly)
+
+### Documentation & Credibility (P1) — From Legitimacy Audit
+
+- [ ] **P1** Add prominent "not a forecasting model" disclaimer near top of README
+- [ ] **P1** Add feature maturity table to README (Stable / Beta / Experimental / Placeholder)
+- [ ] **P1** Add model limitations section to README
+- [ ] **P1** Recalibrate README language to match v0.1.0 maturity level
+- [ ] **P1** Add benchmark scripts (benchmarks/benchmark_core.py) with documented hardware/methodology
+    - Quantify "1M+ voters", "89x speedup", "30 elections/sec" claims
+    - Separate Numba warmup from steady-state timing
+    - Document memory measurement method (RSS vs heap vs DataFrame.estimated_size)
+- [ ] **P1** Qualify performance claims: baseline, hardware, Python version, command used
+- [ ] **P1** Fix README test count (currently says 222; actual is 237)
+- [ ] **P2** Add model transparency table — status, calibration, validation per behavior model
+- [ ] **P2** Add data provenance docs for country presets (source URLs, licenses, preprocessing)
+- [ ] **P2** Qualify "country presets" as structural demos, not calibrated forecasts
+- [ ] **P2** Add "inspired by" language for psychology features (Big Five, moral foundations, etc.)
+- [ ] **P2** Add preset parameter rationale — party positions, valence, region weights
+- [ ] **P2** Rename "real-world validation" tests to "preset smoke tests" unless backed by comparison data
+- [ ] **P3** Add dashboard screenshots to README (docs/assets/)
+- [ ] **P3** Add CI job for optional dependency import smoke tests
+
 ### Research Features
 
 - [ ] **P5** Redistricting/Gerrymandering simulation
@@ -55,6 +86,10 @@
 
 ### Technical Improvements
 
+- [ ] **P2** Refactor India preset to use ElectionModel engine (currently hand-rolls MNL/FPTP)
+    - Extract shared primitives: utility computation, vote sampling, FPTP counting
+    - Move constituency constraints and state-party weights into Config/Model
+    - Both generic engine and India preset should call same lower-level functions
 - [ ] **P5** Distributed computing support (Dask/Ray)
 - [ ] **P5** Real-time visualization dashboard
 - [ ] **P5** REST API for web integration
@@ -63,6 +98,9 @@
 
 ### Data & Validation
 
+- [ ] **P2** Add at least one real validation case (e.g., Germany 2021 Bundestag comparison)
+    - Document: election year, source data, observed result, simulated result, error metrics
+- [ ] **P2** Add preset calibration status metadata for each country preset
 - [ ] **P5** Historical election data for all countries
 - [ ] **P5** Calibration against real election results
 - [ ] **P5** Sensitivity analysis tools

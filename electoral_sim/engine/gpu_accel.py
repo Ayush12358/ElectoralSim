@@ -124,13 +124,13 @@ def fptp_count_gpu(
     # Global vote counts
     vote_counts = cp.asnumpy(cp.bincount(v, minlength=n_parties))
 
-    # For constituency counting, we can use a custom kernel or a loop
-    # For now, we'll keep the loop but use CuPy operations inside
-    seats = np.zeros(n_parties, dtype=np.int64)
-
-    # Note: For small number of constituencies, CPU loop is fine if
-    # the filtering is fast. For 543, we might want a parallel approach.
-    # Currently, we just return the counts and the CPU handles the rest
-    # of the system-specific allocation to keep simplicity.
-
-    return seats, vote_counts.astype(np.int64)
+    # NOTE: GPU-accelerated per-constituency counting is not yet implemented.
+    # Use the CPU/Numba path (fptp_count_fast) for seat counting instead.
+    # The GPU utils in this module focus on utility computation (compute_utilities_gpu)
+    # and MNL sampling (mnl_sample_gpu), which are the main performance bottlenecks.
+    raise NotImplementedError(
+        "GPU-accelerated FPTP constituency counting is not yet implemented. "
+        "Use fptp_count_fast() for CPU/Numba-accelerated counting. "
+        "GPU acceleration is currently available for utility computation "
+        "(compute_utilities_gpu) and MNL sampling (mnl_sample_gpu)."
+    )

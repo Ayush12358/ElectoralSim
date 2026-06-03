@@ -58,3 +58,5 @@ final_publication_data.txt
 scale_validation_results.csv
 .gemini/
 gha-creds-*.json
+
+# Custom

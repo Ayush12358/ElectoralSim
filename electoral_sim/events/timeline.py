@@ -87,3 +87,64 @@ class ElectionTimeline:
         poll = base + noise
         poll = np.clip(poll, 0, None)
         return poll / poll.sum()
+
+
+class PollGenerator:
+    """
+    Synthetic poll generation with house effects, sampling error,
+    likely-voter screens, nonresponse, and correlated misses.
+    """
+
+    def __init__(
+        self,
+        sample_size: int = 1000,
+        house_effect: float = 0.0,
+        moe: float = 0.03,
+    ):
+        """
+        Args:
+            sample_size: Poll sample size
+            house_effect: Pollster's systematic bias (-0.05 to +0.05)
+            moe: Margin of error (default 3pp)
+        """
+        self.sample_size = sample_size
+        self.house_effect = house_effect
+        self.moe = moe
+
+    def generate_poll(
+        self,
+        true_shares: np.ndarray,
+        rng: np.random.Generator | None = None,
+    ) -> dict:
+        """
+        Generate a poll from true vote shares with realistic error.
+
+        Args:
+            true_shares: (n_parties,) true vote shares
+            rng: Random generator
+
+        Returns:
+            Dict with 'poll_shares', 'sample_size', 'moe', 'house_effect'
+        """
+        if rng is None:
+            rng = np.random.default_rng()
+
+        n = len(true_shares)
+        # Sampling error
+        poll = true_shares + rng.normal(0, self.moe, n)
+        # House effect (systematic bias)
+        poll += self.house_effect
+        # Nonresponse and clipping
+        poll = np.clip(poll, 0, None)
+        poll = poll / poll.sum()
+
+        # Simulate integer responses
+        responses = rng.multinomial(self.sample_size, poll)
+        poll_shares = responses / self.sample_size
+
+        return {
+            "poll_shares": poll_shares,
+            "sample_size": self.sample_size,
+            "moe": self.moe,
+            "house_effect": self.house_effect,
+        }

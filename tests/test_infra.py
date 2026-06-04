@@ -615,3 +615,15 @@ class TestOptionalDependencyBoundaries:
             if result["step"] == 30:
                 assert any(e["event"] == "election_day" for e in result["events"])
         assert tl.is_election_day()
+
+    def test_poll_generator(self):
+        """PollGenerator creates polls with house effects and sampling error."""
+        from electoral_sim.events.timeline import PollGenerator
+
+        pg = PollGenerator(sample_size=1000, house_effect=0.02)
+        result = pg.generate_poll(
+            np.array([0.4, 0.35, 0.25]), rng=np.random.default_rng(42)
+        )
+        assert abs(result["poll_shares"].sum() - 1.0) < 0.01
+        assert len(result["poll_shares"]) == 3
+        assert "house_effect" in result

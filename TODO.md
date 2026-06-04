@@ -181,7 +181,7 @@
 - [x] **P2** Add discrete-event scheduling for campaign/election timelines
     - Mesa 3.x has modern time/scheduling capabilities; model campaigns, events, polls, debates, registration deadlines, and election day as explicit events.
     - Keep `step()` behavior backward-compatible.
-- [ ] **P2** Add poll generation and polling-error simulation
+- [x] **P2** Add poll generation and polling-error simulation
     - Generate synthetic polls from model state with house effects, sampling error, likely-voter screens, nonresponse, and correlated misses.
     - Keep prediction language clearly separated from simulation scenarios.
 - [ ] **P2** Add strategic voting based on district-level viability, not only global party viability

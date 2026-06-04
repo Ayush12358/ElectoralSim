@@ -133,7 +133,7 @@
 - [ ] **P2** Add swing-state and swing-district analysis
     - Perturb national, regional, and district-level vote swings and report seat tipping points.
     - Integrate with FPTP, MMP, and PR presets where appropriate.
-- [ ] **P2** Add constituency geometry ingestion
+- [x] **P2** Add constituency geometry ingestion
     - Load GeoJSON/Shapefile boundaries into optional geometry metadata.
     - Validate CRS, area/perimeter availability, adjacency construction, and missing IDs.
 - [ ] **P2** Add polling-place accessibility and queue/friction model

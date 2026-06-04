@@ -518,3 +518,13 @@ class TestDataIngestion:
         incumbents = compute_incumbents(df)
         assert "X" in incumbents
         assert "Z" in incumbents
+
+    def test_load_geometry_geojson(self, tmp_path):
+        """load_geometry loads GeoJSON files."""
+        from electoral_sim.data.ingestion import load_geometry
+
+        geojson = tmp_path / "test.geojson"
+        geojson.write_text('{"type":"FeatureCollection","features":[],"crs":{"type":"name","properties":{"name":"EPSG:4326"}}}')
+        result = load_geometry(str(geojson))
+        assert result["crs"] == "EPSG:4326"
+        assert result["n_features"] == 0

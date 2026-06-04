@@ -106,3 +106,56 @@ def compute_incumbents(df: pl.DataFrame, year: int | None = None) -> list[str]:
         .unique()
         .to_list()
     )
+
+
+def load_geometry(path: str) -> "dict[str, Any]":
+    """
+    Load constituency geometry from GeoJSON or Shapefile.
+
+    Keeps heavy GIS dependencies optional. Raises ImportError with
+    install guidance if required libraries are missing.
+
+    Args:
+        path: File path to GeoJSON (.geojson) or Shapefile (.shp)
+
+    Returns:
+        Dict with 'type' (FeatureCollection), 'features' list,
+        'crs' string, and 'n_features' count.
+    """
+    ext = path.lower().rsplit(".", 1)[-1] if "." in path else ""
+    features = []
+
+    if ext == "geojson":
+        import json
+
+        with open(path) as f:
+            data = json.load(f)
+        features = data.get("features", [])
+        crs = data.get("crs", {}).get("properties", {}).get("name", "WGS84")
+    elif ext == "shp":
+        try:
+            import shapefile
+        except ImportError:
+            raise ImportError(
+                "Shapefile support requires pyshp. Install with: pip install pyshp"
+            )
+        with shapefile.Reader(path) as sf:
+            for record in sf.shapeRecords():
+                features.append({
+                    "type": "Feature",
+                    "geometry": record.shape.__geo_interface__,
+                    "properties": dict(zip(
+                        [f[0] for f in sf.fields[1:]],
+                        record.record,
+                    )),
+                })
+        crs = "Unknown"
+    else:
+        raise ValueError(f"Unsupported geometry format: '{ext}'. Use .geojson or .shp")
+
+    return {
+        "type": "FeatureCollection",
+        "features": features,
+        "crs": crs,
+        "n_features": len(features),
+    }

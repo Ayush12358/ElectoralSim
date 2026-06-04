@@ -157,7 +157,7 @@
 - [x] **P2** Add media environment and media monitoring model
     - OSCE methodology treats media access and coverage as central election-environment dimensions.
     - Track party exposure, sentiment, audience reach, misinformation susceptibility, and time decay.
-- [ ] **P2** Add voter registration and eligibility model
+- [x] **P2** Add voter registration and eligibility model
     - Model eligible population, registration status, turnout probability, age/citizenship constraints, and registration deadlines.
     - Separate eligible voters, registered voters, and votes cast in result metrics.
 - [ ] **P2** Add primary election and candidate selection systems

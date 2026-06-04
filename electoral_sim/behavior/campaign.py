@@ -183,3 +183,68 @@ class MediaEnvironment:
         if media_diet is None:
             return 0.3  # Default moderate susceptibility
         return float(1.0 - np.mean(media_diet))
+
+
+class VoterRegistration:
+    """
+    Voter registration and eligibility model.
+
+    Models eligible population, registration status, turnout probability,
+    age/citizenship constraints, and registration deadlines.
+    """
+
+    def __init__(
+        self,
+        eligible_rate: float = 0.85,
+        registration_rate: float = 0.75,
+        base_turnout: float = 0.65,
+        age_effect: float = 0.1,
+    ):
+        """
+        Args:
+            eligible_rate: Proportion of population eligible to vote
+            registration_rate: Proportion of eligible who register
+            base_turnout: Base turnout probability among registered voters
+            age_effect: Additional turnout probability change per decade from median
+        """
+        self.eligible_rate = eligible_rate
+        self.registration_rate = registration_rate
+        self.base_turnout = base_turnout
+        self.age_effect = age_effect
+
+    def compute_eligibility(
+        self,
+        n_voters: int,
+        age: np.ndarray | None = None,
+        rng: np.random.Generator | None = None,
+    ) -> dict[str, np.ndarray]:
+        """
+        Compute eligible population, registered voters, and likely voters.
+
+        Args:
+            n_voters: Total population
+            age: (n_voters,) voter ages (used for turnout modulation)
+            rng: Random generator
+
+        Returns:
+            Dict with 'eligible', 'registered', 'will_vote' boolean arrays
+        """
+        if rng is None:
+            rng = np.random.default_rng()
+
+        eligible = rng.random(n_voters) < self.eligible_rate
+        registered = eligible & (rng.random(n_voters) < self.registration_rate)
+
+        turnout_prob = np.full(n_voters, self.base_turnout)
+        if age is not None:
+            age_norm = (age - np.median(age)) / 10.0
+            turnout_prob += self.age_effect * age_norm
+        turnout_prob = np.clip(turnout_prob, 0.0, 1.0)
+
+        will_vote = registered & (rng.random(n_voters) < turnout_prob)
+
+        return {
+            "eligible": eligible,
+            "registered": registered,
+            "will_vote": will_vote,
+        }

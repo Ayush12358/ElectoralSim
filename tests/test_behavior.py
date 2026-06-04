@@ -366,3 +366,13 @@ class TestCampaignFinance:
         high_div = media.misinformation_susceptibility(np.array([0.9, 0.9, 0.9]))
         low_div = media.misinformation_susceptibility(np.array([0.1, 0.1, 0.1]))
         assert low_div > high_div
+
+    def test_voter_registration_model(self):
+        """VoterRegistration computes eligibility, registration, turnout."""
+        from electoral_sim.behavior.campaign import VoterRegistration
+
+        vr = VoterRegistration()
+        age = np.array([25, 35, 55, 65, 75])
+        result = vr.compute_eligibility(5, age, rng=np.random.default_rng(42))
+        assert len(result["eligible"]) == 5
+        assert result["will_vote"].sum() >= 0

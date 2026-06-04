@@ -316,7 +316,7 @@
     - Keep warning budget at zero.
 - [ ] **P3** Register all custom pytest marks
     - `slow` appears in tests but is not registered in `pyproject.toml`.
-- [ ] **P3** Add dependency freshness and upper-bound review
+- [x] **P3** Add dependency freshness and upper-bound review
     - Track Mesa, Polars, Numba, NumPy, NetworkX, Streamlit, Plotly, and CuPy compatibility.
 - [ ] **P3** Add Python 3.13 CI lane if not already green
     - `pyproject.toml` advertises Python 3.13 support.

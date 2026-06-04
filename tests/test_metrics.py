@@ -1,4 +1,4 @@
-"""Tests for electoral metrics: Gallagher, ENP, HHI, efficiency gap, VSE, and invariants."""
+"""Tests for electoral metrics: Gallagher, ENP, HHI, efficiency gap, VSE, and utility functions."""
 
 import numpy as np
 import pytest
@@ -88,6 +88,13 @@ class TestEffectiveNumberOfParties:
         ]:
             assert effective_number_of_parties(shares) >= 1.0
 
+    def test_handles_percentages(self):
+        """ENP auto-converts percentages > 1.5."""
+        from electoral_sim.metrics.indices import effective_number_of_parties
+
+        enp = effective_number_of_parties(np.array([50.0, 50.0]))
+        assert abs(enp - 2.0) < 0.01
+
 
 class TestOtherMetrics:
     """Loosemore-Hanby, HHI, efficiency gap."""
@@ -103,9 +110,7 @@ class TestOtherMetrics:
     def test_hhi(self):
         from electoral_sim.metrics.indices import herfindahl_hirschman_index
 
-        # Equal shares → low concentration
         equal = herfindahl_hirschman_index(np.array([0.25, 0.25, 0.25, 0.25]))
-        # Single dominant → high concentration
         dominant = herfindahl_hirschman_index(np.array([0.9, 0.05, 0.03, 0.02]))
         assert dominant > equal
 
@@ -119,15 +124,33 @@ class TestOtherMetrics:
         result = efficiency_gap(party_a_votes, party_b_votes, party_a_seats)
         assert isinstance(result, float)
 
-    def test_efficiency_gap_known_case(self):
-        """Known test case for efficiency gap."""
-        from electoral_sim.metrics.indices import efficiency_gap
+    def test_turnout_rate(self):
+        from electoral_sim.metrics.indices import turnout_rate
 
-        party_a_votes = np.array([52, 48])
-        party_b_votes = np.array([48, 52])
-        party_a_seats = np.array([1, 0])
-        result = efficiency_gap(party_a_votes, party_b_votes, party_a_seats)
-        assert isinstance(result, float)
+        assert turnout_rate(750, 1000) == 0.75
+        assert turnout_rate(0, 1000) == 0.0
+        assert turnout_rate(100, 0) == 0.0
+
+    def test_vote_share(self):
+        from electoral_sim.metrics.indices import vote_share
+
+        assert vote_share(300, 1000) == 0.3
+        assert vote_share(0, 1000) == 0.0
+        assert vote_share(100, 0) == 0.0
+
+    def test_seat_share(self):
+        from electoral_sim.metrics.indices import seat_share
+
+        assert seat_share(50, 100) == 0.5
+        assert seat_share(0, 100) == 0.0
+        assert seat_share(10, 0) == 0.0
+
+    def test_seats_votes_ratio(self):
+        from electoral_sim.metrics.indices import seats_votes_ratio
+
+        assert seats_votes_ratio(0.6, 0.4) == pytest.approx(1.5)
+        assert seats_votes_ratio(0.3, 0.5) == pytest.approx(0.6)
+        assert seats_votes_ratio(0.5, 0.0) == 0.0
 
 
 class TestVSE:
@@ -140,3 +163,50 @@ class TestVSE:
         results = model.run_election()
         assert "vse" in results
         assert isinstance(results["vse"], float)
+
+    def test_calculate_welfare_basic(self):
+        from electoral_sim.analysis.vse import calculate_welfare
+
+        utilities = np.array([10.0, 20.0, 30.0])
+        assert calculate_welfare(utilities) == 60.0
+
+    def test_calculate_welfare_with_weights(self):
+        from electoral_sim.analysis.vse import calculate_welfare
+
+        utilities = np.array([10.0, 20.0, 30.0])
+        weights = np.array([0.5, 0.3, 0.2])
+        result = calculate_welfare(utilities, weights=weights)
+        assert result == pytest.approx(5.0 + 6.0 + 6.0)
+
+    def test_calculate_vse_perfect_system(self):
+        """VSE = 1.0 when actual outcome matches optimal."""
+        from electoral_sim.analysis.vse import calculate_vse
+
+        # Voter utilities: 3 voters, 2 parties
+        # Party 0 gives utility [10, 10, 10] → total 30
+        # Party 1 gives utility [5, 5, 5] → total 15
+        utilities = np.array([[10, 5], [10, 5], [10, 5]])
+        # Optimal is party 0 (total 30), random is mean(30,15)=22.5
+        # If actual = optimal (all seats to party 0): VSE = (30-22.5)/(30-22.5) = 1.0
+        seat_shares = np.array([1.0, 0.0])
+        vse = calculate_vse(utilities, seat_shares)
+        assert vse == pytest.approx(1.0)
+
+    def test_calculate_vse_random_system(self):
+        """VSE ≈ 0 when actual = random."""
+        from electoral_sim.analysis.vse import calculate_vse
+
+        utilities = np.array([[10, 5], [10, 5], [10, 5]])
+        # Actual = random (equal seats)
+        seat_shares = np.array([0.5, 0.5])
+        vse = calculate_vse(utilities, seat_shares)
+        assert vse == pytest.approx(0.0)
+
+    def test_calculate_vse_all_equal(self):
+        """VSE = 0 when all parties give equal utility."""
+        from electoral_sim.analysis.vse import calculate_vse
+
+        utilities = np.array([[5, 5], [5, 5]])
+        seat_shares = np.array([1.0, 0.0])
+        vse = calculate_vse(utilities, seat_shares)
+        assert vse == 0.0

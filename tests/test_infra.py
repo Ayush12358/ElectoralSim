@@ -1,53 +1,227 @@
 """Tests for infrastructure: CLI, EventManager, and Visualization."""
 
 import sys
+import types
 
 import numpy as np
 import pytest
 
 # =============================================================================
-# CLI
+# CLI — Direct function tests (not subprocess, so coverage tracks)
 # =============================================================================
 
 
-class TestCLI:
-    """CLI smoke tests."""
+class TestCLIDirect:
+    """Test CLI functions directly for coverage tracking."""
 
-    def _run_cli(self, *args):
-        import subprocess
+    def test_list_presets(self, capsys):
+        """list_presets() prints preset info."""
+        from electoral_sim.core.cli import list_presets
 
-        result = subprocess.run(
-            [sys.executable, "-m", "electoral_sim.core.cli", *args],
-            capture_output=True,
-            text=True,
+        list_presets()
+        output = capsys.readouterr().out
+        assert "india" in output
+        assert "usa" in output
+        assert "Total:" in output
+
+    def test_run_simulation_basic(self, capsys):
+        """run_simulation() with basic args."""
+        from electoral_sim.core.cli import run_simulation
+
+        args = types.SimpleNamespace(
+            preset=None,
+            voters=500,
+            constituencies=3,
+            system="FPTP",
+            allocation="dhondt",
+            threshold=0.0,
+            seed=42,
+            output=None,
+            quiet=False,
         )
-        return result
+        run_simulation(args)
+        output = capsys.readouterr().out
+        assert "Turnout" in output
+        assert "Party Results" in output
 
-    def test_version(self):
-        result = self._run_cli("--version")
-        assert result.returncode == 0
-        assert "0.1" in result.stdout
+    def test_run_simulation_quiet(self, capsys):
+        """run_simulation() with quiet=True suppresses output."""
+        from electoral_sim.core.cli import run_simulation
 
-    def test_no_args_shows_help(self):
-        result = self._run_cli()
-        assert result.returncode == 0
+        args = types.SimpleNamespace(
+            preset=None,
+            voters=500,
+            constituencies=3,
+            system="FPTP",
+            allocation="dhondt",
+            threshold=0.0,
+            seed=42,
+            output=None,
+            quiet=True,
+        )
+        run_simulation(args)
+        output = capsys.readouterr().out
+        assert output == ""
 
-    def test_list_presets(self):
-        result = self._run_cli("list-presets")
-        assert result.returncode == 0
+    def test_run_simulation_with_preset(self, capsys):
+        """run_simulation() with a preset."""
+        from electoral_sim.core.cli import run_simulation
 
-    def test_run_help(self):
-        result = self._run_cli("run", "--help")
-        assert result.returncode == 0
-        assert "--voters" in result.stdout or "--preset" in result.stdout
+        args = types.SimpleNamespace(
+            preset="usa",
+            voters=500,
+            constituencies=10,
+            system="FPTP",
+            allocation="dhondt",
+            threshold=0.0,
+            seed=42,
+            output=None,
+            quiet=False,
+        )
+        run_simulation(args)
+        output = capsys.readouterr().out
+        assert "preset" in output.lower() or "Turnout" in output
 
-    def test_run_basic(self):
-        result = self._run_cli("run", "--voters", "500", "--constituencies", "3")
-        assert result.returncode == 0
+    def test_run_simulation_with_output(self, tmp_path):
+        """run_simulation() saves JSON to file."""
+        from electoral_sim.core.cli import run_simulation
 
-    def test_invalid_command(self):
-        result = self._run_cli("nonexistent_command")
-        assert result.returncode != 0
+        outfile = str(tmp_path / "results.json")
+        args = types.SimpleNamespace(
+            preset=None,
+            voters=500,
+            constituencies=3,
+            system="FPTP",
+            allocation="dhondt",
+            threshold=0.0,
+            seed=42,
+            output=outfile,
+            quiet=True,
+        )
+        run_simulation(args)
+        import json
+
+        with open(outfile) as f:
+            data = json.load(f)
+        assert "results" in data
+        assert "turnout" in data["results"]
+        assert "parties" in data
+
+    def test_run_simulation_with_pr(self, capsys):
+        """run_simulation() with PR system."""
+        from electoral_sim.core.cli import run_simulation
+
+        args = types.SimpleNamespace(
+            preset=None,
+            voters=500,
+            constituencies=3,
+            system="PR",
+            allocation="sainte_lague",
+            threshold=0.05,
+            seed=42,
+            output=None,
+            quiet=False,
+        )
+        run_simulation(args)
+        output = capsys.readouterr().out
+        assert "Turnout" in output
+
+    def test_run_simulation_with_irv(self, capsys):
+        """run_simulation() with IRV system."""
+        from electoral_sim.core.cli import run_simulation
+
+        args = types.SimpleNamespace(
+            preset=None,
+            voters=500,
+            constituencies=3,
+            system="IRV",
+            allocation="dhondt",
+            threshold=0.0,
+            seed=42,
+            output=None,
+            quiet=False,
+        )
+        run_simulation(args)
+        output = capsys.readouterr().out
+        assert "Turnout" in output
+
+    def test_run_batch_no_config(self):
+        """run_batch() without config exits with error."""
+        from electoral_sim.core.cli import run_batch
+
+        args = types.SimpleNamespace(
+            config=None,
+            output="out.csv",
+            summary=None,
+            jobs=1,
+            quiet=True,
+        )
+        with pytest.raises(SystemExit):
+            run_batch(args)
+
+    def test_run_batch_with_config(self, tmp_path):
+        """run_batch() with a JSON config file."""
+        import json
+        from electoral_sim.core.cli import run_batch
+
+        config = {
+            "parameters": {"n_voters": [500, 1000]},
+            "fixed_params": {"n_constituencies": 3},
+            "n_runs_per_config": 1,
+        }
+        config_file = tmp_path / "config.json"
+        config_file.write_text(json.dumps(config))
+
+        outfile = str(tmp_path / "results.csv")
+        args = types.SimpleNamespace(
+            config=str(config_file),
+            output=outfile,
+            summary=None,
+            jobs=1,
+            quiet=True,
+        )
+        run_batch(args)
+        assert (tmp_path / "results.csv").exists()
+
+    def test_run_batch_missing_config_file(self):
+        """run_batch() with nonexistent config file exits."""
+        from electoral_sim.core.cli import run_batch
+
+        args = types.SimpleNamespace(
+            config="/nonexistent/config.json",
+            output="out.csv",
+            summary=None,
+            jobs=1,
+            quiet=True,
+        )
+        with pytest.raises(SystemExit):
+            run_batch(args)
+
+    def test_main_list_presets(self, capsys):
+        """main() with list-presets command."""
+        from electoral_sim.core.cli import main
+
+        old_argv = sys.argv
+        try:
+            sys.argv = ["electoral-sim", "list-presets"]
+            main()
+            output = capsys.readouterr().out
+            assert "Available" in output or "india" in output
+        finally:
+            sys.argv = old_argv
+
+    def test_main_no_args(self, capsys):
+        """main() with no args shows help."""
+        from electoral_sim.core.cli import main
+
+        old_argv = sys.argv
+        try:
+            sys.argv = ["electoral-sim"]
+            main()
+            output = capsys.readouterr().out
+            assert "electoral-sim" in output or "Usage" in output or "usage" in output
+        finally:
+            sys.argv = old_argv
 
 
 # =============================================================================
@@ -103,11 +277,11 @@ class TestEventManager:
         em.current_step = 1
 
         em.current_step = 2
-        em.step(n_parties=5)  # step=3, end_step=4 > 3
+        em.step(n_parties=5)
         assert len(em.active_events) == 1
 
         em.current_step = 3
-        em.step(n_parties=5)  # step=4, end_step=4 NOT > 4
+        em.step(n_parties=5)
         assert len(em.active_events) == 0
 
     def test_get_valence_modifiers_returns_penalties(self):
@@ -129,7 +303,7 @@ class TestEventManager:
         em = EventManager(np.random.default_rng(42))
         e = Event(id=0, type="scandal", start_step=5, duration=10, severity=30.0, target_party_id=2)
         em.active_events.append(e)
-        em.current_step = 10  # halfway
+        em.current_step = 10
 
         modifiers = em.get_valence_modifiers()
         assert abs(modifiers[2] + 15.0) < 0.01
@@ -237,3 +411,60 @@ class TestVisualizationPlots:
         import matplotlib.pyplot as plt
 
         plt.close(fig)
+
+
+@pytest.mark.skipif(
+    "matplotlib" not in sys.modules,
+    reason="matplotlib not installed",
+)
+class TestVisualizationSpecialized:
+    """Tests for visualization/specialized.py (0% coverage)."""
+
+    def test_animate_opinion_dynamics(self):
+        """animate_opinion_dynamics creates animation."""
+        import polars as pl
+        from electoral_sim.visualization.specialized import animate_opinion_dynamics
+
+        # Create minimal history
+        history = []
+        for _ in range(3):
+            df = pl.DataFrame(
+                {
+                    "ideology_x": np.random.normal(0, 0.3, 50),
+                    "ideology_y": np.random.normal(0, 0.3, 50),
+                }
+            )
+            history.append(df)
+
+        party_pos = np.array([[-0.5, -0.2], [0.3, 0.1]])
+        party_names = ["Left", "Right"]
+
+        ani = animate_opinion_dynamics(history, party_pos, party_names, interval=50)
+        assert ani is not None
+
+    def test_plot_swing_analysis(self):
+        """plot_swing_analysis returns a plotly figure."""
+        from electoral_sim.visualization.specialized import plot_swing_analysis
+
+        results = {"seats": {"BJP": 300}}
+        fig = plot_swing_analysis(results)
+        assert fig is not None
+
+    def test_plot_india_state_map(self):
+        """plot_india_state_map returns a plotly figure."""
+        from electoral_sim.visualization.specialized import plot_india_state_map
+
+        results_summary = {
+            "Uttar Pradesh": {"seats": {"BJP": 60, "SP": 15, "INC": 5}},
+            "Maharashtra": {"seats": {"BJP": 25, "INC": 15, "Others": 8}},
+            "Delhi": {"seats": {"BJP": 5, "AAP": 2}},
+        }
+        fig = plot_india_state_map(results_summary)
+        assert fig is not None
+
+    def test_plot_india_state_map_empty(self):
+        """plot_india_state_map returns None for empty data."""
+        from electoral_sim.visualization.specialized import plot_india_state_map
+
+        fig = plot_india_state_map({})
+        assert fig is None

@@ -127,6 +127,7 @@ ignore = ["E501", "F401", "F841", "E402", "F821"]
 known-first-party = ["electoral_sim"]
 
 [tool.mypy]
+# Run: mypy electoral_sim/ --ignore-missing-imports --python-version 3.12
 python_version = "3.12"
 warn_return_any = true
 warn_unused_ignores = true

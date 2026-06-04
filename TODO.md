@@ -248,7 +248,7 @@
     - Avoid requiring edits to core registries for every extension.
 - [x] **P3** Add optional dependency boundary tests
     - Simulate missing matplotlib, networkx, numba, cupy, streamlit, and plotly imports and verify graceful degradation.
-- [ ] **P3** Add type-checking gate to CI and install path
+- [x] **P3** Add type-checking gate to CI and install path
     - `pyproject.toml` declares `mypy` in dev extras, but `.venv/bin/mypy` is absent in the current environment.
     - Decide whether to use mypy, basedpyright, or both, and make the command reproducible.
 - [x] **P3** Add public docstrings for currently undocumented public methods

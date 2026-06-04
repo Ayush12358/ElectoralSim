@@ -8,12 +8,13 @@
 
 Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV), opinion dynamics, coalition formation, and government stability across 11 country presets. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration.
 
-## Agent Workflows
+## Feature Implementation Workflow
 
-| Workflow | File | Purpose |
-|----------|------|---------|
-| Feature Implementation | `docs/WORKFLOW.md` | Step-by-step for implementing a single feature, fix, or enhancement |
-| Continuous Iteration | `docs/ITERATION_WORKFLOW.md` | Autonomous loop: pick from TODO.md → execute feature workflow → commit → repeat; discovery phase when TODO empty |
+See `docs/WORKFLOW.md` for the full step-by-step workflow for implementing features, fixes, and enhancements.
+
+## Continuous Iteration Workflow
+
+See `docs/ITERATION.md` for the meta-workflow that continuously picks tasks from TODO.md, implements them via WORKFLOW.md, and regenerates TODO.md when empty.
 
 ## Structure
 
@@ -35,7 +36,7 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 ├── app.py                # Streamlit dashboard
 ├── tests/                # 11 test files (329 tests, 85% coverage)
 ├── benchmarks/           # Performance benchmark scripts
-├── docs/                 # mkdocs-material documentation + WORKFLOW.md + ITERATION_WORKFLOW.md
+├── docs/                 # mkdocs-material documentation + WORKFLOW.md
 └── scripts/              # Release, benchmark scripts
 ```
 
@@ -58,7 +59,6 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 | Benchmarks | `benchmarks/benchmark_core.py` | Reproducible perf scripts |
 | Release | `scripts/release.py` | PyPI release workflow |
 | Feature workflow | `docs/WORKFLOW.md` | Step-by-step implementation guide |
-| Iteration workflow | `docs/ITERATION_WORKFLOW.md` | Autonomous TODO-driven loop |
 
 ## Conventions
 

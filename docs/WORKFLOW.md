@@ -1,6 +1,8 @@
 # ElectoralSim Feature Implementation Workflow
 
 > Step-by-step agent workflow for implementing features, fixes, and enhancements.
+> This is invoked by the [Continuous Iteration Workflow](ITERATION.md) — read that
+> first for how tasks are selected and the overall development loop.
 
 ---
 

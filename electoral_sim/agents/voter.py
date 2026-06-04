@@ -63,11 +63,21 @@ class VoterAgents:
         return self._cache["positions"]
 
     def get_ideology_x(self) -> np.ndarray:
+        """Return economic left-right positions (cached).
+
+        Returns:
+            Array of shape (n_voters,) with values in [-1, 1].
+        """
         if "ideology_x" not in self._cache:
             self._cache["ideology_x"] = self.df["ideology_x"].to_numpy()
         return self._cache["ideology_x"]
 
     def get_ideology_y(self) -> np.ndarray:
+        """Return social liberal-conservative positions (cached).
+
+        Returns:
+            Array of shape (n_voters,) with values in [-1, 1].
+        """
         if "ideology_y" not in self._cache:
             self._cache["ideology_y"] = self.df["ideology_y"].to_numpy()
         return self._cache["ideology_y"]

@@ -537,7 +537,7 @@
 
 - [x] **P3** Fix `RuntimeWarning: invalid value encountered in divide` in `coalition_strain()` when weights sum to 0
     - This is the only warning in the test suite — fix it for a clean `-W error` run
-- [ ] **P3** Register `pytest.mark.slow` in `pyproject.toml` to eliminate `PytestUnknownMarkWarning`
+- [x] **P3** Register `pytest.mark.slow` in `pyproject.toml` to eliminate `PytestUnknownMarkWarning`
     - Add to `[tool.pytest.ini_options] markers = ["slow: marks tests as slow"]`
 
 ### Test File Organization
@@ -594,7 +594,7 @@
 ## CI/CD & Infrastructure — Found 2026-06-04
 
 - [ ] **P3** Add `pytest -W error` to CI lint/test jobs to catch warnings as errors
-- [ ] **P3** Register `pytest.mark.slow` in `pyproject.toml` to fix `PytestUnknownMarkWarning`
+- [x] **P3** Register `pytest.mark.slow` in `pyproject.toml` to fix `PytestUnknownMarkWarning`
 - [ ] **P3** Run `benchmarks/benchmark_core.py` as a CI smoke test (small voter counts, verify no crash)
 - [x] **P3** Add `app.py` Streamlit import verification in `test-optional-deps` CI job
 - [ ] **P3** `scripts/` directory has 7 files, many likely unused — audit and clean up

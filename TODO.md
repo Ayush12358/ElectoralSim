@@ -38,7 +38,7 @@
 - [ ] **P2** Add explicit tie-breaking policy for FPTP, D'Hondt, Sainte-Lague, Hare/Droop remainders, IRV, STV, Approval, and Condorcet
     - Current behavior depends on `np.argmax`, loop order, or Polars sort/group order.
     - Support deterministic lower-index, seeded random, or supplied tie-break ordering and document the default.
-- [ ] **P2** Add ranked-ballot validation utilities for `systems/alternative.py`
+- [x] **P2** Add ranked-ballot validation utilities (done, _validate_rankings() added in 18cddfd)
     - Reject duplicate ranks, impossible candidate IDs, inconsistent unranked encodings, invalid shapes, and `n_candidates <= 0`.
     - Reuse the validator across IRV, STV, Condorcet, and future ranked-ballot imports.
 - [x] **P2** Fix IRV final-round reporting for exhausted ballots

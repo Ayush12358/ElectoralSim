@@ -545,3 +545,30 @@ class TestVisualizationReturnTypes:
             ["A", "B", "C"],
         )
         assert isinstance(fig, matplotlib.figure.Figure)
+
+
+class TestBenchmarkSmoke:
+    """CI smoke tests for benchmark code paths."""
+
+    def test_benchmark_voter_creation_smoke(self):
+        """benchmark_voter_creation runs without crash with small voter counts."""
+        from benchmarks.benchmark_core import benchmark_voter_creation
+
+        result = benchmark_voter_creation(n_voters=500, n_constituencies=3)
+        assert result["n_voters"] == 500
+        assert result["time_ms"] > 0
+
+    def test_benchmark_election_smoke(self):
+        """benchmark_election runs without crash with small voter counts."""
+        from benchmarks.benchmark_core import benchmark_election
+
+        result = benchmark_election(n_voters=500, system="FPTP")
+        assert result["n_voters"] == 500
+        assert result["time_ms"] > 0
+
+    def test_benchmark_batch_throughput_smoke(self):
+        """benchmark_batch_throughput runs without crash with small voter counts."""
+        from benchmarks.benchmark_core import benchmark_batch_throughput
+
+        result = benchmark_batch_throughput(n_voters=500, n_elections=3)
+        assert result is not None

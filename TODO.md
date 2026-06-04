@@ -595,7 +595,7 @@
 
 - [x] **P3** Add `pytest -W error` gate (done in 838336c)
 - [x] **P3** Register `pytest.mark.slow` in `pyproject.toml` to fix `PytestUnknownMarkWarning`
-- [ ] **P3** Run `benchmarks/benchmark_core.py` as a CI smoke test (small voter counts, verify no crash)
+- [x] **P3** CI smoke tests for benchmark_core.py added (small voter counts, verify no crash)
 - [x] **P3** Add `app.py` Streamlit import verification in `test-optional-deps` CI job
 - [x] **P3** `scripts/` directory audited and cleaned up, many likely unused — audit and clean up
     - `release.py`, `do_release.py`, `bump_version.py` — consolidate into one release workflow

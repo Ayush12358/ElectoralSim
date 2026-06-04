@@ -561,7 +561,7 @@
 
 ### EU Preset
 - [x] **P2** Create `presets/eu/config.py` (done in b617fb1) with `eu_config()` function for PRESETS registry
-- [ ] **P2** Extract `EU_POLITICAL_GROUPS` and `COUNTRY_GROUP_WEIGHTS` from `election.py` into `data.py`
+- [x] **P2** Extract EU_POLITICAL_GROUPS and COUNTRY_GROUP_WEIGHTS from `election.py` into `data.py`
 - [ ] **P3** Split `simulate_eu_election()` to use `ElectionModel` per country (mirror India refactor)
 - [x] **P3** EU preset config.py added (b617fb1) — inconsistent with all other presets
 

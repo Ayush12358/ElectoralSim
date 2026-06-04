@@ -94,7 +94,7 @@
 - [x] **P2** Add seats-votes curve and responsiveness/swing-ratio analysis
     - Useful for swing-state/district sensitivity and redistricting ensembles.
     - Return curve data in Polars DataFrames for visualization and tests.
-- [ ] **P2** Add calibration framework against historical election results
+- [x] **P2** Add calibration framework against historical election results
     - Define target metrics, loss functions, calibration parameters, and reproducible calibration reports.
     - Start with Germany 2021, India 2024 sample, and US House data where data provenance is available.
 - [x] **P2** Add uncertainty quantification (CI, quantiles, MCSE) to BatchRunner

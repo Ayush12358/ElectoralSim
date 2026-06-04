@@ -385,3 +385,46 @@ class TestSensitivityAnalysis:
             seed=42,
         )
         assert len(results) == 4  # 2 × 2 combinations
+
+
+class TestCalibration:
+    """Tests for calibration framework."""
+
+    def test_mse_loss_returns_float(self):
+        """mse_loss returns a non-negative float."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.analysis.calibration import mse_loss
+
+        loss = mse_loss(
+            ElectionModel,
+            {"n_voters": 500, "n_constituencies": 3},
+            targets={"turnout": 0.7, "gallagher": 4.0},
+            n_runs=2,
+            seed=42,
+        )
+        assert isinstance(loss, float)
+        assert loss >= 0
+
+    def test_grid_search_calibration_sorted(self):
+        """grid_search_calibration returns results sorted by loss."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.analysis.calibration import grid_search_calibration
+
+        results = grid_search_calibration(
+            ElectionModel,
+            {"n_voters": [300, 500], "temperature": [0.3, 0.7]},
+            targets={"gallagher": 10.0},
+            n_runs=1,
+            seed=42,
+        )
+        assert len(results) == 4
+        assert results[0]["loss"] <= results[-1]["loss"]
+
+    def test_calibration_report(self):
+        """generate_calibration_report returns a string."""
+        from electoral_sim.analysis.calibration import generate_calibration_report
+
+        results = [{"params": {"n_voters": 100, "temperature": 0.5}, "loss": 0.123}]
+        report = generate_calibration_report(results, {"gallagher": 10.0})
+        assert isinstance(report, str)
+        assert "0.123" in report

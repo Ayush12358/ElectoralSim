@@ -70,6 +70,7 @@ from electoral_sim.systems.alternative import (
     approval_voting,
     borda_count,
     condorcet_winner,
+    score_voting,
     generate_rankings,
     irv_election,
     stv_election,

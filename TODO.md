@@ -58,7 +58,7 @@
 - [x] **P2** Add property tests for ranked-choice edge cases
     - Random partial rankings, exhausted ballots, tied rankings, single-candidate elections, and all-unranked ballots.
     - Assert no crashes and documented winner/no-winner behavior.
-- [ ] **P2** Add score/range voting as an alternative system
+- [x] **P2** Add score/range voting as an alternative system
     - External comparison frameworks commonly evaluate plurality, RCV, approval, score, and Condorcet together.
     - Implement ballot generation from utilities and single-winner aggregation with known-result tests.
 - [x] **P2** Add Borda Count as an alternative system and supplementary vote/two-round runoff systems

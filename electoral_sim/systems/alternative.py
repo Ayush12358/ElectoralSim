@@ -288,6 +288,44 @@ def borda_count(
     }
 
 
+def score_voting(
+    utilities: np.ndarray,
+    n_candidates: int,
+    max_score: int = 10,
+) -> dict:
+    """
+    Score (Range) Voting: voters assign scores to candidates.
+
+    Winner is the candidate with the highest total score. Utilities
+    are scaled to the range [0, max_score] based on min-max per voter.
+
+    Args:
+        utilities: (n_voters, n_candidates) utility matrix
+        n_candidates: Number of candidates
+        max_score: Maximum score per voter (default 10)
+
+    Returns:
+        Dictionary with winner and per-candidate total scores
+    """
+    n_voters = len(utilities)
+    scores = np.zeros(n_candidates, dtype=np.float64)
+
+    for i in range(n_voters):
+        u = utilities[i]
+        u_min, u_max = u.min(), u.max()
+        if u_max > u_min:
+            scaled = max_score * (u - u_min) / (u_max - u_min)
+        else:
+            scaled = np.zeros(n_candidates)
+        scores += scaled
+
+    winner = int(np.argmax(scores)) if n_voters > 0 else -1
+    return {
+        "winner": winner,
+        "scores": scores,
+    }
+
+
 def approval_voting(
     approvals: np.ndarray,
     n_candidates: int,

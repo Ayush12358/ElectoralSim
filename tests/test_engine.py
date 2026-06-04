@@ -618,6 +618,23 @@ class TestAlternativeVoting:
         assert result["winner"] == 0  # Candidate 0 has most 1st choices
         assert result["scores"][0] > result["scores"][1]
 
+    def test_score_voting_basic(self):
+        """Score voting: highest total score candidate wins."""
+        from electoral_sim import score_voting
+
+        utilities = np.array([[1.0, 0.5, 0.0], [0.0, 1.0, 0.5], [0.5, 0.0, 1.0]])
+        result = score_voting(utilities, n_candidates=3)
+        assert result["winner"] is not None
+        assert result["scores"].sum() > 0
+
+    def test_score_voting_unanimous(self):
+        """Score voting: unanimous favorite wins with max scores."""
+        from electoral_sim import score_voting
+
+        utilities = np.array([[1.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
+        result = score_voting(utilities, n_candidates=3)
+        assert result["winner"] == 0
+
     def test_borda_count_unanimous(self):
         """Borda Count: unanimous winner gets maximum points."""
         from electoral_sim import borda_count

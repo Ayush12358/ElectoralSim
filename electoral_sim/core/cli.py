@@ -335,7 +335,7 @@ def run_simulation(args):
             if not args.quiet:
                 print(f"\nResults saved to: {args.output}")
 
-    except Exception as e:
+    except (ValueError, OSError) as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
@@ -399,7 +399,7 @@ def run_batch(args):
     except json.JSONDecodeError as e:
         print(f"Error: Invalid JSON in config file: {e}", file=sys.stderr)
         sys.exit(1)
-    except Exception as e:
+    except (ValueError, OSError) as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 

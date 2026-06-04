@@ -984,6 +984,17 @@ class TestFptpTieBreaking:
         seats_polars = fptp_allocation(df, n_constituencies=1)
         assert (seats_numba == seats_polars).all()
 
+    def test_alternative_systems_main_block(self):
+        """if __name__ == '__main__' block in alternative.py runs without error."""
+        import subprocess, sys
+
+        result = subprocess.run(
+            [sys.executable, "-m", "electoral_sim.systems.alternative"],
+            capture_output=True, text=True, timeout=30
+        )
+        assert result.returncode == 0
+        assert "Alternative Voting Systems Test" in result.stdout
+
 
 class TestRankedChoiceProperties:
     """Hypothesis property tests for IRV/STV edge cases."""

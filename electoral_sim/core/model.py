@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import warnings
+
 import numpy as np
 import polars as pl
 from mesa import Model
@@ -134,7 +136,11 @@ class ElectionModel(Model):
 
         self.use_gpu = use_gpu and is_gpu_available()
         if use_gpu and not self.use_gpu:
-            print("Warning: GPU requested but not available. Falling back to CPU/Numba.")
+            warnings.warn(
+                "GPU requested but not available. Falling back to CPU/Numba.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
 
         # Initialize Random Generator (Mesa 3.0+ compatible)
         if seed is not None:

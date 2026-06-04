@@ -240,7 +240,7 @@
     - Validate voter counts, constituency counts, thresholds, temperature, party positions, valence ranges, and duplicate party names.
 - [ ] **P3** Add `from_preset()` kwargs validation
     - Unknown overrides should fail loudly instead of being silently ignored by preset factory signatures.
-- [ ] **P3** Replace `print()` GPU fallback warning with structured warning/logging
+- [x] **P3** Replace `print()` GPU fallback warning with structured warning/logging
     - Use `warnings.warn()` with a custom category so tests and users can filter it.
 - [ ] **P3** Remove or document bare `step()` methods in `VoterAgents` and `PartyAgents`
     - Either wire them into model stepping or mark them intentionally inert with test coverage.

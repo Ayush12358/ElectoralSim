@@ -1,4 +1,8 @@
 # Include documentation
+# Note: docs/, scripts/, benchmarks/, examples/, and .github/ are intentionally
+# excluded from source distributions (sdists) to keep package size small.
+# These directories provide development-time resources; end users install
+# from wheels or PyPI and access documentation via GitHub Pages.
 include README.md
 include LICENSE
 include CHANGELOG.md

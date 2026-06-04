@@ -66,8 +66,9 @@ def effective_number_of_parties(shares: np.ndarray) -> float:
     if shares.sum() > 1.5:
         shares = shares / shares.sum()
 
-    # Filter out zero shares
     shares = shares[shares > 0]
+    if len(shares) == 0:
+        return 1.0
 
     return 1.0 / (shares**2).sum()
 
@@ -112,6 +113,8 @@ def efficiency_gap(
         Efficiency gap (-1 to 1, positive favors A)
     """
     total_votes = party_a_votes.sum() + party_b_votes.sum()
+    if total_votes == 0:
+        return 0.0
 
     a_wasted = 0
     b_wasted = 0

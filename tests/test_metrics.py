@@ -124,6 +124,22 @@ class TestOtherMetrics:
         result = efficiency_gap(party_a_votes, party_b_votes, party_a_seats)
         assert isinstance(result, float)
 
+    def test_efficiency_gap_zero_votes(self):
+        """efficiency_gap returns 0.0 for zero total votes."""
+        from electoral_sim.metrics.indices import efficiency_gap
+
+        result = efficiency_gap(
+            np.array([0, 0]), np.array([0, 0]), np.array([1, 0])
+        )
+        assert result == 0.0
+
+    def test_enp_zero_shares(self):
+        """effective_number_of_parties returns 1.0 for all-zero shares."""
+        from electoral_sim.metrics.indices import effective_number_of_parties
+
+        assert effective_number_of_parties(np.array([0.0, 0.0, 0.0])) == 1.0
+        assert effective_number_of_parties(np.array([])) == 1.0
+
     def test_turnout_rate(self):
         from electoral_sim.metrics.indices import turnout_rate
 

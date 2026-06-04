@@ -82,7 +82,7 @@
 
 #### P2 Metrics, Validation & Calibration
 
-- [ ] **P2** Harden metrics against empty arrays, all-zero shares, mismatched lengths, and zero total votes
+- [x] **P2** Harden metrics against empty arrays, all-zero shares, mismatched lengths, and zero total votes
     - `effective_number_of_parties()` can return non-finite values for all-zero shares.
     - `efficiency_gap()` can return `nan` for zero-total districts.
 - [ ] **P2** Add partisan-bias, mean-median, declination, lopsided-margins, and partisan-Gini metrics

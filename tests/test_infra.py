@@ -469,3 +469,37 @@ class TestVisualizationSpecialized:
 
         fig = plot_india_state_map({})
         assert fig is None
+
+
+class TestVisualizationReturnTypes:
+    """Verify visualization functions return correct types (Matplotlib vs Plotly)."""
+
+    def test_seat_distribution_returns_matplotlib(self):
+        """plot_seat_distribution returns matplotlib Figure, not Plotly."""
+        import matplotlib.figure
+        from electoral_sim.visualization.plots import plot_seat_distribution
+
+        fig = plot_seat_distribution({"seats": np.array([100, 80, 30])}, ["A", "B", "C"])
+        assert isinstance(fig, matplotlib.figure.Figure), (
+            f"Expected matplotlib Figure, got {type(fig).__name__}. "
+            "Use st.pyplot() not st.plotly_chart() in app.py."
+        )
+
+    def test_vote_shares_returns_matplotlib(self):
+        """plot_vote_shares returns matplotlib Figure, not Plotly."""
+        import matplotlib.figure
+        from electoral_sim.visualization.plots import plot_vote_shares
+
+        fig = plot_vote_shares({"vote_counts": np.array([100, 80, 30])}, ["A", "B", "C"])
+        assert isinstance(fig, matplotlib.figure.Figure)
+
+    def test_seats_vs_votes_returns_matplotlib(self):
+        """plot_seats_vs_votes returns matplotlib Figure, not Plotly."""
+        import matplotlib.figure
+        from electoral_sim.visualization.plots import plot_seats_vs_votes
+
+        fig = plot_seats_vs_votes(
+            {"vote_counts": np.array([100, 80, 30]), "seats": np.array([5, 3, 2]), "gallagher": 0.05},
+            ["A", "B", "C"],
+        )
+        assert isinstance(fig, matplotlib.figure.Figure)

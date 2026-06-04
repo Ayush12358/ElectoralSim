@@ -20,7 +20,7 @@
 - [x] **P1** Validate `electoral_system` and `allocation_method` during `ElectionModel` construction and chain setters
     - `with_system("INVALID")` and direct mutation can silently run as PR.
     - Accepted values should be centralized and exposed in docs/CLI help.
-- [ ] **P1** Fix Streamlit dashboard chart rendering mismatch in `app.py`
+- [x] **P1** Fix Streamlit dashboard chart rendering mismatch in `app.py`
     - `plot_seat_distribution()`, `plot_vote_shares()`, and `plot_seats_vs_votes()` return Matplotlib figures, but India/generic paths pass them to `st.plotly_chart()`.
     - Add a Streamlit smoke test or import-level UI rendering test that verifies the selected renderer type.
 - [ ] **P1** Add a release-blocking smoke test for the installed CLI package

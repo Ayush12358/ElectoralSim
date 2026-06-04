@@ -154,7 +154,7 @@ if "results" in st.session_state:
                 party_names,
                 colors=party_colors
             )
-            st.plotly_chart(fig_seats, use_container_width=True)
+            st.pyplot(fig_seats)
 
         with col2:
             # Vote Shares
@@ -163,7 +163,7 @@ if "results" in st.session_state:
                 party_names,
                 colors=party_colors
             )
-            st.plotly_chart(fig_votes, use_container_width=True)
+            st.pyplot(fig_votes)
 
         st.markdown("### Seats vs Votes Disproportionality")
         fig_comp = plot_seats_vs_votes(
@@ -171,7 +171,7 @@ if "results" in st.session_state:
             party_names,
             colors=party_colors
         )
-        st.plotly_chart(fig_comp, use_container_width=True)
+        st.pyplot(fig_comp)
 
         st.markdown("### Ideological Landscape")
         # We take a sample of voters for performance in the UI
@@ -227,9 +227,9 @@ if "results" in st.session_state:
         st.markdown("### Election Outcome")
         col1, col2 = st.columns(2)
         with col1:
-            st.plotly_chart(plot_seat_distribution(results, party_names), use_container_width=True)
+            st.pyplot(plot_seat_distribution(results, party_names))
         with col2:
-            st.plotly_chart(plot_vote_shares(results, party_names), use_container_width=True)
+            st.pyplot(plot_vote_shares(results, party_names))
 
 else:
     st.info("👈 Select a preset and parameters from the sidebar, then click 'Run Simulation' to start.")

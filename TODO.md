@@ -29,7 +29,7 @@
 
 #### P2 Electoral Math & Voting-System Correctness
 
-- [ ] **P2** Define allocation behavior for zero votes, zero seats, negative votes, and all-thresholded elections
+- [x] **P2** Define allocation behavior for zero votes (done in d434908, 901313c)
     - `dhondt_allocation(np.array([0, 0, 0]), 3)` currently awards seats to party 0.
     - Hare/Droop with zero seats or zero total votes should return a documented value or raise a specific error.
 - [x] **P2** Recompute Hare and Droop quotas from eligible post-threshold votes

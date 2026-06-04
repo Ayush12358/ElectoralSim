@@ -245,3 +245,66 @@ def allocate_seats(
         raise ValueError(f"Unknown method: {method}. Use one of {list(ALLOCATION_METHODS.keys())}")
 
     return ALLOCATION_METHODS[method](votes, n_seats, threshold)
+
+
+def closed_list_allocation(
+    votes: np.ndarray, n_seats: int, candidate_list: list[list[str]], threshold: float = 0.0
+) -> dict[str, np.ndarray]:
+    """
+    Closed-list PR: parties receive seats proportional to votes, candidates
+    are elected in party-defined list order.
+
+    Args:
+        votes: Vote counts per party
+        n_seats: Total seats
+        candidate_list: Per-party ordered list of candidate names
+        threshold: Minimum vote share
+
+    Returns:
+        Dict with 'seats' (per-party), 'elected' (candidate names)
+    """
+    party_seats = allocate_seats(votes, n_seats, method="dhondt", threshold=threshold)
+    elected = []
+    for p in range(len(votes)):
+        for i in range(int(party_seats[p])):
+            if i < len(candidate_list[p]):
+                elected.append(candidate_list[p][i])
+    return {"seats": party_seats, "elected": elected}
+
+
+def open_list_allocation(
+    votes: np.ndarray,
+    n_seats: int,
+    candidate_list: list[list[str]],
+    preference_votes: list[np.ndarray],
+    threshold: float = 0.0,
+) -> dict[str, np.ndarray]:
+    """
+    Open-list PR: parties receive seats proportional to votes, candidates
+    are elected by preference vote order within their party.
+
+    Args:
+        votes: Vote counts per party
+        n_seats: Total seats
+        candidate_list: Per-party ordered list of candidate names
+        preference_votes: Per-party array of preference votes per candidate
+        threshold: Minimum vote share
+
+    Returns:
+        Dict with 'seats' (per-party), 'elected' (candidate names)
+    """
+    party_seats = allocate_seats(votes, n_seats, method="dhondt", threshold=threshold)
+    elected = []
+    for p in range(len(votes)):
+        prefs = preference_votes[p] if p < len(preference_votes) else None
+        n = int(party_seats[p])
+        if prefs is not None and len(prefs) > 0:
+            order = np.argsort(-prefs)
+            for i in range(n):
+                if order[i] < len(candidate_list[p]):
+                    elected.append(candidate_list[p][order[i]])
+        else:
+            for i in range(n):
+                if i < len(candidate_list[p]):
+                    elected.append(candidate_list[p][i])
+    return {"seats": party_seats, "elected": elected}

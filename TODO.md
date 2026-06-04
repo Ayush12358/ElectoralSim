@@ -64,7 +64,7 @@
 - [x] **P2** Add Borda Count as an alternative system and supplementary vote/two-round runoff systems
     - International IDEA lists Borda Count and Two-Round Systems as common electoral-system variants.
     - Add docs and examples beside IRV/STV/Approval/Condorcet.
-- [ ] **P2** Add open-list and closed-list PR variants
+- [x] **P2** Add open-list and closed-list PR variants
     - Model candidate ordering, preference votes, party lists, and threshold behavior separately from party-only PR.
     - Include tests for list-order, preference-vote promotion, and over-threshold/under-threshold parties.
 - [ ] **P2** Implement mixed-member proportional (MMP) with overhang and leveling-seat logic

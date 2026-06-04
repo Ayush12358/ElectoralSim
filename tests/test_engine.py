@@ -395,8 +395,33 @@ class TestAllocationMethods:
         votes = np.array([100000, 80000, 30000, 1000])
         seats = dhondt_allocation(votes, 10, threshold=0.05)
         assert sum(seats) == 10
-        # Smallest party (1000 votes, ~0.5%) should get 0 seats
         assert seats[3] == 0
+
+    def test_closed_list_allocation(self):
+        """Closed-list PR elects candidates in party-defined order."""
+        from electoral_sim.systems.allocation import closed_list_allocation
+
+        result = closed_list_allocation(
+            np.array([100, 80, 30]),
+            n_seats=5,
+            candidate_list=[["A1", "A2", "A3"], ["B1", "B2"], ["C1"]],
+        )
+        assert result["seats"].sum() == 5
+        assert len(result["elected"]) == 5
+        assert "A1" in result["elected"]
+
+    def test_open_list_allocation(self):
+        """Open-list PR elects candidates by preference vote order."""
+        from electoral_sim.systems.allocation import open_list_allocation
+
+        result = open_list_allocation(
+            np.array([100, 80]),
+            n_seats=3,
+            candidate_list=[["A1", "A2"], ["B1", "B2"]],
+            preference_votes=[np.array([50, 30]), np.array([20, 70])],
+        )
+        assert result["seats"].sum() == 3
+        assert "A1" in result["elected"]
 
     def test_allocate_seats_registry(self):
         """allocate_seats dispatches to correct method."""

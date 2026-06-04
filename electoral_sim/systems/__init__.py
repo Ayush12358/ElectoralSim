@@ -3,10 +3,12 @@
 from electoral_sim.systems.allocation import (
     ALLOCATION_METHODS,
     allocate_seats,
+    closed_list_allocation,
     dhondt_allocation,
     droop_quota_allocation,
     fptp_allocation,
     hare_quota_allocation,
+    open_list_allocation,
     sainte_lague_allocation,
 )
 from electoral_sim.systems.alternative import (
@@ -23,6 +25,8 @@ __all__ = [
     "sainte_lague_allocation",
     "hare_quota_allocation",
     "droop_quota_allocation",
+    "closed_list_allocation",
+    "open_list_allocation",
     "fptp_allocation",
     "allocate_seats",
     "ALLOCATION_METHODS",

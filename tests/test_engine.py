@@ -437,6 +437,21 @@ class TestAllocationMethods:
         assert len(result["district_seats"]) == 3
         assert len(result["pr_seats"]) == 3
 
+    def test_mmp_allocation(self):
+        """MMP: district seats first, list seats compensate to proportionality."""
+        from electoral_sim.systems.allocation import mmp_allocation
+
+        result = mmp_allocation(
+            np.array([100, 80, 30]),
+            np.array([100, 80, 30]),
+            n_district_seats=5,
+            n_total_seats=10,
+        )
+        assert "district_seats" in result
+        assert "list_seats" in result
+        assert "overhang" in result
+        assert result["district_seats"].sum() == 5
+
     def test_allocate_seats_registry(self):
         """allocate_seats dispatches to correct method."""
         from electoral_sim.systems.allocation import allocate_seats

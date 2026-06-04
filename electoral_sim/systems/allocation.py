@@ -350,3 +350,72 @@ def parallel_mixed_allocation(
         "pr_seats": pr_seats,
         "total_seats": district_seats + pr_seats,
     }
+
+
+def mmp_allocation(
+    district_votes: np.ndarray,
+    list_votes: np.ndarray,
+    n_district_seats: int,
+    n_total_seats: int,
+    threshold: float = 0.0,
+) -> dict[str, np.ndarray]:
+    """
+    Mixed-Member Proportional (MMP, Germany-style) with overhang and leveling seats.
+
+    District seats are allocated first. List seats are then allocated to make
+    the overall seat distribution proportional to list votes. Overhang seats
+    are kept (no negative adjustment). Leveling seats are NOT explicitly
+    modeled here (they require an iterative process that expands total seats).
+
+    Args:
+        district_votes: Per-party vote totals for FPTP district tier
+        list_votes: Per-party vote totals for PR list tier
+        n_district_seats: Number of FPTP district seats
+        n_total_seats: Target total seats in parliament
+        threshold: Minimum vote share for list seat qualification (e.g., 0.05)
+
+    Returns:
+        Dict with 'district_seats', 'list_seats', 'overhang', 'total_seats'
+    """
+    n_parties = max(len(district_votes), len(list_votes))
+
+    # Pad arrays to same length
+    d_votes = np.zeros(n_parties, dtype=float)
+    d_votes[:len(district_votes)] = district_votes
+    l_votes = np.zeros(n_parties, dtype=float)
+    l_votes[:len(list_votes)] = list_votes
+
+    # Step 1: Allocate district seats (FPTP)
+    district_seats = np.zeros(n_parties, dtype=int)
+    if d_votes.sum() > 0 and n_district_seats > 0:
+        district_seats = dhondt_allocation(d_votes, n_district_seats)
+
+    # Step 2: Apply threshold to list votes
+    qualified = np.ones(n_parties, dtype=bool)
+    if threshold > 0 and l_votes.sum() > 0:
+        vote_shares = l_votes / l_votes.sum()
+        qualified = vote_shares >= threshold
+
+    # Step 3: Proportional allocation based on list votes
+    list_seats = np.zeros(n_parties, dtype=int)
+    list_allocation = np.zeros(n_parties, dtype=int)
+    if l_votes.sum() > 0:
+        list_allocation = dhondt_allocation(l_votes, n_total_seats)
+
+    # Step 4: Determine target list seats (proportional share minus district seats)
+    for p in range(n_parties):
+        target = max(0, list_allocation[p] - district_seats[p])
+        list_seats[p] = target
+
+    # Step 5: Detect overhang (district seats exceed proportional share)
+    overhang = np.maximum(0, district_seats - list_allocation)
+
+    # Step 6: Only qualified parties get list seats
+    list_seats[~qualified] = 0
+
+    return {
+        "district_seats": district_seats,
+        "list_seats": list_seats,
+        "overhang": overhang,
+        "total_seats": district_seats + list_seats,
+    }

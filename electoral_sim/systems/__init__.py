@@ -8,6 +8,7 @@ from electoral_sim.systems.allocation import (
     droop_quota_allocation,
     fptp_allocation,
     hare_quota_allocation,
+    mmp_allocation,
     open_list_allocation,
     sainte_lague_allocation,
 )

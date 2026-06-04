@@ -67,7 +67,7 @@
 - [x] **P2** Add open-list and closed-list PR variants
     - Model candidate ordering, preference votes, party lists, and threshold behavior separately from party-only PR.
     - Include tests for list-order, preference-vote promotion, and over-threshold/under-threshold parties.
-- [ ] **P2** Implement mixed-member proportional (MMP) with overhang and leveling-seat logic
+- [x] **P2** Implement mixed-member proportional (MMP) with overhang and leveling-seat logic
     - Germany-style presets need more than simple PR/FPTP parameters to be structurally credible.
     - Model district seats, party-list votes, thresholds, one-district exceptions, overhang seats, and leveling seats.
 - [x] **P2** Implement parallel mixed systems without compensatory leveling

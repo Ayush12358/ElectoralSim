@@ -248,3 +248,59 @@ class VoterRegistration:
             "registered": registered,
             "will_vote": will_vote,
         }
+
+
+class CampaignTargeting:
+    """
+    Local campaign targeting: parties allocate resources across
+    constituencies based on marginal-seat value with budget constraints
+    and diminishing returns on persuasion.
+    """
+
+    def __init__(
+        self,
+        total_budget: float = 100.0,
+        marginal_weight: float = 0.7,
+        persuasion_decay: float = 0.5,
+    ):
+        """
+        Args:
+            total_budget: Total campaign resources per party
+            marginal_weight: Weight given to marginal (competitive) districts
+            persuasion_decay: Diminishing returns on additional spending
+        """
+        self.total_budget = total_budget
+        self.marginal_weight = marginal_weight
+        self.persuasion_decay = persuasion_decay
+
+    def allocate_resources(
+        self,
+        marginality: np.ndarray,
+    ) -> np.ndarray:
+        """
+        Allocate campaign resources across districts proportional to marginality.
+
+        Args:
+            marginality: (n_districts,) marginality scores (0-1, higher=more competitive)
+
+        Returns:
+            (n_districts,) resource allocation per district
+        """
+        weights = self.marginal_weight * marginality + (1 - self.marginal_weight) * 0.5
+        weights = weights / weights.sum()
+        return self.total_budget * weights
+
+    def persuasion_effect(
+        self,
+        spending: np.ndarray,
+    ) -> np.ndarray:
+        """
+        Convert campaign spending to persuasion (vote-share swing) with diminishing returns.
+
+        Args:
+            spending: Per-district spending
+
+        Returns:
+            (n_districts,) persuasion effect (vote share change)
+        """
+        return (spending ** self.persuasion_decay) * 0.01

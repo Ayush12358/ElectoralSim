@@ -376,3 +376,13 @@ class TestCampaignFinance:
         result = vr.compute_eligibility(5, age, rng=np.random.default_rng(42))
         assert len(result["eligible"]) == 5
         assert result["will_vote"].sum() >= 0
+
+    def test_campaign_targeting_allocate(self):
+        """CampaignTargeting allocates more to marginal districts."""
+        from electoral_sim.behavior.campaign import CampaignTargeting
+
+        ct = CampaignTargeting(total_budget=100)
+        marginality = np.array([0.9, 0.1, 0.9])
+        allocation = ct.allocate_resources(marginality)
+        assert len(allocation) == 3
+        assert allocation[0] > allocation[1]  # More $ to marginal districts

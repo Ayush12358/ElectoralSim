@@ -172,7 +172,7 @@
 - [x] **P2** Add party entry/exit and endogenous party-system formation
     - Model new parties, mergers, splits, viability thresholds, ballot access, and ideological repositioning.
     - Connect to Duverger-style analysis and proportional-system fragmentation.
-- [ ] **P2** Add local campaign targeting and persuasion
+- [x] **P2** Add local campaign targeting and persuasion
     - Parties should allocate resources across constituencies or demographic groups based on marginal-seat value.
     - Include budget constraints and diminishing returns.
 - [ ] **P2** Add social influence calibration and network diagnostics

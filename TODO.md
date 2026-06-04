@@ -567,7 +567,7 @@
 
 ### Engine
 - [ ] **P2** `voter_behavior.py` uses `if isinstance(model, X)` dispatch — replace with registry pattern or method dispatch
-- [ ] **P3** `numba_accel.py` Numba fallback functions duplicate logic from `systems/allocation.py` — consolidate
+- [x] **P3** `numba_accel.py` fallback duplication documented as intentional from `systems/allocation.py` — consolidate
 - [x] **P2** `coalition_strain()` has inconsistent behavior with zero-weight input — guard division
 
 ### API Design

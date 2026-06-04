@@ -245,7 +245,9 @@ def dhondt_fast(votes: np.ndarray, n_seats: int, threshold: float = 0.0) -> np.n
     if NUMBA_AVAILABLE:
         return dhondt_numba(votes.astype(np.int64), n_seats)
     else:
-        # Fallback to pure NumPy
+        # Intentional fallback: duplicates dhondt_allocation() from
+        # systems/allocation.py to avoid circular imports (allocation.py
+        # imports from numba_accel.py). Keep in sync manually.
         n_parties = len(votes)
         seats = np.zeros(n_parties, dtype=np.int64)
         for _ in range(n_seats):
@@ -266,6 +268,8 @@ def sainte_lague_fast(votes: np.ndarray, n_seats: int, threshold: float = 0.0) -
     if NUMBA_AVAILABLE:
         return sainte_lague_numba(votes.astype(np.int64), n_seats)
     else:
+        # Intentional fallback: duplicates sainte_lague_allocation() from
+        # systems/allocation.py to avoid circular imports. Keep in sync.
         n_parties = len(votes)
         seats = np.zeros(n_parties, dtype=np.int64)
         for _ in range(n_seats):

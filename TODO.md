@@ -54,7 +54,7 @@
 - [x] **P2** Rename "real-world validation" tests to "preset smoke tests" unless backed by comparison data
 - [x] **P3** Add dashboard screenshots to README (docs/assets/)
 - [x] **P3** Add CI job for optional dependency import smoke tests
-
+ 
 ### Research Features
 
 - [ ] **P5** Redistricting/Gerrymandering simulation

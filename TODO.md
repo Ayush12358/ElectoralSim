@@ -572,7 +572,7 @@
 
 ### API Design
 - [x] **P3** `electoral_sim/__init__.py` now exports VoterAgents, PartyAgents, EventManager `agents/` or `events/` subpackages — only individual symbols
-- [ ] **P3** No public API for `VoterAgents` or `PartyAgents` from top-level — users can't manipulate agents directly
+- [x] **P3** VoterAgents and PartyAgents now exported from top-level package (6e48365)
 - [ ] **P5** `ElectionModel` constructor has 20+ parameters — consider builder pattern or validate-only config input
 
 ---

@@ -23,7 +23,7 @@
 - [x] **P1** Fix Streamlit dashboard chart rendering mismatch in `app.py`
     - `plot_seat_distribution()`, `plot_vote_shares()`, and `plot_seats_vs_votes()` return Matplotlib figures, but India/generic paths pass them to `st.plotly_chart()`.
     - Add a Streamlit smoke test or import-level UI rendering test that verifies the selected renderer type.
-- [ ] **P1** Add a release-blocking smoke test for the installed CLI package
+- [x] **P1** Add a release-blocking smoke test for the installed CLI package
     - Build/install the sdist or wheel in a clean venv and run `electoral-sim --help`, `electoral-sim list-presets`, and one tiny `electoral-sim run`.
     - Catch packaging/runtime differences that in-repo imports hide.
 

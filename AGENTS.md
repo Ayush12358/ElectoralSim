@@ -1,12 +1,16 @@
 # ElectoralSim Knowledge Base
 
-**Generated:** 2026-05-29
-**Commit:** 62c3d05
+**Generated:** 2026-06-04
+**Commit:** c358c8c
 **Branch:** master
 
 ## Overview
 
 Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV), opinion dynamics, coalition formation, and government stability across 11 country presets. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration.
+
+## Feature Implementation Workflow
+
+See `docs/WORKFLOW.md` for the full step-by-step workflow for implementing features, fixes, and enhancements.
 
 ## Structure
 
@@ -26,8 +30,9 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 │   ├── presets/          # 11 country configs + EU Parliament
 │   └── data/             # Historical election data files
 ├── app.py                # Streamlit dashboard
-├── tests/                # 10 test files (~222 tests, ~70% coverage)
-├── docs/                 # mkdocs-material documentation
+├── tests/                # 11 test files (329 tests, 85% coverage)
+├── benchmarks/           # Performance benchmark scripts
+├── docs/                 # mkdocs-material documentation + WORKFLOW.md
 └── scripts/              # Release, benchmark scripts
 ```
 
@@ -47,7 +52,9 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 | Metrics | `electoral_sim/metrics/indices.py` | All electoral metrics |
 | Add test | `tests/` | pytest, hypothesis property tests |
 | Streamlit app | `app.py` | Interactive dashboard |
+| Benchmarks | `benchmarks/benchmark_core.py` | Reproducible perf scripts |
 | Release | `scripts/release.py` | PyPI release workflow |
+| Feature workflow | `docs/WORKFLOW.md` | Step-by-step implementation guide |
 
 ## Conventions
 

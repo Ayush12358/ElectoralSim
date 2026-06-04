@@ -238,7 +238,7 @@
     - Prevent mixing array positions, real IDs, and labels.
 - [ ] **P3** Add runtime config validation to `Config` and `PartyConfig`
     - Validate voter counts, constituency counts, thresholds, temperature, party positions, valence ranges, and duplicate party names.
-- [ ] **P3** Add `from_preset()` kwargs validation
+- [x] **P3** Add `from_preset()` kwargs validation
     - Unknown overrides should fail loudly instead of being silently ignored by preset factory signatures.
 - [x] **P3** Replace `print()` GPU fallback warning with structured warning/logging
     - Use `warnings.warn()` with a custom category so tests and users can filter it.

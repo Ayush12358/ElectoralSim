@@ -562,6 +562,13 @@ class TestErrorHandling:
         with pytest.raises(ValueError, match="Unknown preset"):
             ElectionModel.from_preset("nonexistent_country")
 
+    def test_from_preset_rejects_unknown_kwargs(self):
+        """from_preset() raises ValueError for unknown override kwargs."""
+        from electoral_sim import ElectionModel
+
+        with pytest.raises(ValueError, match="Unknown preset override"):
+            ElectionModel.from_preset("india", n_voters=1000, misspelled_param=50)
+
     def test_zero_constituencies_handled(self):
         """Zero constituencies may raise or produce empty results."""
         from electoral_sim import ElectionModel

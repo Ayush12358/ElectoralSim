@@ -276,6 +276,13 @@ class ElectionModel(Model):
             available = list(PRESETS.keys())
             raise ValueError(f"Unknown preset: {preset}. Available: {available}")
 
+        unknown = set(kwargs) - {"n_voters", "n_constituencies", "seed"}
+        if unknown:
+            raise ValueError(
+                f"Unknown preset override(s): {sorted(unknown)}. "
+                f"Allowed overrides: n_voters, n_constituencies, seed"
+            )
+
         config = PRESETS[preset.lower()](**kwargs)
         return cls.from_config(config)
 

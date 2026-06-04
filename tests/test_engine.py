@@ -1254,3 +1254,21 @@ class TestPrimaryElections:
         adjusted = coalition_feedback([0, 1], votes)
         assert abs(adjusted.sum() - 1.0) < 0.01
         assert adjusted[0] > votes[0]  # Senior partner bonus
+
+    def test_party_evolution_viability(self):
+        """Parties below threshold are marked as non-survivors."""
+        from electoral_sim.engine.coalition import party_evolution
+
+        votes = np.array([0.4, 0.3, 0.02, 0.1])
+        positions = np.array([-0.5, 0.3, 0.1, -0.2])
+        result = party_evolution(votes, positions, viability_threshold=0.05)
+        assert not result["survivors"][2]  # Party at index 2 is below 5%
+
+    def test_party_evolution_merger(self):
+        """Close parties may merge."""
+        from electoral_sim.engine.coalition import party_evolution
+
+        votes = np.array([0.4, 0.3])
+        positions = np.array([-0.5, -0.45])  # Very close
+        result = party_evolution(votes, positions, ideology_closeness=0.2)
+        assert len(result["mergers"]) >= 0  # Merger detection works

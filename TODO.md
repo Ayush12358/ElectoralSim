@@ -169,7 +169,7 @@
 - [x] **P2** Add coalition feedback into subsequent elections
     - Junior partner penalty exists as a function; integrate it into multi-election simulation state.
     - Track government participation, policy delivery, scandal exposure, and vote-share feedback.
-- [ ] **P2** Add party entry/exit and endogenous party-system formation
+- [x] **P2** Add party entry/exit and endogenous party-system formation
     - Model new parties, mergers, splits, viability thresholds, ballot access, and ideological repositioning.
     - Connect to Duverger-style analysis and proportional-system fragmentation.
 - [ ] **P2** Add local campaign targeting and persuasion

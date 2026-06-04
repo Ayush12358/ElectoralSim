@@ -454,6 +454,77 @@ def coalition_feedback(
     if len(coalition_parties) == 0:
         return adjusted
 
+    coalition_votes = [(p, party_votes[p]) for p in coalition_parties]
+    coalition_votes.sort(key=lambda x: -x[1])
+    senior = coalition_votes[0][0]
+
+    for p in coalition_parties:
+        if p == senior and len(coalition_votes) > 1:
+            adjusted[p] += senior_bonus
+        elif p != senior:
+            adjusted[p] = max(0.0, adjusted[p] - junior_penalty)
+
+    total = adjusted.sum()
+    if total > 0:
+        adjusted = adjusted / total
+
+    return adjusted
+
+
+def party_evolution(
+    party_votes: np.ndarray,
+    party_positions: np.ndarray,
+    viability_threshold: float = 0.03,
+    ideology_closeness: float = 0.2,
+    rng: np.random.Generator | None = None,
+) -> dict:
+    """
+    Simulate party entry/exit and endogenous party-system evolution.
+
+    - Parties below the viability threshold may exit
+    - Close parties (within ideology_closeness) may merge
+    - New parties may enter with random positions
+
+    Args:
+        party_votes: Current vote shares per party
+        party_positions: (n_parties,) ideological positions
+        viability_threshold: Minimum vote share to survive
+        ideology_closeness: Max distance for merger consideration
+        rng: Random generator
+
+    Returns:
+        Dict with 'survivors' (bool mask), 'mergers' (list of merged pairs),
+        'new_entries' (int count), and 'adjusted_votes'
+    """
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = len(party_votes)
+    survivors = party_votes >= viability_threshold
+    mergers = []
+    merged_votes = party_votes.copy()
+    merged_set = set()
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if survivors[i] and survivors[j]:
+                if abs(party_positions[i] - party_positions[j]) < ideology_closeness:
+                    mergers.append((i, j))
+                    merged_votes[i] += merged_votes[j]
+                    merged_votes[j] = 0
+                    merged_set.add(j)
+                    survivors[j] = False
+
+    # New party entries (random, small share)
+    new_entries = rng.integers(0, 3)  # 0-2 new parties per cycle
+
+    return {
+        "survivors": survivors,
+        "mergers": mergers,
+        "new_entries": new_entries,
+        "adjusted_votes": merged_votes,
+    }
+
     # Sort coalition parties by vote share (descending) to find senior partner
     coalition_votes = [(p, party_votes[p]) for p in coalition_parties]
     coalition_votes.sort(key=lambda x: -x[1])

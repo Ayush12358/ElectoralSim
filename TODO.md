@@ -474,7 +474,7 @@
 
 - [x] **P2** Fix `DivisionByZero` warning in `coalition_strain()` when weights sum to 0 — returns NaN, should return 0.0 (line 131)
 - [x] **P3** Fix `RuntimeWarning` in `coalition_strain()` — normalize weights without divide-by-zero risk
-- [ ] **P2** EU Parliament preset has no `config.py` — has `election.py` only, unlike all other presets. Add `eu_config()` for PRESETS registry.
+- [x] **P2** EU Parliament preset has no `config.py` — has `election.py` only, unlike all other presets. Add `eu_config()` for PRESETS registry.
 - [ ] **P3** `PartyAgents.step()` is bare `pass` — should call `adaptive_strategy_step()` or document why not
 - [ ] **P3** `VoterAgents.step()` is bare `pass` — should call opinion dynamics or document why not
 

@@ -109,6 +109,7 @@ class Config:
 # Re-export country configs from presets for backward compatibility
 from electoral_sim.presets.australia.config import australia_house_config, australia_senate_config
 from electoral_sim.presets.brazil.config import brazil_config
+from electoral_sim.presets.eu.config import eu_config
 from electoral_sim.presets.france.config import france_config
 from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.india.config import india_config
@@ -128,6 +129,7 @@ PRESETS = {
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
     "brazil": brazil_config,
+    "eu": eu_config,
     "france": france_config,
     "japan": japan_config,
 }

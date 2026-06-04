@@ -33,6 +33,7 @@ class TestAllPresets:
             "brazil",
             "japan",
             "south_africa",
+            "eu",
         ],
     )
     def test_all_presets_run(self, preset):
@@ -85,6 +86,15 @@ class TestAllPresets:
 
         model = ElectionModel.from_preset("australia_senate", n_voters=5000)
         assert model.electoral_system == "PR"
+
+    def test_eu_preset_structure(self):
+        """EU preset structure test."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("eu", n_voters=5000)
+        assert model.electoral_system == "PR"
+        assert model.allocation_method == "dhondt"
+        assert model.parties.n_parties == 8
 
 
 # =============================================================================

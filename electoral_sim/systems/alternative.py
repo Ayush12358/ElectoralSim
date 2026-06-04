@@ -126,11 +126,14 @@ def irv_election(
             winner = c
             break
 
+    # Capture final vote tally from last round
+    final_tally = rounds[-1]["vote_counts"] if rounds else np.zeros(n_candidates)
+
     return {
         "winner": winner,
         "rounds": rounds,
         "elimination_order": elimination_order,
-        "final_votes": np.zeros(n_candidates),
+        "final_votes": final_tally,
     }
 
 

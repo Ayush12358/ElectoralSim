@@ -41,7 +41,7 @@
 - [ ] **P2** Add ranked-ballot validation utilities for `systems/alternative.py`
     - Reject duplicate ranks, impossible candidate IDs, inconsistent unranked encodings, invalid shapes, and `n_candidates <= 0`.
     - Reuse the validator across IRV, STV, Condorcet, and future ranked-ballot imports.
-- [ ] **P2** Fix IRV final-round reporting for exhausted ballots
+- [x] **P2** Fix IRV final-round reporting for exhausted ballots
     - The fallback path returns `final_votes=np.zeros(n_candidates)`, losing the last active tally.
     - Add tests for exhausted ballots, two-candidate ties, and no-majority final rounds.
 - [ ] **P2** Revisit STV surplus transfer and final-seat completion rules

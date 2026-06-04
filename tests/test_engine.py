@@ -640,6 +640,23 @@ class TestAlternativeVoting:
         with pytest.raises(ValueError, match="n_candidates"):
             irv_election(rankings, n_candidates=0)
 
+    def test_irv_with_exhausted_ballots(self):
+        """IRV with exhausted ballots (voters who rank no remaining candidates)."""
+        from electoral_sim import irv_election
+
+        # Voter 3 exhausts after round 1 (only ranks candidate 2)
+        rankings = np.array(
+            [
+                [1, 2, 3],  # A > B > C
+                [1, 2, 3],  # A > B > C
+                [2, 1, 3],  # B > A > C
+                [0, 1, 0],  # Only ranks B (exhausts after B eliminated)
+            ]
+        )
+        result = irv_election(rankings, n_candidates=3)
+        assert "winner" in result
+        assert result["final_votes"].sum() > 0  # final tally should be non-zero
+
     def test_condorcet_winner_exists(self):
         from electoral_sim import condorcet_winner
 

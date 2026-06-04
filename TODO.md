@@ -184,7 +184,7 @@
 - [x] **P2** Add poll generation and polling-error simulation
     - Generate synthetic polls from model state with house effects, sampling error, likely-voter screens, nonresponse, and correlated misses.
     - Keep prediction language clearly separated from simulation scenarios.
-- [ ] **P2** Add strategic voting based on district-level viability, not only global party viability
+- [x] **P2** Add strategic voting based on district-level viability, not only global party viability
     - For FPTP, voters should evaluate local top-two competitiveness and constituency-specific wasted-vote risk.
     - Add tests for a third party viable nationally but not locally.
 - [ ] **P2** Add turnout mobilization operations

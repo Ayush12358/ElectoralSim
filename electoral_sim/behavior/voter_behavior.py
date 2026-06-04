@@ -112,11 +112,18 @@ class StrategicVotingModel:
     def compute_utility(self, n_voters: int, viability: np.ndarray, **kwargs) -> np.ndarray:
         """
         Args:
-            viability: (n_parties,) estimated probability of winning or 'expected vote share'
+            viability: (n_parties,) global estimated probability of winning
+            **kwargs: May include 'constituency_viability' (n_voters, n_parties)
+                      for district-level strategic voting.
         """
-        # Penalty for low viability
-        penalty = self.sensitivity * (np.log(viability + 1e-6))
-        return np.tile(penalty, (n_voters, 1))
+        # Check for district-level viability data
+        district_viability = kwargs.get("constituency_viability")
+        if district_viability is not None:
+            penalty = self.sensitivity * np.log(district_viability + 1e-6)
+        else:
+            penalty = self.sensitivity * np.log(viability + 1e-6)
+            penalty = np.tile(penalty, (n_voters, 1))
+        return penalty
 
 
 class SociotropicPocketbookModel:

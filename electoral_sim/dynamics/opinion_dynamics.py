@@ -104,6 +104,64 @@ def network_stats(G) -> dict:
     }
 
 
+def network_diagnostics(G, opinions: np.ndarray | None = None) -> dict:
+    """
+    Comprehensive network diagnostics: degree distribution, clustering,
+    connected components, homophily, and influence concentration.
+
+    Args:
+        G: NetworkX graph
+        opinions: Optional opinion vector for homophily computation
+
+    Returns:
+        Dict with network metrics
+    """
+    if not NETWORKX_AVAILABLE:
+        return {}
+
+    degrees = [d for _, d in G.degree()]
+    n = G.number_of_nodes()
+
+    # Degree distribution statistics
+    deg_array = np.array(degrees)
+    degree_stats = {
+        "mean": float(np.mean(deg_array)),
+        "std": float(np.std(deg_array)),
+        "median": float(np.median(deg_array)),
+        "max": int(max(degrees)),
+    }
+
+    # Connected components
+    if G.is_directed():
+        n_components = nx.number_weakly_connected_components(G)
+        largest_cc = max(len(c) for c in nx.weakly_connected_components(G)) if n > 0 else 0
+    else:
+        n_components = nx.number_connected_components(G)
+        largest_cc = max(len(c) for c in nx.connected_components(G)) if n > 0 else 0
+
+    # Homophily: correlation between connected nodes' opinions
+    homophily = 0.0
+    if opinions is not None and len(opinions) == n:
+        edges = list(G.edges())
+        if edges:
+            same_count = sum(1 for u, v in edges if opinions[u] == opinions[v])
+            homophily = same_count / len(edges)
+
+    # Influence concentration: Gini of degree distribution
+    sorted_deg = np.sort(deg_array)
+    index = np.arange(1, n + 1)
+    influence_gini = float((2 * index - n - 1).dot(sorted_deg) / (n * sorted_deg.sum())) if sorted_deg.sum() > 0 else 0.0
+
+    return {
+        "degree_distribution": degree_stats,
+        "clustering_coefficient": nx.average_clustering(G),
+        "connected_components": n_components,
+        "largest_component_size": largest_cc,
+        "homophily": homophily,
+        "influence_gini": influence_gini,
+    }
+
+
 # =============================================================================
 # OPINION DYNAMICS MODELS
 # =============================================================================

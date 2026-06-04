@@ -193,3 +193,15 @@ class TestOpinionDynamicsClass:
         new = od.step(opinions, model="noisy_voter", noise_rate=0.01)
         assert len(new) == 2000
         assert set(np.unique(new)).issubset({0, 1, 2})
+
+    def test_network_diagnostics(self):
+        """network_diagnostics returns degree stats, homophily, influence gini."""
+        from electoral_sim.dynamics.opinion_dynamics import generate_network, network_diagnostics
+
+        adj_list, G = generate_network(100, "barabasi_albert", m=3)
+        opinions = np.random.default_rng(42).integers(0, 3, 100)
+        diag = network_diagnostics(G, opinions)
+        assert diag["degree_distribution"]["mean"] > 0
+        assert diag["clustering_coefficient"] > 0
+        assert "homophily" in diag
+        assert 0 <= diag["influence_gini"] <= 1

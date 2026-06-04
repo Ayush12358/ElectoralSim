@@ -175,7 +175,7 @@
 - [x] **P2** Add local campaign targeting and persuasion
     - Parties should allocate resources across constituencies or demographic groups based on marginal-seat value.
     - Include budget constraints and diminishing returns.
-- [ ] **P2** Add social influence calibration and network diagnostics
+- [x] **P2** Add social influence calibration and network diagnostics
     - Report network degree distribution, clustering, connected components, homophily, and influence concentration.
     - Validate bounded-confidence/noisy-voter outputs against deterministic toy networks.
 - [ ] **P2** Add discrete-event scheduling for campaign/election timelines

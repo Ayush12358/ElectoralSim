@@ -461,3 +461,60 @@ class TestVoterGeneration:
         df = generate_voter_frame(100, 5, rng)
         for col in ["mf_care", "mf_fairness", "mf_loyalty", "mf_authority", "mf_sanctity"]:
             assert col in df.columns
+
+
+class TestDataIngestion:
+    """Tests for precinct/district result ingestion pipeline."""
+
+    def test_validate_schema_valid(self):
+        """Valid schema returns no errors."""
+        from electoral_sim.data.ingestion import validate_schema
+        import polars as pl
+
+        df = pl.DataFrame({"constituency": ["A"], "party": ["X"], "votes": [100]})
+        errors = validate_schema(df)
+        assert len(errors) == 0
+
+    def test_validate_schema_missing_cols(self):
+        """Missing required columns returns errors."""
+        from electoral_sim.data.ingestion import validate_schema
+        import polars as pl
+
+        df = pl.DataFrame({"constituency": ["A"]})
+        errors = validate_schema(df)
+        assert any("party" in e for e in errors)
+        assert any("votes" in e for e in errors)
+
+    def test_validate_schema_empty(self):
+        """Empty DataFrame returns errors."""
+        from electoral_sim.data.ingestion import validate_schema
+        import polars as pl
+
+        df = pl.DataFrame({"constituency": [], "party": [], "votes": []},
+                          schema={"constituency": pl.Utf8, "party": pl.Utf8, "votes": pl.Int64})
+        errors = validate_schema(df)
+        assert len(errors) > 0
+
+    def test_load_precinct_results_csv(self, tmp_path):
+        """CSV loading with valid schema succeeds."""
+        from electoral_sim.data.ingestion import load_precinct_results
+
+        csv_path = tmp_path / "test.csv"
+        csv_path.write_text("constituency,party,votes\nA,X,100\nB,Y,200\n")
+        df = load_precinct_results(str(csv_path))
+        assert df.height == 2
+
+    def test_compute_incumbents_from_seats(self):
+        """compute_incumbents detects winners from seats column."""
+        from electoral_sim.data.ingestion import compute_incumbents
+        import polars as pl
+
+        df = pl.DataFrame({
+            "constituency": ["A", "A", "B", "B"],
+            "party": ["X", "Y", "X", "Z"],
+            "votes": [100, 80, 90, 60],
+            "seats": [1, 0, 0, 1],
+        })
+        incumbents = compute_incumbents(df)
+        assert "X" in incumbents
+        assert "Z" in incumbents

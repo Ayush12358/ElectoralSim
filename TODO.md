@@ -109,7 +109,7 @@
 - [x] **P2** Add survey-calibrated behavior parameters (CSES mapping docs) from CSES-style data
     - Map vote choice, demographics, ideology, trust, satisfaction, and turnout variables into `generate_voter_frame()` and behavior models.
     - Keep data download optional and document licensing/citation requirements.
-- [ ] **P2** Add precinct/district result ingestion pipeline
+- [x] **P2** Add precinct/district result ingestion pipeline
     - Support MIT Election Lab-style precinct returns, district identifiers, party normalization, turnout, and year metadata.
     - Add schema validation and tiny fixture files for CI.
 - [x] **P2** Add data provenance registry for every bundled dataset and preset

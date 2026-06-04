@@ -255,7 +255,7 @@
     - Missing examples include `VoterAgents.get_ideology_x()`, `VoterAgents.get_ideology_y()`, `BehaviorEngine.add_model()`, `BehaviorEngine.compute_all()`, `Config.n_parties`, and `ConstituencyManager` helpers.
 - [ ] **P3** Add `typing.get_type_hints()` smoke tests for public modules
     - `core/model.py` has postponed annotations for names not present at runtime; type-hint introspection should not fail.
-- [ ] **P3** Remove duplicate "Version History" header in `TODO.md`
+- [x] **P3** Remove duplicate "Version History" header in `TODO.md`
     - Current TODO has the heading twice in a row.
 - [ ] **P3** Normalize stale TODO entries against current branch state
     - Some older audit items are stale when local `engine/strain.py` and `tests/test_engine.py` changes are present.
@@ -701,8 +701,6 @@ The following changes are currently on the `auto` branch and not in `master`:
 - EU Parliament (27 states, 720 MEPs)
 
 ---
-
-## Version History
 
 ## Version History
 

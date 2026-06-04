@@ -11,12 +11,8 @@ from electoral_sim.presets.eu.election import (
 
 # Germany
 from electoral_sim.presets.germany.config import GERMANY_PARTIES, germany_config
-from electoral_sim.presets.india.election import (
-    INDIA_PARTIES,
-    INDIA_STATES,
-    IndiaElectionResult,
-    simulate_india_election,
-)
+from electoral_sim.presets.india.data import INDIA_PARTIES, INDIA_STATES
+from electoral_sim.presets.india.election import IndiaElectionResult, simulate_india_election
 
 # UK
 from electoral_sim.presets.uk.config import UK_PARTIES, uk_config

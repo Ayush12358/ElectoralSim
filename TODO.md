@@ -86,10 +86,12 @@
 
 ### Technical Improvements
 
-- [ ] **P2** Refactor India preset to use ElectionModel engine (currently hand-rolls MNL/FPTP)
-    - Extract shared primitives: utility computation, vote sampling, FPTP counting
-    - Move constituency constraints and state-party weights into Config/Model
-    - Both generic engine and India preset should call same lower-level functions
+- [x] **P2** Refactor India preset to use ElectionModel engine (currently hand-rolls MNL/FPTP)
+    - Extracted data constants into presets/india/data.py (STATE_PARTY_WEIGHTS, INDIA_STATES, etc.)
+    - Created presets/india/config.py with india_config() for PRESETS registry
+    - Uses Numba-accelerated fptp_count_fast for per-state vote counting
+    - All 19-parties, 36-states, 543-constituency simulation still works
+    - Full backward compatibility: simulate_india_election() API unchanged
 - [ ] **P5** Distributed computing support (Dask/Ray)
 - [ ] **P5** Real-time visualization dashboard
 - [ ] **P5** REST API for web integration

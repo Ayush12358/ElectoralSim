@@ -98,34 +98,11 @@ from electoral_sim.presets.australia.config import australia_house_config, austr
 from electoral_sim.presets.brazil.config import brazil_config
 from electoral_sim.presets.france.config import france_config
 from electoral_sim.presets.germany.config import germany_config
+from electoral_sim.presets.india.config import india_config
 from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.usa.config import usa_config
-
-
-# Backward compatible india_config (just calls the generic one)
-def india_config(n_voters: int = 1_000_000, n_constituencies: int = 543, **kwargs) -> Config:
-    """Preset configuration for India (Lok Sabha). For full simulation use simulate_india_election()."""
-    from electoral_sim.core.config import PartyConfig
-
-    parties = [
-        PartyConfig("BJP", 0.4, 0.5, 70),
-        PartyConfig("INC", -0.2, -0.1, 55),
-        PartyConfig("AAP", -0.3, -0.3, 50),
-        PartyConfig("TMC", -0.1, 0.1, 45),
-        PartyConfig("DMK", -0.4, -0.4, 45),
-        PartyConfig("SP", -0.2, 0.2, 40),
-        PartyConfig("BSP", -0.1, 0.3, 35),
-        PartyConfig("Others", 0.0, 0.0, 30),
-    ]
-    return Config(
-        n_voters=n_voters,
-        n_constituencies=n_constituencies,
-        parties=parties,
-        electoral_system="FPTP",
-        **kwargs,
-    )
 
 
 # Preset mapping

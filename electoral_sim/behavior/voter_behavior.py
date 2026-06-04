@@ -192,9 +192,26 @@ class BehaviorEngine:
         self.models = []
 
     def add_model(self, model, weight: float = 1.0):
+        """Add a behavior model with its blending weight.
+
+        Args:
+            model: Behavior model instance (ProximityModel, ValenceModel, etc.)
+            weight: Blending weight for this model's contribution
+        """
         self.models.append((model, weight))
 
     def compute_all(self, voter_data: dict, party_data: dict, **kwargs) -> np.ndarray:
+        """
+        Compute combined utility matrix from all registered models.
+
+        Args:
+            voter_data: Dict with 'n_voters' and voter-specific data
+            party_data: Dict with 'n_parties' and party-specific data
+            **kwargs: Additional parameters (use_gpu, growth, etc.)
+
+        Returns:
+            (n_voters, n_parties) utility matrix
+        """
         n_voters = voter_data["n_voters"]
         n_parties = party_data["n_parties"]
         use_gpu = kwargs.get("use_gpu", False)

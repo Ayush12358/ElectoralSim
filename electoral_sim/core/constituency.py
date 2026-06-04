@@ -48,12 +48,28 @@ class ConstituencyManager:
             self.df = pl.DataFrame(data)
 
     def get_name(self, const_id: int) -> str:
+        """Return constituency name for a given ID.
+
+        Args:
+            const_id: Constituency identifier
+
+        Returns:
+            Name string, or 'District {id}' if not found
+        """
         res = self.df.filter(pl.col("id") == const_id)
         if len(res) > 0:
             return res["name"][0]
         return f"District {const_id}"
 
     def get_state(self, const_id: int) -> str:
+        """Return state/province for a given constituency ID.
+
+        Args:
+            const_id: Constituency identifier
+
+        Returns:
+            State name string, or 'Unknown' if not found
+        """
         res = self.df.filter(pl.col("id") == const_id)
         if len(res) > 0:
             return res["state"][0]

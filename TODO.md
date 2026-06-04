@@ -632,7 +632,7 @@
 - [ ] **P3** Split oversized implementation modules before adding substantial feature code
     - `core/model.py`, `engine/coalition.py`, `dynamics/opinion_dynamics.py`, `visualization/plots.py`, `analysis/batch_runner.py`, and `core/cli.py` exceed the local 250 pure-LOC discipline
     - Extract cohesive units first when touching those modules: counting/results, model stepping, coalition search, plotting families, batch execution, and CLI subcommands
-- [ ] **P3** Refresh scoped `AGENTS.md` knowledge files after the test reorganization and recent refactors
+- [x] **P3** Refresh scoped `AGENTS.md` knowledge files after the test reorganization and recent refactors
     - `tests/AGENTS.md` still references removed files (`test_comprehensive.py`, `test_advanced.py`, `test_improved.py`, `test_additional.py`) and outdated test/coverage counts
     - `electoral_sim/engine/AGENTS.md` still describes `coalition_strain()` as living in `coalition.py` after the extraction to `engine/strain.py`
 

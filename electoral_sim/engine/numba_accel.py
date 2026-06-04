@@ -89,20 +89,20 @@ def fptp_count_numba(
     """
     Count FPTP seats - Numba parallel accelerated.
 
-    Uses parallel processing across constituencies.
+    Uses parallel processing across constituencies. Each constituency writes
+    its winner to a dedicated index (no shared-state race), then the parallel
+    loop is followed by a sequential reduction to seat counts.
     """
-    seats = np.zeros(n_parties, dtype=np.int64)
+    winners = np.full(n_constituencies, -1, dtype=np.int64)
 
-    # Process each constituency in parallel
+    # Process each constituency in parallel — write to own index (race-free)
     for c in prange(n_constituencies):
-        # Count votes per party in this constituency
         party_votes = np.zeros(n_parties, dtype=np.int64)
 
         for i in range(len(constituencies)):
             if constituencies[i] == c:
                 party_votes[votes[i]] += 1
 
-        # Find winner
         max_votes = 0
         winner = 0
         for p in range(n_parties):
@@ -111,7 +111,14 @@ def fptp_count_numba(
                 winner = p
 
         if max_votes > 0:
-            seats[winner] += 1
+            winners[c] = winner
+
+    # Sequential reduction: count winners per party outside the parallel loop
+    seats = np.zeros(n_parties, dtype=np.int64)
+    for c in range(n_constituencies):
+        w = winners[c]
+        if w >= 0:
+            seats[w] += 1
 
     return seats
 

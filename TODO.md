@@ -6,6 +6,370 @@
 
 ## Future Development
 
+### Deep Repo + External Research Backlog — Found 2026-06-04
+
+#### P1 Correctness Bugs
+
+- [x] **P1** Fix `fptp_count_numba()` parallel seat-count race in `engine/numba_accel.py`
+    - Current `prange` loop increments shared `seats[winner]`; repeated all-party-0 probes returned totals below the constituency count.
+    - Add deterministic regression where every constituency is won by the same party and `seats.sum() == n_constituencies`.
+    - Implement by writing per-constituency winners in parallel, then reducing counts outside the parallel loop.
+- [ ] **P1** Make `ElectionModel` reject or truly implement `"IRV"` and `"STV"` at model level
+    - `run_election()` currently treats every non-`"FPTP"` system as PR.
+    - Replace shallow tests that assert only non-`None` with either ranked-ballot integration tests or explicit `ValueError` tests.
+- [ ] **P1** Validate `electoral_system` and `allocation_method` during `ElectionModel` construction and chain setters
+    - `with_system("INVALID")` and direct mutation can silently run as PR.
+    - Accepted values should be centralized and exposed in docs/CLI help.
+- [ ] **P1** Fix Streamlit dashboard chart rendering mismatch in `app.py`
+    - `plot_seat_distribution()`, `plot_vote_shares()`, and `plot_seats_vs_votes()` return Matplotlib figures, but India/generic paths pass them to `st.plotly_chart()`.
+    - Add a Streamlit smoke test or import-level UI rendering test that verifies the selected renderer type.
+- [ ] **P1** Add a release-blocking smoke test for the installed CLI package
+    - Build/install the sdist or wheel in a clean venv and run `electoral-sim --help`, `electoral-sim list-presets`, and one tiny `electoral-sim run`.
+    - Catch packaging/runtime differences that in-repo imports hide.
+
+#### P2 Electoral Math & Voting-System Correctness
+
+- [ ] **P2** Define allocation behavior for zero votes, zero seats, negative votes, and all-thresholded elections
+    - `dhondt_allocation(np.array([0, 0, 0]), 3)` currently awards seats to party 0.
+    - Hare/Droop with zero seats or zero total votes should return a documented value or raise a specific error.
+- [ ] **P2** Recompute Hare and Droop quotas from eligible post-threshold votes
+    - Thresholded-out ballots currently remain in `total_votes`, distorting largest-remainder quotas.
+    - Add known-result threshold examples for both quota methods.
+- [ ] **P2** Add explicit tie-breaking policy for FPTP, D'Hondt, Sainte-Lague, Hare/Droop remainders, IRV, STV, Approval, and Condorcet
+    - Current behavior depends on `np.argmax`, loop order, or Polars sort/group order.
+    - Support deterministic lower-index, seeded random, or supplied tie-break ordering and document the default.
+- [ ] **P2** Add ranked-ballot validation utilities for `systems/alternative.py`
+    - Reject duplicate ranks, impossible candidate IDs, inconsistent unranked encodings, invalid shapes, and `n_candidates <= 0`.
+    - Reuse the validator across IRV, STV, Condorcet, and future ranked-ballot imports.
+- [ ] **P2** Fix IRV final-round reporting for exhausted ballots
+    - The fallback path returns `final_votes=np.zeros(n_candidates)`, losing the last active tally.
+    - Add tests for exhausted ballots, two-candidate ties, and no-majority final rounds.
+- [ ] **P2** Revisit STV surplus transfer and final-seat completion rules
+    - Current STV elects one above-quota candidate per round and lacks an explicit "remaining candidates fill remaining seats" rule.
+    - Add known examples with expected winners, elected order, quota, and transfer weights.
+- [ ] **P2** Add formal known-result tests for all allocation methods
+    - Cover D'Hondt, Sainte-Lague/Webster, Hare largest remainder, Droop largest remainder, threshold effects, and equal-vote ties.
+    - Keep fixtures small enough to audit manually.
+- [ ] **P2** Add Hypothesis property tests for electoral-system invariants
+    - Seat totals equal requested seats when votes are valid.
+    - Allocations are non-negative integers.
+    - Increasing a party's votes should not reduce its seats where monotonicity is expected.
+    - Turnout and shares stay in `[0, 1]`; ENP/Gallagher remain finite for valid inputs.
+- [ ] **P2** Add property tests for ranked-choice edge cases
+    - Random partial rankings, exhausted ballots, tied rankings, single-candidate elections, and all-unranked ballots.
+    - Assert no crashes and documented winner/no-winner behavior.
+- [ ] **P2** Add score/range voting as an alternative system
+    - External comparison frameworks commonly evaluate plurality, RCV, approval, score, and Condorcet together.
+    - Implement ballot generation from utilities and single-winner aggregation with known-result tests.
+- [ ] **P2** Add Borda Count and supplementary vote/two-round runoff systems
+    - International IDEA lists Borda Count and Two-Round Systems as common electoral-system variants.
+    - Add docs and examples beside IRV/STV/Approval/Condorcet.
+- [ ] **P2** Add open-list and closed-list PR variants
+    - Model candidate ordering, preference votes, party lists, and threshold behavior separately from party-only PR.
+    - Include tests for list-order, preference-vote promotion, and over-threshold/under-threshold parties.
+- [ ] **P2** Implement mixed-member proportional (MMP) with overhang and leveling-seat logic
+    - Germany-style presets need more than simple PR/FPTP parameters to be structurally credible.
+    - Model district seats, party-list votes, thresholds, one-district exceptions, overhang seats, and leveling seats.
+- [ ] **P2** Implement parallel mixed systems without compensatory leveling
+    - Add Japan-style and mixed-system comparisons where FPTP and PR tiers are allocated independently.
+    - Surface tier-level results in the returned result schema.
+- [ ] **P2** Add multi-tier apportionment support
+    - Support national, regional, and constituency tiers for ALEX-style legislative modeling and EU/national presets.
+    - Include tier metadata in `Config` instead of overloading `n_constituencies`.
+- [ ] **P2** Add approval-based committee voting methods
+    - Research `abcvoting`/PAV/MES/Phragmen-style multiwinner rules and decide whether to implement core methods or optional adapters.
+    - Add committee-size, approvals matrix, and proportionality metric tests.
+
+#### P2 Metrics, Validation & Calibration
+
+- [ ] **P2** Harden metrics against empty arrays, all-zero shares, mismatched lengths, and zero total votes
+    - `effective_number_of_parties()` can return non-finite values for all-zero shares.
+    - `efficiency_gap()` can return `nan` for zero-total districts.
+- [ ] **P2** Add partisan-bias, mean-median, declination, lopsided-margins, and partisan-Gini metrics
+    - GerryChain exposes efficiency gap, Polsby-Popper, and partisan Gini; ElectoralSim should cover the same gerrymandering analysis basics.
+    - Add references and known small examples for each metric.
+- [ ] **P2** Add compactness metrics for district plans
+    - Implement Polsby-Popper, Reock or convex-hull compactness, perimeter/area validation, and missing-geometry behavior.
+    - Keep geometry dependencies optional.
+- [ ] **P2** Add seats-votes curve and responsiveness/swing-ratio analysis
+    - Useful for swing-state/district sensitivity and redistricting ensembles.
+    - Return curve data in Polars DataFrames for visualization and tests.
+- [ ] **P2** Add calibration framework against historical election results
+    - Define target metrics, loss functions, calibration parameters, and reproducible calibration reports.
+    - Start with Germany 2021, India 2024 sample, and US House data where data provenance is available.
+- [ ] **P2** Add uncertainty quantification for simulation outputs
+    - BatchRunner should report confidence intervals, quantiles, Monte Carlo standard errors, and seed counts.
+    - Add tests for deterministic aggregation over fixed synthetic result sets.
+- [ ] **P2** Add sensitivity-analysis tooling
+    - Support one-at-a-time, grid, Latin hypercube, and Sobol-style sensitivity summaries.
+    - Integrate with BatchRunner and export tidy Polars output.
+- [ ] **P2** Add posterior predictive validation docs for "not a forecast" positioning
+    - Explain what can and cannot be inferred from calibrated vs structural presets.
+    - Include acceptance criteria before a preset can move from structural demo to calibrated.
+- [ ] **P2** Add survey-calibrated behavior parameters from CSES-style data
+    - Map vote choice, demographics, ideology, trust, satisfaction, and turnout variables into `generate_voter_frame()` and behavior models.
+    - Keep data download optional and document licensing/citation requirements.
+- [ ] **P2** Add precinct/district result ingestion pipeline
+    - Support MIT Election Lab-style precinct returns, district identifiers, party normalization, turnout, and year metadata.
+    - Add schema validation and tiny fixture files for CI.
+- [ ] **P2** Add data provenance registry for every bundled dataset and preset
+    - Store source URL, retrieval date, license, preprocessing steps, calibration status, and checksum.
+    - Expose provenance via `ElectionModel.from_preset(...).metadata`.
+- [ ] **P2** Add reproducibility manifests to BatchRunner outputs
+    - Include package version, git commit, Python version, dependency versions, CPU/GPU info, seed hierarchy, and config hash.
+    - Write JSON sidecars for CSV/Parquet exports.
+
+#### P2 Redistricting & Geography
+
+- [ ] **P2** Build a redistricting module inspired by GerryChain
+    - Represent precinct/constituency graphs, district assignments, population balance, contiguity, compactness, and election updaters.
+    - Keep heavy GIS dependencies optional under a `geo` extra.
+- [ ] **P2** Implement ReCom-style district-plan proposal generation
+    - Add spanning-tree recombination for adjacent districts, population tolerance, compactness constraints, and deterministic seeds.
+    - Include small graph fixtures for fast tests.
+- [ ] **P2** Add district-plan ensemble analysis
+    - Compare enacted/supplied plans against simulated ensembles for seat outcomes, efficiency gap, partisan bias, and compactness.
+    - Return percentile/rank summaries and plots.
+- [ ] **P2** Add swing-state and swing-district analysis
+    - Perturb national, regional, and district-level vote swings and report seat tipping points.
+    - Integrate with FPTP, MMP, and PR presets where appropriate.
+- [ ] **P2** Add constituency geometry ingestion
+    - Load GeoJSON/Shapefile boundaries into optional geometry metadata.
+    - Validate CRS, area/perimeter availability, adjacency construction, and missing IDs.
+- [ ] **P2** Add polling-place accessibility and queue/friction model
+    - Model distance, wait time, opening hours, registration friction, and turnout suppression/boost scenarios.
+    - Keep it clearly framed as scenario simulation, not causal estimation.
+- [ ] **P2** Add reserved/minority district constraint modeling beyond simple party allowlists
+    - Represent candidate eligibility, voter demographics, reserved seat type, and party nomination constraints.
+    - Validate with India reserved-constituency examples.
+
+#### P2 Agent Behavior, Campaigns & Opinion Dynamics
+
+- [ ] **P2** Replace `BehaviorEngine.compute_all()` `isinstance` dispatch with a model registry/protocol
+    - Each behavior model should declare required voter fields, party fields, GPU support, and compute signature.
+    - This will unblock third-party behavior models without editing the engine.
+- [ ] **P2** Add behavior-model input validation and field dependency errors
+    - Missing `economic_perception`, `personal_income_change`, `viability`, or incumbent columns should raise actionable errors or use documented defaults.
+    - Add tests for each model's missing-data behavior.
+- [ ] **P2** Add campaign finance model
+    - Model spending, fundraising, ad saturation, diminishing returns, incumbency fundraising, and district targeting.
+    - Connect campaign effects to valence/media exposure rather than direct vote overrides.
+- [ ] **P2** Add media environment and media monitoring model
+    - OSCE methodology treats media access and coverage as central election-environment dimensions.
+    - Track party exposure, sentiment, audience reach, misinformation susceptibility, and time decay.
+- [ ] **P2** Add voter registration and eligibility model
+    - Model eligible population, registration status, turnout probability, age/citizenship constraints, and registration deadlines.
+    - Separate eligible voters, registered voters, and votes cast in result metrics.
+- [ ] **P2** Add primary election and candidate selection systems
+    - Support closed/open primaries, party candidate fields, valence selection, and general-election candidate handoff.
+    - Useful for US-style presets and intra-party competition.
+- [ ] **P2** Add candidate-level modeling
+    - Current party-level frame limits candidate valence, incumbency, local ideology, candidate demographics, and multi-candidate districts.
+    - Introduce optional candidate frame while preserving party-level API.
+- [ ] **P2** Add coalition feedback into subsequent elections
+    - Junior partner penalty exists as a function; integrate it into multi-election simulation state.
+    - Track government participation, policy delivery, scandal exposure, and vote-share feedback.
+- [ ] **P2** Add party entry/exit and endogenous party-system formation
+    - Model new parties, mergers, splits, viability thresholds, ballot access, and ideological repositioning.
+    - Connect to Duverger-style analysis and proportional-system fragmentation.
+- [ ] **P2** Add local campaign targeting and persuasion
+    - Parties should allocate resources across constituencies or demographic groups based on marginal-seat value.
+    - Include budget constraints and diminishing returns.
+- [ ] **P2** Add social influence calibration and network diagnostics
+    - Report network degree distribution, clustering, connected components, homophily, and influence concentration.
+    - Validate bounded-confidence/noisy-voter outputs against deterministic toy networks.
+- [ ] **P2** Add discrete-event scheduling for campaign/election timelines
+    - Mesa 3.x has modern time/scheduling capabilities; model campaigns, events, polls, debates, registration deadlines, and election day as explicit events.
+    - Keep `step()` behavior backward-compatible.
+- [ ] **P2** Add poll generation and polling-error simulation
+    - Generate synthetic polls from model state with house effects, sampling error, likely-voter screens, nonresponse, and correlated misses.
+    - Keep prediction language clearly separated from simulation scenarios.
+- [ ] **P2** Add strategic voting based on district-level viability, not only global party viability
+    - For FPTP, voters should evaluate local top-two competitiveness and constituency-specific wasted-vote risk.
+    - Add tests for a third party viable nationally but not locally.
+- [ ] **P2** Add turnout mobilization operations
+    - Model canvassing, GOTV, persuasion vs mobilization, targeted demographics, and resource allocation.
+    - Return turnout decomposition by baseline, alienation, indifference, and campaign mobilization.
+
+#### P2 Presets & Country Coverage
+
+- [ ] **P2** Add Canada federal preset with FPTP, province metadata, and riding count
+    - Include party positions, regional strengths, and source notes.
+- [ ] **P2** Add Israel preset with nationwide PR and electoral threshold
+    - Include coalition-heavy government formation examples.
+- [ ] **P2** Add Netherlands preset with low-threshold nationwide PR
+    - Useful for fragmentation and coalition comparisons.
+- [ ] **P2** Add Switzerland preset with PR plus referendum/direct-democracy hooks
+    - Model referendums as separate ballot events rather than party-seat contests only.
+- [ ] **P2** Add Mexico preset with mixed-member Chamber of Deputies structure
+    - Include district/list tiers and coalition-party handling.
+- [ ] **P2** Add New Zealand MMP preset
+    - Covers party vote, electorate vote, threshold/one-electorate exception, overhang behavior, and leveling seats.
+- [ ] **P2** Add Ireland STV preset
+    - Provides real-world multi-member ranked-choice use case and validation path for STV.
+- [ ] **P2** Add Scotland/Wales additional-member presets
+    - Useful for closed-list regional compensatory systems.
+- [ ] **P2** Add Norway/Sweden/Denmark PR presets with leveling-seat variants
+    - Compare Sainte-Lague variants, regional districts, national adjustment seats, and thresholds.
+- [ ] **P2** Add Chile or Spain D'Hondt multi-district presets
+    - Useful for district magnitude effects and disproportionality comparisons.
+- [ ] **P2** Add EU preset `config.py` so EU is available through `ElectionModel.from_preset("eu")`
+    - Existing EU implementation is specialized in `election.py`, inconsistent with config-based presets.
+- [ ] **P2** Add preset contract tests
+    - Every preset should expose config, party metadata, provenance, expected system, expected seat count, and smoke simulation.
+    - Fail if docs list a preset that `PRESETS` does not expose.
+- [ ] **P2** Add preset calibration status enum
+    - Values: structural demo, partially calibrated, historically calibrated, validation-only.
+    - Surface status in README, docs, and dashboard.
+- [ ] **P2** Add alliance/bloc modeling to presets
+    - India/EU/coalition-heavy systems need parties, alliances, groups, and government blocs as distinct concepts.
+
+#### P3 Architecture & Maintainability
+
+- [ ] **P3** Split large modules that exceed the 250 pure-LOC ceiling
+    - `core/model.py`, `core/cli.py`, `analysis/batch_runner.py`, `dynamics/opinion_dynamics.py`, `engine/coalition.py`, `presets/india/election.py`, `presets/eu/election.py`, `systems/alternative.py`, and `visualization/plots.py`.
+    - Preserve public facade imports while moving cohesive logic into focused modules.
+- [ ] **P3** Split `ElectionModel` into configuration, voting, counting, stepping, and result-building components
+    - Reduce constructor parameter sprawl and make alternative systems easier to wire.
+- [ ] **P3** Introduce an `ElectionResult` typed object
+    - Replace loose dictionaries with dataclasses or typed mappings for vote counts, seats, shares, metrics, metadata, and warnings.
+    - Keep dict compatibility during migration.
+- [ ] **P3** Add typed domain aliases/newtypes for party IDs, constituency IDs, voter IDs, seat counts, and shares
+    - Prevent mixing array positions, real IDs, and labels.
+- [ ] **P3** Add runtime config validation to `Config` and `PartyConfig`
+    - Validate voter counts, constituency counts, thresholds, temperature, party positions, valence ranges, and duplicate party names.
+- [ ] **P3** Add `from_preset()` kwargs validation
+    - Unknown overrides should fail loudly instead of being silently ignored by preset factory signatures.
+- [ ] **P3** Replace `print()` GPU fallback warning with structured warning/logging
+    - Use `warnings.warn()` with a custom category so tests and users can filter it.
+- [ ] **P3** Remove or document bare `step()` methods in `VoterAgents` and `PartyAgents`
+    - Either wire them into model stepping or mark them intentionally inert with test coverage.
+- [ ] **P3** Add a stable plugin/extension API for behavior models, voting systems, metrics, and presets
+    - Avoid requiring edits to core registries for every extension.
+- [ ] **P3** Add optional dependency boundary tests
+    - Simulate missing matplotlib, networkx, numba, cupy, streamlit, and plotly imports and verify graceful degradation.
+- [ ] **P3** Add type-checking gate to CI and install path
+    - `pyproject.toml` declares `mypy` in dev extras, but `.venv/bin/mypy` is absent in the current environment.
+    - Decide whether to use mypy, basedpyright, or both, and make the command reproducible.
+- [ ] **P3** Add public docstrings for currently undocumented public methods
+    - Missing examples include `VoterAgents.get_ideology_x()`, `VoterAgents.get_ideology_y()`, `BehaviorEngine.add_model()`, `BehaviorEngine.compute_all()`, `Config.n_parties`, and `ConstituencyManager` helpers.
+- [ ] **P3** Add `typing.get_type_hints()` smoke tests for public modules
+    - `core/model.py` has postponed annotations for names not present at runtime; type-hint introspection should not fail.
+- [ ] **P3** Remove duplicate "Version History" header in `TODO.md`
+    - Current TODO has the heading twice in a row.
+- [ ] **P3** Normalize stale TODO entries against current branch state
+    - Some older audit items are stale when local `engine/strain.py` and `tests/test_engine.py` changes are present.
+    - Add a periodic "verify TODO still applies" workflow before implementation loops.
+
+#### P3 CLI, Dashboard, Visualization & UX
+
+- [ ] **P3** Add CLI support for all documented systems and presets
+    - `electoral-sim run --system` should list accepted values and reject unsupported ones.
+    - Include tiny CLI integration tests with JSON output.
+- [ ] **P3** Add CLI commands for validation, calibration, benchmark, and preset metadata
+    - Examples: `electoral-sim validate --preset germany --year 2021`, `electoral-sim preset-info india`.
+- [ ] **P3** Add BatchRunner config schema validation
+    - Validate JSON/YAML config before running and report all invalid fields at once.
+- [ ] **P3** Add dashboard tabs for systems comparison, preset metadata, calibration status, and uncertainty intervals
+    - Avoid one-off India/generic branches where common result display can be shared.
+- [ ] **P3** Add dashboard support for all current presets, including Australia House/Senate, South Africa, and EU
+    - Current selectbox omits several presets exposed by the package/docs.
+- [ ] **P3** Add dashboard scenario save/load
+    - Export current sidebar parameters, seed, preset, and results as JSON.
+- [ ] **P3** Add dashboard warning banners for structural vs calibrated presets
+    - Keep "not a forecast" status visible inside the app, not only README.
+- [ ] **P3** Add visualizations for uncertainty bands and batch results
+    - Plot turnout/seat distributions, seat probability histograms, and sensitivity tornado charts.
+- [ ] **P3** Add redistricting/geography visualizations
+    - District maps, compactness histograms, ensemble percentile plots, and swing maps.
+- [ ] **P3** Convert visualization return types consistently
+    - Either Matplotlib-only with `st.pyplot`, Plotly-only with `st.plotly_chart`, or paired functions with explicit names.
+- [ ] **P3** Add visual regression smoke tests for generated plots
+    - Validate non-empty axes/traces and no crash with small synthetic results.
+- [ ] **P3** Add example notebooks or scripts for every major workflow
+    - Coalition/government, opinion dynamics, BatchRunner, validation/calibration, redistricting, dashboard export, and custom behavior model.
+- [ ] **P3** Add `docs/examples/` pages that execute snippets in CI
+    - Prevent README/docs examples from drifting from function signatures.
+
+#### P3 Docs, Packaging & CI
+
+- [ ] **P3** Fix API docs for alternative systems
+    - `docs/api/electoral_systems.md` uses signatures and return shapes that do not match current implementations.
+- [ ] **P3** Fix metrics docs for `efficiency_gap()`
+    - Docs describe a two-argument signature, implementation takes `party_a_votes`, `party_b_votes`, and `party_a_seats`.
+- [ ] **P3** Add docs navigation entries for workflow, iteration, citations, validation, maintenance, and feature comparison
+    - Ensure mkdocs actually publishes the repo's new support docs.
+- [ ] **P3** Add docs build link-checking
+    - Catch stale GitHub Pages/PyPI/API URLs and missing source citations.
+- [ ] **P3** Include `py.typed` in source and wheel verification tests
+    - Package data includes it, but add a built artifact test to prevent regressions.
+- [ ] **P3** Decide whether `docs/`, `benchmarks/`, `examples/`, and `.github/` belong in sdists
+    - `MANIFEST.in` currently prunes docs/scripts/examples and excludes app-related files.
+    - If excluded intentionally, document the release policy.
+- [ ] **P3** Consolidate release scripts
+    - `release.py`, `do_release.py`, `bump_version.py`, and batch files should have one documented release path.
+- [ ] **P3** Move benchmark scripts under `benchmarks/` or document why some remain in `scripts/`
+    - `scripts/benchmark_gpu.py` and `scripts/benchmark_scale.py` are outside the benchmark directory.
+- [ ] **P3** Add small benchmark CI smoke job
+    - Run tiny voter counts to verify benchmark code paths without enforcing performance thresholds.
+- [ ] **P3** Add `pytest -W error` gate after current warning cleanup
+    - Keep warning budget at zero.
+- [ ] **P3** Register all custom pytest marks
+    - `slow` appears in tests but is not registered in `pyproject.toml`.
+- [ ] **P3** Add dependency freshness and upper-bound review
+    - Track Mesa, Polars, Numba, NumPy, NetworkX, Streamlit, Plotly, and CuPy compatibility.
+- [ ] **P3** Add Python 3.13 CI lane if not already green
+    - `pyproject.toml` advertises Python 3.13 support.
+- [ ] **P3** Add CodeQL or static-analysis TODO triage to release checklist
+    - Keep generated alerts tied back to actionable TODO entries.
+- [ ] **P3** Add coverage thresholds per module category
+    - Core stable modules should have stricter thresholds than GPU/optional experimental modules.
+
+#### P5 Research & Long-Term Features
+
+- [ ] **P5** Add reinforcement-learning party strategy experiments
+    - Compare median-voter walk, office-seeking, policy-seeking, and vote-maximizing agents.
+- [ ] **P5** Add demographic synthetic population generation from census microdata
+    - Generate joint distributions instead of independent feature draws.
+- [ ] **P5** Add ecological inference / small-area estimation bridge
+    - Estimate local demographic vote patterns from aggregate returns with uncertainty caveats.
+- [ ] **P5** Add macroeconomic scenario feeds
+    - Connect GDP, inflation, unemployment, and approval proxies to retrospective/sociotropic models.
+- [ ] **P5** Add international election-admin scenario dimensions
+    - Model ballot access, campaign period, media access, complaints/appeals, counting/tabulation confidence, and observer notes.
+- [ ] **P5** Add electoral college and weighted body systems
+    - US presidential Electoral College, weighted councils, and indirect election bodies.
+- [ ] **P5** Add referendums and ballot measures
+    - Support binary/multi-option issues, turnout interactions, and simultaneous candidate + referendum ballots.
+- [ ] **P5** Add participatory budgeting / knapsack voting module
+    - Useful for comparing election mechanisms beyond candidate elections.
+- [ ] **P5** Add deliberation and persuasion experiments
+    - Model debate exposure, social learning, elite cues, and opinion convergence/polarization.
+- [ ] **P5** Add misinformation intervention scenarios
+    - Fact-checking reach, trust, backfire/no-backfire assumptions, and media-literacy heterogeneity.
+- [ ] **P5** Add turnout shocks from weather, holidays, conflict, or administrative disruption
+    - Keep exogenous shocks explicit and scenario-based.
+- [ ] **P5** Add overseas/absentee/mail voting channels
+    - Model eligibility, return rates, rejection rates, and counting delays.
+- [ ] **P5** Add recount and audit simulation
+    - Risk-limiting audits, recount thresholds, ballot error rates, and confidence intervals.
+- [ ] **P5** Add malicious or accidental data-quality scenario tests
+    - Missing precincts, party-name aliases, duplicate districts, inconsistent totals, and late corrections.
+- [ ] **P5** Add comparative electoral-system benchmark report
+    - Run the same synthetic electorates through FPTP, PR, MMP, IRV, STV, Approval, Score, Borda, and Condorcet with VSE/proportionality outputs.
+
+#### External Research Sources To Use
+
+- GerryChain documentation and API: redistricting ensembles, ReCom-style workflows, efficiency gap, Polsby-Popper, partisan Gini.
+- MIT Election Data and Science Lab: precinct-level returns and election-data provenance patterns.
+- Comparative Study of Electoral Systems (CSES): survey variables for voter behavior, demographics, district, and macro/electoral-system calibration.
+- International IDEA Electoral System Design Database/Handbook: open/closed lists, MMP, parallel systems, two-round systems, Borda, STV, and mixed/tiered designs.
+- OSCE/ODIHR election observation methodology: campaign, media, legal framework, election administration, complaints/appeals, counting, and tabulation dimensions.
+- PrefLib: ranked/preference ballot data formats for IRV/STV/Condorcet validation.
+- OpenSTV/RCTab ecosystem: known ranked-choice tabulation behavior and validation targets.
+- `abcvoting`/approval-based committee voting literature: PAV, Method of Equal Shares, Phragmen, and approval multiwinner methods.
+- Mesa documentation: batch runs, data collection, time/scheduling, and current ABM framework patterns.
+
 ### High Priority (P1) — Upcoming
 
 - [x] **P1** Test CuPy GPU implementations (test structure added, needs GPU hardware to run)
@@ -108,8 +472,8 @@
 
 ### Bugs
 
-- [ ] **P2** Fix `DivisionByZero` warning in `coalition_strain()` when weights sum to 0 — returns NaN, should return 0.0 (line 131)
-- [ ] **P3** Fix `RuntimeWarning` in `coalition_strain()` — normalize weights without divide-by-zero risk
+- [x] **P2** Fix `DivisionByZero` warning in `coalition_strain()` when weights sum to 0 — returns NaN, should return 0.0 (line 131)
+- [x] **P3** Fix `RuntimeWarning` in `coalition_strain()` — normalize weights without divide-by-zero risk
 - [ ] **P2** EU Parliament preset has no `config.py` — has `election.py` only, unlike all other presets. Add `eu_config()` for PRESETS registry.
 - [ ] **P3** `PartyAgents.step()` is bare `pass` — should call `adaptive_strategy_step()` or document why not
 - [ ] **P3** `VoterAgents.step()` is bare `pass` — should call opinion dynamics or document why not
@@ -128,7 +492,7 @@
 ### Code Style
 
 - [ ] **P3** `core/model.py:114` uses `Optional[ConstituencyManager]` — replace with `ConstituencyManager | None` (PEP 604 style, Python 3.10+)
-- [ ] **P5** Add `py.typed` marker to MANIFEST.in for PEP 561 compliance
+- [x] **P5** Add `py.typed` marker to MANIFEST.in for PEP 561 compliance
 
 ### Miscellaneous
 
@@ -171,7 +535,7 @@
 
 ### Warning Cleanup
 
-- [ ] **P3** Fix `RuntimeWarning: invalid value encountered in divide` in `coalition_strain()` when weights sum to 0
+- [x] **P3** Fix `RuntimeWarning: invalid value encountered in divide` in `coalition_strain()` when weights sum to 0
     - This is the only warning in the test suite — fix it for a clean `-W error` run
 - [ ] **P3** Register `pytest.mark.slow` in `pyproject.toml` to eliminate `PytestUnknownMarkWarning`
     - Add to `[tool.pytest.ini_options] markers = ["slow: marks tests as slow"]`
@@ -204,7 +568,7 @@
 ### Engine
 - [ ] **P2** `voter_behavior.py` uses `if isinstance(model, X)` dispatch — replace with registry pattern or method dispatch
 - [ ] **P3** `numba_accel.py` Numba fallback functions duplicate logic from `systems/allocation.py` — consolidate
-- [ ] **P2** `coalition_strain()` has inconsistent behavior with zero-weight input — guard division
+- [x] **P2** `coalition_strain()` has inconsistent behavior with zero-weight input — guard division
 
 ### API Design
 - [ ] **P3** `electoral_sim/__init__.py` doesn't export `agents/` or `events/` subpackages — only individual symbols
@@ -232,11 +596,54 @@
 - [ ] **P3** Add `pytest -W error` to CI lint/test jobs to catch warnings as errors
 - [ ] **P3** Register `pytest.mark.slow` in `pyproject.toml` to fix `PytestUnknownMarkWarning`
 - [ ] **P3** Run `benchmarks/benchmark_core.py` as a CI smoke test (small voter counts, verify no crash)
-- [ ] **P3** Add `app.py` Streamlit import verification in `test-optional-deps` CI job
+- [x] **P3** Add `app.py` Streamlit import verification in `test-optional-deps` CI job
 - [ ] **P3** `scripts/` directory has 7 files, many likely unused — audit and clean up
     - `release.py`, `do_release.py`, `bump_version.py` — consolidate into one release workflow
     - `benchmark_gpu.py`, `benchmark_scale.py` — move to `benchmarks/` directory
-- [ ] **P5** Add `.pre-commit-config.yaml` for pre-commit hooks (Black, Ruff, mypy)
+- [x] **P5** Add `.pre-commit-config.yaml` for pre-commit hooks (Black, Ruff, mypy)
+
+---
+
+## Fresh Audit — Found 2026-06-04
+
+### Correctness Bugs
+
+- [ ] **P2** Guard PR allocation against zero total votes and non-positive seat counts in `systems/allocation.py`
+    - `dhondt_allocation()`, `sainte_lague_allocation()`, `hare_quota_allocation()`, and `droop_quota_allocation()` currently divide by `total_votes` or `n_seats` without an explicit zero-input policy
+    - Add tests in `tests/test_unit.py` for all-zero votes, empty vote arrays, threshold filtering that excludes every party, and `n_seats == 0`
+- [ ] **P2** Make `ElectionModel.run_election()` robust when no valid votes remain
+    - `core/model.py` computes `vote_shares = vote_counts / vote_counts.sum()` after turnout and constituency filtering; all voters abstaining or all votes invalidated can divide by zero
+    - Add tests in `tests/test_model.py` for zero turnout and all votes invalidated by `constituency_constraints`
+- [ ] **P2** Define and test deterministic FPTP tie-breaking across both counting paths
+    - `systems/allocation.py::fptp_allocation()` depends on sorted Polars group order; `engine/numba_accel.py::fptp_count_fast()` likely uses first max party index
+    - Add matching tie tests for Polars FPTP allocation and Numba/NumPy fast counting so both paths agree
+- [ ] **P3** Handle empty approval ballots in `systems/alternative.py::approval_voting()`
+    - `approval_counts / len(approvals)` divides by zero for zero voters
+    - Add `tests/test_unit.py` coverage for empty approvals and zero-candidate input policy
+- [ ] **P3** Validate malformed ranked ballots in IRV/STV/Condorcet functions
+    - `systems/alternative.py` accepts duplicate ranks, out-of-range ranks, and shape mismatches without explicit errors
+    - Add tests for duplicate first preferences, missing candidates, empty rankings, and invalid `n_candidates` / `n_seats`
+
+### API & Architecture
+
+- [ ] **P2** Decide whether advanced model knobs belong in `Config` or are constructor-only
+    - `ElectionModel.__init__()` supports behavior engines, opinion dynamics, NOTA, events, adaptive strategy, constraints, GPU, and socioeconomic modifiers, but `Config`/`from_config()` only carries the small core subset
+    - Add either Config fields plus tests or documentation that these knobs must be passed directly to `ElectionModel`
+- [ ] **P3** Split oversized implementation modules before adding substantial feature code
+    - `core/model.py`, `engine/coalition.py`, `dynamics/opinion_dynamics.py`, `visualization/plots.py`, `analysis/batch_runner.py`, and `core/cli.py` exceed the local 250 pure-LOC discipline
+    - Extract cohesive units first when touching those modules: counting/results, model stepping, coalition search, plotting families, batch execution, and CLI subcommands
+- [ ] **P3** Refresh scoped `AGENTS.md` knowledge files after the test reorganization and recent refactors
+    - `tests/AGENTS.md` still references removed files (`test_comprehensive.py`, `test_advanced.py`, `test_improved.py`, `test_additional.py`) and outdated test/coverage counts
+    - `electoral_sim/engine/AGENTS.md` still describes `coalition_strain()` as living in `coalition.py` after the extraction to `engine/strain.py`
+
+### Tests & CI
+
+- [ ] **P3** Make pytest warning filters safe when optional dependencies are absent
+    - Running `pytest tests/ -q --tb=short` without Numba installed emits `PytestConfigWarning: Failed to import filter module 'numba'`
+    - Replace the module-qualified warning filter in `pyproject.toml` with a filter that does not import optional modules, then verify collection without Numba
+- [ ] **P3** Add a lightweight environment bootstrap check for local verification
+    - In a clean Python environment, `pytest tests/ -q --tb=short` currently fails collection with `ModuleNotFoundError: No module named 'polars'`
+    - Add docs or a script target that installs `.[dev]` and verifies core imports before running tests
 
 ---
 

@@ -75,14 +75,14 @@ class TestCoalitionFormation:
         strain = coalition_strain(positions)
         assert abs(strain - 1.0) < 0.01
 
-    def test_coalition_strain_zero_weights(self):
-        """Strain with zero weights returns NaN (0/0 division)."""
+    def test_coalition_strain_zero_weights(self, recwarn):
         from electoral_sim.engine.coalition import coalition_strain
 
         positions = np.array([[0.0], [1.0]])
         weights = np.array([0.0, 0.0])
         strain = coalition_strain(positions, weights=weights)
-        assert np.isnan(strain)
+        assert strain == 0.0
+        assert len(recwarn) == 0
 
     def test_predict_coalition_stability_bounds(self):
         from electoral_sim.engine.coalition import predict_coalition_stability
@@ -214,7 +214,7 @@ class TestGovernmentStability:
     def test_collapse_at_max_term_returns_1(self):
         from electoral_sim.engine.government import collapse_probability
 
-        for model in ["sigmoid", "linear", "exponential"]:
+        for model in ("sigmoid", "linear", "exponential"):
             prob = collapse_probability(60, 0.0, 1.0, model=model, max_term=60)
             assert prob == 1.0
 
@@ -250,7 +250,7 @@ class TestGovernmentStability:
     def test_simulate_all_models(self):
         from electoral_sim.engine.government import simulate_government_survival
 
-        for m in ["sigmoid", "linear", "exponential"]:
+        for m in ("sigmoid", "linear", "exponential"):
             r = simulate_government_survival(
                 strain=0.3, stability=0.7, model=m, n_simulations=100, seed=42
             )
@@ -771,6 +771,36 @@ class TestNumbaWrappers:
         votes = np.array([0, 1, 0, 1], dtype=np.int64)
         seats, vote_counts = fptp_count_fast(constituencies, votes, 3, 2)
         assert vote_counts.sum() == 4
+
+    def test_fptp_count_fast_parallel_race_regression(self):
+        """Deterministic regression: all constituencies won by same party → correct seats."""
+        pytest.importorskip("numba")
+        from electoral_sim.engine.numba_accel import fptp_count_fast
+
+        n_constituencies = 500
+        n_parties = 5
+        n_voters_per_constituency = 100
+
+        # All voters vote for party 0 in all constituencies
+        constituencies = np.repeat(np.arange(n_constituencies), n_voters_per_constituency)
+        votes = np.zeros(len(constituencies), dtype=np.int64)
+
+        seats, vote_counts = fptp_count_fast(
+            constituencies.astype(np.int64),
+            votes.astype(np.int64),
+            n_constituencies,
+            n_parties,
+        )
+
+        # Race condition would cause lost seat updates → seats[0] < n_constituencies
+        assert seats[0] == n_constituencies, (
+            f"Race condition: expected {n_constituencies} seats for party 0, got {seats[0]}. "
+            f"All seats: {seats}"
+        )
+        assert seats.sum() == n_constituencies, (
+            f"Total seats {seats.sum()} != constituencies {n_constituencies}"
+        )
+        assert seats[1:].sum() == 0
 
     def test_benchmark_numba(self):
         """benchmark_numba runs without error."""

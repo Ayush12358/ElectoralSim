@@ -84,6 +84,8 @@ from electoral_sim.metrics.indices import (
     mean_median_gap,
     partisan_bias,
     partisan_gini,
+    responsiveness,
+    swing_ratio,
 )
 
 # Analysis

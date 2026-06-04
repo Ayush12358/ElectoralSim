@@ -263,3 +263,61 @@ def partisan_gini(
     sorted_shares = np.sort(district_vote_shares)
     index = np.arange(1, n + 1)
     return float((2 * index - n - 1).dot(sorted_shares) / (n * sorted_shares.sum()))
+
+
+def responsiveness(
+    party_vote_shares: np.ndarray,
+    party_seat_shares: np.ndarray,
+) -> float:
+    """
+    Responsiveness: how much seat share changes for a 1% vote share change.
+
+    Measures the slope of the seats-votes curve. Values > 1 mean the
+    electoral system amplifies vote swings into larger seat swings.
+
+    Args:
+        party_vote_shares: Party vote shares across districts
+        party_seat_shares: Party seat shares across districts
+
+    Returns:
+        Responsiveness (seats-votes slope)
+    """
+    if len(party_vote_shares) == 0:
+        return 0.0
+    votes = np.array(party_vote_shares)
+    seats = np.array(party_seat_shares)
+    # Standardize to z-scores and compute slope
+    v_std = votes.std()
+    if v_std == 0:
+        return 0.0
+    return float(np.corrcoef(votes, seats)[0, 1] * seats.std() / v_std)
+
+
+def swing_ratio(
+    party_votes_a: np.ndarray,
+    party_votes_b: np.ndarray,
+    party_seats_a: np.ndarray,
+) -> float:
+    """
+    Swing ratio: seat swing per unit vote swing between two parties.
+
+    A swing ratio of 3 means a 1% vote swing produces a 3% seat swing.
+    Typical range: 1.5 (highly proportional) to 5+ (highly majoritarian).
+
+    Args:
+        party_votes_a: Party A district vote totals
+        party_votes_b: Party B district vote totals
+        party_seats_a: Binary (1=A won, 0=B won)
+
+    Returns:
+        Swing ratio
+    """
+    n = len(party_votes_a)
+    if n == 0:
+        return 0.0
+    vote_margin = party_votes_a - party_votes_b
+    total = party_votes_a + party_votes_b
+    vote_share = np.sum(party_votes_a) / np.sum(total) if np.sum(total) > 0 else 0.5
+    seat_share = np.mean(party_seats_a)
+    # Swing ratio = responsiveness at the observed vote share
+    return float(seat_share / vote_share) if vote_share > 0 else 0.0

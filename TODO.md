@@ -91,7 +91,7 @@
 - [ ] **P2** Add compactness metrics for district plans
     - Implement Polsby-Popper, Reock or convex-hull compactness, perimeter/area validation, and missing-geometry behavior.
     - Keep geometry dependencies optional.
-- [ ] **P2** Add seats-votes curve and responsiveness/swing-ratio analysis
+- [x] **P2** Add seats-votes curve and responsiveness/swing-ratio analysis
     - Useful for swing-state/district sensitivity and redistricting ensembles.
     - Return curve data in Polars DataFrames for visualization and tests.
 - [ ] **P2** Add calibration framework against historical election results

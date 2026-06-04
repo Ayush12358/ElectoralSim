@@ -264,3 +264,23 @@ class TestVSE:
 
         assert partisan_gini(np.array([])) == 0.0
         assert partisan_gini(np.array([0.3])) == 0.0
+
+    def test_responsiveness_basic(self):
+        """Responsiveness returns a finite float."""
+        from electoral_sim.metrics.indices import responsiveness
+
+        votes = np.array([0.6, 0.5, 0.4])
+        seats = np.array([1, 1, 0])
+        r = responsiveness(votes, seats)
+        assert isinstance(r, float)
+        assert np.isfinite(r)
+
+    def test_swing_ratio_basic(self):
+        """Swing ratio returns a non-negative float."""
+        from electoral_sim.metrics.indices import swing_ratio
+
+        votes_a = np.array([60, 55, 40])
+        votes_b = np.array([40, 45, 60])
+        seats_a = np.array([1, 1, 0])
+        ratio = swing_ratio(votes_a, votes_b, seats_a)
+        assert ratio >= 0

@@ -145,7 +145,6 @@ filterwarnings = [
     "error",
     "ignore::DeprecationWarning",
     "ignore::FutureWarning:mesa.*",
-    "ignore::numba.core.errors.NumbaDeprecationWarning",
     "ignore:GPU requested but not available",
 ]
 

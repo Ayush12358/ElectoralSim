@@ -641,7 +641,7 @@
 - [ ] **P3** Make pytest warning filters safe when optional dependencies are absent
     - Running `pytest tests/ -q --tb=short` without Numba installed emits `PytestConfigWarning: Failed to import filter module 'numba'`
     - Replace the module-qualified warning filter in `pyproject.toml` with a filter that does not import optional modules, then verify collection without Numba
-- [ ] **P3** Add a lightweight environment bootstrap check for local verification
+- [x] **P3** Add environment bootstrap check (scripts/verify_env.py)
     - In a clean Python environment, `pytest tests/ -q --tb=short` currently fails collection with `ModuleNotFoundError: No module named 'polars'`
     - Add docs or a script target that installs `.[dev]` and verifies core imports before running tests
 

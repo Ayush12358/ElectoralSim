@@ -5,6 +5,7 @@ These tests focus on specific functions to improve code coverage.
 
 import pytest
 import numpy as np
+from hypothesis import given, strategies as st, assume
 
 
 class TestElectoralSystems:
@@ -304,3 +305,81 @@ class TestModel:
         assert model.electoral_system == "PR"
         assert model.allocation_method == "dhondt"
         assert model.threshold == 0.05
+
+
+class TestElectoralInvariants:
+    """Hypothesis property tests for electoral-system invariants."""
+
+    @given(
+        votes=st.lists(st.integers(min_value=1, max_value=10000), min_size=2, max_size=10),
+        n_seats=st.integers(min_value=1, max_value=100),
+    )
+    def test_allocation_seat_sum_invariant(self, votes, n_seats):
+        """Allocators return exactly n_seats for valid positive votes."""
+        from electoral_sim.systems.allocation import (
+            dhondt_allocation,
+            sainte_lague_allocation,
+            hare_quota_allocation,
+        )
+
+        votes_arr = np.array(votes, dtype=np.int64)
+        assume(votes_arr.sum() > 0)
+
+        for allocator in [dhondt_allocation, sainte_lague_allocation, hare_quota_allocation]:
+            seats = allocator(votes_arr, n_seats)
+            assert seats.sum() == n_seats, f"{allocator.__name__}: {seats.tolist()}"
+            assert np.all(seats >= 0)
+
+    @given(
+        votes=st.lists(st.floats(min_value=0, max_value=1e6), min_size=1, max_size=8),
+    )
+    def test_enp_is_finite(self, votes):
+        """ENP returns finite value for any valid vote shares."""
+        from electoral_sim.metrics.indices import effective_number_of_parties
+
+        arr = np.array(votes)
+        shares = arr / arr.sum() if arr.sum() > 0 else arr
+        result = effective_number_of_parties(shares)
+        assert np.isfinite(result)
+        assert result >= 1.0
+
+    @given(
+        shares=st.lists(st.floats(min_value=0, max_value=1), min_size=2, max_size=8),
+    )
+    def test_gallagher_is_finite(self, shares):
+        """Gallagher returns finite value for any valid equal-length shares."""
+        from electoral_sim.metrics.indices import gallagher_index
+
+        v = np.array(shares)
+        s = np.roll(v, 1)  # same length, different distribution
+        assume(v.sum() > 0)
+        result = gallagher_index(v / v.sum(), s / s.sum())
+        assert np.isfinite(result)
+        assert result >= 0
+
+    @given(
+        n_voters=st.integers(min_value=50, max_value=1000),
+        seed=st.integers(min_value=0, max_value=9999),
+    )
+    def test_turnout_in_valid_range(self, n_voters, seed):
+        """Turnout is always in [0, 1]."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=n_voters, seed=seed)
+        results = model.run_election()
+        assert 0.0 <= results["turnout"] <= 1.0
+
+    @given(
+        votes=st.lists(st.integers(min_value=1, max_value=10000), min_size=2, max_size=8),
+        n_seats=st.integers(min_value=2, max_value=50),
+    )
+    def test_allocation_non_negative(self, votes, n_seats):
+        """Seat allocations contain no negative values."""
+        from electoral_sim.systems.allocation import dhondt_allocation, sainte_lague_allocation, hare_quota_allocation
+
+        votes_arr = np.array(votes, dtype=np.int64)
+        assume(votes_arr.sum() > 0)
+
+        for allocator in [dhondt_allocation, sainte_lague_allocation, hare_quota_allocation]:
+            seats = allocator(votes_arr, n_seats)
+            assert np.all(seats >= 0), f"{allocator.__name__}: {seats.tolist()}"

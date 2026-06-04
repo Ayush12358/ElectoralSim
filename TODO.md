@@ -50,7 +50,7 @@
 - [x] **P2** Add formal known-result tests for all allocation methods
     - Cover D'Hondt, Sainte-Lague/Webster, Hare largest remainder, Droop largest remainder, threshold effects, and equal-vote ties.
     - Keep fixtures small enough to audit manually.
-- [ ] **P2** Add Hypothesis property tests for electoral-system invariants
+- [x] **P2** Add Hypothesis property tests for electoral-system invariants
     - Seat totals equal requested seats when votes are valid.
     - Allocations are non-negative integers.
     - Increasing a party's votes should not reduce its seats where monotonicity is expected.

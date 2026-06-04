@@ -151,7 +151,7 @@
 - [x] **P2** Add behavior-model input validation and field dependency docs
     - Missing `economic_perception`, `personal_income_change`, `viability`, or incumbent columns should raise actionable errors or use documented defaults.
     - Add tests for each model's missing-data behavior.
-- [ ] **P2** Add campaign finance model
+- [x] **P2** Add campaign finance model
     - Model spending, fundraising, ad saturation, diminishing returns, incumbency fundraising, and district targeting.
     - Connect campaign effects to valence/media exposure rather than direct vote overrides.
 - [ ] **P2** Add media environment and media monitoring model

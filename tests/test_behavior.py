@@ -314,3 +314,36 @@ class TestPartyStrategy:
         )
         # Position should have moved toward median
         assert new_df["position_x"][0] > 0.0
+
+
+class TestCampaignFinance:
+    """Tests for campaign finance model."""
+
+    def test_campaign_finance_creation(self):
+        """CampaignFinance creates with default parameters."""
+        from electoral_sim.behavior.campaign import CampaignFinance
+
+        cf = CampaignFinance()
+        assert cf.base_spending == 1_000_000.0
+        assert cf.incumbent_advantage == 1.5
+
+    def test_compute_spending_incumbent_advantage(self):
+        """Incumbents get more spending."""
+        from electoral_sim.behavior.campaign import CampaignFinance
+
+        cf = CampaignFinance()
+        incumbents = np.array([True, False, False])
+        rng = np.random.default_rng(42)
+        spending = cf.compute_spending(3, incumbents, rng)
+        assert len(spending) == 3
+        assert spending[0] > spending[1]
+
+    def test_spending_to_valence_diminishing(self):
+        """Spending-to-valence has diminishing returns."""
+        from electoral_sim.behavior.campaign import CampaignFinance
+
+        cf = CampaignFinance(diminishing_factor=0.5)
+        low = cf.spending_to_valence(np.array([100_000]))
+        high = cf.spending_to_valence(np.array([10_000_000]))
+        ratio = high[0] / low[0]
+        assert ratio < 10  # 100x spending should give <10x valence

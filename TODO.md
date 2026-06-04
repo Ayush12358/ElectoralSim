@@ -70,7 +70,7 @@
 - [ ] **P2** Implement mixed-member proportional (MMP) with overhang and leveling-seat logic
     - Germany-style presets need more than simple PR/FPTP parameters to be structurally credible.
     - Model district seats, party-list votes, thresholds, one-district exceptions, overhang seats, and leveling seats.
-- [ ] **P2** Implement parallel mixed systems without compensatory leveling
+- [x] **P2** Implement parallel mixed systems without compensatory leveling
     - Add Japan-style and mixed-system comparisons where FPTP and PR tiers are allocated independently.
     - Surface tier-level results in the returned result schema.
 - [ ] **P2** Add multi-tier apportionment support

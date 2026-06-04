@@ -308,3 +308,45 @@ def open_list_allocation(
                 if i < len(candidate_list[p]):
                     elected.append(candidate_list[p][i])
     return {"seats": party_seats, "elected": elected}
+
+
+def parallel_mixed_allocation(
+    district_votes: np.ndarray,
+    pr_votes: np.ndarray,
+    n_district_seats: int,
+    n_pr_seats: int,
+    threshold: float = 0.0,
+) -> dict[str, np.ndarray]:
+    """
+    Parallel mixed system (Japan-style): FPTP district seats + PR list seats
+    allocated independently, without compensatory leveling.
+
+    Args:
+        district_votes: Per-party vote totals for FPTP tier
+        pr_votes: Per-party vote totals for PR list tier
+        n_district_seats: Total FPTP district seats
+        n_pr_seats: Total PR list seats
+        threshold: Minimum vote share for PR tier
+
+    Returns:
+        Dict with 'district_seats', 'pr_seats', and 'total_seats' arrays
+    """
+    n_parties = max(len(district_votes), len(pr_votes))
+    district_seats = np.zeros(n_parties, dtype=int)
+    pr_seats = np.zeros(n_parties, dtype=int)
+
+    if district_votes.sum() > 0 and n_district_seats > 0:
+        padded = np.zeros(n_parties, dtype=float)
+        padded[:len(district_votes)] = district_votes
+        district_seats = dhondt_allocation(padded, n_district_seats)
+
+    if pr_votes.sum() > 0 and n_pr_seats > 0:
+        padded = np.zeros(n_parties, dtype=float)
+        padded[:len(pr_votes)] = pr_votes
+        pr_seats = dhondt_allocation(padded, n_pr_seats, threshold)
+
+    return {
+        "district_seats": district_seats,
+        "pr_seats": pr_seats,
+        "total_seats": district_seats + pr_seats,
+    }

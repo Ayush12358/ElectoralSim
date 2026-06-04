@@ -423,6 +423,20 @@ class TestAllocationMethods:
         assert result["seats"].sum() == 3
         assert "A1" in result["elected"]
 
+    def test_parallel_mixed_allocation(self):
+        """Parallel mixed system: FPTP + PR tiers allocated independently."""
+        from electoral_sim.systems.allocation import parallel_mixed_allocation
+
+        result = parallel_mixed_allocation(
+            np.array([100, 80, 30]),
+            np.array([100, 80, 30]),
+            n_district_seats=5,
+            n_pr_seats=5,
+        )
+        assert result["total_seats"].sum() == 10
+        assert len(result["district_seats"]) == 3
+        assert len(result["pr_seats"]) == 3
+
     def test_allocate_seats_registry(self):
         """allocate_seats dispatches to correct method."""
         from electoral_sim.systems.allocation import allocate_seats

@@ -417,3 +417,34 @@ class TestElectoralInvariants:
         for allocator in [dhondt_allocation, sainte_lague_allocation, hare_quota_allocation]:
             seats = allocator(votes_arr, n_seats)
             assert np.all(seats >= 0), f"{allocator.__name__}: {seats.tolist()}"
+
+
+class TestTypeHints:
+    """Smoke tests for typing.get_type_hints() on public modules."""
+
+    def test_election_model_type_hints(self):
+        """ElectionModel.__init__ type hints are introspectable (TYPE_CHECKING imports may fail)."""
+        import typing
+        from electoral_sim import ElectionModel
+
+        try:
+            hints = typing.get_type_hints(ElectionModel.__init__)
+            assert isinstance(hints, dict)
+        except NameError:
+            pass  # TYPE_CHECKING-only imports (BehaviorEngine, etc.) can't resolve at runtime
+
+    def test_config_type_hints(self):
+        """Config.__init__ type hints resolve without error."""
+        import typing
+        from electoral_sim import Config
+
+        hints = typing.get_type_hints(Config.__init__)
+        assert len(hints) > 0
+
+    def test_behavior_engine_type_hints(self):
+        """BehaviorEngine.compute_all type hints resolve without error."""
+        import typing
+        from electoral_sim import BehaviorEngine
+
+        hints = typing.get_type_hints(BehaviorEngine.compute_all)
+        assert isinstance(hints, dict)

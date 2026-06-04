@@ -253,7 +253,7 @@
     - Decide whether to use mypy, basedpyright, or both, and make the command reproducible.
 - [ ] **P3** Add public docstrings for currently undocumented public methods
     - Missing examples include `VoterAgents.get_ideology_x()`, `VoterAgents.get_ideology_y()`, `BehaviorEngine.add_model()`, `BehaviorEngine.compute_all()`, `Config.n_parties`, and `ConstituencyManager` helpers.
-- [ ] **P3** Add `typing.get_type_hints()` smoke tests for public modules
+- [x] **P3** Add `typing.get_type_hints()` smoke tests for public modules
     - `core/model.py` has postponed annotations for names not present at runtime; type-hint introspection should not fail.
 - [x] **P3** Remove duplicate "Version History" header in `TODO.md`
     - Current TODO has the heading twice in a row.

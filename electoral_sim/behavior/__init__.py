@@ -1,6 +1,6 @@
 """Voter Behavior Models."""
 
-from electoral_sim.behavior.campaign import CampaignFinance
+from electoral_sim.behavior.campaign import CampaignFinance, MediaEnvironment
 from electoral_sim.behavior.voter_behavior import (
     BehaviorEngine,
     BehaviorModel,
@@ -16,6 +16,7 @@ __all__ = [
     "BehaviorModel",
     "BehaviorEngine",
     "CampaignFinance",
+    "MediaEnvironment",
     "ProximityModel",
     "ValenceModel",
     "RetrospectiveModel",

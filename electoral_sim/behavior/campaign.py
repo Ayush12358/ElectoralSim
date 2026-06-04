@@ -103,3 +103,83 @@ class CampaignFinance:
             allocation = marginal_seats / (marginal_seats.sum(axis=1, keepdims=True) + 1e-10)
 
         return spending[:, np.newaxis] * allocation
+
+
+class MediaEnvironment:
+    """
+    Media environment model: tracks party exposure, sentiment, reach,
+    and misinformation susceptibility with time decay.
+    """
+
+    def __init__(
+        self,
+        base_exposure: float = 0.5,
+        sentiment_bias: float = 0.0,
+        reach_decay: float = 0.95,
+    ):
+        """
+        Args:
+            base_exposure: Base media exposure level (0-1)
+            sentiment_bias: Media sentiment bias (-1=anti-incumbent, +1=pro-incumbent)
+            reach_decay: Time-decay factor for past media effects (<1 = fading)
+        """
+        self.base_exposure = base_exposure
+        self.sentiment_bias = sentiment_bias
+        self.reach_decay = reach_decay
+        self.history: list[dict] = []
+
+    def step(
+        self,
+        n_parties: int,
+        incumbents: np.ndarray | None = None,
+        rng: np.random.Generator | None = None,
+    ) -> dict:
+        """
+        Advance one media cycle, generating new exposure and sentiment data.
+
+        Returns dict with exposure, sentiment, and reach per party.
+        """
+        if rng is None:
+            rng = np.random.default_rng()
+
+        exposure = np.full(n_parties, self.base_exposure, dtype=float)
+        sentiment = np.full(n_parties, self.sentiment_bias, dtype=float)
+
+        if incumbents is not None:
+            sentiment[incumbents] += 0.1  # Slight incumbency attention
+
+        # Simulate media coverage randomness
+        exposure *= rng.uniform(0.7, 1.3, n_parties)
+        sentiment += rng.uniform(-0.1, 0.1, n_parties)
+
+        # Apply time decay to previous history
+        decayed_reach = 1.0
+        for past in self.history:
+            decayed_reach *= self.reach_decay
+
+        result = {
+            "exposure": exposure,
+            "sentiment": sentiment,
+            "reach": decayed_reach,
+        }
+        self.history.append(result)
+        return result
+
+    def misinformation_susceptibility(
+        self,
+        media_diet: np.ndarray | None = None,
+    ) -> float:
+        """
+        Estimate population-level susceptibility to misinformation.
+
+        Lower media diet diversity → higher susceptibility.
+
+        Args:
+            media_diet: (n_voters,) media diet quality scores (0-1)
+
+        Returns:
+            Misinformation susceptibility (0-1)
+        """
+        if media_diet is None:
+            return 0.3  # Default moderate susceptibility
+        return float(1.0 - np.mean(media_diet))

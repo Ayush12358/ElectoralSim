@@ -347,3 +347,22 @@ class TestCampaignFinance:
         high = cf.spending_to_valence(np.array([10_000_000]))
         ratio = high[0] / low[0]
         assert ratio < 10  # 100x spending should give <10x valence
+
+    def test_media_environment_step(self):
+        """MediaEnvironment.step() returns exposure, sentiment, reach."""
+        from electoral_sim.behavior.campaign import MediaEnvironment
+
+        media = MediaEnvironment()
+        result = media.step(3, rng=np.random.default_rng(42))
+        assert len(result["exposure"]) == 3
+        assert len(result["sentiment"]) == 3
+        assert result["reach"] > 0
+
+    def test_media_misinformation_susceptibility(self):
+        """Low media diversity → high misinformation susceptibility."""
+        from electoral_sim.behavior.campaign import MediaEnvironment
+
+        media = MediaEnvironment()
+        high_div = media.misinformation_susceptibility(np.array([0.9, 0.9, 0.9]))
+        low_div = media.misinformation_susceptibility(np.array([0.1, 0.1, 0.1]))
+        assert low_div > high_div

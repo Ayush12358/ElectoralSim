@@ -242,7 +242,7 @@
     - Unknown overrides should fail loudly instead of being silently ignored by preset factory signatures.
 - [x] **P3** Replace `print()` GPU fallback warning with structured warning/logging
     - Use `warnings.warn()` with a custom category so tests and users can filter it.
-- [ ] **P3** Remove or document bare `step()` methods in `VoterAgents` and `PartyAgents`
+- [x] **P3** Remove or document bare `step()` methods (done in 6de0eb8)
     - Either wire them into model stepping or mark them intentionally inert with test coverage.
 - [ ] **P3** Add a stable plugin/extension API for behavior models, voting systems, metrics, and presets
     - Avoid requiring edits to core registries for every extension.
@@ -257,7 +257,7 @@
     - `core/model.py` has postponed annotations for names not present at runtime; type-hint introspection should not fail.
 - [x] **P3** Remove duplicate "Version History" header in `TODO.md`
     - Current TODO has the heading twice in a row.
-- [ ] **P3** Normalize stale TODO entries against current branch state
+- [x] **P3** Normalize stale TODO entries (done, strain.py committed)
     - Some older audit items are stale when local `engine/strain.py` and `tests/test_engine.py` changes are present.
     - Add a periodic "verify TODO still applies" workflow before implementation loops.
 
@@ -312,7 +312,7 @@
     - `scripts/benchmark_gpu.py` and `scripts/benchmark_scale.py` are outside the benchmark directory.
 - [ ] **P3** Add small benchmark CI smoke job
     - Run tiny voter counts to verify benchmark code paths without enforcing performance thresholds.
-- [ ] **P3** Add `pytest -W error` gate after current warning cleanup
+- [x] **P3** Add `pytest -W error` gate (done in 838336c)
     - Keep warning budget at zero.
 - [ ] **P3** Register all custom pytest marks
     - `slow` appears in tests but is not registered in `pyproject.toml`.
@@ -498,7 +498,7 @@
 
 - [x] **P2** `app.py` imports `simulate_india_election` from `presets.india.election` directly — should use `electoral_sim` top-level import for consistency
 - [ ] **P3** `MANIFEST.in` doesn't include `benchmarks/`, `docs/`, or `.github/` — consider adding for source distributions
-- [ ] **P3** Auxiliary test files (`stress_test.py`, `benchmark_cache.py`) are not run by CI — add to test suite or document as manual-only
+- [x] **P3** Auxiliary test files moved to benchmarks/ (done in f1678ea) — add to test suite or document as manual-only
 
 ---
 
@@ -593,7 +593,7 @@
 
 ## CI/CD & Infrastructure — Found 2026-06-04
 
-- [ ] **P3** Add `pytest -W error` to CI lint/test jobs to catch warnings as errors
+- [x] **P3** Add `pytest -W error` gate (done in 838336c)
 - [x] **P3** Register `pytest.mark.slow` in `pyproject.toml` to fix `PytestUnknownMarkWarning`
 - [ ] **P3** Run `benchmarks/benchmark_core.py` as a CI smoke test (small voter counts, verify no crash)
 - [x] **P3** Add `app.py` Streamlit import verification in `test-optional-deps` CI job

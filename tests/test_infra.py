@@ -602,3 +602,16 @@ class TestOptionalDependencyBoundaries:
 
         result = is_gpu_available()
         assert isinstance(result, bool)
+
+    def test_election_timeline_step(self):
+        """ElectionTimeline triggers events at scheduled steps."""
+        from electoral_sim.events.timeline import ElectionTimeline
+
+        tl = ElectionTimeline(total_steps=30, debate_steps=[10], poll_steps=[15])
+        for _ in range(30):
+            result = tl.step()
+            if result["step"] == 10:
+                assert any(e["event"] == "debate" for e in result["events"])
+            if result["step"] == 30:
+                assert any(e["event"] == "election_day" for e in result["events"])
+        assert tl.is_election_day()

@@ -178,7 +178,7 @@
 - [x] **P2** Add social influence calibration and network diagnostics
     - Report network degree distribution, clustering, connected components, homophily, and influence concentration.
     - Validate bounded-confidence/noisy-voter outputs against deterministic toy networks.
-- [ ] **P2** Add discrete-event scheduling for campaign/election timelines
+- [x] **P2** Add discrete-event scheduling for campaign/election timelines
     - Mesa 3.x has modern time/scheduling capabilities; model campaigns, events, polls, debates, registration deadlines, and election day as explicit events.
     - Keep `step()` behavior backward-compatible.
 - [ ] **P2** Add poll generation and polling-error simulation

@@ -12,8 +12,6 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 
 See `docs/WORKFLOW.md` for the full step-by-step workflow for implementing features, fixes, and enhancements.
 
-See `docs/ITERATION_WORKFLOW.md` for the continuous iteration loop: scan TODO.md → implement → verify → discover new work.
-
 ## Structure
 
 ```
@@ -57,7 +55,6 @@ See `docs/ITERATION_WORKFLOW.md` for the continuous iteration loop: scan TODO.md
 | Benchmarks | `benchmarks/benchmark_core.py` | Reproducible perf scripts |
 | Release | `scripts/release.py` | PyPI release workflow |
 | Feature workflow | `docs/WORKFLOW.md` | Step-by-step implementation guide |
-| Iteration loop | `docs/ITERATION_WORKFLOW.md` | Continuous TODO → implement → discover loop |
 
 ## Conventions
 

@@ -81,6 +81,9 @@ from electoral_sim.metrics.indices import (
     effective_number_of_parties,
     efficiency_gap,
     gallagher_index,
+    mean_median_gap,
+    partisan_bias,
+    partisan_gini,
 )
 
 # Analysis

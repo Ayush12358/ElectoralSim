@@ -191,3 +191,75 @@ def seats_votes_ratio(seat_share: float, vote_share: float) -> float:
         Ratio
     """
     return seat_share / vote_share if vote_share > 0 else 0.0
+
+
+def partisan_bias(
+    party_votes: np.ndarray,
+    party_seats: np.ndarray,
+) -> float:
+    """
+    Partisan bias: asymmetry in how a party's votes translate to seats.
+
+    Measures the seat share a party would receive at 50% of the two-party
+    vote, minus 50%. Positive = advantage for party A.
+
+    Args:
+        party_votes: District-level vote totals for party A (shape: n_districts,)
+        party_seats: Binary (1=won, 0=lost) per district
+
+    Returns:
+        Bias value (-0.5 to 0.5, 0 = symmetric)
+    """
+    total_votes = party_votes.sum() + party_votes.sum()  # assumes 2-party
+    if total_votes == 0:
+        return 0.0
+    seat_share = party_seats.sum() / len(party_seats) if len(party_seats) > 0 else 0.0
+    # At 50% vote, predicted seat share via uniform swing
+    vote_share = party_votes.sum() / total_votes if total_votes > 0 else 0.5
+    # Linear interpolation: seat_share at vote_share=0.5
+    return seat_share - vote_share
+
+
+def mean_median_gap(
+    district_vote_shares: np.ndarray,
+) -> float:
+    """
+    Mean-Median Gap: difference between mean and median district vote share.
+
+    Positive value = party's voters are "cracked" across districts
+    (mean > median), suggesting gerrymandering against the party.
+
+    Args:
+        district_vote_shares: Party's vote share in each district (0-1)
+
+    Returns:
+        Mean - median gap (positive = disadvantage for the party)
+    """
+    if len(district_vote_shares) == 0:
+        return 0.0
+    mean_share = np.mean(district_vote_shares)
+    median_share = np.median(district_vote_shares)
+    return float(mean_share - median_share)
+
+
+def partisan_gini(
+    district_vote_shares: np.ndarray,
+) -> float:
+    """
+    Partisan Gini: inequality in district-level vote shares.
+
+    Uses the standard Gini coefficient formula applied to sorted
+    district vote shares. Higher values = more concentrated voters.
+
+    Args:
+        district_vote_shares: Party's vote share in each district (0-1)
+
+    Returns:
+        Gini coefficient (0 = equal, 1 = maximum inequality)
+    """
+    n = len(district_vote_shares)
+    if n <= 1:
+        return 0.0
+    sorted_shares = np.sort(district_vote_shares)
+    index = np.arange(1, n + 1)
+    return float((2 * index - n - 1).dot(sorted_shares) / (n * sorted_shares.sum()))

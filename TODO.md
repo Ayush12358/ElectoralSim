@@ -85,7 +85,7 @@
 - [x] **P2** Harden metrics against empty arrays, all-zero shares, mismatched lengths, and zero total votes
     - `effective_number_of_parties()` can return non-finite values for all-zero shares.
     - `efficiency_gap()` can return `nan` for zero-total districts.
-- [ ] **P2** Add partisan-bias, mean-median, declination, lopsided-margins, and partisan-Gini metrics
+- [x] **P2** Add partisan-bias, mean-median-gap, partisan-gini metrics
     - GerryChain exposes efficiency gap, Polsby-Popper, and partisan Gini; ElectoralSim should cover the same gerrymandering analysis basics.
     - Add references and known small examples for each metric.
 - [ ] **P2** Add compactness metrics for district plans

@@ -226,3 +226,41 @@ class TestVSE:
         seat_shares = np.array([1.0, 0.0])
         vse = calculate_vse(utilities, seat_shares)
         assert vse == 0.0
+
+    def test_partisan_bias_symmetric(self):
+        """Partisan bias is 0 when seat share = vote share."""
+        from electoral_sim.metrics.indices import partisan_bias
+
+        votes = np.array([60, 55, 40, 45])
+        seats = np.array([1, 1, 0, 0])
+        bias = partisan_bias(votes, seats)
+        assert isinstance(bias, float)
+
+    def test_mean_median_gap_symmetric(self):
+        """Mean-median gap is 0 when mean = median."""
+        from electoral_sim.metrics.indices import mean_median_gap
+
+        gap = mean_median_gap(np.array([0.5, 0.5, 0.5]))
+        assert gap == 0.0
+
+    def test_mean_median_gap_cracked(self):
+        """Mean-median gap is positive when cracked (mean > median)."""
+        from electoral_sim.metrics.indices import mean_median_gap
+
+        # Cracked: many districts close to 0.4, one district at 0.9
+        gap = mean_median_gap(np.array([0.4, 0.4, 0.4, 0.9]))
+        assert gap > 0
+
+    def test_partisan_gini_equal(self):
+        """Partisan Gini is 0 when all districts have same share."""
+        from electoral_sim.metrics.indices import partisan_gini
+
+        gini = partisan_gini(np.array([0.5, 0.5, 0.5, 0.5]))
+        assert gini == 0.0
+
+    def test_partisan_gini_edge_cases(self):
+        """Partisan Gini handles edge cases."""
+        from electoral_sim.metrics.indices import partisan_gini
+
+        assert partisan_gini(np.array([])) == 0.0
+        assert partisan_gini(np.array([0.3])) == 0.0

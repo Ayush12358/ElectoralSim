@@ -76,7 +76,7 @@
 - [ ] **P2** Add multi-tier apportionment support
     - Support national, regional, and constituency tiers for ALEX-style legislative modeling and EU/national presets.
     - Include tier metadata in `Config` instead of overloading `n_constituencies`.
-- [ ] **P2** Add approval-based committee voting methods
+- [x] **P2** Add approval-based committee voting methods (PAV)
     - Research `abcvoting`/PAV/MES/Phragmen-style multiwinner rules and decide whether to implement core methods or optional adapters.
     - Add committee-size, approvals matrix, and proportionality metric tests.
 

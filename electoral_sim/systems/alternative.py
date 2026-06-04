@@ -441,6 +441,61 @@ def generate_rankings(
     return rankings
 
 
+def pav_committee(
+    approvals: np.ndarray,
+    n_candidates: int,
+    committee_size: int,
+) -> dict:
+    """
+    Proportional Approval Voting (PAV) for multi-winner committees.
+
+    Sequentially selects the candidate who adds the most marginal
+    voter satisfaction. Each voter's satisfaction for a committee
+    with k of their approved candidates is: 1 + 1/2 + ... + 1/k.
+
+    Args:
+        approvals: (n_voters, n_candidates) boolean array
+        n_candidates: Number of candidates
+        committee_size: Number of seats to fill
+
+    Returns:
+        Dictionary with committee list and per-candidate scores
+    """
+    n_voters = len(approvals)
+    if n_voters == 0 or committee_size <= 0:
+        return {"committee": [], "scores": np.zeros(n_candidates)}
+
+    committee = []
+    voter_counts = np.ones(n_voters, dtype=np.float64)  # 1/(1 + approved_in_committee)
+
+    for _ in range(min(committee_size, n_candidates)):
+        best_score = -1.0
+        best_candidate = -1
+        for c in range(n_candidates):
+            if c in committee:
+                continue
+            marginal = 0.0
+            for v in range(n_voters):
+                if approvals[v, c]:
+                    marginal += 1.0 / voter_counts[v]
+            if marginal > best_score:
+                best_score = marginal
+                best_candidate = c
+        if best_candidate >= 0:
+            committee.append(best_candidate)
+            for v in range(n_voters):
+                if approvals[v, best_candidate]:
+                    voter_counts[v] += 1.0
+
+    scores = np.zeros(n_candidates)
+    for c in committee:
+        for v in range(n_voters):
+            if approvals[v, c]:
+                scores[c] += 1.0 / (voter_counts[v] - 0.5)  # approximate per-voter score
+
+    return {"committee": committee, "scores": scores}
+
+
 # =============================================================================
 # QUICK TEST
 # =============================================================================

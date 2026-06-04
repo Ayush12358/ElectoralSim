@@ -13,9 +13,12 @@ from electoral_sim.systems.allocation import (
 )
 from electoral_sim.systems.alternative import (
     approval_voting,
+    borda_count,
     condorcet_winner,
     generate_rankings,
     irv_election,
+    pav_committee,
+    score_voting,
     stv_election,
 )
 
@@ -34,6 +37,9 @@ __all__ = [
     "irv_election",
     "stv_election",
     "approval_voting",
+    "borda_count",
     "condorcet_winner",
     "generate_rankings",
+    "pav_committee",
+    "score_voting",
 ]

@@ -634,6 +634,27 @@ class TestAlternativeVoting:
         assert result["approval_counts"].sum() == 0
         assert result["approval_shares"].sum() == 0
 
+    def test_pav_committee_basic(self):
+        """PAV elects a proportional committee from approval ballots."""
+        from electoral_sim import pav_committee
+
+        approvals = np.array([
+            [1, 1, 0, 0],  # Voter 1 approves A, B
+            [1, 1, 0, 0],  # Voter 2 approves A, B
+            [0, 0, 1, 1],  # Voter 3 approves C, D
+        ])
+        result = pav_committee(approvals, n_candidates=4, committee_size=2)
+        assert len(result["committee"]) == 2
+        assert 0 <= result["committee"][0] <= 3
+
+    def test_pav_committee_all_approved(self):
+        """PAV with all voters approving all candidates."""
+        from electoral_sim import pav_committee
+
+        approvals = np.ones((3, 4))
+        result = pav_committee(approvals, n_candidates=4, committee_size=2)
+        assert len(result["committee"]) == 2
+
     def test_borda_count_basic(self):
         """Borda Count: 1st choice gets most points."""
         from electoral_sim import borda_count

@@ -210,6 +210,40 @@ class TestConfig:
             with pytest.raises(ValueError, match="Unknown allocation method"):
                 Config(n_voters=100, allocation_method=method)
 
+    @pytest.mark.parametrize("field,value,match", [
+        ("n_voters", 0, "n_voters must be positive"),
+        ("n_constituencies", 0, "n_constituencies must be positive"),
+        ("threshold", 1.5, "threshold must be"),
+        ("threshold", -0.1, "threshold must be"),
+        ("temperature", 0, "temperature must be positive"),
+    ])
+    def test_config_rejects_invalid_values(self, field, value, match):
+        """Config raises ValueError for out-of-range parameter values."""
+        from electoral_sim import Config
+
+        kwargs = {"n_voters": 100, field: value}
+        with pytest.raises(ValueError, match=match):
+            Config(**kwargs)
+
+    def test_config_rejects_duplicate_party_names(self):
+        """Config raises ValueError for duplicate party names."""
+        from electoral_sim import Config, PartyConfig
+
+        parties = [
+            PartyConfig("Same", 0.0, 0.0),
+            PartyConfig("Same", 0.5, 0.5),
+        ]
+        with pytest.raises(ValueError, match="Duplicate party name"):
+            Config(n_voters=100, parties=parties)
+
+    def test_config_rejects_negative_valence(self):
+        """Config raises ValueError for negative valence."""
+        from electoral_sim import Config, PartyConfig
+
+        parties = [PartyConfig("Bad", 0.0, 0.0, valence=-1)]
+        with pytest.raises(ValueError, match="valence must be >= 0"):
+            Config(n_voters=100, parties=parties)
+
     def test_allocation_methods_config_and_registry_synced(self):
         """VALID_ALLOCATION_METHODS from config matches ALLOCATION_METHODS registry."""
         from electoral_sim.core.config import VALID_ALLOCATION_METHODS

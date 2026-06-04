@@ -236,7 +236,7 @@
     - Keep dict compatibility during migration.
 - [ ] **P3** Add typed domain aliases/newtypes for party IDs, constituency IDs, voter IDs, seat counts, and shares
     - Prevent mixing array positions, real IDs, and labels.
-- [ ] **P3** Add runtime config validation to `Config` and `PartyConfig`
+- [x] **P3** Add runtime config validation to `Config` and `PartyConfig`
     - Validate voter counts, constituency counts, thresholds, temperature, party positions, valence ranges, and duplicate party names.
 - [x] **P3** Add `from_preset()` kwargs validation
     - Unknown overrides should fail loudly instead of being silently ignored by preset factory signatures.

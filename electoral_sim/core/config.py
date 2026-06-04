@@ -86,6 +86,14 @@ class Config:
                 f"Unknown allocation method: '{self.allocation_method}'. "
                 f"Valid options: {sorted(VALID_ALLOCATION_METHODS)}"
             )
+        if self.n_voters <= 0:
+            raise ValueError(f"n_voters must be positive, got {self.n_voters}")
+        if self.n_constituencies <= 0:
+            raise ValueError(f"n_constituencies must be positive, got {self.n_constituencies}")
+        if not 0 <= self.threshold <= 1:
+            raise ValueError(f"threshold must be in [0, 1], got {self.threshold}")
+        if self.temperature <= 0:
+            raise ValueError(f"temperature must be positive, got {self.temperature}")
         # Convert dicts to PartyConfig if needed
         if self.parties:
             self.parties = [PartyConfig(**p) if isinstance(p, dict) else p for p in self.parties]
@@ -96,6 +104,14 @@ class Config:
                 PartyConfig("Party B", 0.3, -0.1, 50),
                 PartyConfig("Party C", 0.0, 0.3, 45),
             ]
+        # Validate party positions and detect duplicates
+        names = set()
+        for p in self.parties:
+            if p.name in names:
+                raise ValueError(f"Duplicate party name: '{p.name}'")
+            names.add(p.name)
+            if p.valence < 0:
+                raise ValueError(f"Party '{p.name}' valence must be >= 0, got {p.valence}")
 
     def get_party_dicts(self) -> list[dict]:
         """Convert parties to list of dicts for model consumption."""

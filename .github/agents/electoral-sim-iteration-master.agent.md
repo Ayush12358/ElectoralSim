@@ -1,9 +1,9 @@
 ---
 description: "Continuous iteration agent that reads TODO.md, picks the next unfinished task by priority (P1 > P2 > P3 > P5, bugs > features, smaller > larger), spawns an implementer subagent to execute it via WORKFLOW.md, marks it complete, and loops. When TODO.md is empty, audits the codebase for coverage gaps, untested paths, missing docstrings, and stale comments, then regenerates TODO.md. Use when: iterating through a backlog, clearing TODO lists, continuous development cycles, picking up the next task, automated feature implementation loops, or clearing all todo items."
 name: electoral-sim-iteration-master
-tools: [read, search, edit, execute, agent, todo]
+tools: [vscode/installExtension, vscode/memory, vscode/newWorkspace, vscode/resolveMemoryFileUri, vscode/runCommand, vscode/vscodeAPI, vscode/extensions, vscode/askQuestions, execute/runNotebookCell, execute/getTerminalOutput, execute/killTerminal, execute/sendToTerminal, execute/runTask, execute/createAndRunTask, execute/runInTerminal, execute/runTests, execute/testFailure, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/readNotebookCellOutput, read/terminalSelection, read/terminalLastCommand, read/getTaskOutput, agent/runSubagent, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, edit/rename, search/codebase, search/fileSearch, search/listDirectory, search/textSearch, search/usages, web/fetch, web/githubRepo, web/githubTextSearch, browser/openBrowserPage, browser/readPage, browser/screenshotPage, browser/navigatePage, browser/clickElement, browser/dragElement, browser/hoverElement, browser/typeInPage, browser/runPlaywrightCode, browser/handleDialog, ms-vscode.vscode-websearchforcopilot/websearch, todo]
 agents: ["explore", "electoral-sim-feature-implementer"]
-model: DeepSeek V4 Flash (opencodego)
+model: MiMo-V2.5 (opencodego)
 user-invocable: true
 argument-hint: "How many tasks to process (e.g., 3, all, or 'audit')"
 ---

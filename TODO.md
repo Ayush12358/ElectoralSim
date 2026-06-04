@@ -597,7 +597,7 @@
 - [x] **P3** Register `pytest.mark.slow` in `pyproject.toml` to fix `PytestUnknownMarkWarning`
 - [ ] **P3** Run `benchmarks/benchmark_core.py` as a CI smoke test (small voter counts, verify no crash)
 - [x] **P3** Add `app.py` Streamlit import verification in `test-optional-deps` CI job
-- [ ] **P3** `scripts/` directory has 7 files, many likely unused — audit and clean up
+- [x] **P3** `scripts/` directory audited and cleaned up, many likely unused — audit and clean up
     - `release.py`, `do_release.py`, `bump_version.py` — consolidate into one release workflow
     - `benchmark_gpu.py`, `benchmark_scale.py` — move to `benchmarks/` directory
 - [x] **P5** Add `.pre-commit-config.yaml` for pre-commit hooks (Black, Ruff, mypy)

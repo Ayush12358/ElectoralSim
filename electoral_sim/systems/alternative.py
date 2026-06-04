@@ -11,6 +11,40 @@ Implements:
 import numpy as np
 
 
+def _validate_rankings(rankings: np.ndarray, n_candidates: int, name: str = "") -> None:
+    """Validate ranked ballot array for common issues.
+
+    Raises ValueError for: invalid shape, duplicate ranks, out-of-range ranks,
+    non-positive n_candidates.
+    """
+    label = f" in {name}" if name else ""
+
+    if n_candidates <= 0:
+        raise ValueError(f"n_candidates must be positive, got {n_candidates}{label}")
+
+    if not isinstance(rankings, np.ndarray) or rankings.ndim != 2:
+        raise ValueError(
+            f"rankings must be 2D array (n_voters, n_candidates), "
+            f"got shape {getattr(rankings, 'shape', 'scalar')}{label}"
+        )
+
+    n_voters, n_cols = rankings.shape
+    if n_cols != n_candidates:
+        raise ValueError(
+            f"rankings shape[1] ({n_cols}) must equal n_candidates ({n_candidates}){label}"
+        )
+
+    # Check each voter's rankings for duplicate non-zero ranks and out-of-range values
+    for i in range(n_voters):
+        row = rankings[i]
+        nonzero_ranks = row[row > 0]
+        if len(set(nonzero_ranks)) != len(nonzero_ranks):
+            raise ValueError(f"Duplicate ranks in voter {i}: {row.tolist()}{label}")
+        # Ranks must be in [0, n_candidates] (0 = unranked, 1..n_candidates = valid ranks)
+        if np.any((row < 0) | (row > n_candidates)):
+            raise ValueError(f"Out-of-range ranks in voter {i}: {row.tolist()}{label}")
+
+
 def irv_election(
     rankings: np.ndarray,
     n_candidates: int,
@@ -34,6 +68,7 @@ def irv_election(
         Dictionary with winner, round results, and elimination order
     """
     n_voters = len(rankings)
+    _validate_rankings(rankings, n_candidates, "irv_election")
     eliminated = set()
     rounds = []
     elimination_order = []
@@ -118,8 +153,7 @@ def stv_election(
         Dictionary with elected candidates, rounds, and transfer details
     """
     n_voters = len(rankings)
-
-    # Droop quota
+    _validate_rankings(rankings, n_candidates, "stv_election")
     quota = int(np.floor(n_voters / (n_seats + 1))) + 1
 
     # Track vote weights (for surplus transfers)
@@ -247,8 +281,7 @@ def condorcet_winner(
         Dictionary with winner (or None if no Condorcet winner) and pairwise matrix
     """
     n_voters = len(rankings)
-
-    # Build pairwise comparison matrix
+    _validate_rankings(rankings, n_candidates, "condorcet_winner")
     # pairwise[i,j] = how many voters prefer i over j
     pairwise = np.zeros((n_candidates, n_candidates), dtype=np.int64)
 

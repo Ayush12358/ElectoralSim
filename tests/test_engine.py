@@ -608,6 +608,38 @@ class TestAlternativeVoting:
         assert result["approval_counts"].sum() == 0
         assert result["approval_shares"].sum() == 0
 
+    def test_irv_rejects_duplicate_ranks(self):
+        """IRV raises ValueError for duplicate ranks in a voter's ballot."""
+        from electoral_sim import irv_election
+
+        rankings = np.array([[1, 1, 2]])  # Duplicate first choice
+        with pytest.raises(ValueError, match="Duplicate ranks"):
+            irv_election(rankings, n_candidates=3)
+
+    def test_irv_rejects_out_of_range_ranks(self):
+        """IRV raises ValueError for ranks beyond n_candidates."""
+        from electoral_sim import irv_election
+
+        rankings = np.array([[1, 2, 5]])  # Rank 5 > n_candidates=3
+        with pytest.raises(ValueError, match="Out-of-range"):
+            irv_election(rankings, n_candidates=3)
+
+    def test_irv_rejects_shape_mismatch(self):
+        """IRV raises ValueError when rankings cols != n_candidates."""
+        from electoral_sim import irv_election
+
+        rankings = np.array([[1, 2], [2, 1]])  # 2 cols, n_candidates=3
+        with pytest.raises(ValueError, match="shape"):
+            irv_election(rankings, n_candidates=3)
+
+    def test_irv_rejects_negative_n_candidates(self):
+        """IRV raises ValueError for n_candidates <= 0."""
+        from electoral_sim import irv_election
+
+        rankings = np.array([[1, 2]])
+        with pytest.raises(ValueError, match="n_candidates"):
+            irv_election(rankings, n_candidates=0)
+
     def test_condorcet_winner_exists(self):
         from electoral_sim import condorcet_winner
 

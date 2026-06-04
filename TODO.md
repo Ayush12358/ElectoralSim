@@ -620,7 +620,7 @@
 - [x] **P3** Handle empty approval ballots in `systems/alternative.py::approval_voting()`
     - `approval_counts / len(approvals)` divides by zero for zero voters
     - Add `tests/test_unit.py` coverage for empty approvals and zero-candidate input policy
-- [ ] **P3** Validate malformed ranked ballots in IRV/STV/Condorcet functions
+- [x] **P3** Validate malformed ranked ballots in IRV/STV/Condorcet functions
     - `systems/alternative.py` accepts duplicate ranks, out-of-range ranks, and shape mismatches without explicit errors
     - Add tests for duplicate first preferences, missing candidates, empty rankings, and invalid `n_candidates` / `n_seats`
 

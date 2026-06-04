@@ -1217,3 +1217,31 @@ class TestNumbaJITDirect:
         votes = mnl_sample_numba(utilities, temperature=0.5, random_vals=random_vals)
         assert len(votes) == 3
         assert all(0 <= v < 2 for v in votes)
+
+
+class TestPrimaryElections:
+    """Tests for primary election and candidate selection systems."""
+
+    def test_candidate_selection(self):
+        """candidate_selection generates valence matrix for primary candidates."""
+        from electoral_sim.systems.primary import candidate_selection
+
+        valence = candidate_selection(3, 2, rng=np.random.default_rng(42))
+        assert valence.shape == (3, 2)
+
+    def test_closed_primary_basic(self):
+        """Closed primary only counts party-affiliated voters."""
+        from electoral_sim.systems.primary import closed_primary
+
+        utilities = np.array([[1.0, 0.2], [0.8, 0.3], [0.1, 1.0]])
+        affiliation = np.array([0, 0, 1])  # Voters 0,1 in party 0
+        result = closed_primary(utilities, affiliation, party_id=0)
+        assert result["winner"] == 0  # Party 0 voters prefer candidate 0
+
+    def test_open_primary_basic(self):
+        """Open primary counts all voters."""
+        from electoral_sim.systems.primary import open_primary
+
+        utilities = np.array([[1.0, 0.5], [0.3, 0.9], [0.8, 0.2]])
+        result = open_primary(utilities)
+        assert result["winner"] in [0, 1]

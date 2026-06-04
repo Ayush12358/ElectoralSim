@@ -22,6 +22,11 @@ from electoral_sim.systems.alternative import (
     score_voting,
     stv_election,
 )
+from electoral_sim.systems.primary import (
+    candidate_selection,
+    closed_primary,
+    open_primary,
+)
 
 __all__ = [
     # PR allocation
@@ -43,4 +48,8 @@ __all__ = [
     "generate_rankings",
     "pav_committee",
     "score_voting",
+    # Primary elections
+    "closed_primary",
+    "open_primary",
+    "candidate_selection",
 ]

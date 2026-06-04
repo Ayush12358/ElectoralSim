@@ -160,7 +160,7 @@
 - [x] **P2** Add voter registration and eligibility model
     - Model eligible population, registration status, turnout probability, age/citizenship constraints, and registration deadlines.
     - Separate eligible voters, registered voters, and votes cast in result metrics.
-- [ ] **P2** Add primary election and candidate selection systems
+- [x] **P2** Add primary election and candidate selection systems
     - Support closed/open primaries, party candidate fields, valence selection, and general-election candidate handoff.
     - Useful for US-style presets and intra-party competition.
 - [ ] **P2** Add candidate-level modeling

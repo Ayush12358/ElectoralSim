@@ -8,9 +8,12 @@
 
 Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV), opinion dynamics, coalition formation, and government stability across 11 country presets. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration.
 
-## Feature Implementation Workflow
+## Agent Workflows
 
-See `docs/WORKFLOW.md` for the full step-by-step workflow for implementing features, fixes, and enhancements.
+| Workflow | File | Purpose |
+|----------|------|---------|
+| Feature Implementation | `docs/WORKFLOW.md` | Step-by-step for implementing a single feature, fix, or enhancement |
+| Continuous Iteration | `docs/ITERATION_WORKFLOW.md` | Autonomous loop: pick task from TODO.md → execute feature workflow → commit → repeat; discovery phase when TODO.md is empty |
 
 ## Structure
 

@@ -711,6 +711,60 @@ class TestAlternativeVoting:
 # =============================================================================
 
 
+class TestAllocationKnownResults:
+    """Formal known-result tests for PR allocation methods."""
+
+    def test_dhondt_known_result(self):
+        """D'Hondt with votes [100,80,30] and 5 seats → [3,2,0]."""
+        from electoral_sim.systems.allocation import dhondt_allocation
+
+        seats = dhondt_allocation(np.array([100, 80, 30]), 5)
+        assert seats.tolist() == [3, 2, 0]
+
+    def test_sainte_lague_known_result(self):
+        """Sainte-Lague with votes [100,80,30] and 5 seats → [2,2,1]."""
+        from electoral_sim.systems.allocation import sainte_lague_allocation
+
+        seats = sainte_lague_allocation(np.array([100, 80, 30]), 5)
+        assert seats.tolist() == [2, 2, 1]
+
+    def test_hare_known_result(self):
+        """Hare quota with votes [100,80,30] and 5 seats → [2,2,1]."""
+        from electoral_sim.systems.allocation import hare_quota_allocation
+
+        seats = hare_quota_allocation(np.array([100, 80, 30]), 5)
+        assert seats.tolist() == [2, 2, 1]
+
+    def test_droop_known_result(self):
+        """Droop quota with votes [100,80,30] and 5 seats → [2,2,1]."""
+        from electoral_sim.systems.allocation import droop_quota_allocation
+
+        seats = droop_quota_allocation(np.array([100, 80, 30]), 5)
+        assert seats.tolist() == [2, 2, 1]
+
+    def test_dhondt_with_threshold(self):
+        """D'Hondt with 30% threshold filters party C → [3,2,0]."""
+        from electoral_sim.systems.allocation import dhondt_allocation
+
+        seats = dhondt_allocation(np.array([100, 80, 30]), 5, threshold=0.3)
+        assert seats.tolist() == [3, 2, 0]
+
+    def test_all_allocators_seat_sum_invariant(self):
+        """All allocators return exactly n_seats when votes are valid."""
+        from electoral_sim.systems.allocation import (
+            dhondt_allocation,
+            sainte_lague_allocation,
+            hare_quota_allocation,
+            droop_quota_allocation,
+        )
+
+        votes = np.array([100, 80, 30])
+        for allocator in [dhondt_allocation, sainte_lague_allocation, hare_quota_allocation, droop_quota_allocation]:
+            for n in [1, 3, 5, 10]:
+                seats = allocator(votes, n)
+                assert seats.sum() == n, f"{allocator.__name__} with n={n}: {seats.tolist()}"
+
+
 class TestDuverger:
     """Tests for duverger.py."""
 

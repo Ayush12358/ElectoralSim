@@ -47,7 +47,7 @@
 - [ ] **P2** Revisit STV surplus transfer and final-seat completion rules
     - Current STV elects one above-quota candidate per round and lacks an explicit "remaining candidates fill remaining seats" rule.
     - Add known examples with expected winners, elected order, quota, and transfer weights.
-- [ ] **P2** Add formal known-result tests for all allocation methods
+- [x] **P2** Add formal known-result tests for all allocation methods
     - Cover D'Hondt, Sainte-Lague/Webster, Hare largest remainder, Droop largest remainder, threshold effects, and equal-vote ties.
     - Keep fixtures small enough to audit manually.
 - [ ] **P2** Add Hypothesis property tests for electoral-system invariants

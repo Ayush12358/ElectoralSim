@@ -496,7 +496,7 @@
 
 ### Miscellaneous
 
-- [ ] **P2** `app.py` imports `simulate_india_election` from `presets.india.election` directly — should use `electoral_sim` top-level import for consistency
+- [x] **P2** `app.py` imports `simulate_india_election` from `presets.india.election` directly — should use `electoral_sim` top-level import for consistency
 - [ ] **P3** `MANIFEST.in` doesn't include `benchmarks/`, `docs/`, or `.github/` — consider adding for source distributions
 - [ ] **P3** Auxiliary test files (`stress_test.py`, `benchmark_cache.py`) are not run by CI — add to test suite or document as manual-only
 

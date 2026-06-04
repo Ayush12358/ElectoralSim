@@ -3,8 +3,7 @@ import numpy as np
 import polars as pl
 import plotly.express as px
 import plotly.graph_objects as go
-from electoral_sim import ElectionModel, Config
-from electoral_sim.presets.india.election import simulate_india_election, INDIA_PARTIES
+from electoral_sim import ElectionModel, Config, simulate_india_election, INDIA_PARTIES
 from electoral_sim.visualization.plots import (
     plot_seat_distribution,
     plot_vote_shares,

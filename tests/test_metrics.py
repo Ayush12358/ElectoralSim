@@ -284,3 +284,23 @@ class TestVSE:
         seats_a = np.array([1, 1, 0])
         ratio = swing_ratio(votes_a, votes_b, seats_a)
         assert ratio >= 0
+
+    def test_polsby_popper_circle(self):
+        """Polsby-Popper of a circle (area=π, perimeter=2π) is 1.0."""
+        from electoral_sim.metrics.indices import polsby_popper
+
+        score = polsby_popper(np.pi, 2 * np.pi)
+        assert abs(score - 1.0) < 0.001
+
+    def test_polsby_popper_zero_perimeter(self):
+        """Polsby-Popper with zero perimeter returns 0.0."""
+        from electoral_sim.metrics.indices import polsby_popper
+
+        assert polsby_popper(100, 0) == 0.0
+
+    def test_convex_hull_compactness_convex(self):
+        """Convex hull compactness of a convex shape is 1.0."""
+        from electoral_sim.metrics.indices import convex_hull_compactness
+
+        score = convex_hull_compactness(50, 50)
+        assert score == 1.0

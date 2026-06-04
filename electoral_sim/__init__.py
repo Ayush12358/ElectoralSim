@@ -79,12 +79,14 @@ from electoral_sim.systems.alternative import (
 
 # Metrics
 from electoral_sim.metrics.indices import (
+    convex_hull_compactness,
     effective_number_of_parties,
     efficiency_gap,
     gallagher_index,
     mean_median_gap,
     partisan_bias,
     partisan_gini,
+    polsby_popper,
     responsiveness,
     swing_ratio,
 )

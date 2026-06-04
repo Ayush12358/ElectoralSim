@@ -88,7 +88,7 @@
 - [x] **P2** Add partisan-bias, mean-median-gap, partisan-gini metrics
     - GerryChain exposes efficiency gap, Polsby-Popper, and partisan Gini; ElectoralSim should cover the same gerrymandering analysis basics.
     - Add references and known small examples for each metric.
-- [ ] **P2** Add compactness metrics for district plans
+- [x] **P2** Add compactness metrics for district plans
     - Implement Polsby-Popper, Reock or convex-hull compactness, perimeter/area validation, and missing-geometry behavior.
     - Keep geometry dependencies optional.
 - [x] **P2** Add seats-votes curve and responsiveness/swing-ratio analysis

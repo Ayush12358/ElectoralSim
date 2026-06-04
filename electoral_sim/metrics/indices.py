@@ -321,3 +321,41 @@ def swing_ratio(
     seat_share = np.mean(party_seats_a)
     # Swing ratio = responsiveness at the observed vote share
     return float(seat_share / vote_share) if vote_share > 0 else 0.0
+
+
+def polsby_popper(area: float, perimeter: float) -> float:
+    """
+    Polsby-Popper compactness: measures how close a district shape is to a circle.
+
+    Values range from 0 to 1, where 1 is a perfect circle. Low values indicate
+    irregular (potentially gerrymandered) districts.
+
+    Args:
+        area: District area
+        perimeter: District perimeter length
+
+    Returns:
+        Polsby-Popper score (0-1)
+    """
+    if perimeter <= 0:
+        return 0.0
+    return float(4 * np.pi * area / (perimeter ** 2))
+
+
+def convex_hull_compactness(area: float, convex_hull_area: float) -> float:
+    """
+    Convex hull compactness: ratio of district area to its convex hull area.
+
+    Values range from 0 to 1, where 1 means the district is convex.
+    Low values indicate indented shapes.
+
+    Args:
+        area: District area
+        convex_hull_area: Area of the district's convex hull
+
+    Returns:
+        Compactness score (0-1)
+    """
+    if convex_hull_area <= 0:
+        return 0.0
+    return float(area / convex_hull_area) if area <= convex_hull_area else 0.0

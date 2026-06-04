@@ -491,7 +491,7 @@
 
 ### Code Style
 
-- [ ] **P3** `core/model.py:114` uses `Optional[ConstituencyManager]` — replace with `ConstituencyManager | None` (PEP 604 style, Python 3.10+)
+- [x] **P3** `core/model.py:114` changed to `ConstituencyManager | None` — replace with `ConstituencyManager | None` (PEP 604 style, Python 3.10+)
 - [x] **P5** Add `py.typed` marker to MANIFEST.in for PEP 561 compliance
 
 ### Miscellaneous

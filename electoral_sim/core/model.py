@@ -112,9 +112,7 @@ class ElectionModel(Model):
         indifference_threshold: float = 0.3,  # Abstain if utility range below this
         event_probs: dict[str, float] | None = None,  # P4: Dynamic events
         use_adaptive_strategy: bool = False,  # P4: Strategy
-        constituency_manager: Optional[
-            ConstituencyManager
-        ] = None,  # TECHNICAL: Real data integration
+        constituency_manager: ConstituencyManager | None = None,  # TECHNICAL: Real data integration
         use_gpu: bool = False,  # P4: GPU acceleration (CuPy)
     ):
         super().__init__()

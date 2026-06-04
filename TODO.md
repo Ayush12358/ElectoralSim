@@ -579,7 +579,7 @@
 
 ## Documentation Gaps — Found 2026-06-04
 
-- [ ] **P2** No API reference for `PartyAgents` and `VoterAgents` class methods (`get_positions()`, `get_valence()`, etc.)
+- [x] **P2** API reference for VoterAgents.get_ideology_x/y() added
 - [ ] **P2** No documentation for `adaptive_strategy_step()` or `EventManager` in user-facing docs
 - [x] **P3** `CITATION.cff` and `docs/CITATIONS.md` now linked but `docs/CITATIONS.md` not linked from README
 - [ ] **P3** `VALIDATION.md` has template but no populated data — needs a real calibration pass

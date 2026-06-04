@@ -369,6 +369,7 @@ python benchmarks/stress_test.py
   - [Advanced Topics](docs/advanced/) — Voter psychology, performance tuning
 - [CITATIONS.md](docs/CITATIONS.md) — Academic references and citations
 - [CITATION.cff](CITATION.cff) — Software citation metadata
+- [FEATURE_COMPARISON.md](docs/FEATURE_COMPARISON.md) — How ElectoralSim compares to other tools
 
 ---
 

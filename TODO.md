@@ -583,7 +583,7 @@
 - [ ] **P2** No documentation for `adaptive_strategy_step()` or `EventManager` in user-facing docs
 - [x] **P3** `CITATION.cff` and `docs/CITATIONS.md` now linked but `docs/CITATIONS.md` not linked from README
 - [ ] **P3** `VALIDATION.md` has template but no populated data — needs a real calibration pass
-- [ ] **P3** `FEATURE_COMPARISON.md` is research-only, not user-facing — add "How We Compare" to README
+- [x] **P3** FEATURE_COMPARISON.md linked from README, not user-facing — add "How We Compare" to README
 - [ ] **P3** `docs/` mkdocs structure doesn't include new files (`WORKFLOW.md`, `ITERATION.md`, `CITATIONS.md`, etc.)
 - [ ] **P3** `examples/` directory has only 2 scripts — add examples for coalition, government, duverger, opinion dynamics
 - [x] **P3** CHANGELOG.md v0.1.1 already populated

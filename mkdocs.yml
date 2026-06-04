@@ -64,4 +64,10 @@ nav:
   - Advanced:
     - Voter Psychology: advanced/voter_psychology.md
     - Performance: advanced/performance.md
-    - Maintenance: MAINTENANCE.md
+  - Development:
+    - Workflow: WORKFLOW.md
+    - Iteration: ITERATION.md
+    - Citations: CITATIONS.md
+    - Validation: VALIDATION.md
+    - Feature Comparison: FEATURE_COMPARISON.md
+  - Maintenance: MAINTENANCE.md

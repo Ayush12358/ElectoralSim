@@ -108,6 +108,13 @@ from electoral_sim.engine.government import (
 # Opinion Dynamics
 from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
 
+# Agents (BETA — internal API, useful for advanced customization)
+from electoral_sim.agents.voter import VoterAgents
+from electoral_sim.agents.party import PartyAgents
+
+# Events (BETA — event management for scandal/shock simulation)
+from electoral_sim.events.event_manager import EventManager
+
 # Country-Specific Presets
 from electoral_sim.presets.india.election import (
     INDIA_PARTIES,

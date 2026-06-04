@@ -571,7 +571,7 @@
 - [x] **P2** `coalition_strain()` has inconsistent behavior with zero-weight input — guard division
 
 ### API Design
-- [ ] **P3** `electoral_sim/__init__.py` doesn't export `agents/` or `events/` subpackages — only individual symbols
+- [x] **P3** `electoral_sim/__init__.py` now exports VoterAgents, PartyAgents, EventManager `agents/` or `events/` subpackages — only individual symbols
 - [ ] **P3** No public API for `VoterAgents` or `PartyAgents` from top-level — users can't manipulate agents directly
 - [ ] **P5** `ElectionModel` constructor has 20+ parameters — consider builder pattern or validate-only config input
 

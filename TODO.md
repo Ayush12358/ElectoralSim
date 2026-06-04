@@ -213,7 +213,7 @@
     - Compare Sainte-Lague variants, regional districts, national adjustment seats, and thresholds.
 - [ ] **P2** Add Chile or Spain D'Hondt multi-district presets
     - Useful for district magnitude effects and disproportionality comparisons.
-- [ ] **P2** Add EU preset `config.py` so EU is available through `ElectionModel.from_preset("eu")`
+- [x] **P2** Add EU preset `config.py` (done in b617fb1) through `ElectionModel.from_preset("eu")`
     - Existing EU implementation is specialized in `election.py`, inconsistent with config-based presets.
 - [ ] **P2** Add preset contract tests
     - Every preset should expose config, party metadata, provenance, expected system, expected seat count, and smoke simulation.
@@ -560,10 +560,10 @@
 - [ ] **P5** Make `ElectionModel` aware of state regions so India sim doesn't need to batch manually
 
 ### EU Preset
-- [ ] **P2** Create `presets/eu/config.py` with `eu_config()` function for PRESETS registry
+- [x] **P2** Create `presets/eu/config.py` (done in b617fb1) with `eu_config()` function for PRESETS registry
 - [ ] **P2** Extract `EU_POLITICAL_GROUPS` and `COUNTRY_GROUP_WEIGHTS` from `election.py` into `data.py`
 - [ ] **P3** Split `simulate_eu_election()` to use `ElectionModel` per country (mirror India refactor)
-- [ ] **P3** EU preset currently has no `config.py` — inconsistent with all other presets
+- [x] **P3** EU preset config.py added (b617fb1) — inconsistent with all other presets
 
 ### Engine
 - [ ] **P2** `voter_behavior.py` uses `if isinstance(model, X)` dispatch — replace with registry pattern or method dispatch
@@ -586,7 +586,7 @@
 - [ ] **P3** `FEATURE_COMPARISON.md` is research-only, not user-facing — add "How We Compare" to README
 - [ ] **P3** `docs/` mkdocs structure doesn't include new files (`WORKFLOW.md`, `ITERATION.md`, `CITATIONS.md`, etc.)
 - [ ] **P3** `examples/` directory has only 2 scripts — add examples for coalition, government, duverger, opinion dynamics
-- [ ] **P3** No `CHANGELOG.md` entry for v0.1.1 changes beyond version bump
+- [x] **P3** CHANGELOG.md v0.1.1 already populated
 - [ ] **P5** No tutorial/quickstart for new users beyond README code snippets
 
 ---

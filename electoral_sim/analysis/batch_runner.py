@@ -339,8 +339,14 @@ class BatchRunner:
                 *[pl.col(p).first().alias(p) for p in param_cols],
                 pl.col("turnout").mean().alias("turnout_mean"),
                 pl.col("turnout").std().alias("turnout_std"),
+                pl.col("turnout").quantile(0.25).alias("turnout_q25"),
+                pl.col("turnout").quantile(0.75).alias("turnout_q75"),
+                (pl.col("turnout").std() / pl.col("turnout").count().sqrt()).alias("turnout_mcse"),
                 pl.col("gallagher").mean().alias("gallagher_mean"),
                 pl.col("gallagher").std().alias("gallagher_std"),
+                pl.col("gallagher").quantile(0.25).alias("gallagher_q25"),
+                pl.col("gallagher").quantile(0.75).alias("gallagher_q75"),
+                (pl.col("gallagher").std() / pl.col("gallagher").count().sqrt()).alias("gallagher_mcse"),
                 pl.col("enp_votes").mean().alias("enp_votes_mean"),
                 pl.col("enp_votes").std().alias("enp_votes_std"),
                 pl.col("enp_seats").mean().alias("enp_seats_mean"),
@@ -350,6 +356,17 @@ class BatchRunner:
                 pl.len().alias("n_runs"),
             ]
         )
+
+        # Add 95% CI bounds (mean ± 1.96 * SE) for key metrics
+        for metric in ["turnout", "gallagher"]:
+            summary = summary.with_columns(
+                (pl.col(f"{metric}_mean") - 1.96 * pl.col(f"{metric}_mcse")).alias(
+                    f"{metric}_ci_lower"
+                ),
+                (pl.col(f"{metric}_mean") + 1.96 * pl.col(f"{metric}_mcse")).alias(
+                    f"{metric}_ci_upper"
+                ),
+            )
 
         return summary
 

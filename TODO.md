@@ -97,7 +97,7 @@
 - [ ] **P2** Add calibration framework against historical election results
     - Define target metrics, loss functions, calibration parameters, and reproducible calibration reports.
     - Start with Germany 2021, India 2024 sample, and US House data where data provenance is available.
-- [ ] **P2** Add uncertainty quantification for simulation outputs
+- [x] **P2** Add uncertainty quantification (CI, quantiles, MCSE) to BatchRunner
     - BatchRunner should report confidence intervals, quantiles, Monte Carlo standard errors, and seed counts.
     - Add tests for deterministic aggregation over fixed synthetic result sets.
 - [ ] **P2** Add sensitivity-analysis tooling

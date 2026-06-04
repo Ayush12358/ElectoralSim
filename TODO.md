@@ -614,7 +614,7 @@
 - [x] **P2** Make `ElectionModel.run_election()` robust when no valid votes remain
     - `core/model.py` computes `vote_shares = vote_counts / vote_counts.sum()` after turnout and constituency filtering; all voters abstaining or all votes invalidated can divide by zero
     - Add tests in `tests/test_model.py` for zero turnout and all votes invalidated by `constituency_constraints`
-- [ ] **P2** Define and test deterministic FPTP tie-breaking across both counting paths
+- [x] **P2** Define and test deterministic FPTP tie-breaking across both counting paths
     - `systems/allocation.py::fptp_allocation()` depends on sorted Polars group order; `engine/numba_accel.py::fptp_count_fast()` likely uses first max party index
     - Add matching tie tests for Polars FPTP allocation and Numba/NumPy fast counting so both paths agree
 - [x] **P3** Handle empty approval ballots in `systems/alternative.py::approval_voting()`

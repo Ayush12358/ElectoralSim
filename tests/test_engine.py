@@ -939,6 +939,52 @@ class TestNumbaWrappers:
         benchmark_numba()
 
 
+class TestFptpTieBreaking:
+    """Verify deterministic FPTP tie-breaking across both counting paths."""
+
+    def test_tie_picks_first_party_numba(self):
+        """Numba path: tie goes to lower-index party."""
+        from electoral_sim.engine.numba_accel import fptp_count_fast
+
+        constituencies = np.array([0, 0, 0, 0], dtype=np.int64)
+        votes = np.array([0, 1, 0, 1], dtype=np.int64)
+        seats, _ = fptp_count_fast(constituencies, votes, n_constituencies=1, n_parties=2)
+        assert seats[0] == 1  # First party in tie wins
+        assert seats[1] == 0
+
+    def test_tie_picks_first_party_polars(self):
+        """Polars path: tie goes to party appearing first in sorted order."""
+        from electoral_sim.systems.allocation import fptp_allocation
+        import polars as pl
+
+        df = pl.DataFrame({
+            "constituency": [0, 0],
+            "party": [0, 1],
+            "votes": [100, 100],
+        })
+        seats = fptp_allocation(df, n_constituencies=1)
+        assert seats[0] == 1
+        assert seats[1] == 0
+
+    def test_both_paths_agree_on_tie(self):
+        """Numba and Polars FPTP counting agree on tie outcomes."""
+        from electoral_sim.engine.numba_accel import fptp_count_fast
+        from electoral_sim.systems.allocation import fptp_allocation
+        import polars as pl
+
+        constituencies = np.array([0, 0, 0, 0], dtype=np.int64)
+        votes = np.array([0, 1, 0, 1], dtype=np.int64)
+        seats_numba, _ = fptp_count_fast(constituencies, votes, 1, 2)
+
+        df = pl.DataFrame({
+            "constituency": [0, 0],
+            "party": [0, 1],
+            "votes": [2, 2],
+        })
+        seats_polars = fptp_allocation(df, n_constituencies=1)
+        assert (seats_numba == seats_polars).all()
+
+
 class TestRankedChoiceProperties:
     """Hypothesis property tests for IRV/STV edge cases."""
 

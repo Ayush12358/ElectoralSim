@@ -544,7 +544,16 @@ class TestErrorHandling:
 
         model = ElectionModel(n_voters=100, electoral_system="PR", seed=42)
         model.allocation_method = "INVALID"
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="Unknown method"):
+            model.run_election()
+
+    def test_direct_electoral_system_mutation_raises_at_runtime(self):
+        """Direct attribute mutation bypassing validation is caught at run_election()."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=100, seed=42)
+        model.electoral_system = "Mixed"
+        with pytest.raises(ValueError, match="Unsupported electoral system"):
             model.run_election()
 
     def test_invalid_preset_raises_error(self):

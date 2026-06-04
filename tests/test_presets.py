@@ -72,6 +72,20 @@ class TestAllPresets:
         assert model.electoral_system == "FPTP"
         assert model.parties.n_parties == 5
 
+    def test_australia_house_uses_fptp(self):
+        """Australia House preset uses FPTP (IRV not yet wired into model)."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("australia_house", n_voters=5000)
+        assert model.electoral_system == "FPTP"
+
+    def test_australia_senate_uses_pr(self):
+        """Australia Senate preset uses PR (STV not yet wired into model)."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("australia_senate", n_voters=5000)
+        assert model.electoral_system == "PR"
+
 
 # =============================================================================
 # INDIA PRESET

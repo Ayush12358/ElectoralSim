@@ -178,6 +178,17 @@ class TestConfig:
             with pytest.raises(ValueError, match="Unknown allocation method"):
                 Config(n_voters=100, allocation_method=method)
 
+    def test_allocation_methods_config_and_registry_synced(self):
+        """VALID_ALLOCATION_METHODS from config matches ALLOCATION_METHODS registry."""
+        from electoral_sim.core.config import VALID_ALLOCATION_METHODS
+        from electoral_sim.systems.allocation import ALLOCATION_METHODS
+
+        config_set = set(VALID_ALLOCATION_METHODS)
+        registry_set = set(ALLOCATION_METHODS.keys())
+        assert config_set == registry_set, (
+            f"Mismatch: config={sorted(config_set)}, registry={sorted(registry_set)}"
+        )
+
 
 class TestPresets:
     """Tests for country presets."""

@@ -115,7 +115,7 @@
 - [ ] **P2** Add data provenance registry for every bundled dataset and preset
     - Store source URL, retrieval date, license, preprocessing steps, calibration status, and checksum.
     - Expose provenance via `ElectionModel.from_preset(...).metadata`.
-- [ ] **P2** Add reproducibility manifests to BatchRunner outputs
+- [x] **P2** Add reproducibility manifests to BatchRunner outputs
     - Include package version, git commit, Python version, dependency versions, CPU/GPU info, seed hierarchy, and config hash.
     - Write JSON sidecars for CSV/Parquet exports.
 

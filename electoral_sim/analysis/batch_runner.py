@@ -386,6 +386,72 @@ class BatchRunner:
         if self.verbose:
             print(f"Results exported to {filepath}")
 
+        # Write reproducibility manifest alongside data file
+        manifest = self._build_manifest()
+        manifest_path = f"{filepath}.manifest.json"
+        import json as _json
+        with open(manifest_path, "w") as f:
+            _json.dump(manifest, f, indent=2)
+        if self.verbose:
+            print(f"Manifest exported to {manifest_path}")
+
+    def _build_manifest(self) -> dict:
+        """Build reproducibility manifest for the batch run.
+
+        Returns dict with version, git commit, Python version,
+        dependency versions, CPU/GPU info, seed hierarchy, and config hash.
+        """
+        import hashlib
+        import json
+        import platform
+        import sys
+
+        from electoral_sim import __version__
+
+        # Git commit (best-effort)
+        git_commit = None
+        try:
+            import subprocess
+
+            result = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                capture_output=True, text=True, timeout=5,
+            )
+            if result.returncode == 0:
+                git_commit = result.stdout.strip()
+        except Exception:
+            pass
+
+        # Dependency versions
+        deps = {}
+        for pkg in ["mesa", "polars", "numpy", "numba", "networkx"]:
+            try:
+                mod = __import__(pkg)
+                deps[pkg] = getattr(mod, "__version__", "unknown")
+            except ImportError:
+                deps[pkg] = "not installed"
+
+        # Config hash for identifying unique configurations
+        config_str = json.dumps(self.parameter_sweep.parameters, sort_keys=True)
+        config_hash = hashlib.sha256(config_str.encode()).hexdigest()[:12]
+
+        return {
+            "package": "electoral-sim",
+            "version": __version__,
+            "git_commit": git_commit,
+            "python": sys.version.split()[0],
+            "platform": platform.platform(),
+            "dependencies": deps,
+            "seed_hierarchy": {
+                "base_seed": self.seed,
+                "n_runs_per_config": self.n_runs_per_config,
+            },
+            "config_hash": config_hash,
+            "n_configs": len(self.parameter_sweep),
+            "n_jobs": self.n_jobs,
+            "model_class": self.model_class.__name__,
+        }
+
     def export_summary(self, filepath: str, format: str = "auto"):
         """Export summary statistics to file."""
         summary = self.get_summary_stats()

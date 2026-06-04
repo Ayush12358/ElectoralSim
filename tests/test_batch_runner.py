@@ -45,6 +45,25 @@ class TestParameterSweep:
         sweep = ParameterSweep({"a": [1, 2, 3], "b": [4, 5]})
         assert len(sweep) == 6
 
+    def test_validate_rejects_unknown_params(self):
+        """validate() catches unknown parameter names."""
+        sweep = ParameterSweep({"unknown_param": [1, 2]})
+        errors = sweep.validate()
+        assert len(errors) > 0
+        assert any("unknown_param" in e for e in errors)
+
+    def test_validate_rejects_invalid_sweep_type(self):
+        """validate() catches invalid sweep_type."""
+        sweep = ParameterSweep({"n_voters": [100, 200]}, sweep_type="invalid")
+        errors = sweep.validate()
+        assert any("sweep_type" in e for e in errors)
+
+    def test_validate_accepts_valid_config(self):
+        """validate() returns no errors for valid config."""
+        sweep = ParameterSweep({"n_voters": [100, 200], "temperature": [0.3, 0.7]})
+        errors = sweep.validate()
+        assert len(errors) == 0
+
 
 # =============================================================================
 # BATCH RUNNER

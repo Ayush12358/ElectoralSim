@@ -97,6 +97,37 @@ class ParameterSweep:
         else:
             return self.n_samples
 
+    def validate(self) -> list[str]:
+        """Validate parameter names and values, returning all errors (not just first).
+
+        Returns:
+            List of error strings (empty if valid).
+        """
+        KNOWN_PARAMS = frozenset(
+            {"n_voters", "n_constituencies", "electoral_system", "allocation_method",
+             "threshold", "temperature", "seed", "economic_growth", "national_mood",
+             "anti_incumbency", "include_nota", "use_adaptive_strategy", "use_gpu"}
+        )
+        errors = []
+
+        all_params = set(self.parameters.keys()) | set(self.fixed_params.keys())
+        unknown = all_params - KNOWN_PARAMS
+        if unknown:
+            errors.append(f"Unknown parameters: {sorted(unknown)}. Known: {sorted(KNOWN_PARAMS)}")
+
+        for name, values in self.parameters.items():
+            if not isinstance(values, list) or len(values) == 0:
+                errors.append(f"Parameter '{name}' must be a non-empty list, got {type(values).__name__}")
+            if name == "n_voters" and any(v <= 0 for v in values if isinstance(v, (int, float))):
+                errors.append(f"Parameter 'n_voters' values must be positive")
+            if name == "temperature" and any(v <= 0 for v in values if isinstance(v, (int, float))):
+                errors.append(f"Parameter 'temperature' values must be positive")
+
+        if self.sweep_type not in ("grid", "random"):
+            errors.append(f"Invalid sweep_type '{self.sweep_type}', expected 'grid' or 'random'")
+
+        return errors
+
 
 class BatchRunner:
     """

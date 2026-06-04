@@ -268,7 +268,7 @@
     - Include tiny CLI integration tests with JSON output.
 - [ ] **P3** Add CLI commands for validation, calibration, benchmark, and preset metadata
     - Examples: `electoral-sim validate --preset germany --year 2021`, `electoral-sim preset-info india`.
-- [ ] **P3** Add BatchRunner config schema validation
+- [x] **P3** Add BatchRunner config schema validation
     - Validate JSON/YAML config before running and report all invalid fields at once.
 - [ ] **P3** Add dashboard tabs for systems comparison, preset metadata, calibration status, and uncertainty intervals
     - Avoid one-off India/generic branches where common result display can be shared.

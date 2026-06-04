@@ -42,7 +42,7 @@ class ElectionModel(Model):
         - Multiple constituencies (default: 543 for Lok Sabha)
         - Configurable electoral systems (FPTP, PR with D'Hondt/Sainte-Laguë)
         - Multinomial logit voting model
-        - Opinion dynamics (placeholder)
+        - Opinion dynamics (network-based, bounded confidence, noisy voter)
 
     Examples:
         # Simple usage

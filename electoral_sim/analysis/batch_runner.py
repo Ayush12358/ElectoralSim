@@ -23,6 +23,8 @@ This module provides advanced batch execution capabilities including:
 """
 
 import itertools
+import multiprocessing
+import os
 from typing import Any, Callable, Type
 from dataclasses import dataclass, field
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -215,8 +217,14 @@ class BatchRunner:
                 run_seed = self._get_run_seed(config_idx, run_idx)
                 jobs.append((config, config_idx, run_idx, run_seed))
 
-        # Execute in parallel
-        with ProcessPoolExecutor(max_workers=self.n_jobs) as executor:
+        # Execute in parallel using spawn context to avoid Numba/OpenMP fork() conflict
+        # Ref: Numba's OpenMP threading layer is unsafe with Linux default fork() multiprocessing
+        try:
+            mp_context = multiprocessing.get_context("spawn")
+        except (ValueError, RuntimeError):
+            mp_context = None  # fall back to default on platforms where spawn is unavailable
+
+        with ProcessPoolExecutor(max_workers=self.n_jobs, mp_context=mp_context) as executor:
             futures = {
                 executor.submit(
                     _run_simulation_worker,
@@ -381,6 +389,10 @@ def _run_simulation_worker(
     election_kwargs: dict,
 ) -> dict:
     """Worker function for parallel execution."""
+    # Prevent Numba OpenMP threads from conflicting with multiprocessing
+    # Set to 1 in worker process to avoid nested parallelism issues
+    os.environ.setdefault("OMP_NUM_THREADS", "1")
+
     # Create model
     model = model_class(**config, seed=run_seed)
 

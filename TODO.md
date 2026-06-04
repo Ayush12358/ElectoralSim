@@ -26,32 +26,32 @@
 
 ### Bugs & Technical Debt (P1) — From Legitimacy Audit
 
-- [ ] **P1** Fix Numba multiprocessing crash in BatchRunner._run_parallel() (OpenMP + fork() unsafe)
+- [x] **P1** Fix Numba multiprocessing crash in BatchRunner._run_parallel() (OpenMP + fork() unsafe)
     - Switch to multiprocessing.set_start_method("spawn") or set OMP_NUM_THREADS=1
     - Remove xfail marker from test_batch_runner.py::test_parallel_execution
-- [ ] **P1** Fix "Opinion dynamics (placeholder)" docstring in ElectionModel (core/model.py line 45)
-- [ ] **P1** Narrow broad try/except in electoral_sim/__init__.py optional imports — capture and expose ImportError details
-- [ ] **P2** GPU fptp_count_gpu() currently raises NotImplementedError — implement or document as experimental
-- [ ] **P2** Separate stable vs experimental public API surface (top-level __init__.py exports too broadly)
+- [x] **P1** Fix "Opinion dynamics (placeholder)" docstring in ElectionModel (core/model.py line 45)
+- [x] **P1** Narrow broad try/except in electoral_sim/__init__.py optional imports — capture and expose ImportError details
+- [x] **P2** GPU fptp_count_gpu() currently raises NotImplementedError — implement or document as experimental
+- [x] **P2** Separate stable vs experimental public API surface (top-level __init__.py exports too broadly)
 
 ### Documentation & Credibility (P1) — From Legitimacy Audit
 
-- [ ] **P1** Add prominent "not a forecasting model" disclaimer near top of README
-- [ ] **P1** Add feature maturity table to README (Stable / Beta / Experimental / Placeholder)
-- [ ] **P1** Add model limitations section to README
-- [ ] **P1** Recalibrate README language to match v0.1.0 maturity level
-- [ ] **P1** Add benchmark scripts (benchmarks/benchmark_core.py) with documented hardware/methodology
+- [x] **P1** Add prominent "not a forecasting model" disclaimer near top of README
+- [x] **P1** Add feature maturity table to README (Stable / Beta / Experimental / Placeholder)
+- [x] **P1** Add model limitations section to README
+- [x] **P1** Recalibrate README language to match v0.1.0 maturity level
+- [x] **P1** Add benchmark scripts (benchmarks/benchmark_core.py) with documented hardware/methodology
     - Quantify "1M+ voters", "89x speedup", "30 elections/sec" claims
     - Separate Numba warmup from steady-state timing
     - Document memory measurement method (RSS vs heap vs DataFrame.estimated_size)
-- [ ] **P1** Qualify performance claims: baseline, hardware, Python version, command used
-- [ ] **P1** Fix README test count (currently says 222; actual is 237)
-- [ ] **P2** Add model transparency table — status, calibration, validation per behavior model
+- [x] **P1** Qualify performance claims: baseline, hardware, Python version, command used
+- [x] **P1** Fix README test count (currently says 222; actual is 237)
+- [x] **P2** Add model transparency table — status, calibration, validation per behavior model
 - [ ] **P2** Add data provenance docs for country presets (source URLs, licenses, preprocessing)
-- [ ] **P2** Qualify "country presets" as structural demos, not calibrated forecasts
-- [ ] **P2** Add "inspired by" language for psychology features (Big Five, moral foundations, etc.)
+- [x] **P2** Qualify "country presets" as structural demos, not calibrated forecasts
+- [x] **P2** Add "inspired by" language for psychology features (Big Five, moral foundations, etc.)
 - [ ] **P2** Add preset parameter rationale — party positions, valence, region weights
-- [ ] **P2** Rename "real-world validation" tests to "preset smoke tests" unless backed by comparison data
+- [x] **P2** Rename "real-world validation" tests to "preset smoke tests" unless backed by comparison data
 - [ ] **P3** Add dashboard screenshots to README (docs/assets/)
 - [ ] **P3** Add CI job for optional dependency import smoke tests
 

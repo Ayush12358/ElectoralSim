@@ -26,16 +26,11 @@ __version__ = "0.1.0"
 # FACADE API (Backward Compatibility)
 # =============================================================================
 
-# Behavior & Dynamics
-from electoral_sim.behavior.voter_behavior import (
-    BehaviorEngine,
-    ProximityModel,
-    RetrospectiveModel,
-    SociotropicPocketbookModel,
-    StrategicVotingModel,
-    ValenceModel,
-    WastedVoteModel,
-)
+# =============================================================================
+# STABLE API — core engine, always safe to import
+# =============================================================================
+
+from electoral_sim.core.model import ElectionModel
 from electoral_sim.core.config import (
     PRESETS,
     Config,
@@ -51,45 +46,16 @@ from electoral_sim.core.config import (
     uk_config,
     usa_config,
 )
-from electoral_sim.core.model import ElectionModel
-from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
 
-# Engine & Logic
-from electoral_sim.engine.coalition import (
-    allocate_portfolios_laver_shepsle,
-    coalition_strain,
-    form_government,
-    junior_partner_penalty,
-    minimum_connected_winning,
-    minimum_winning_coalitions,
-)
-from electoral_sim.engine.government import (
-    GovernmentSimulator,
-    collapse_probability,
-    cox_proportional_hazard,
-    hazard_rate,
-    simulate_government_survival,
-)
-
-# Metrics
-from electoral_sim.metrics.indices import (
-    effective_number_of_parties,
-    efficiency_gap,
-    gallagher_index,
-)
-from electoral_sim.presets.eu.election import (
-    EU_MEMBER_STATES,
-    EU_POLITICAL_GROUPS,
-    EUElectionResult,
-    simulate_eu_election,
-)
-
-# Presets
-from electoral_sim.presets.india.election import (
-    INDIA_PARTIES,
-    INDIA_STATES,
-    IndiaElectionResult,
-    simulate_india_election,
+# Behavior
+from electoral_sim.behavior.voter_behavior import (
+    BehaviorEngine,
+    ProximityModel,
+    RetrospectiveModel,
+    SociotropicPocketbookModel,
+    StrategicVotingModel,
+    ValenceModel,
+    WastedVoteModel,
 )
 
 # Electoral Systems
@@ -108,8 +74,53 @@ from electoral_sim.systems.alternative import (
     stv_election,
 )
 
-# Analysis tools
+# Metrics
+from electoral_sim.metrics.indices import (
+    effective_number_of_parties,
+    efficiency_gap,
+    gallagher_index,
+)
+
+# Analysis
 from electoral_sim.analysis import BatchRunner, ParameterSweep
+
+# =============================================================================
+# BETA API — tested but may have known caveats
+# =============================================================================
+
+# Coalition & Government
+from electoral_sim.engine.coalition import (
+    allocate_portfolios_laver_shepsle,
+    coalition_strain,
+    form_government,
+    junior_partner_penalty,
+    minimum_connected_winning,
+    minimum_winning_coalitions,
+)
+from electoral_sim.engine.government import (
+    GovernmentSimulator,
+    collapse_probability,
+    cox_proportional_hazard,
+    hazard_rate,
+    simulate_government_survival,
+)
+
+# Opinion Dynamics
+from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
+
+# Country-Specific Presets
+from electoral_sim.presets.india.election import (
+    INDIA_PARTIES,
+    INDIA_STATES,
+    IndiaElectionResult,
+    simulate_india_election,
+)
+from electoral_sim.presets.eu.election import (
+    EU_MEMBER_STATES,
+    EU_POLITICAL_GROUPS,
+    EUElectionResult,
+    simulate_eu_election,
+)
 
 # Visualization (optional - requires matplotlib)
 try:

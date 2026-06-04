@@ -367,6 +367,8 @@ python benchmarks/stress_test.py
   - [API Reference](docs/api/) — Complete function/class documentation
   - [Country Presets](docs/presets/) — India, EU, and other country guides
   - [Advanced Topics](docs/advanced/) — Voter psychology, performance tuning
+- [CITATIONS.md](docs/CITATIONS.md) — Academic references and citations
+- [CITATION.cff](CITATION.cff) — Software citation metadata
 
 ---
 

@@ -30,6 +30,60 @@ jobs:
         run: |
           pytest tests/ -v --tb=short
 
-      - name: Check import
+      - name: Check imports (core)
         run: |
           python -c "from electoral_sim import ElectionModel, __version__; print(f'v{__version__}')"
+
+      - name: Check imports (all subpackages)
+        run: |
+          python -c "
+          from electoral_sim import (
+              ElectionModel, Config, PartyConfig, PRESETS,
+              allocate_seats, dhondt_allocation, sainte_lague_allocation,
+              irv_election, stv_election, approval_voting, condorcet_winner,
+              gallagher_index, effective_number_of_parties, efficiency_gap,
+              BehaviorEngine, ProximityModel, ValenceModel, RetrospectiveModel,
+              minimum_winning_coalitions, form_government, coalition_strain,
+              collapse_probability, simulate_government_survival,
+              simulate_india_election, IndiaElectionResult,
+              simulate_eu_election, EUElectionResult,
+              BatchRunner, ParameterSweep,
+          )
+          print('All core subpackage imports OK')
+          "
+
+  test-optional-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install with viz extras
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[viz]"
+
+      - name: Check visualization imports
+        run: |
+          python -c "
+          from electoral_sim import (
+              plot_seat_distribution, plot_vote_shares,
+              plot_seats_vs_votes, plot_election_summary,
+              plot_ideological_space,
+          )
+          print('All viz imports OK')
+          "
+
+      - name: Verify Streamlit app imports
+        run: |
+          python -c "
+          import streamlit
+          # Verify app.py is syntactically valid
+          with open('app.py') as f:
+              compile(f.read(), 'app.py', 'exec')
+          print('Streamlit app compiles OK')
+          "

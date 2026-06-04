@@ -1,4 +1,11 @@
-"""Germany Election Preset - Bundestag."""
+"""Germany Election Preset - Bundestag.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate.
+The MMP system, 5% threshold, and Sainte-Laguë allocation match real rules.
+299 direct mandates + compensatory list seats.
+
+Sources: Bundeswahlgesetz (Federal Election Act), Bundeswahlleiter.
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +19,12 @@ def germany_config(
     Preset configuration for Germany (Bundestag).
 
     MMP system with 5% threshold.
+
+    Parameter rationale: Six major parties spanning the German political spectrum.
+    CDU/CSU center-right, SPD center-left, Grüne left/progressive, FDP right/liberal,
+    AfD far-right, Linke far-left. The 5% threshold is the real German hurdle.
+    Valence values are synthetic defaults; party positions approximate the
+    standard German party landscape for comparative simulation.
     """
     parties = [
         PartyConfig("CDU/CSU", 0.2, 0.1, 50),

@@ -1,4 +1,11 @@
-"""Brazil Election Preset - Chamber of Deputies."""
+"""Brazil Election Preset - Chamber of Deputies.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate.
+513 seats, 26 states + Federal District, open-list PR with D'Hondt match the
+real Chamber of Deputies rules.
+
+Sources: Brazilian Constitution, Tribunal Superior Eleitoral (TSE).
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +19,11 @@ def brazil_config(
     Preset configuration for Brazil (Chamber of Deputies).
 
     513 seats, Open-list PR (D'Hondt).
+
+    Parameter rationale: Seven major Brazilian parties. PT (Workers' Party) left,
+    PL (Liberal Party) right, MDB/Podemos/PSD center. Brazil's party system is
+    highly fragmented; this is a simplified selection. Valence values are synthetic
+    defaults for comparative simulation.
     """
     parties = [
         PartyConfig("PT", -0.4, 0.2, 60),

@@ -1,4 +1,11 @@
-"""USA Election Preset - House of Representatives."""
+"""USA Election Preset - House of Representatives.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate
+demonstration values, not estimated from survey data. Seat counts and electoral
+system rules (435 districts, FPTP) match the real institution.
+
+Sources: U.S. Constitution, House of Representatives rules.
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +19,11 @@ def usa_config(
     Preset configuration for USA (House of Representatives).
 
     435 districts, two-party system (FPTP).
+
+    Parameter rationale: Parties are placed on a standard 2D ideological space
+    (economic left-right, social liberal-conservative). Democrats center-left,
+    Republicans center-right. Equal valence (50) reflects a competitive baseline.
+    These are synthetic defaults for comparative simulation, not calibrated.
     """
     parties = [
         PartyConfig("Democratic", -0.4, -0.2, 50),

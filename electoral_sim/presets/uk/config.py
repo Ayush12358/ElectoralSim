@@ -1,4 +1,10 @@
-"""UK Election Preset - House of Commons."""
+"""UK Election Preset - House of Commons.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate
+demonstration values. 650 constituencies and FPTP match the real institution.
+
+Sources: UK Parliament rules, House of Commons Library.
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +18,11 @@ def uk_config(
     Preset configuration for UK (House of Commons).
 
     650 constituencies, multi-party FPTP.
+
+    Parameter rationale: Five major UK-wide parties placed on a 2D space.
+    SNP represents Scottish nationalism. Valence values range 35-50 to reflect
+    relative competitiveness. These are synthetic defaults for comparative
+    simulation, not calibrated against election data.
     """
     parties = [
         PartyConfig("Conservative", 0.3, 0.2, 45),

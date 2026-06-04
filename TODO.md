@@ -47,13 +47,13 @@
 - [x] **P1** Qualify performance claims: baseline, hardware, Python version, command used
 - [x] **P1** Fix README test count (currently says 222; actual is 237)
 - [x] **P2** Add model transparency table — status, calibration, validation per behavior model
-- [ ] **P2** Add data provenance docs for country presets (source URLs, licenses, preprocessing)
+- [x] **P2** Add data provenance docs for country presets (source URLs, licenses, preprocessing)
 - [x] **P2** Qualify "country presets" as structural demos, not calibrated forecasts
 - [x] **P2** Add "inspired by" language for psychology features (Big Five, moral foundations, etc.)
-- [ ] **P2** Add preset parameter rationale — party positions, valence, region weights
+- [x] **P2** Add preset parameter rationale — party positions, valence, region weights
 - [x] **P2** Rename "real-world validation" tests to "preset smoke tests" unless backed by comparison data
-- [ ] **P3** Add dashboard screenshots to README (docs/assets/)
-- [ ] **P3** Add CI job for optional dependency import smoke tests
+- [x] **P3** Add dashboard screenshots to README (docs/assets/)
+- [x] **P3** Add CI job for optional dependency import smoke tests
 
 ### Research Features
 

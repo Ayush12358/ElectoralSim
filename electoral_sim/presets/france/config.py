@@ -1,4 +1,11 @@
-"""France Election Preset - National Assembly."""
+"""France Election Preset - National Assembly.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate.
+577 constituencies match the real National Assembly. The actual two-round system
+is simulated as FPTP with major electoral alliances.
+
+Sources: French Constitution, Ministère de l'Intérieur.
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +19,11 @@ def france_config(
     Preset configuration for France (National Assembly).
 
     577 constituencies, Two-Round System (simulated as FPTP with major alliances).
+
+    Parameter rationale: Four major electoral blocs representing the post-2024
+    French landscape. NFP (left alliance), Ensemble (center/Macron), RN (far-right),
+    LR (traditional right). Valence values reflect approximate relative electoral
+    strength and are synthetic defaults, not calibrated.
     """
     parties = [
         PartyConfig("NFP", -0.5, 0.3, 60),  # Left Alliance

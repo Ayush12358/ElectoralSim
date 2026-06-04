@@ -1,4 +1,11 @@
-"""Australia Election Preset - House and Senate."""
+"""Australia Election Preset - House and Senate.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate.
+151 House districts (IRV) and 8 state/territory Senate divisions (STV) match
+the real Australian electoral system. Compulsory voting is not modeled.
+
+Sources: Australian Constitution, Australian Electoral Commission (AEC).
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +19,11 @@ def australia_house_config(
     Preset configuration for Australia (House of Representatives).
 
     151 districts, IRV (Instant Runoff Voting).
+
+    Parameter rationale: Four major Australian parties plus Independents.
+    Labor (center-left), Liberal/National Coalition (center-right), Greens (left/environmental),
+    One Nation (far-right). Valence values are synthetic defaults for comparative
+    simulation, not calibrated against AEC results.
     """
     parties = [
         PartyConfig("Labor", -0.3, -0.1, 55),

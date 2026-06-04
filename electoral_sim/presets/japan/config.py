@@ -1,4 +1,11 @@
-"""Japan Election Preset - House of Representatives."""
+"""Japan Election Preset - House of Representatives.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate.
+289 FPTP districts + 176 PR seats = 465 total (parallel system). The preset
+defaults to FPTP for the primary constituency model.
+
+Sources: Japanese Constitution, Ministry of Internal Affairs and Communications.
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -13,6 +20,11 @@ def japan_config(
 
     Parallel system (289 FPTP + 176 PR). Defaulting here to FPTP base
     for the primary constituency model.
+
+    Parameter rationale: Five major Japanese parties. LDP (dominant center-right,
+    historically dominant), CDP (center-left opposition), Ishin (right/reformist),
+    Komeito (center-right, LDP coalition partner), JCP (far-left). LDP's high
+    valence (70) reflects its historical electoral dominance.
     """
     parties = [
         PartyConfig("LDP", 0.4, 0.2, 70),

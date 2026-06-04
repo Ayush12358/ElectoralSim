@@ -1,4 +1,11 @@
-"""South Africa Election Preset - National Assembly."""
+"""South Africa Election Preset - National Assembly.
+
+Data provenance: Synthetic/structural preset. Party positions are approximate.
+Pure PR (no constituencies, single national list) matches the real South African
+National Assembly electoral system.
+
+Sources: South African Constitution, Independent Electoral Commission (IEC).
+"""
 
 from electoral_sim.core.config import Config, PartyConfig
 
@@ -12,6 +19,11 @@ def south_africa_config(
     Preset configuration for South Africa (National Assembly).
 
     Pure PR (Proportional Representation).
+
+    Parameter rationale: Five significant South African parties. ANC (historically
+    dominant, center-left), DA (center-right/liberal), MK (Zuma's breakaway, left-
+    nationalist), EFF (far-left/economic freedom), IFP (right/conservative).
+    Valence values are synthetic defaults for comparative simulation.
     """
     parties = [
         PartyConfig("ANC", -0.2, 0.1, 55),

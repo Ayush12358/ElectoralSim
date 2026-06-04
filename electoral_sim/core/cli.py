@@ -80,9 +80,9 @@ Examples:
     run_parser.add_argument(
         "--system",
         "-s",
-        choices=["FPTP", "PR", "IRV", "STV"],
+        choices=["FPTP", "PR"],
         default="FPTP",
-        help="Electoral system: FPTP (first-past-the-post), PR (proportional representation), IRV (instant runoff), STV (single transferable vote) (default: FPTP)",
+        help="Electoral system: FPTP (first-past-the-post) or PR (proportional representation) (default: FPTP). IRV/STV not yet wired into model.",
     )
     run_parser.add_argument(
         "--allocation",

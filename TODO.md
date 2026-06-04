@@ -263,7 +263,7 @@
 
 #### P3 CLI, Dashboard, Visualization & UX
 
-- [ ] **P3** Add CLI support for all documented systems and presets
+- [x] **P3** Add CLI support for all documented systems and presets
     - `electoral-sim run --system` should list accepted values and reject unsupported ones.
     - Include tiny CLI integration tests with JSON output.
 - [ ] **P3** Add CLI commands for validation, calibration, benchmark, and preset metadata

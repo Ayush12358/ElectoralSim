@@ -24,6 +24,8 @@ def south_africa_config(
     dominant, center-left), DA (center-right/liberal), MK (Zuma's breakaway, left-
     nationalist), EFF (far-left/economic freedom), IFP (right/conservative).
     Valence values are synthetic defaults for comparative simulation.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("ANC", -0.2, 0.1, 55),

@@ -4,6 +4,10 @@ Data provenance: Synthetic/structural preset. Party positions are approximate.
 The MMP system, 5% threshold, and Sainte-Laguë allocation match real rules.
 299 direct mandates + compensatory list seats.
 
+Calibration status: ❌ Not calibrated. For calibration, the German Longitudinal
+Election Study (GLES, https://gles.eu) provides survey data, and the
+Bundeswahlleiter provides official election returns.
+
 Sources: Bundeswahlgesetz (Federal Election Act), Bundeswahlleiter.
 """
 
@@ -25,6 +29,8 @@ def germany_config(
     AfD far-right, Linke far-left. The 5% threshold is the real German hurdle.
     Valence values are synthetic defaults; party positions approximate the
     standard German party landscape for comparative simulation.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("CDU/CSU", 0.2, 0.1, 50),

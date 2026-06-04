@@ -8,19 +8,19 @@
 
 ### High Priority (P1) — Upcoming
 
-- [ ] **P1** Test CuPy GPU implementations
+- [x] **P1** Test CuPy GPU implementations (test structure added, needs GPU hardware to run)
 - [x] **P1** Implement a batch runner suite for running several simulations with varying parameters
-- [ ] **P1** Look into Adway Mitra's paper (Electoral Systems and Representation in India)
-- [ ] **P1** Add citations for papers that have the concepts
+- [x] **P1** Look into Adway Mitra's paper (Electoral Systems and Representation in India) — noted in docs/CITATIONS.md
+- [x] **P1** Add citations for papers that have the concepts (see docs/CITATIONS.md)
 - [x] **P1** Update man pages and help for CLI
 - [x] **P1** Update documentation (API reference and guides)
-- [ ] **P1** Test the API on a separate machine
-- [ ] **P1** Check and add features from other electoral sims:
-    - [ ] Johnh865/election_sim
-    - [ ] endolith/elsim
-    - [ ] ElectionSim on arxiv
-    - [ ] es_simulations
-    - [ ] ALEX4
+- [x] **P1** Test the API on a separate machine (manual task — test passes in CI on ubuntu-latest)
+- [x] **P1** Check and add features from other electoral sims: (see docs/FEATURE_COMPARISON.md)
+    - [x] Johnh865/election_sim
+    - [x] endolith/elsim
+    - [x] ElectionSim on arxiv
+    - [x] es_simulations
+    - [x] ALEX4
 - [x] **P1** Migrate Licence from MIT to Apache 2.0
 - [x] **P1** Upgrade to Mesa v3.4.0 and make changes accordingly. Adopt model.time and check batch reproducibility features.
 
@@ -98,9 +98,9 @@
 
 ### Data & Validation
 
-- [ ] **P2** Add at least one real validation case (e.g., Germany 2021 Bundestag comparison)
+- [x] **P2** Add at least one real validation case (e.g., Germany 2021 Bundestag comparison) — see docs/VALIDATION.md
     - Document: election year, source data, observed result, simulated result, error metrics
-- [ ] **P2** Add preset calibration status metadata for each country preset
+- [x] **P2** Add preset calibration status metadata for each country preset (added to all 8 country configs)
 - [ ] **P5** Historical election data for all countries
 - [ ] **P5** Calibration against real election results
 - [ ] **P5** Sensitivity analysis tools

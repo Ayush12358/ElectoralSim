@@ -3,6 +3,7 @@ description: "Implements a single feature, fix, or enhancement in the ElectoralS
 name: electoral-sim-feature-implementer
 tools: [read, search, edit, execute, todo]
 agents: []
+model: DeepSeek V4 Pro (opencodego)
 user-invocable: false
 argument-hint: "The TODO.md item to implement (copy full text)"
 ---

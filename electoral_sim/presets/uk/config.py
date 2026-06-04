@@ -3,6 +3,10 @@
 Data provenance: Synthetic/structural preset. Party positions are approximate
 demonstration values. 650 constituencies and FPTP match the real institution.
 
+Calibration status: ❌ Not calibrated. For calibration, the British Election Study
+(https://www.britishelectionstudy.com) provides individual-level survey data, and
+the UK Electoral Commission provides official results.
+
 Sources: UK Parliament rules, House of Commons Library.
 """
 
@@ -23,6 +27,8 @@ def uk_config(
     SNP represents Scottish nationalism. Valence values range 35-50 to reflect
     relative competitiveness. These are synthetic defaults for comparative
     simulation, not calibrated against election data.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("Conservative", 0.3, 0.2, 45),

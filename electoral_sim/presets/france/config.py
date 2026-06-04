@@ -24,6 +24,8 @@ def france_config(
     French landscape. NFP (left alliance), Ensemble (center/Macron), RN (far-right),
     LR (traditional right). Valence values reflect approximate relative electoral
     strength and are synthetic defaults, not calibrated.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("NFP", -0.5, 0.3, 60),  # Left Alliance

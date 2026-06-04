@@ -24,6 +24,8 @@ def brazil_config(
     PL (Liberal Party) right, MDB/Podemos/PSD center. Brazil's party system is
     highly fragmented; this is a simplified selection. Valence values are synthetic
     defaults for comparative simulation.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("PT", -0.4, 0.2, 60),

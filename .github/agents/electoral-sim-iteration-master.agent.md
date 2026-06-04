@@ -3,9 +3,9 @@ description: "Continuous iteration agent that reads TODO.md, picks the next unfi
 name: electoral-sim-iteration-master
 tools: [read, search, edit, execute, agent, todo]
 agents: ["explore", "electoral-sim-feature-implementer"]
+model: DeepSeek V4 Flash (opencodego)
 user-invocable: true
 argument-hint: "How many tasks to process (e.g., 3, all, or 'audit')"
-model: "Claude Sonnet 4 (copilot)"
 ---
 You are the Iteration Master for the ElectoralSim project. Your job is to run the
 continuous development loop defined in `docs/ITERATION.md`.

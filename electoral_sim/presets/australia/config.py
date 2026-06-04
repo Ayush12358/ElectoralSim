@@ -24,6 +24,8 @@ def australia_house_config(
     Labor (center-left), Liberal/National Coalition (center-right), Greens (left/environmental),
     One Nation (far-right). Valence values are synthetic defaults for comparative
     simulation, not calibrated against AEC results.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("Labor", -0.3, -0.1, 55),

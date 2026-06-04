@@ -25,6 +25,8 @@ def japan_config(
     historically dominant), CDP (center-left opposition), Ishin (right/reformist),
     Komeito (center-right, LDP coalition partner), JCP (far-left). LDP's high
     valence (70) reflects its historical electoral dominance.
+
+    Calibration status: ❌ Not calibrated.
     """
     parties = [
         PartyConfig("LDP", 0.4, 0.2, 70),

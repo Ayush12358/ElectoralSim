@@ -530,7 +530,7 @@
     - No integration test for: BatchRunner + Presets
     - No integration test for: EventManager → Model → step() → run_election()
     - No integration test for: OpinionDynamics → Model → run_election() → results
-- [ ] **P2** No hypothesis property-based tests exist (no `@given` decorators found)
+- [x] **P2** Hypothesis property tests added (e1c7eea, 3a2633a)
     - Add property tests for: allocation sum invariant, turnout 0-1, ENP ≥ 1, Gallagher ≥ 0
 
 ### Warning Cleanup

@@ -618,7 +618,19 @@ class ElectionModel(Model):
                 results["seats"][nota_idx] = 0
 
         # Calculate metrics
-        vote_shares = results["vote_counts"] / results["vote_counts"].sum()
+        total_votes = results["vote_counts"].sum()
+        if total_votes == 0:
+            n = len(results["vote_counts"])
+            results["vote_shares"] = np.zeros(n)
+            results["seat_shares"] = np.zeros(n)
+            results["gallagher"] = 0.0
+            results["enp_votes"] = 1.0
+            results["enp_seats"] = 1.0
+            results["turnout"] = will_vote.sum() / len(will_vote) if len(will_vote) > 0 else 0.0
+            self.election_results.append(results)
+            return results
+
+        vote_shares = results["vote_counts"] / total_votes
         seat_shares = (
             results["seats"] / results["seats"].sum() if results["seats"].sum() > 0 else vote_shares
         )

@@ -73,7 +73,7 @@
 - [x] **P2** Implement parallel mixed systems without compensatory leveling
     - Add Japan-style and mixed-system comparisons where FPTP and PR tiers are allocated independently.
     - Surface tier-level results in the returned result schema.
-- [ ] **P2** Add multi-tier apportionment support
+- [x] **P2** Add multi-tier apportionment support
     - Support national, regional, and constituency tiers for ALEX-style legislative modeling and EU/national presets.
     - Include tier metadata in `Config` instead of overloading `n_constituencies`.
 - [x] **P2** Add approval-based committee voting methods (PAV)

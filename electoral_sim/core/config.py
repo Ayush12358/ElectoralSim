@@ -72,6 +72,10 @@ class Config:
     # Voting behavior
     temperature: float = 0.5
 
+    # Multi-tier apportionment (national, regional, constituency tiers)
+    # e.g., tier_metadata = {"tiers": ["national", "regional"], "seats_per_tier": [200, 300]}
+    tier_metadata: dict | None = None
+
     # Simulation
     seed: int | None = None
 

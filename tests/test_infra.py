@@ -2,9 +2,12 @@
 
 import sys
 import types
+from pathlib import Path
 
 import numpy as np
 import pytest
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # =============================================================================
 # CLI — Direct function tests (not subprocess, so coverage tracks)
@@ -469,6 +472,23 @@ class TestVisualizationSpecialized:
 
         fig = plot_india_state_map({})
         assert fig is None
+
+
+class TestPackaging:
+    """Package integrity tests."""
+
+    def test_py_typed_marker_exists(self):
+        """py.typed marker is present for PEP 561 compliance."""
+        import electoral_sim
+
+        pkg_dir = Path(electoral_sim.__file__).parent
+        assert (pkg_dir / "py.typed").exists(), "py.typed marker missing"
+
+    def test_py_typed_in_manifest(self):
+        """py.typed is listed in MANIFEST.in for sdist inclusion."""
+        manifest = REPO_ROOT / "MANIFEST.in"
+        content = manifest.read_text()
+        assert "py.typed" in content, "py.typed not in MANIFEST.in"
 
 
 class TestVisualizationReturnTypes:

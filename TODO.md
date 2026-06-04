@@ -301,7 +301,7 @@
     - Ensure mkdocs actually publishes the repo's new support docs.
 - [ ] **P3** Add docs build link-checking
     - Catch stale GitHub Pages/PyPI/API URLs and missing source citations.
-- [ ] **P3** Include `py.typed` in source and wheel verification tests
+- [x] **P3** Include `py.typed` verification test and wheel verification tests
     - Package data includes it, but add a built artifact test to prevent regressions.
 - [ ] **P3** Decide whether `docs/`, `benchmarks/`, `examples/`, and `.github/` belong in sdists
     - `MANIFEST.in` currently prunes docs/scripts/examples and excludes app-related files.

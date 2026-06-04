@@ -60,3 +60,4 @@ scale_validation_results.csv
 gha-creds-*.json
 
 # Custom
+.omo/

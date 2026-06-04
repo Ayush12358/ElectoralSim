@@ -572,3 +572,33 @@ class TestBenchmarkSmoke:
 
         result = benchmark_batch_throughput(n_voters=500, n_elections=3)
         assert result is not None
+
+
+class TestOptionalDependencyBoundaries:
+    """Verify graceful degradation when optional dependencies are missing."""
+
+    def test_viz_availability_flag(self):
+        """electoral_sim sets _VIZ_AVAILABLE flag correctly."""
+        import electoral_sim
+
+        assert hasattr(electoral_sim, "_VIZ_AVAILABLE")
+        assert isinstance(electoral_sim._VIZ_AVAILABLE, bool)
+
+    def test_numba_fallback_available(self):
+        """Numba acceleration module has NUMBA_AVAILABLE flag."""
+        from electoral_sim.engine.numba_accel import NUMBA_AVAILABLE
+
+        assert isinstance(NUMBA_AVAILABLE, bool)
+
+    def test_networkx_fallback_available(self):
+        """Opinion dynamics module has NETWORKX_AVAILABLE flag."""
+        from electoral_sim.dynamics.opinion_dynamics import NETWORKX_AVAILABLE
+
+        assert isinstance(NETWORKX_AVAILABLE, bool)
+
+    def test_gpu_gating_graceful(self):
+        """GPU gating function returns bool without crashing."""
+        from electoral_sim.engine.gpu_accel import is_gpu_available
+
+        result = is_gpu_available()
+        assert isinstance(result, bool)

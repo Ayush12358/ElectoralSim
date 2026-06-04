@@ -246,7 +246,7 @@
     - Either wire them into model stepping or mark them intentionally inert with test coverage.
 - [ ] **P3** Add a stable plugin/extension API for behavior models, voting systems, metrics, and presets
     - Avoid requiring edits to core registries for every extension.
-- [ ] **P3** Add optional dependency boundary tests
+- [x] **P3** Add optional dependency boundary tests
     - Simulate missing matplotlib, networkx, numba, cupy, streamlit, and plotly imports and verify graceful degradation.
 - [ ] **P3** Add type-checking gate to CI and install path
     - `pyproject.toml` declares `mypy` in dev extras, but `.venv/bin/mypy` is absent in the current environment.

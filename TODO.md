@@ -44,7 +44,7 @@
 - [x] **P2** Fix IRV final-round reporting for exhausted ballots
     - The fallback path returns `final_votes=np.zeros(n_candidates)`, losing the last active tally.
     - Add tests for exhausted ballots, two-candidate ties, and no-majority final rounds.
-- [ ] **P2** Revisit STV surplus transfer and final-seat completion rules
+- [x] **P2** Revisit STV surplus transfer and final-seat completion rules
     - Current STV elects one above-quota candidate per round and lacks an explicit "remaining candidates fill remaining seats" rule.
     - Add known examples with expected winners, elected order, quota, and transfer weights.
 - [x] **P2** Add formal known-result tests for all allocation methods

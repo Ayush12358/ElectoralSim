@@ -233,6 +233,18 @@ def stv_election(
             if to_eliminate >= 0:
                 eliminated.add(to_eliminate)
 
+    # Fill remaining seats with highest-vote non-eliminated candidates
+    remaining = [
+        (c, vote_counts[c])
+        for c in range(n_candidates)
+        if c not in elected and c not in eliminated
+    ]
+    remaining.sort(key=lambda x: -x[1])
+    for c, _ in remaining:
+        if len(elected) >= n_seats:
+            break
+        elected.append(c)
+
     return {
         "elected": elected,
         "rounds": rounds,

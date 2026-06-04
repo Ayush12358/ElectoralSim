@@ -101,6 +101,9 @@ def hare_quota_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0.
     if threshold > 0:
         vote_shares = votes / total_votes
         votes = np.where(vote_shares >= threshold, votes, 0)
+        total_votes = votes.sum()
+        if total_votes <= 0:
+            return np.zeros(len(votes), dtype=int)
 
     quota = total_votes / n_seats
 
@@ -143,6 +146,9 @@ def droop_quota_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0
     if threshold > 0:
         vote_shares = votes / total_votes
         votes = np.where(vote_shares >= threshold, votes, 0)
+        total_votes = votes.sum()
+        if total_votes <= 0:
+            return np.zeros(len(votes), dtype=int)
 
     quota = np.floor(total_votes / (n_seats + 1)) + 1
 

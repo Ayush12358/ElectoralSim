@@ -32,7 +32,7 @@
 - [ ] **P2** Define allocation behavior for zero votes, zero seats, negative votes, and all-thresholded elections
     - `dhondt_allocation(np.array([0, 0, 0]), 3)` currently awards seats to party 0.
     - Hare/Droop with zero seats or zero total votes should return a documented value or raise a specific error.
-- [ ] **P2** Recompute Hare and Droop quotas from eligible post-threshold votes
+- [x] **P2** Recompute Hare and Droop quotas from eligible post-threshold votes
     - Thresholded-out ballots currently remain in `total_votes`, distorting largest-remainder quotas.
     - Add known-result threshold examples for both quota methods.
 - [ ] **P2** Add explicit tie-breaking policy for FPTP, D'Hondt, Sainte-Lague, Hare/Droop remainders, IRV, STV, Approval, and Condorcet

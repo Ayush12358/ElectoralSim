@@ -764,6 +764,22 @@ class TestAllocationKnownResults:
                 seats = allocator(votes, n)
                 assert seats.sum() == n, f"{allocator.__name__} with n={n}: {seats.tolist()}"
 
+    def test_hare_quota_recomputed_after_threshold(self):
+        """Hare quota uses post-threshold total_votes, not pre-threshold."""
+        from electoral_sim.systems.allocation import hare_quota_allocation
+
+        # Parties A=0.476, B=0.381, C=0.143 of total 210
+        # Threshold 0.2 excludes C; post-threshold total = 180
+        seats = hare_quota_allocation(np.array([100, 80, 30]), 5, threshold=0.2)
+        assert seats.sum() == 5
+
+    def test_droop_quota_recomputed_after_threshold(self):
+        """Droop quota uses post-threshold total_votes, not pre-threshold."""
+        from electoral_sim.systems.allocation import droop_quota_allocation
+
+        seats = droop_quota_allocation(np.array([100, 80, 30]), 5, threshold=0.2)
+        assert seats.sum() == 5
+
 
 class TestDuverger:
     """Tests for duverger.py."""

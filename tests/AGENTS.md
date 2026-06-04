@@ -16,8 +16,15 @@
 | `test_improved.py` | Coverage gap filling |
 | `test_additional.py` | Supplementary edge cases |
 | `test_batch_runner.py` | Batch parameter sweep tests |
-| `benchmark_cache.py` | Timing/performance benchmarks (standalone) |
-| `stress_test.py` | Large-scale stress tests (standalone) |
+
+## BENCHMARKS
+
+Standalone performance scripts in `benchmarks/`:
+| File | Focus |
+|------|-------|
+| `benchmark_core.py` | Core performance benchmarks |
+| `benchmark_cache.py` | Timing/performance with caching |
+| `stress_test.py` | Large-scale stress tests |
 
 ## RUNNING
 
@@ -25,7 +32,7 @@
 pytest tests/ -v              # All tests
 pytest tests/test_unit.py -v  # Single file
 pytest tests/ --cov           # With coverage
-python tests/stress_test.py   # Stress/benchmark (standalone)
+python benchmarks/stress_test.py   # Stress/benchmark (standalone)
 ```
 
 ## PATTERNS

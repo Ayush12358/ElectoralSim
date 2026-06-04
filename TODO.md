@@ -543,7 +543,7 @@
 ### Test File Organization
 
 - [x] **P1** Reorganize tests from 5 chaotic files into 11 disciplined files
-- [ ] **P3** Move `stress_test.py` and `benchmark_cache.py` into proper test files or `benchmarks/`
+- [x] **P3** Move `stress_test.py` and `benchmark_cache.py` into proper test files or `benchmarks/`
 
 ---
 

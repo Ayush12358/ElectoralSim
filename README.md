@@ -347,7 +347,7 @@ pytest tests/ -v
 pytest tests/test_integration.py -v
 
 # Run stress tests
-python tests/stress_test.py
+python benchmarks/stress_test.py
 ```
 
 **Test suite:** 237 tests including:

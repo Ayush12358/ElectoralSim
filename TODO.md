@@ -617,7 +617,7 @@
 - [ ] **P2** Define and test deterministic FPTP tie-breaking across both counting paths
     - `systems/allocation.py::fptp_allocation()` depends on sorted Polars group order; `engine/numba_accel.py::fptp_count_fast()` likely uses first max party index
     - Add matching tie tests for Polars FPTP allocation and Numba/NumPy fast counting so both paths agree
-- [ ] **P3** Handle empty approval ballots in `systems/alternative.py::approval_voting()`
+- [x] **P3** Handle empty approval ballots in `systems/alternative.py::approval_voting()`
     - `approval_counts / len(approvals)` divides by zero for zero voters
     - Add `tests/test_unit.py` coverage for empty approvals and zero-candidate input policy
 - [ ] **P3** Validate malformed ranked ballots in IRV/STV/Condorcet functions

@@ -220,12 +220,15 @@ def approval_voting(
         Dictionary with winner and approval counts
     """
     approval_counts = approvals.sum(axis=0)
-    winner = int(np.argmax(approval_counts))
+    winner = int(np.argmax(approval_counts)) if len(approvals) > 0 else -1
+    approval_shares = (
+        approval_counts / len(approvals) if len(approvals) > 0 else np.zeros(n_candidates)
+    )
 
     return {
         "winner": winner,
         "approval_counts": approval_counts,
-        "approval_shares": approval_counts / len(approvals),
+        "approval_shares": approval_shares,
     }
 
 

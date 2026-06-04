@@ -599,6 +599,15 @@ class TestAlternativeVoting:
         assert "approval_shares" in result
         assert abs(result["approval_shares"].sum() - approvals.sum() / 3) < 0.01
 
+    def test_approval_voting_empty(self):
+        """approval_voting handles zero voters gracefully."""
+        from electoral_sim import approval_voting
+
+        result = approval_voting(np.empty((0, 3)), n_candidates=3)
+        assert result["winner"] == -1
+        assert result["approval_counts"].sum() == 0
+        assert result["approval_shares"].sum() == 0
+
     def test_condorcet_winner_exists(self):
         from electoral_sim import condorcet_winner
 

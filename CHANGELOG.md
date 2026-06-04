@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-06-04
+
+### Fixed
+- **South Africa export typo**: `SOUTH_AF_RICA_PARTIES` → `SOUTH_AFRICA_PARTIES` in `__all__`.
+- **India preset `__init__.py`**: was empty; now exports `simulate_india_election`, `IndiaElectionResult`, etc.
+- **Visualization import**: `visualization.charts` → `visualization` (silent `ImportError` now caught explicitly).
+- **GPU FPTP stub**: `fptp_count_gpu()` returned zero seats silently; now raises `NotImplementedError`.
+- **Numba multiprocessing crash**: `BatchRunner._run_parallel()` uses `spawn` context + sets `OMP_NUM_THREADS=1` in workers.
+- **Party placeholders**: `PartyAgents.step()` docstring now references actual `adaptive_strategy_step()`.
+
+### Changed
+- **README rewrite**: Honest recalibration — "Advanced Toolkit" → "Early-stage · Functional". Added disclaimer, feature maturity table, limitations section, and parallel execution caveat.
+- **Performance claims qualified**: Benchmark table now includes hardware/environment details. 2M voter row removed.
+- **Test count updated**: 222 → 237 in README.
+- **API maturity labeling**: `__init__.py` split into `STABLE` and `BETA` sections with clear comments.
+- **Preset documentation**: All 8 country presets now have data provenance source notes and parameter rationale docstrings.
+
+### Added
+- **`benchmarks/benchmark_core.py`**: Reproducible performance script with env reporting, warmup, and voter/FPTP/PR/batch benchmarks.
+- **`benchmarks/README.md`**: Methodology documentation.
+- **CI job**: Optional dependency import smoke tests (viz, streamlit).
+- **Dashboard screenshots**: `docs/assets/` with inline image in README.
+
 ## [0.1.0] - 2025-12-26
 
 ### Added

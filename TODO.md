@@ -156,7 +156,13 @@
 
 ## Version History
 
-### v0.0.2 (Current)
+### v0.1.1 (Current)
+- Legitimacy audit: 6 bug fixes, honest README rewrite, benchmarks, CI, data provenance
+- Fixed Numba multiprocessing crash, GPU stub, placeholder docstrings, import errors
+- Added benchmark scripts, dashboard screenshots, API maturity labeling
+- All 17 audit credibility items resolved
+
+### v0.0.2
 - Migrated from `mesa-frames` to `Mesa 3.0+` + `Polars`
 - Comprehensive test suite (225 tests, ~70% coverage)
 - Fixed Mesa 3.0 API compatibility

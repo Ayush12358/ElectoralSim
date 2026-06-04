@@ -103,7 +103,7 @@
 - [x] **P2** Add sensitivity-analysis tooling (one_at_a_time, grid_sensitivity)
     - Support one-at-a-time, grid, Latin hypercube, and Sobol-style sensitivity summaries.
     - Integrate with BatchRunner and export tidy Polars output.
-- [ ] **P2** Add posterior predictive validation docs for "not a forecast" positioning
+- [x] **P2** Add posterior predictive validation docs for "not a forecast" positioning
     - Explain what can and cannot be inferred from calibrated vs structural presets.
     - Include acceptance criteria before a preset can move from structural demo to calibrated.
 - [ ] **P2** Add survey-calibrated behavior parameters from CSES-style data

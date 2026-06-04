@@ -91,3 +91,42 @@ Gallagher (actual): - | Gallagher (simulated): -
 - Presets currently use **synthetic defaults** for party positions and valence
 - Calibration requires: (1) real election results, (2) survey data for party positioning, (3) iterative parameter adjustment
 - Contributions of calibrated presets are welcome! See [CONTRIBUTING.md](../CONTRIBUTING.md)
+
+---
+
+## Posterior Predictive Validation & "Not a Forecast" Positioning
+
+### What Can Be Inferred
+
+| Preset Type | Valid Inferences |
+|-------------|-----------------|
+| **Structural demo** | Electoral system mechanics (FPTP vs PR effects), Duverger tendencies, coalition formation patterns, system-level comparisons |
+| **Partially calibrated** | Directional effects of parameter changes, sensitivity analysis, "what-if" scenario exploration |
+| **Historically calibrated** | Retrospective fit quality, model adequacy for specific elections, within-sample validation |
+| **Validation-only** | Out-of-sample prediction assessment, generalization to unseen elections, calibrated uncertainty bounds |
+
+### What Cannot Be Inferred
+
+- ❌ ElectoralSim is **not an election forecasting model** — it does not predict future outcomes
+- ❌ **Structural demos cannot** be used to claim accuracy for any specific country
+- ❌ **Synthetic party positions and valence** are for demonstration — not derived from surveys or expert coding
+- ❌ **Calibrated presets** are retrospective fits, not predictive models
+
+### Acceptance Criteria for Calibration Status Upgrade
+
+**From structural demo → partially calibrated:**
+- [ ] Party positions sourced from expert surveys (e.g., Chapel Hill Expert Survey, Manifesto Project) OR voter perception data
+- [ ] Valence parameters informed by candidate/party approval data
+- [ ] Turnout calibrated to within ±5pp of historical turnout
+- [ ] At least one metric (Gallagher, ENP) validated against known election results
+
+**From partially calibrated → historically calibrated:**
+- [ ] Multiple metrics validated against historical election results
+- [ ] Parameter sensitivity analysis performed and documented
+- [ ] Calibration methodology documented (loss function, optimization method, parameter bounds)
+- [ ] Reproducibility: same seed, same config → same results (deterministic)
+
+**From historically calibrated → validation-only:**
+- [ ] Out-of-sample validation on at least one held-out election
+- [ ] Uncertainty quantification (confidence intervals, Monte Carlo SE) reported
+- [ ] Predictive distribution compared to actual results with proper scoring rules

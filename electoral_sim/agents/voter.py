@@ -85,5 +85,12 @@ class VoterAgents:
         return self._cache["turnout_prob"]
 
     def step(self):
-        """Called each simulation step."""
+        """Called each simulation step.
+
+        Note: Voters are stored as a vectorized Polars DataFrame, not
+        individual Mesa agents. Voting, turnout, and opinion dynamics
+        are handled in batch by ``ElectionModel.run_election()`` and
+        ``ElectionModel.step()``. This method is intentionally inert
+        — voter behavior is not per-agent but per-election-cycle.
+        """
         pass

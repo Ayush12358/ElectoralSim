@@ -24,6 +24,8 @@ class ProximityModel:
     Required voter fields: positions (n_voters, dims)
     """
 
+    model_name = "proximity"
+
     def __init__(self, weight: float = 1.0, dimensionality: int = 2):
         self.weight = weight
         self.dimensionality = dimensionality
@@ -50,6 +52,8 @@ class ValenceModel:
     Required party fields: valence (n_parties,)
     """
 
+    model_name = "valence"
+
     def __init__(self, weight: float = 0.01):
         self.weight = weight
 
@@ -70,6 +74,8 @@ class RetrospectiveModel:
     Required party fields: incumbent_mask (n_parties,) boolean
     Required kwargs: economic_growth (float)
     """
+
+    model_name = "retrospective"
 
     def __init__(self, weight: float = 0.5):
         self.weight = weight
@@ -98,6 +104,8 @@ class RetrospectiveModel:
 class StrategicVotingModel:
     """Strategic voting: voters discount candidates seen as unviable (Duverger's Law)."""
 
+    model_name = "strategic"
+
     def __init__(self, sensitivity: float = 1.0):
         self.sensitivity = sensitivity
 
@@ -120,6 +128,8 @@ class SociotropicPocketbookModel:
 
     Research shows higher-educated voters tend to be more sociotropic.
     """
+
+    model_name = "sociotropic_pocketbook"
 
     def __init__(self, sociotropic_weight: float = 0.5, pocketbook_weight: float = 0.5):
         self.sociotropic_weight = sociotropic_weight
@@ -169,6 +179,8 @@ class WastedVoteModel:
     Threshold-based: parties below viability threshold get a fixed penalty.
     This is a simpler, more direct version of strategic voting.
     """
+
+    model_name = "wasted_vote"
 
     def __init__(self, penalty: float = 2.0, viability_threshold: float = 0.05):
         self.penalty = penalty

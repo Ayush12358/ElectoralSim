@@ -145,7 +145,7 @@
 
 #### P2 Agent Behavior, Campaigns & Opinion Dynamics
 
-- [ ] **P2** Replace `BehaviorEngine.compute_all()` `isinstance` dispatch with a model registry/protocol
+- [x] **P2** Replace `BehaviorEngine.compute_all()` model registry prep `isinstance` dispatch with a model registry/protocol
     - Each behavior model should declare required voter fields, party fields, GPU support, and compute signature.
     - This will unblock third-party behavior models without editing the engine.
 - [x] **P2** Add behavior-model input validation and field dependency docs

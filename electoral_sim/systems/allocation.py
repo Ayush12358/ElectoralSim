@@ -22,6 +22,9 @@ def dhondt_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0.0) -
     votes = votes.astype(float)
     total_votes = votes.sum()
 
+    if n_seats <= 0 or total_votes <= 0:
+        return np.zeros(len(votes), dtype=int)
+
     # Apply threshold
     if threshold > 0:
         vote_shares = votes / total_votes
@@ -56,6 +59,9 @@ def sainte_lague_allocation(votes: np.ndarray, n_seats: int, threshold: float = 
     votes = votes.astype(float)
     total_votes = votes.sum()
 
+    if n_seats <= 0 or total_votes <= 0:
+        return np.zeros(len(votes), dtype=int)
+
     if threshold > 0:
         vote_shares = votes / total_votes
         votes = np.where(vote_shares >= threshold, votes, 0)
@@ -88,6 +94,9 @@ def hare_quota_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0.
     """
     votes = votes.astype(float)
     total_votes = votes.sum()
+
+    if n_seats <= 0 or total_votes <= 0:
+        return np.zeros(len(votes), dtype=int)
 
     if threshold > 0:
         vote_shares = votes / total_votes
@@ -127,6 +136,9 @@ def droop_quota_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0
     """
     votes = votes.astype(float)
     total_votes = votes.sum()
+
+    if n_seats <= 0 or total_votes <= 0:
+        return np.zeros(len(votes), dtype=int)
 
     if threshold > 0:
         vote_shares = votes / total_votes

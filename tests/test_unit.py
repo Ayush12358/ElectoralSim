@@ -83,6 +83,37 @@ class TestElectoralSystems:
         seats = droop_quota_allocation(votes, total_seats)
         assert sum(seats) == total_seats
 
+    @pytest.mark.parametrize(
+        "allocator_name",
+        ["dhondt", "sainte_lague", "hare", "droop"],
+    )
+    def test_allocation_zero_guards(self, allocator_name):
+        """All allocators handle zero votes and non-positive seats gracefully."""
+        from electoral_sim.systems.allocation import ALLOCATION_METHODS
+
+        allocator = ALLOCATION_METHODS[allocator_name]
+
+        # Zero total votes → zeros
+        seats = allocator(np.array([0, 0, 0]), 5)
+        assert isinstance(seats, np.ndarray)
+        assert seats.sum() == 0
+
+        # Zero seats → zeros
+        seats = allocator(np.array([100, 80, 30]), 0)
+        assert seats.sum() == 0
+
+        # Negative seats → zeros
+        seats = allocator(np.array([100, 80, 30]), -1)
+        assert seats.sum() == 0
+
+    def test_allocation_all_thresholded_zero(self):
+        """All parties below threshold with zero votes → zeros."""
+        from electoral_sim.systems.allocation import dhondt_allocation
+
+        votes = np.array([0, 0, 0])
+        seats = dhondt_allocation(votes, 5, threshold=0.05)
+        assert seats.sum() == 0
+
 
 class TestMetrics:
     """Tests for electoral metrics."""

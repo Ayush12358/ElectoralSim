@@ -608,10 +608,10 @@
 
 ### Correctness Bugs
 
-- [ ] **P2** Guard PR allocation against zero total votes and non-positive seat counts in `systems/allocation.py`
+- [x] **P2** Guard PR allocation against zero total votes and non-positive seat counts in `systems/allocation.py`
     - `dhondt_allocation()`, `sainte_lague_allocation()`, `hare_quota_allocation()`, and `droop_quota_allocation()` currently divide by `total_votes` or `n_seats` without an explicit zero-input policy
     - Add tests in `tests/test_unit.py` for all-zero votes, empty vote arrays, threshold filtering that excludes every party, and `n_seats == 0`
-- [ ] **P2** Make `ElectionModel.run_election()` robust when no valid votes remain
+- [x] **P2** Make `ElectionModel.run_election()` robust when no valid votes remain
     - `core/model.py` computes `vote_shares = vote_counts / vote_counts.sum()` after turnout and constituency filtering; all voters abstaining or all votes invalidated can divide by zero
     - Add tests in `tests/test_model.py` for zero turnout and all votes invalidated by `constituency_constraints`
 - [ ] **P2** Define and test deterministic FPTP tie-breaking across both counting paths

@@ -2,6 +2,7 @@
 
 import pytest
 import numpy as np
+from hypothesis import given, strategies as st, assume
 
 # =============================================================================
 # COALITION FORMATION
@@ -936,3 +937,67 @@ class TestNumbaWrappers:
 
         # Should run without crashing
         benchmark_numba()
+
+
+class TestRankedChoiceProperties:
+    """Hypothesis property tests for IRV/STV edge cases."""
+
+    @given(
+        n_voters=st.integers(min_value=1, max_value=20),
+        n_candidates=st.integers(min_value=1, max_value=5),
+    )
+    def test_irv_no_crash(self, n_voters, n_candidates):
+        """IRV never crashes unexpectedly for any ballot configuration."""
+        from electoral_sim import irv_election
+
+        rankings = np.random.randint(0, n_candidates + 1, size=(n_voters, n_candidates))
+        try:
+            result = irv_election(rankings, n_candidates)
+            assert "winner" in result
+            assert result["winner"] is not None
+            assert -1 <= result["winner"] < n_candidates
+        except ValueError as e:
+            assert "Duplicate" in str(e) or "shape" in str(e) or "n_candidates" in str(e)
+
+    @given(
+        n_voters=st.integers(min_value=1, max_value=20),
+        n_candidates=st.integers(min_value=2, max_value=5),
+        n_seats=st.integers(min_value=1, max_value=3),
+    )
+    def test_stv_no_crash(self, n_voters, n_candidates, n_seats):
+        """STV never crashes unexpectedly for any ballot configuration."""
+        from electoral_sim import stv_election
+
+        assume(n_seats < n_candidates)
+        rankings = np.random.randint(0, n_candidates + 1, size=(n_voters, n_candidates))
+        try:
+            result = stv_election(rankings, n_candidates, n_seats)
+            assert "elected" in result
+            assert all(0 <= e < n_candidates for e in result["elected"])
+        except ValueError as e:
+            assert "Duplicate" in str(e) or "shape" in str(e) or "n_candidates" in str(e)
+
+    def test_irv_all_unranked(self):
+        """IRV handles all-unranked ballots (all zeros)."""
+        from electoral_sim import irv_election
+
+        rankings = np.zeros((5, 3), dtype=int)
+        result = irv_election(rankings, n_candidates=3)
+        assert result["winner"] is not None
+        assert -1 <= result["winner"] < 3
+
+    def test_irv_single_candidate(self):
+        """IRV handles single-candidate election."""
+        from electoral_sim import irv_election
+
+        rankings = np.array([[1], [1], [1]])
+        result = irv_election(rankings, n_candidates=1)
+        assert result["winner"] == 0
+
+    def test_irv_tied_rankings(self):
+        """IRV handles tied rankings (duplicate ranks)."""
+        from electoral_sim import irv_election
+
+        rankings = np.array([[2, 2, 1], [3, 3, 3]])
+        with pytest.raises(ValueError, match="Duplicate"):
+            irv_election(rankings, n_candidates=3)

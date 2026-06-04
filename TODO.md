@@ -55,7 +55,7 @@
     - Allocations are non-negative integers.
     - Increasing a party's votes should not reduce its seats where monotonicity is expected.
     - Turnout and shares stay in `[0, 1]`; ENP/Gallagher remain finite for valid inputs.
-- [ ] **P2** Add property tests for ranked-choice edge cases
+- [x] **P2** Add property tests for ranked-choice edge cases
     - Random partial rankings, exhausted ballots, tied rankings, single-candidate elections, and all-unranked ballots.
     - Assert no crashes and documented winner/no-winner behavior.
 - [ ] **P2** Add score/range voting as an alternative system

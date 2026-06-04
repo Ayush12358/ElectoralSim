@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-11 test files, 349 tests, ~80% coverage. pytest with `-v --tb=short`, Hypothesis property-based testing, numpy array comparisons. Warnings: `DeprecationWarning`, `FutureWarning`, `NumbaDeprecationWarning` silenced.
+11 test files, 401 tests, ~80% coverage. pytest with `-v --tb=short`, Hypothesis property-based testing, numpy array comparisons. Warnings: `DeprecationWarning`, `FutureWarning`, `NumbaDeprecationWarning` silenced. Warnings-as-errors gate via pyproject.toml `filterwarnings = ["error"]`.
 
 ## FILES
 
@@ -10,14 +10,14 @@
 |------|-------|
 | `test_unit.py` | FPTP, PR allocation, IRV, STV, approval, Condorcet — Hypothesis property tests, numpy comparisons |
 | `test_model.py` | ElectionModel creation, chainable API, edge cases, error handling |
-| `test_engine.py` | Coalition, government, Numba wrappers, allocation, alternative voting |
+| `test_engine.py` | Coalition, government, Numba wrappers, allocation, alternative voting, direct JIT tests |
 | `test_behavior.py` | Voter behavior models and BehaviorEngine |
-| `test_presets.py` | Country preset loading, structure, smoke tests |
-| `test_dynamics.py` | Opinion dynamics and network topologies |
+| `test_presets.py` | Country preset loading, structure, smoke tests, HistoricalDataLoader |
+| `test_dynamics.py` | Opinion dynamics and network topologies, zealot_step, Numba paths |
 | `test_metrics.py` | Electoral metrics (Gallagher, ENP, VSE, etc.) |
-| `test_integration.py` | Cross-module integration flows |
-| `test_infra.py` | CLI, EventManager, visualization return types |
-| `test_batch_runner.py` | Batch parameter sweep tests |
+| `test_integration.py` | Cross-module integration flows (14 tests across 3 classes) |
+| `test_infra.py` | CLI, EventManager, visualization return types, benchmark smoke tests, packaging |
+| `test_batch_runner.py` | Batch parameter sweep tests, ParameterSweep validation |
 | `test_smoke.py` | Basic imports, model creation |
 
 ## BENCHMARKS
@@ -25,7 +25,7 @@
 Standalone performance scripts in `benchmarks/`:
 | File | Focus |
 |------|-------|
-| `benchmark_core.py` | Core performance benchmarks |
+| `benchmark_core.py` | Core performance benchmarks (CI smoke tested) |
 | `benchmark_cache.py` | Timing/performance with caching |
 | `stress_test.py` | Large-scale stress tests |
 | `benchmark_gpu.py` | GPU acceleration benchmarks |
@@ -34,7 +34,7 @@ Standalone performance scripts in `benchmarks/`:
 ## RUNNING
 
 ```bash
-pytest tests/ -v              # All tests (349)
+pytest tests/ -v              # All tests (401)
 pytest tests/test_unit.py -v  # Single file
 pytest tests/ --cov           # With coverage
 python benchmarks/stress_test.py   # Stress/benchmark (standalone)
@@ -50,4 +50,4 @@ python benchmarks/stress_test.py   # Stress/benchmark (standalone)
 
 ## COVERAGE
 
-~80% across 349 tests. Covers all electoral systems, 11+ presets, coalition logic, opinion dynamics, and acceleration paths. Source measurement in `electoral_sim/`; `tests/` excluded from coverage.
+~80% across 401 tests. Covers all electoral systems, 11+ presets, coalition logic, opinion dynamics, and acceleration paths. Source measurement in `electoral_sim/`; `tests/` excluded from coverage.

@@ -130,7 +130,7 @@
 - [ ] **P2** Add district-plan ensemble analysis
     - Compare enacted/supplied plans against simulated ensembles for seat outcomes, efficiency gap, partisan bias, and compactness.
     - Return percentile/rank summaries and plots.
-- [ ] **P2** Add swing-state and swing-district analysis
+- [x] **P2** Add swing-state and swing-district analysis
     - Perturb national, regional, and district-level vote swings and report seat tipping points.
     - Integrate with FPTP, MMP, and PR presets where appropriate.
 - [x] **P2** Add constituency geometry ingestion

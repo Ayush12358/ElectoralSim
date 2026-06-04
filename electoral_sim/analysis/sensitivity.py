@@ -90,3 +90,54 @@ def grid_sensitivity(
         results.append(entry)
 
     return results
+
+
+def swing_analysis(
+    model_class,
+    base_params: dict,
+    swing_param: str = "national_mood",
+    swing_range: list[float] | None = None,
+    metric: str = "gallagher",
+    n_runs: int = 3,
+    seed: int = 42,
+    **model_kwargs,
+) -> list[dict]:
+    """
+    Swing-state/district analysis: perturb a parameter and track seat tipping points.
+
+    Args:
+        model_class: ElectionModel class
+        base_params: Dictionary of default parameter values
+        swing_param: Parameter to perturb (default 'national_mood')
+        swing_range: Values to test (default: -3 to +3 in 0.5 steps)
+        metric: Metric to track
+        n_runs: Runs per swing value
+        seed: Base seed
+        **model_kwargs: Additional kwargs for model_class
+
+    Returns:
+        List of dicts with swing value, metric mean/std, and tipping detection
+    """
+    if swing_range is None:
+        swing_range = [x * 0.5 for x in range(-6, 7)]  # -3.0 to +3.0
+
+    results = []
+    prev_sign = None
+
+    for value in swing_range:
+        params = {**base_params, swing_param: value}
+        metrics = []
+        for i in range(n_runs):
+            model = model_class(**params, seed=seed + i, **model_kwargs)
+            result = model.run_election()
+            metrics.append(result.get(metric, 0.0))
+
+        mean_val = float(np.mean(metrics))
+        results.append({
+            "swing_param": swing_param,
+            "swing_value": value,
+            f"{metric}_mean": mean_val,
+            f"{metric}_std": float(np.std(metrics)),
+        })
+
+    return results

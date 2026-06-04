@@ -386,6 +386,20 @@ class TestSensitivityAnalysis:
         )
         assert len(results) == 4  # 2 × 2 combinations
 
+    def test_swing_analysis_basic(self):
+        """swing_analysis returns results for each swing value."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.analysis.sensitivity import swing_analysis
+
+        results = swing_analysis(
+            ElectionModel,
+            {"n_voters": 500, "n_constituencies": 3},
+            swing_range=[-1.0, 0.0, 1.0],
+            n_runs=1,
+            seed=42,
+        )
+        assert len(results) == 3
+
 
 class TestCalibration:
     """Tests for calibration framework."""

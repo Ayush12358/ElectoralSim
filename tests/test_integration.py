@@ -10,7 +10,6 @@ import numpy as np
 import polars as pl
 import pytest
 
-
 # =============================================================================
 # BEHAVIOR + DYNAMICS INTEGRATION
 # =============================================================================
@@ -72,7 +71,9 @@ class TestEndToEndWorkflows:
         """FPTP vs PR comparison on same voter base."""
         from electoral_sim import ElectionModel
 
-        model_fptp = ElectionModel(n_voters=5000, n_constituencies=10, electoral_system="FPTP", seed=42)
+        model_fptp = ElectionModel(
+            n_voters=5000, n_constituencies=10, electoral_system="FPTP", seed=42
+        )
         model_pr = ElectionModel(n_voters=5000, n_constituencies=10, electoral_system="PR", seed=42)
 
         r_fptp = model_fptp.run_election()
@@ -101,8 +102,11 @@ class TestEndToEndWorkflows:
             ("PR", "droop"),
         ]:
             model = ElectionModel(
-                n_voters=1000, n_constituencies=5,
-                electoral_system=system, allocation_method=method, seed=42,
+                n_voters=1000,
+                n_constituencies=5,
+                electoral_system=system,
+                allocation_method=method,
+                seed=42,
             )
             results = model.run_election()
             assert results is not None
@@ -112,8 +116,16 @@ class TestEndToEndWorkflows:
         """Run elections on all country presets."""
         from electoral_sim import ElectionModel
 
-        for preset in ["usa", "uk", "germany", "france", "brazil", "japan", "south_africa",
-                        "australia_house"]:
+        for preset in [
+            "usa",
+            "uk",
+            "germany",
+            "france",
+            "brazil",
+            "japan",
+            "south_africa",
+            "australia_house",
+        ]:
             model = ElectionModel.from_preset(preset, n_voters=3000)
             results = model.run_election()
             assert results is not None
@@ -134,7 +146,13 @@ class TestEndToEndWorkflows:
 
     def test_full_simulation_with_all_features(self):
         """All features enabled: behavior + dynamics + events + strategy."""
-        from electoral_sim import ElectionModel, BehaviorEngine, ProximityModel, RetrospectiveModel, OpinionDynamics
+        from electoral_sim import (
+            ElectionModel,
+            BehaviorEngine,
+            ProximityModel,
+            RetrospectiveModel,
+            OpinionDynamics,
+        )
 
         engine = BehaviorEngine()
         engine.add_model(ProximityModel(weight=1.0))
@@ -177,7 +195,9 @@ class TestCrossModule:
         results = model.run_election()
 
         vote_shares = results["vote_counts"] / results["vote_counts"].sum()
-        seat_shares = results["seats"] / results["seats"].sum() if results["seats"].sum() > 0 else vote_shares
+        seat_shares = (
+            results["seats"] / results["seats"].sum() if results["seats"].sum() > 0 else vote_shares
+        )
 
         gal = gallagher_index(vote_shares, seat_shares)
         enp = effective_number_of_parties(vote_shares)

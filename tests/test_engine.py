@@ -3,7 +3,6 @@
 import pytest
 import numpy as np
 
-
 # =============================================================================
 # COALITION FORMATION
 # =============================================================================
@@ -177,15 +176,24 @@ class TestGovernmentStability:
         from electoral_sim.engine.government import simulate_government_survival
 
         result = simulate_government_survival(strain=0.3, stability=0.7, n_simulations=200, seed=42)
-        for key in ["mean_survival", "median_survival", "std_survival", "full_term_prob",
-                     "early_collapse_prob", "min_survival", "max_survival"]:
+        for key in [
+            "mean_survival",
+            "median_survival",
+            "std_survival",
+            "full_term_prob",
+            "early_collapse_prob",
+            "min_survival",
+            "max_survival",
+        ]:
             assert key in result
 
     def test_simulate_all_models(self):
         from electoral_sim.engine.government import simulate_government_survival
 
         for m in ["sigmoid", "linear", "exponential"]:
-            r = simulate_government_survival(strain=0.3, stability=0.7, model=m, n_simulations=100, seed=42)
+            r = simulate_government_survival(
+                strain=0.3, stability=0.7, model=m, n_simulations=100, seed=42
+            )
             assert r["mean_survival"] > 0
 
     def test_hazard_rate_all_phases(self):
@@ -202,19 +210,27 @@ class TestGovernmentStability:
         from electoral_sim.engine.government import hazard_rate
 
         base = hazard_rate(12, events=None)
-        with_events = hazard_rate(12, events=[
-            {"type": "scandal", "severity": 2.0},
-            {"type": "economic_crisis", "severity": 1.5},
-        ])
+        with_events = hazard_rate(
+            12,
+            events=[
+                {"type": "scandal", "severity": 2.0},
+                {"type": "economic_crisis", "severity": 1.5},
+            ],
+        )
         assert with_events > base
 
     def test_cox_proportional_hazard(self):
         from electoral_sim.engine.government import cox_proportional_hazard
 
-        h = cox_proportional_hazard(12, covariates={
-            "majority_margin": 0.1, "coalition_strain": 0.3,
-            "n_parties": 3, "economic_growth": 0.02,
-        })
+        h = cox_proportional_hazard(
+            12,
+            covariates={
+                "majority_margin": 0.1,
+                "coalition_strain": 0.3,
+                "n_parties": 3,
+                "economic_growth": 0.02,
+            },
+        )
         assert h > 0
 
     def test_cox_higher_majority_lower_hazard(self):
@@ -296,6 +312,7 @@ class TestAllocationMethods:
         votes = np.array([45000, 35000, 20000])
         for method in ["dhondt", "sainte_lague", "hare", "droop"]:
             from electoral_sim.systems.allocation import allocate_seats
+
             seats = allocate_seats(votes, 10, method)
             assert sum(seats) == 10
 
@@ -319,12 +336,20 @@ class TestAlternativeVoting:
     def test_stv_election(self):
         from electoral_sim import stv_election
 
-        rankings = np.array([
-            [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4],
-            [2, 1, 3, 4], [2, 1, 3, 4],
-            [3, 1, 2, 4], [3, 2, 1, 4], [3, 2, 1, 4],
-            [4, 3, 2, 1], [4, 3, 2, 1],
-        ])
+        rankings = np.array(
+            [
+                [1, 2, 3, 4],
+                [1, 2, 3, 4],
+                [1, 2, 3, 4],
+                [2, 1, 3, 4],
+                [2, 1, 3, 4],
+                [3, 1, 2, 4],
+                [3, 2, 1, 4],
+                [3, 2, 1, 4],
+                [4, 3, 2, 1],
+                [4, 3, 2, 1],
+            ]
+        )
         result = stv_election(rankings, n_candidates=4, n_seats=2)
         assert "elected" in result
 

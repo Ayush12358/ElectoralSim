@@ -90,5 +90,5 @@ jobs:
 
       - name: Run tests with optional deps
         run: |
-          pip install -e ".[viz]"
+          pip install pytest
           pytest tests/test_infra.py -v --tb=short

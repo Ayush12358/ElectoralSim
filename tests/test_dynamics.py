@@ -68,7 +68,10 @@ class TestOpinionModels:
         assert new.max() <= 2
 
     def test_bounded_confidence_step(self):
-        from electoral_sim.dynamics.opinion_dynamics import bounded_confidence_step, generate_network
+        from electoral_sim.dynamics.opinion_dynamics import (
+            bounded_confidence_step,
+            generate_network,
+        )
 
         adj_list, _ = generate_network(30, topology="barabasi_albert", m=3)
         opinions = np.random.uniform(-1, 1, 30)
@@ -143,10 +146,20 @@ class TestOpinionDynamicsClass:
 
         od = OpinionDynamics(n_agents=200, topology="barabasi_albert", m=3, seed=42)
         opinions = np.zeros(200)
-        new_pr = od.step(opinions.copy(), model="bounded_confidence",
-                         media_bias=0.8, media_strength=0.2, system="PR")
-        new_fptp = od.step(opinions.copy(), model="bounded_confidence",
-                           media_bias=0.8, media_strength=0.2, system="FPTP")
+        new_pr = od.step(
+            opinions.copy(),
+            model="bounded_confidence",
+            media_bias=0.8,
+            media_strength=0.2,
+            system="PR",
+        )
+        new_fptp = od.step(
+            opinions.copy(),
+            model="bounded_confidence",
+            media_bias=0.8,
+            media_strength=0.2,
+            system="FPTP",
+        )
         assert abs(new_fptp.mean()) >= abs(new_pr.mean())
 
     def test_precompute_neighbor_arrays(self):

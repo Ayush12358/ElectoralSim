@@ -6,7 +6,6 @@ import numpy as np
 import polars as pl
 import pytest
 
-
 # =============================================================================
 # PRESET LOADING
 # =============================================================================
@@ -24,7 +23,17 @@ class TestAllPresets:
 
     @pytest.mark.parametrize(
         "preset",
-        ["india", "usa", "uk", "germany", "france", "australia_house", "brazil", "japan", "south_africa"],
+        [
+            "india",
+            "usa",
+            "uk",
+            "germany",
+            "france",
+            "australia_house",
+            "brazil",
+            "japan",
+            "south_africa",
+        ],
     )
     def test_all_presets_run(self, preset):
         from electoral_sim import ElectionModel
@@ -169,12 +178,17 @@ class TestConstituencyManager:
     def test_from_dataframe(self):
         from electoral_sim.core.constituency import ConstituencyManager
 
-        df = pl.DataFrame({
-            "id": [0, 1, 2], "name": ["A", "B", "C"],
-            "state": ["X", "Y", "Z"], "seats": [1, 1, 1],
-            "type": ["General", "General", "SC"],
-            "lat": [25.3, 26.8, 19.0], "lon": [82.9, 80.9, 72.8],
-        })
+        df = pl.DataFrame(
+            {
+                "id": [0, 1, 2],
+                "name": ["A", "B", "C"],
+                "state": ["X", "Y", "Z"],
+                "seats": [1, 1, 1],
+                "type": ["General", "General", "SC"],
+                "lat": [25.3, 26.8, 19.0],
+                "lon": [82.9, 80.9, 72.8],
+            }
+        )
         manager = ConstituencyManager(df)
         assert manager.get_name(1) == "B"
 

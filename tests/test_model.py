@@ -26,8 +26,12 @@ class TestModelEdgeCases:
         from electoral_sim import ElectionModel
 
         parties = [
-            {"name": f"Party {i}", "position_x": np.sin(i) * 0.5,
-             "position_y": np.cos(i) * 0.5, "valence": 50}
+            {
+                "name": f"Party {i}",
+                "position_x": np.sin(i) * 0.5,
+                "position_y": np.cos(i) * 0.5,
+                "valence": 50,
+            }
             for i in range(15)
         ]
         model = ElectionModel(n_voters=1000, parties=parties, seed=42)
@@ -66,7 +70,9 @@ class TestModelEdgeCases:
         from electoral_sim import ElectionModel
 
         for method in ["dhondt", "sainte_lague", "hare", "droop"]:
-            model = ElectionModel(n_voters=1000, electoral_system="PR", allocation_method=method, seed=42)
+            model = ElectionModel(
+                n_voters=1000, electoral_system="PR", allocation_method=method, seed=42
+            )
             results = model.run_election()
             assert results is not None
 
@@ -328,7 +334,9 @@ class TestPropertyBased:
         from electoral_sim import ElectionModel
 
         for method in ["dhondt", "sainte_lague", "hare", "droop"]:
-            model = ElectionModel(n_voters=500, electoral_system="PR", allocation_method=method, seed=42)
+            model = ElectionModel(
+                n_voters=500, electoral_system="PR", allocation_method=method, seed=42
+            )
             results = model.run_election()
             assert results["seats"].sum() == 10
 

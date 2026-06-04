@@ -5,7 +5,6 @@ import sys
 import numpy as np
 import pytest
 
-
 # =============================================================================
 # CLI
 # =============================================================================
@@ -16,9 +15,11 @@ class TestCLI:
 
     def _run_cli(self, *args):
         import subprocess
+
         result = subprocess.run(
             [sys.executable, "-m", "electoral_sim.core.cli", *args],
-            capture_output=True, text=True,
+            capture_output=True,
+            text=True,
         )
         return result
 
@@ -162,6 +163,8 @@ class TestEventManager:
 class TestVisualizationPlots:
     """Smoke tests for visualization plots."""
 
+    matplotlib = pytest.importorskip("matplotlib")
+
     @pytest.fixture
     def sample_results(self):
         return {
@@ -183,6 +186,7 @@ class TestVisualizationPlots:
         fig = plot_seat_distribution(sample_results, party_names)
         assert fig is not None
         import matplotlib.pyplot as plt
+
         plt.close(fig)
 
     def test_plot_vote_shares(self, sample_results, party_names):
@@ -191,6 +195,7 @@ class TestVisualizationPlots:
         fig = plot_vote_shares(sample_results, party_names)
         assert fig is not None
         import matplotlib.pyplot as plt
+
         plt.close(fig)
 
     def test_plot_seats_vs_votes(self, sample_results, party_names):
@@ -199,6 +204,7 @@ class TestVisualizationPlots:
         fig = plot_seats_vs_votes(sample_results, party_names)
         assert fig is not None
         import matplotlib.pyplot as plt
+
         plt.close(fig)
 
     def test_plot_ideological_space(self):
@@ -209,6 +215,7 @@ class TestVisualizationPlots:
         fig = plot_ideological_space(voter_positions, party_positions, ["Left", "Center", "Right"])
         assert fig is not None
         import matplotlib.pyplot as plt
+
         plt.close(fig)
 
     def test_plot_election_summary(self, sample_results, party_names):
@@ -217,12 +224,16 @@ class TestVisualizationPlots:
         fig = plot_election_summary(sample_results, party_names)
         assert fig is not None
         import matplotlib.pyplot as plt
+
         plt.close(fig)
 
     def test_plot_with_custom_colors(self, sample_results, party_names):
         from electoral_sim.visualization.plots import plot_seat_distribution
 
-        fig = plot_seat_distribution(sample_results, party_names, colors=["#FF0000", "#00FF00", "#0000FF", "#FFFF00"])
+        fig = plot_seat_distribution(
+            sample_results, party_names, colors=["#FF0000", "#00FF00", "#0000FF", "#FFFF00"]
+        )
         assert fig is not None
         import matplotlib.pyplot as plt
+
         plt.close(fig)

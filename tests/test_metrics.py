@@ -80,8 +80,12 @@ class TestEffectiveNumberOfParties:
     def test_never_less_than_one(self):
         from electoral_sim.metrics.indices import effective_number_of_parties
 
-        for shares in [np.array([1.0]), np.array([0.5, 0.5]), np.array([0.9, 0.1]),
-                       np.array([0.25, 0.25, 0.25, 0.25])]:
+        for shares in [
+            np.array([1.0]),
+            np.array([0.5, 0.5]),
+            np.array([0.9, 0.1]),
+            np.array([0.25, 0.25, 0.25, 0.25]),
+        ]:
             assert effective_number_of_parties(shares) >= 1.0
 
 

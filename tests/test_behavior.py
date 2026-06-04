@@ -109,7 +109,9 @@ class TestBehaviorModels:
         incumbents = np.array([True, False])
         perception = np.array([0.8, 0.3])  # voter 0: sociotropic, voter 1: pocketbook
         u = model.compute_utility(
-            2, 2, incumbents,
+            2,
+            2,
+            incumbents,
             economic_growth=0.02,
             personal_income_change=np.array([0.01, 0.05]),
             perception_type=perception,
@@ -160,16 +162,22 @@ class TestPartyStrategy:
         from electoral_sim.agents.party_strategy import adaptive_strategy_step
         import polars as pl
 
-        parties_df = pl.DataFrame({
-            "name": ["A", "B"],
-            "position_x": [0.0, 0.5],
-            "position_y": [0.0, -0.3],
-        })
-        voters_df = pl.DataFrame({
-            "ideology_x": np.random.normal(0, 0.3, 100),
-            "ideology_y": np.random.normal(0, 0.3, 100),
-        })
-        new_df = adaptive_strategy_step(parties_df, voters_df, strategy="random_walk", learning_rate=0.1)
+        parties_df = pl.DataFrame(
+            {
+                "name": ["A", "B"],
+                "position_x": [0.0, 0.5],
+                "position_y": [0.0, -0.3],
+            }
+        )
+        voters_df = pl.DataFrame(
+            {
+                "ideology_x": np.random.normal(0, 0.3, 100),
+                "ideology_y": np.random.normal(0, 0.3, 100),
+            }
+        )
+        new_df = adaptive_strategy_step(
+            parties_df, voters_df, strategy="random_walk", learning_rate=0.1
+        )
         # Positions should have changed slightly
         assert abs(new_df["position_x"][0] - 0.0) > 0 or abs(new_df["position_x"][1] - 0.5) > 0
 
@@ -177,16 +185,22 @@ class TestPartyStrategy:
         from electoral_sim.agents.party_strategy import adaptive_strategy_step
         import polars as pl
 
-        parties_df = pl.DataFrame({
-            "name": ["A"],
-            "position_x": [-1.0],
-            "position_y": [0.0],
-        })
-        voters_df = pl.DataFrame({
-            "ideology_x": np.ones(100) * 0.5,
-            "ideology_y": np.zeros(100),
-        })
-        new_df = adaptive_strategy_step(parties_df, voters_df, strategy="median_voter", learning_rate=0.5)
+        parties_df = pl.DataFrame(
+            {
+                "name": ["A"],
+                "position_x": [-1.0],
+                "position_y": [0.0],
+            }
+        )
+        voters_df = pl.DataFrame(
+            {
+                "ideology_x": np.ones(100) * 0.5,
+                "ideology_y": np.zeros(100),
+            }
+        )
+        new_df = adaptive_strategy_step(
+            parties_df, voters_df, strategy="median_voter", learning_rate=0.5
+        )
         # Party should move right, toward the median
         assert new_df["position_x"][0] > -1.0
 
@@ -194,16 +208,22 @@ class TestPartyStrategy:
         from electoral_sim.agents.party_strategy import adaptive_strategy_step
         import polars as pl
 
-        parties_df = pl.DataFrame({
-            "name": ["A"],
-            "position_x": [0.99],
-            "position_y": [0.99],
-        })
-        voters_df = pl.DataFrame({
-            "ideology_x": np.ones(20) * 2.0,
-            "ideology_y": np.ones(20) * 2.0,
-        })
-        new_df = adaptive_strategy_step(parties_df, voters_df, strategy="median_voter", learning_rate=0.5)
+        parties_df = pl.DataFrame(
+            {
+                "name": ["A"],
+                "position_x": [0.99],
+                "position_y": [0.99],
+            }
+        )
+        voters_df = pl.DataFrame(
+            {
+                "ideology_x": np.ones(20) * 2.0,
+                "ideology_y": np.ones(20) * 2.0,
+            }
+        )
+        new_df = adaptive_strategy_step(
+            parties_df, voters_df, strategy="median_voter", learning_rate=0.5
+        )
         assert -1.0 <= new_df["position_x"][0] <= 1.0
         assert -1.0 <= new_df["position_y"][0] <= 1.0
 

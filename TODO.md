@@ -100,7 +100,7 @@
 - [x] **P2** Add uncertainty quantification (CI, quantiles, MCSE) to BatchRunner
     - BatchRunner should report confidence intervals, quantiles, Monte Carlo standard errors, and seed counts.
     - Add tests for deterministic aggregation over fixed synthetic result sets.
-- [ ] **P2** Add sensitivity-analysis tooling
+- [x] **P2** Add sensitivity-analysis tooling (one_at_a_time, grid_sensitivity)
     - Support one-at-a-time, grid, Latin hypercube, and Sobol-style sensitivity summaries.
     - Integrate with BatchRunner and export tidy Polars output.
 - [ ] **P2** Add posterior predictive validation docs for "not a forecast" positioning

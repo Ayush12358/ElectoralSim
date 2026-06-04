@@ -352,3 +352,36 @@ class TestBatchRunner:
         runner = BatchRunner(model_class=ElectionModel, parameter_sweep=sweep, verbose=False)
         with pytest.raises(ValueError, match="No results available"):
             runner.export_results("dummy.csv")
+
+
+class TestSensitivityAnalysis:
+    """Tests for sensitivity analysis functions."""
+
+    def test_one_at_a_time_basic(self):
+        """one_at_a_time returns results for each parameter value."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.analysis.sensitivity import one_at_a_time
+
+        results = one_at_a_time(
+            ElectionModel,
+            {"n_voters": 500, "n_constituencies": 3},
+            vary_param="temperature",
+            vary_values=[0.3, 0.7],
+            n_runs=1,
+            seed=42,
+        )
+        assert len(results) == 2
+        assert results[0]["param"] == "temperature"
+
+    def test_grid_sensitivity_basic(self):
+        """grid_sensitivity returns results for all combinations."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.analysis.sensitivity import grid_sensitivity
+
+        results = grid_sensitivity(
+            ElectionModel,
+            {"n_voters": [300, 500], "temperature": [0.3, 0.7]},
+            n_runs=1,
+            seed=42,
+        )
+        assert len(results) == 4  # 2 × 2 combinations

@@ -213,7 +213,7 @@ def allocate_seats(
             else:
                 return sainte_lague_fast(votes, n_seats, threshold)
     except ImportError:
-        pass
+        pass  # Intentional: Numba not installed → use Python fallback below
 
     # Fallback to Python implementations
     if method not in ALLOCATION_METHODS:

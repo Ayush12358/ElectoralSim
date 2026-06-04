@@ -486,8 +486,8 @@
 
 ### Stale/Placeholder Code
 
-- [ ] **P3** `systems/allocation.py:216` has bare `pass` in a fallback import block — should raise `NotImplementedError` with guidance
-- [ ] **P3** `engine/government.py:287` has bare `pass` with comment about discrete media effect — implement or remove
+- [x] **P3** `systems/allocation.py:216` documented -- intentional Numba fallback `pass` in a fallback import block — should raise `NotImplementedError` with guidance
+- [x] **P3** `engine/government.py:287` pass is empty while loop body (valid idiom) `pass` with comment about discrete media effect — implement or remove
 
 ### Code Style
 

@@ -13,7 +13,7 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 | Workflow | File | Purpose |
 |----------|------|---------|
 | Feature Implementation | `docs/WORKFLOW.md` | Step-by-step for implementing a single feature, fix, or enhancement |
-| Continuous Iteration | `docs/ITERATION_WORKFLOW.md` | Autonomous loop: pick task from TODO.md → execute feature workflow → commit → repeat; discovery phase when TODO.md is empty |
+| Continuous Iteration | `docs/ITERATION_WORKFLOW.md` | Autonomous loop: pick from TODO.md → execute feature workflow → commit → repeat; discovery phase when TODO empty |
 
 ## Structure
 
@@ -35,7 +35,7 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 ├── app.py                # Streamlit dashboard
 ├── tests/                # 11 test files (329 tests, 85% coverage)
 ├── benchmarks/           # Performance benchmark scripts
-├── docs/                 # mkdocs-material documentation + WORKFLOW.md
+├── docs/                 # mkdocs-material documentation + WORKFLOW.md + ITERATION_WORKFLOW.md
 └── scripts/              # Release, benchmark scripts
 ```
 
@@ -58,6 +58,7 @@ Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior,
 | Benchmarks | `benchmarks/benchmark_core.py` | Reproducible perf scripts |
 | Release | `scripts/release.py` | PyPI release workflow |
 | Feature workflow | `docs/WORKFLOW.md` | Step-by-step implementation guide |
+| Iteration workflow | `docs/ITERATION_WORKFLOW.md` | Autonomous TODO-driven loop |
 
 ## Conventions
 

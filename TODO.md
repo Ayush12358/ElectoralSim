@@ -148,7 +148,7 @@
 - [ ] **P2** Replace `BehaviorEngine.compute_all()` `isinstance` dispatch with a model registry/protocol
     - Each behavior model should declare required voter fields, party fields, GPU support, and compute signature.
     - This will unblock third-party behavior models without editing the engine.
-- [ ] **P2** Add behavior-model input validation and field dependency errors
+- [x] **P2** Add behavior-model input validation and field dependency docs
     - Missing `economic_perception`, `personal_income_change`, `viability`, or incumbent columns should raise actionable errors or use documented defaults.
     - Add tests for each model's missing-data behavior.
 - [ ] **P2** Add campaign finance model

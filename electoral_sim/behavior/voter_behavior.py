@@ -18,7 +18,11 @@ class BehaviorModel(Protocol):
 
 
 class ProximityModel:
-    """Standard spatial model: utility decreases with ideological distance."""
+    """Standard spatial model: utility decreases with ideological distance.
+
+    Required party fields: positions (n_parties, dims)
+    Required voter fields: positions (n_voters, dims)
+    """
 
     def __init__(self, weight: float = 1.0, dimensionality: int = 2):
         self.weight = weight
@@ -41,7 +45,10 @@ class ProximityModel:
 
 
 class ValenceModel:
-    """Valence model: utility increases with party's non-policy appeal."""
+    """Valence model: utility increases with party's non-policy appeal.
+
+    Required party fields: valence (n_parties,)
+    """
 
     def __init__(self, weight: float = 0.01):
         self.weight = weight
@@ -58,7 +65,11 @@ class ValenceModel:
 
 
 class RetrospectiveModel:
-    """Economic/Retrospective voting: reward/punish incumbents based on 'economic mood'."""
+    """Economic/Retrospective voting: reward/punish incumbents based on 'economic mood'.
+
+    Required party fields: incumbent_mask (n_parties,) boolean
+    Required kwargs: economic_growth (float)
+    """
 
     def __init__(self, weight: float = 0.5):
         self.weight = weight

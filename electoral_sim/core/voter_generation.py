@@ -3,6 +3,31 @@ Voter Generation Module
 
 Contains functions for generating voter DataFrames with demographics,
 ideology, and behavioral attributes.
+
+
+CSES-Style Survey Calibration
+-----------------------------
+The Comparative Study of Electoral Systems (CSES) provides standardized
+post-election survey variables that can be mapped to simulation parameters
+for calibrated presets. Below is the recommended mapping:
+
+CSES Variable → Simulation Parameter
+    vote_choice        → party_id (target for behavior model fitting)
+    ideology_LR        → ideology_x (left-right self-placement)
+    age, education     → knowledge, turnout_prob (demographic weights)
+    political_trust    → media_susceptibility (inverse)
+    democratic_satisf  → turnout_prob (modifier)
+    income_change      → personal_income_change (pocketbook model)
+    retrospective_eco  → economic_perception (sociotropic model)
+
+Usage for calibration:
+    1. Load CSES data for the target election
+    2. Map variables to the simulation parameter space
+    3. Fit behavior model weights to match observed vote choice
+    4. Validate against held-out elections
+
+Data download is optional and not bundled with the package. See:
+    https://cses.org/ for data access and licensing.
 """
 
 import numpy as np

@@ -284,7 +284,12 @@ class ElectionModel(Model):
             )
 
         config = PRESETS[preset.lower()](**kwargs)
-        return cls.from_config(config)
+        model = cls.from_config(config)
+        model._preset = preset.lower()
+        from electoral_sim.core.config import PRESET_PROVENANCE
+
+        model._provenance = PRESET_PROVENANCE.get(preset.lower(), {})
+        return model
 
     # =========================================================================
     # CHAINABLE API

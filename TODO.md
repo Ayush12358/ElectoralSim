@@ -112,7 +112,7 @@
 - [ ] **P2** Add precinct/district result ingestion pipeline
     - Support MIT Election Lab-style precinct returns, district identifiers, party normalization, turnout, and year metadata.
     - Add schema validation and tiny fixture files for CI.
-- [ ] **P2** Add data provenance registry for every bundled dataset and preset
+- [x] **P2** Add data provenance registry for every bundled dataset and preset
     - Store source URL, retrieval date, license, preprocessing steps, calibration status, and checksum.
     - Expose provenance via `ElectionModel.from_preset(...).metadata`.
 - [x] **P2** Add reproducibility manifests to BatchRunner outputs

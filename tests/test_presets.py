@@ -96,6 +96,26 @@ class TestAllPresets:
         assert model.allocation_method == "dhondt"
         assert model.parties.n_parties == 8
 
+    def test_preset_provenance_metadata(self):
+        """from_preset() stores provenance metadata on the model."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("usa", n_voters=500)
+        assert hasattr(model, "_provenance")
+        assert model._provenance["calibration"] == "structural_demo"
+        assert model._provenance["electoral_system"] == "FPTP"
+
+    def test_preset_provenance_for_all(self):
+        """All presets have provenance metadata."""
+        from electoral_sim import ElectionModel, PRESETS
+
+        from electoral_sim.core.config import PRESET_PROVENANCE
+
+        for preset_name in PRESETS:
+            assert preset_name in PRESET_PROVENANCE, f"Missing provenance for {preset_name}"
+            prov = PRESET_PROVENANCE[preset_name]
+            assert "calibration" in prov
+
 
 # =============================================================================
 # INDIA PRESET

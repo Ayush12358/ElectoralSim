@@ -149,3 +149,73 @@ PRESETS = {
     "france": france_config,
     "japan": japan_config,
 }
+
+# Data provenance registry for bundled presets
+# Calibration status: structural_demo | partially_calibrated | historically_calibrated | validation_only
+PRESET_PROVENANCE = {
+    "india": {
+        "calibration": "structural_demo",
+        "source": "Election Commission of India (synthetic positions)",
+        "electoral_system": "FPTP",
+        "n_constituencies": 543,
+    },
+    "usa": {
+        "calibration": "structural_demo",
+        "source": "Synthetic two-party positions",
+        "electoral_system": "FPTP",
+        "n_constituencies": 435,
+    },
+    "uk": {
+        "calibration": "structural_demo",
+        "source": "Synthetic multi-party positions",
+        "electoral_system": "FPTP",
+        "n_constituencies": 650,
+    },
+    "germany": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, Sainte-Lagu\u00eb allocation",
+        "electoral_system": "PR",
+        "threshold": 0.05,
+    },
+    "australia_house": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions (FPTP fallback for IRV)",
+        "electoral_system": "FPTP",
+        "n_constituencies": 151,
+    },
+    "australia_senate": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions (PR fallback for STV)",
+        "electoral_system": "PR",
+        "n_constituencies": 8,
+    },
+    "south_africa": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, pure PR",
+        "electoral_system": "PR",
+        "allocation": "dhondt",
+    },
+    "brazil": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, open-list PR",
+        "electoral_system": "PR",
+        "allocation": "dhondt",
+    },
+    "eu": {
+        "calibration": "structural_demo",
+        "source": "European Parliament 2024-2029 term (synthetic positions)",
+        "electoral_system": "PR",
+        "allocation": "dhondt",
+        "n_seats": 720,
+    },
+    "france": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions (FPTP simulation of two-round)",
+        "electoral_system": "FPTP",
+    },
+    "japan": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions (FPTP base of parallel system)",
+        "electoral_system": "FPTP",
+    },
+}

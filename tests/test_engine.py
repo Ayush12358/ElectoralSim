@@ -430,7 +430,7 @@ class TestAllocationMethods:
 
 
 class TestCounting:
-    """Tests for core/counting.py (count_fptp, count_pr)."""
+    """Tests for core/counting.py."""
 
     def test_count_fptp(self):
         from electoral_sim.core.counting import count_fptp
@@ -492,6 +492,24 @@ class TestAlternativeVoting:
         assert result["winner"] == 0
         assert len(result["rounds"]) == 1
 
+    def test_irv_with_unranked_candidates(self):
+        """IRV with some candidates unranked (rank 0)."""
+        from electoral_sim import irv_election
+
+        # Candidate 2 is unranked by some voters
+        rankings = np.array(
+            [
+                [1, 2, 0],  # Voter ranks A=1st, B=2nd, C unranked
+                [1, 0, 2],  # Voter ranks A=1st, C=2nd, B unranked
+                [2, 1, 0],  # Voter ranks B=1st, A=2nd, C unranked
+                [0, 1, 2],  # Voter ranks B=1st, C=2nd, A unranked
+                [0, 2, 1],  # Voter ranks C=1st, B=2nd, A unranked
+            ]
+        )
+        result = irv_election(rankings, n_candidates=3)
+        assert "winner" in result
+        assert result["winner"] is not None
+
     def test_stv_election(self):
         from electoral_sim import stv_election
 
@@ -530,6 +548,32 @@ class TestAlternativeVoting:
         assert "elected" in result
         assert len(result["elected"]) == 1
 
+    def test_stv_surplus_transfer(self):
+        """STV with a candidate exceeding quota triggers surplus transfer."""
+        from electoral_sim import stv_election
+
+        # Candidate 0 has way more than quota, surplus should transfer
+        rankings = np.array(
+            [
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+                [2, 1, 3],
+                [2, 1, 3],
+                [2, 1, 3],
+                [3, 1, 2],
+            ]
+        )
+        result = stv_election(rankings, n_candidates=3, n_seats=2)
+        assert "elected" in result
+        assert len(result["elected"]) == 2
+        assert len(result["rounds"]) >= 1
+
     def test_approval_voting(self):
         from electoral_sim import approval_voting
 
@@ -546,11 +590,18 @@ class TestAlternativeVoting:
         result = approval_voting(approvals, n_candidates=3)
         assert result["winner"] == 0
 
+    def test_approval_voting_shares(self):
+        """approval_voting returns approval_shares."""
+        from electoral_sim import approval_voting
+
+        approvals = np.array([[1, 1, 0], [1, 0, 1], [0, 1, 1]])
+        result = approval_voting(approvals, n_candidates=3)
+        assert "approval_shares" in result
+        assert abs(result["approval_shares"].sum() - approvals.sum() / 3) < 0.01
+
     def test_condorcet_winner_exists(self):
-        """Condorcet winner when one candidate beats all others."""
         from electoral_sim import condorcet_winner
 
-        # Candidate 0 beats 1 and 2 in pairwise comparisons
         rankings = np.array(
             [
                 [1, 2, 3],
@@ -564,19 +615,16 @@ class TestAlternativeVoting:
         assert result["condorcet_winner"] is not None
 
     def test_condorcet_cycle_no_winner(self):
-        """Condorcet cycle (A>B>C>A) has no winner."""
         from electoral_sim import condorcet_winner
 
-        # Create a Condorcet cycle
         rankings = np.array(
             [
-                [1, 2, 3],  # A > B > C
-                [2, 1, 3],  # B > C > A
-                [3, 1, 2],  # C > A > B
+                [1, 2, 3],
+                [2, 1, 3],
+                [3, 1, 2],
             ]
         )
         result = condorcet_winner(rankings, n_candidates=3)
-        # May or may not have a winner depending on exact votes
         assert "has_condorcet" in result
 
     def test_generate_rankings(self):
@@ -585,21 +633,17 @@ class TestAlternativeVoting:
         utilities = np.array([[0.9, 0.5, 0.1], [0.2, 0.8, 0.3], [0.1, 0.2, 0.9]])
         rankings = generate_rankings(utilities)
         assert rankings.shape == (3, 3)
-        # First voter: utility 0.9 for candidate 0 → rank 1
         assert rankings[0, 0] == 1
 
     def test_generate_rankings_with_n_ranked(self):
-        """generate_rankings with n_ranked limits ranking depth."""
         from electoral_sim import generate_rankings
 
         utilities = np.array([[0.9, 0.5, 0.1], [0.2, 0.8, 0.3]])
         rankings = generate_rankings(utilities, n_ranked=2)
         assert rankings.shape == (2, 3)
-        # Voter 0: utilities [0.9, 0.5, 0.1] → ranks [1, 2, 0]
         assert rankings[0, 0] == 1
         assert rankings[0, 1] == 2
-        assert rankings[0, 2] == 0  # unranked
-        # Voter 1: utilities [0.2, 0.8, 0.3] → candidate 1 ranked 1, candidate 2 ranked 2
+        assert rankings[0, 2] == 0
         assert rankings[1, 1] == 1
         assert rankings[1, 2] == 2
 
@@ -610,10 +654,9 @@ class TestAlternativeVoting:
 
 
 class TestDuverger:
-    """Tests for duverger.py (analysis/duverger.py)."""
+    """Tests for duverger.py."""
 
     def test_run_duverger_fptp(self):
-        """Duverger experiment with FPTP decreases ENP over time."""
         from electoral_sim.analysis.duverger import run_duverger_experiment
 
         history = run_duverger_experiment(
@@ -630,7 +673,6 @@ class TestDuverger:
             assert entry["enp"] >= 1.0
 
     def test_run_duverger_pr(self):
-        """Duverger experiment with PR maintains higher ENP."""
         from electoral_sim.analysis.duverger import run_duverger_experiment
 
         history = run_duverger_experiment(
@@ -651,7 +693,7 @@ class TestDuverger:
 
 
 class TestNumbaWrappers:
-    """Test Numba-accelerated wrapper functions (dhondt_fast, sainte_lague_fast, vote_mnl_fast)."""
+    """Test Numba-accelerated wrapper functions."""
 
     def test_dhondt_fast(self):
         from electoral_sim.engine.numba_accel import dhondt_fast
@@ -709,7 +751,6 @@ class TestNumbaWrappers:
         )
         rng = np.random.default_rng(42)
         votes = vote_mnl_fast(utilities, temperature=0.01, rng=rng)
-        # Each voter should pick the highest-utility party
         assert votes[0] == 0
         assert votes[1] == 1
         assert votes[2] == 2
@@ -724,12 +765,16 @@ class TestNumbaWrappers:
         assert vote_counts.sum() == 6
 
     def test_fptp_count_fast_empty_constituency(self):
-        """FPTP with an empty constituency handles gracefully."""
         from electoral_sim.engine.numba_accel import fptp_count_fast
 
-        # Constituency 1 has no voters
         constituencies = np.array([0, 0, 2, 2], dtype=np.int64)
         votes = np.array([0, 1, 0, 1], dtype=np.int64)
         seats, vote_counts = fptp_count_fast(constituencies, votes, 3, 2)
-        # 3 constituencies but only 2 have votes → 2 seats allocated
         assert vote_counts.sum() == 4
+
+    def test_benchmark_numba(self):
+        """benchmark_numba runs without error."""
+        from electoral_sim.engine.numba_accel import benchmark_numba
+
+        # Should run without crashing
+        benchmark_numba()

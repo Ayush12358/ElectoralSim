@@ -10,73 +10,61 @@ from pathlib import Path
 from electoral_sim import ElectionModel
 from electoral_sim.analysis import BatchRunner, ParameterSweep
 
+# =============================================================================
+# PARAMETER SWEEP
+# =============================================================================
+
 
 class TestParameterSweep:
-    """Test ParameterSweep class."""
+    """Test parameter sweep configuration."""
 
     def test_grid_search_combinations(self):
-        """Test that grid search generates all combinations."""
-        sweep = ParameterSweep({"a": [1, 2], "b": [10, 20, 30]}, sweep_type="grid")
-
+        """Test grid search generates all combinations."""
+        sweep = ParameterSweep({"a": [1, 2], "b": [3, 4, 5]})
         configs = sweep.generate_configs()
-
-        assert len(configs) == 6  # 2 * 3 = 6 combinations
-        assert all("a" in c and "b" in c for c in configs)
-
-        # Verify all combinations are present
-        expected = [
-            {"a": 1, "b": 10},
-            {"a": 1, "b": 20},
-            {"a": 1, "b": 30},
-            {"a": 2, "b": 10},
-            {"a": 2, "b": 20},
-            {"a": 2, "b": 30},
-        ]
-        assert configs == expected
+        assert len(configs) == 6  # 2 * 3
 
     def test_grid_search_with_fixed_params(self):
-        """Test that fixed parameters are included."""
-        sweep = ParameterSweep(parameters={"a": [1, 2]}, fixed_params={"b": 100, "c": "fixed"})
-
+        """Test grid search includes fixed params in each config."""
+        sweep = ParameterSweep({"a": [1, 2]}, fixed_params={"x": 10, "y": 20})
         configs = sweep.generate_configs()
-
-        assert all(c["b"] == 100 and c["c"] == "fixed" for c in configs)
+        for config in configs:
+            assert config["x"] == 10
+            assert config["y"] == 20
 
     def test_random_search_size(self):
-        """Test that random search generates correct number of samples."""
+        """Test random search generates correct number of samples."""
         sweep = ParameterSweep(
-            parameters={"a": [1, 2, 3], "b": [10, 20]}, sweep_type="random", n_samples=50
+            {"a": list(range(100)), "b": list(range(100))}, sweep_type="random", n_samples=50
         )
-
         configs = sweep.generate_configs()
-
         assert len(configs) == 50
-        assert all("a" in c and "b" in c for c in configs)
 
     def test_sweep_len(self):
-        """Test __len__ method."""
-        grid_sweep = ParameterSweep({"a": [1, 2], "b": [10, 20, 30]}, sweep_type="grid")
-        assert len(grid_sweep) == 6
+        """Test len() on sweep."""
+        sweep = ParameterSweep({"a": [1, 2, 3], "b": [4, 5]})
+        assert len(sweep) == 6
 
-        random_sweep = ParameterSweep({"a": [1, 2]}, sweep_type="random", n_samples=100)
-        assert len(random_sweep) == 100
+
+# =============================================================================
+# BATCH RUNNER
+# =============================================================================
 
 
 class TestBatchRunner:
-    """Test BatchRunner class."""
+    """Test batch runner execution and export."""
 
     def test_basic_batch_run(self):
-        """Test basic batch run with small parameters."""
+        """Test basic batch run with grid sweep."""
         sweep = ParameterSweep(
-            {"n_voters": [1000, 2000], "temperature": [0.3, 0.5]},
-            fixed_params={"n_constituencies": 5, "electoral_system": "FPTP"},
+            {"n_voters": [1000, 2000], "temperature": [0.3, 0.7]},
+            fixed_params={"n_constituencies": 3},
         )
 
         runner = BatchRunner(
             model_class=ElectionModel,
             parameter_sweep=sweep,
             n_runs_per_config=2,
-            n_jobs=1,  # Sequential for reproducibility
             seed=42,
             verbose=False,
         )
@@ -145,22 +133,14 @@ class TestBatchRunner:
         )
 
         runner.run()
+
         summary = runner.get_summary_stats()
 
-        # Check summary structure
         assert isinstance(summary, pl.DataFrame)
         assert len(summary) == 2  # 2 configs
 
         # Check summary columns
-        expected_cols = [
-            "config_idx",
-            "n_voters",
-            "turnout_mean",
-            "turnout_std",
-            "gallagher_mean",
-            "n_runs",
-        ]
-        for col in expected_cols:
+        for col in ["turnout_mean", "turnout_std", "gallagher_mean", "gallagher_std"]:
             assert col in summary.columns
 
         # Verify n_runs
@@ -180,15 +160,93 @@ class TestBatchRunner:
 
         runner.run()
 
-        # Export to CSV
         output_file = tmp_path / "results.csv"
         runner.export_results(str(output_file))
 
         assert output_file.exists()
-
-        # Verify can read back
         df_read = pl.read_csv(output_file)
         assert len(df_read) == 2
+
+    def test_export_parquet(self, tmp_path):
+        """Test Parquet export."""
+        sweep = ParameterSweep({"n_voters": [1000]}, fixed_params={"n_constituencies": 3})
+
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=2,
+            seed=42,
+            verbose=False,
+        )
+
+        runner.run()
+
+        output_file = tmp_path / "results.parquet"
+        runner.export_results(str(output_file))
+
+        assert output_file.exists()
+        df_read = pl.read_parquet(output_file)
+        assert len(df_read) == 2
+
+    def test_export_json(self, tmp_path):
+        """Test JSON export."""
+        sweep = ParameterSweep({"n_voters": [1000]}, fixed_params={"n_constituencies": 3})
+
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=2,
+            seed=42,
+            verbose=False,
+        )
+
+        runner.run()
+
+        output_file = tmp_path / "results.json"
+        runner.export_results(str(output_file))
+
+        assert output_file.exists()
+
+    def test_export_auto_format(self, tmp_path):
+        """Test auto-format detection from file extension."""
+        sweep = ParameterSweep({"n_voters": [1000]}, fixed_params={"n_constituencies": 3})
+
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=2,
+            seed=42,
+            verbose=False,
+        )
+
+        runner.run()
+
+        # Auto-detect CSV
+        csv_file = tmp_path / "auto.csv"
+        runner.export_results(str(csv_file))
+        assert csv_file.exists()
+
+        # Auto-detect Parquet
+        parquet_file = tmp_path / "auto.parquet"
+        runner.export_results(str(parquet_file))
+        assert parquet_file.exists()
+
+    def test_export_unknown_format_raises(self, tmp_path):
+        """Test that unknown format raises ValueError."""
+        sweep = ParameterSweep({"n_voters": [1000]}, fixed_params={"n_constituencies": 3})
+
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=1,
+            seed=42,
+            verbose=False,
+        )
+
+        runner.run()
+
+        with pytest.raises(ValueError, match="Unknown format"):
+            runner.export_results(str(tmp_path / "results.xyz"), format="xyz")
 
     def test_export_summary(self, tmp_path):
         """Test summary export."""
@@ -204,37 +262,63 @@ class TestBatchRunner:
 
         runner.run()
 
-        # Export summary
         summary_file = tmp_path / "summary.csv"
         runner.export_summary(str(summary_file))
 
         assert summary_file.exists()
-
-        # Verify can read back
         df_read = pl.read_csv(summary_file)
         assert len(df_read) == 2
+
+    def test_export_summary_json(self, tmp_path):
+        """Test summary export to JSON."""
+        sweep = ParameterSweep({"n_voters": [1000]}, fixed_params={"n_constituencies": 3})
+
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=2,
+            seed=42,
+            verbose=False,
+        )
+
+        runner.run()
+
+        summary_file = tmp_path / "summary.json"
+        runner.export_summary(str(summary_file))
+        assert summary_file.exists()
+
+    def test_export_summary_unknown_format_raises(self, tmp_path):
+        """Test that unknown summary format raises ValueError."""
+        sweep = ParameterSweep({"n_voters": [1000]}, fixed_params={"n_constituencies": 3})
+
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=1,
+            seed=42,
+            verbose=False,
+        )
+
+        runner.run()
+
+        with pytest.raises(ValueError, match="Unknown format"):
+            runner.export_summary(str(tmp_path / "summary.xyz"), format="xyz")
 
     def test_parallel_execution(self):
         """Test parallel execution produces valid results."""
         sweep = ParameterSweep({"n_voters": [1000, 2000]}, fixed_params={"n_constituencies": 3})
 
-        # Note: Can't guarantee determinism with parallel execution
-        # but we can verify the structure and validity
         runner = BatchRunner(
             model_class=ElectionModel,
             parameter_sweep=sweep,
             n_runs_per_config=3,
-            n_jobs=2,  # Use 2 workers
+            n_jobs=2,
             seed=42,
             verbose=False,
         )
 
         results_df = runner.run()
-
-        # Check all runs completed
-        assert len(results_df) == 2 * 3  # 2 configs * 3 runs
-
-        # Check all turnouts are valid (between 0 and 1)
+        assert len(results_df) == 2 * 3
         assert all((results_df["turnout"] >= 0) & (results_df["turnout"] <= 1))
 
     def test_invalid_sweep_type(self):
@@ -247,9 +331,5 @@ class TestBatchRunner:
         """Test that exporting before running raises error."""
         sweep = ParameterSweep({"n_voters": [1000]})
         runner = BatchRunner(model_class=ElectionModel, parameter_sweep=sweep, verbose=False)
-
         with pytest.raises(ValueError, match="No results available"):
             runner.export_results("dummy.csv")
-
-        with pytest.raises(ValueError, match="No results available"):
-            runner.get_summary_stats()

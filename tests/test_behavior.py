@@ -118,6 +118,31 @@ class TestBehaviorModels:
         )
         assert u.shape == (2, 2)
 
+    def test_sociotropic_with_default_perception(self):
+        """SociotropicPocketbookModel with no perception_type defaults to all sociotropic."""
+        from electoral_sim import SociotropicPocketbookModel
+
+        model = SociotropicPocketbookModel()
+        incumbents = np.array([True, False])
+        u = model.compute_utility(10, 2, incumbents, economic_growth=0.03)
+        assert u.shape == (10, 2)
+
+    def test_sociotropic_with_personal_income(self):
+        """SociotropicPocketbookModel with personal_income_change."""
+        from electoral_sim import SociotropicPocketbookModel
+
+        model = SociotropicPocketbookModel(sociotropic_weight=0.3, pocketbook_weight=0.7)
+        incumbents = np.array([True, False])
+        u = model.compute_utility(
+            5,
+            2,
+            incumbents,
+            economic_growth=0.02,
+            personal_income_change=np.array([0.05, -0.02, 0.01, 0.03, -0.01]),
+            perception_type=np.array([0.8, 0.3, 0.5, 0.9, 0.1]),
+        )
+        assert u.shape == (5, 2)
+
     def test_wasted_vote_model(self):
         from electoral_sim import WastedVoteModel
 
@@ -151,6 +176,31 @@ class TestBehaviorEngine:
         from electoral_sim import ElectionModel
 
         model = ElectionModel(n_voters=100, seed=42)
+        results = model.run_election()
+        assert results is not None
+
+    def test_engine_with_all_models(self):
+        """BehaviorEngine with all 6 behavior models."""
+        from electoral_sim import (
+            BehaviorEngine,
+            ProximityModel,
+            ValenceModel,
+            RetrospectiveModel,
+            StrategicVotingModel,
+            SociotropicPocketbookModel,
+            WastedVoteModel,
+        )
+        from electoral_sim import ElectionModel
+
+        engine = BehaviorEngine()
+        engine.add_model(ProximityModel(weight=1.0))
+        engine.add_model(ValenceModel(weight=0.01))
+        engine.add_model(RetrospectiveModel(weight=0.5))
+        engine.add_model(StrategicVotingModel(sensitivity=1.0))
+        engine.add_model(SociotropicPocketbookModel())
+        engine.add_model(WastedVoteModel(penalty=2.0))
+
+        model = ElectionModel(n_voters=500, behavior_engine=engine, economic_growth=0.02, seed=42)
         results = model.run_election()
         assert results is not None
 
@@ -235,3 +285,32 @@ class TestPartyStrategy:
         voters_df = pl.DataFrame({"ideology_x": [0.0]})
         result = adaptive_strategy_step(parties_df, voters_df)
         assert result is parties_df
+
+    def test_median_voter_with_noise(self):
+        """median_voter strategy with noise parameter."""
+        from electoral_sim.agents.party_strategy import adaptive_strategy_step
+        import polars as pl
+
+        parties_df = pl.DataFrame(
+            {
+                "name": ["A"],
+                "position_x": [0.0],
+                "position_y": [0.0],
+            }
+        )
+        voters_df = pl.DataFrame(
+            {
+                "ideology_x": np.ones(50) * 0.5,
+                "ideology_y": np.zeros(50),
+            }
+        )
+        new_df = adaptive_strategy_step(
+            parties_df,
+            voters_df,
+            strategy="median_voter",
+            learning_rate=0.1,
+            noise=0.1,
+            rng=np.random.default_rng(42),
+        )
+        # Position should have moved toward median
+        assert new_df["position_x"][0] > 0.0

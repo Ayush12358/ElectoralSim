@@ -118,11 +118,17 @@ class TestIndiaPreset:
         assert result is not None
         assert result.nota_contested_seats >= 0
 
+    def test_india_verbose(self):
+        """India simulation with verbose=True prints output."""
+        from electoral_sim import simulate_india_election
+
+        result = simulate_india_election(n_voters_per_constituency=200, seed=42, verbose=True)
+        assert result is not None
+
     def test_phase_states_total_seats(self):
         from electoral_sim.presets.india.election import get_phase_states, INDIA_STATES
 
         phases = get_phase_states()
-        # Each state may appear in multiple phases (e.g., UP votes across phases 5-7)
         unique_states_in_phases = set()
         for states in phases.values():
             unique_states_in_phases.update(states)
@@ -152,6 +158,23 @@ class TestEUPreset:
         from electoral_sim import simulate_eu_election
 
         result = simulate_eu_election(n_voters_per_mep=500, seed=42, verbose=False)
+        assert result is not None
+
+    def test_eu_result_str(self):
+        """EUElectionResult __str__ produces readable output."""
+        from electoral_sim import simulate_eu_election
+
+        result = simulate_eu_election(n_voters_per_mep=200, seed=42, verbose=False)
+        result_str = str(result)
+        assert "EUROPEAN PARLIAMENT" in result_str
+        assert "Turnout" in result_str
+        assert "Pro-EU" in result_str
+
+    def test_eu_verbose(self):
+        """EU simulation with verbose=True prints output."""
+        from electoral_sim import simulate_eu_election
+
+        result = simulate_eu_election(n_voters_per_mep=200, seed=42, verbose=True)
         assert result is not None
 
 
@@ -317,3 +340,63 @@ class TestHistoricalDataLoader:
         viab = loader.get_constituency_viability()
         for key, party_shares in viab.items():
             assert abs(sum(party_shares.values()) - 1.0) < 0.001
+
+
+# =============================================================================
+# VOTER GENERATION - PARTY FRAME WITH NOTA
+# =============================================================================
+
+
+class TestVoterGeneration:
+    """Tests for voter_generation module edge cases."""
+
+    def test_generate_party_frame_with_nota(self):
+        """generate_party_frame with include_nota=True adds NOTA party."""
+        from electoral_sim.core.voter_generation import generate_party_frame
+
+        parties = [
+            {"name": "A", "position_x": -0.3, "position_y": 0.0, "valence": 50},
+            {"name": "B", "position_x": 0.3, "position_y": 0.0, "valence": 50},
+        ]
+        df = generate_party_frame(parties, include_nota=True)
+        assert len(df) == 3
+        assert "NOTA" in df["name"].to_list()
+        nota_row = df.filter(pl.col("is_nota"))
+        assert len(nota_row) == 1
+
+    def test_generate_party_frame_without_nota(self):
+        """generate_party_frame without NOTA."""
+        from electoral_sim.core.voter_generation import generate_party_frame
+
+        parties = [
+            {"name": "A", "position_x": -0.3, "position_y": 0.0, "valence": 50},
+        ]
+        df = generate_party_frame(parties, include_nota=False)
+        assert len(df) == 1
+        assert df["is_nota"].sum() == 0
+
+    def test_voter_frame_personality_columns(self):
+        """Voter frame includes Big Five personality columns."""
+        from electoral_sim.core.voter_generation import generate_voter_frame
+
+        rng = np.random.default_rng(42)
+        df = generate_voter_frame(100, 5, rng)
+        for col in [
+            "openness",
+            "conscientiousness",
+            "extraversion",
+            "agreeableness",
+            "neuroticism",
+        ]:
+            assert col in df.columns
+            assert df[col].min() >= 0
+            assert df[col].max() <= 1
+
+    def test_voter_frame_moral_foundations(self):
+        """Voter frame includes moral foundations columns."""
+        from electoral_sim.core.voter_generation import generate_voter_frame
+
+        rng = np.random.default_rng(42)
+        df = generate_voter_frame(100, 5, rng)
+        for col in ["mf_care", "mf_fairness", "mf_loyalty", "mf_authority", "mf_sanctity"]:
+            assert col in df.columns

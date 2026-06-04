@@ -2,6 +2,7 @@
 
 import pytest
 import numpy as np
+import polars as pl
 
 
 class TestModelEdgeCases:
@@ -56,6 +57,14 @@ class TestModelEdgeCases:
         from electoral_sim import ElectionModel
 
         model = ElectionModel(n_voters=1000, include_nota=True, seed=42)
+        results = model.run_election()
+        assert results is not None
+
+    def test_nota_in_pr(self):
+        """NOTA in PR system should not win seats."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=1000, electoral_system="PR", include_nota=True, seed=42)
         results = model.run_election()
         assert results is not None
 
@@ -190,6 +199,34 @@ class TestMultipleElections:
         results = model.run_elections_batch(n_elections=3)
         assert len(results) == 3
 
+    def test_batch_with_reset(self):
+        """run_elections_batch with reset_voters regenerates voter data."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=500, n_constituencies=5, seed=42)
+        results = model.run_elections_batch(n_elections=3, reset_voters=True)
+        assert len(results) == 3
+
+    def test_get_aggregate_stats(self):
+        """get_aggregate_stats returns statistics across elections."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=500, seed=42)
+        model.run_elections_batch(n_elections=5)
+        stats = model.get_aggregate_stats()
+        assert "n_elections" in stats
+        assert stats["n_elections"] == 5
+        assert "turnout_mean" in stats
+        assert "gallagher_mean" in stats
+
+    def test_get_aggregate_stats_empty(self):
+        """get_aggregate_stats returns empty dict when no elections run."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=500, seed=42)
+        stats = model.get_aggregate_stats()
+        assert stats == {}
+
 
 class TestConstituencies:
     """Constituency count variations."""
@@ -210,7 +247,7 @@ class TestConstituencies:
 
 
 class TestModelAdvancedFeatures:
-    """Tests for opinion dynamics, events, adaptive strategy, turnout, and constraints."""
+    """Tests for opinion dynamics, events, adaptive strategy, turnout, constraints, and pre-built frames."""
 
     def test_with_opinion_dynamics(self):
         from electoral_sim import ElectionModel, OpinionDynamics
@@ -218,6 +255,20 @@ class TestModelAdvancedFeatures:
         od = OpinionDynamics(n_agents=100, topology="barabasi_albert", m=3, seed=42)
         model = ElectionModel(n_voters=100, opinion_dynamics=od, seed=42)
         model.step()
+        model.step()
+        results = model.run_election()
+        assert results is not None
+
+    def test_opinion_dynamics_step_with_media_bias(self):
+        """step() with opinion dynamics and media_bias column."""
+        from electoral_sim import ElectionModel, OpinionDynamics
+
+        od = OpinionDynamics(n_agents=100, topology="barabasi_albert", m=3, seed=42)
+        model = ElectionModel(n_voters=100, opinion_dynamics=od, seed=42)
+        # Add media_bias column to trigger media influence path
+        model.voters.df = model.voters.df.with_columns(
+            pl.Series("media_bias", np.random.uniform(-1, 1, 100))
+        )
         model.step()
         results = model.run_election()
         assert results is not None
@@ -249,10 +300,8 @@ class TestModelAdvancedFeatures:
     def test_national_mood(self):
         from electoral_sim import ElectionModel
 
-        # Pro-incumbent wave
         model_pro = ElectionModel(n_voters=1000, national_mood=3.0, seed=42)
         r_pro = model_pro.run_election()
-        # Anti-incumbent wave
         model_anti = ElectionModel(n_voters=1000, national_mood=-3.0, seed=42)
         r_anti = model_anti.run_election()
         assert r_pro is not None
@@ -285,16 +334,99 @@ class TestModelAdvancedFeatures:
         model = ElectionModel(n_voters=500, seed=42)
         model.run(n_steps=10, election_interval=5)
         results = model.get_results()
-        assert len(results) == 2  # elections at step 5 and 10
+        assert len(results) == 2
 
     def test_voter_knowledge_attributes(self):
-        """Voters should have political knowledge column."""
         from electoral_sim import ElectionModel
 
         model = ElectionModel(n_voters=100, seed=42)
         assert "political_knowledge" in model.voters.df.columns
         assert model.voters.df["political_knowledge"].min() >= 0
         assert model.voters.df["political_knowledge"].max() <= 100
+
+    def test_with_prebuilt_voter_frame(self):
+        """Create model with a pre-built voter DataFrame."""
+        from electoral_sim import ElectionModel
+
+        voter_df = pl.DataFrame(
+            {
+                "unique_id": list(range(100)),
+                "constituency": [i % 5 for i in range(100)],
+                "ideology_x": np.random.normal(0, 0.3, 100),
+                "ideology_y": np.random.normal(0, 0.3, 100),
+                "party_id": np.zeros(100, dtype=int),
+                "political_knowledge": np.ones(100) * 50,
+                "turnout_prob": np.ones(100) * 0.8,
+                "media_susceptibility": np.ones(100) * 0.5,
+                "is_zealot": np.zeros(100, dtype=bool),
+            }
+        )
+        model = ElectionModel(voter_frame=voter_df, seed=42)
+        results = model.run_election()
+        assert results is not None
+
+    def test_with_prebuilt_party_frame(self):
+        """Create model with a pre-built party DataFrame."""
+        from electoral_sim import ElectionModel
+
+        party_df = pl.DataFrame(
+            {
+                "name": ["Party A", "Party B"],
+                "position_x": [-0.3, 0.3],
+                "position_y": [0.0, 0.0],
+                "valence": [50.0, 50.0],
+                "incumbent": [True, False],
+                "is_nota": [False, False],
+                "seats": np.zeros(2, dtype=np.int64),
+                "vote_share": np.zeros(2),
+            }
+        )
+        model = ElectionModel(n_voters=500, party_frame=party_df, seed=42)
+        results = model.run_election()
+        assert results is not None
+
+    def test_constituency_constraints(self):
+        """Constituency constraints invalidate votes for excluded parties."""
+        from electoral_sim import ElectionModel
+
+        constraints = {
+            0: ["Party A", "Party B"],  # Only A and B allowed in constituency 0
+            1: ["Party A", "Party C"],  # Only A and C allowed in constituency 1
+        }
+        model = ElectionModel(
+            n_voters=500,
+            n_constituencies=3,
+            constituency_constraints=constraints,
+            seed=42,
+        )
+        results = model.run_election()
+        assert results is not None
+
+    def test_gpu_warning_when_unavailable(self):
+        """GPU requested but unavailable prints warning and falls back."""
+        from electoral_sim import ElectionModel
+
+        # GPU will not be available in test environment
+        model = ElectionModel(n_voters=500, use_gpu=True, seed=42)
+        assert model.use_gpu is False
+        results = model.run_election()
+        assert results is not None
+
+    def test_run_with_irv_system(self):
+        """Run election with IRV system."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=500, electoral_system="IRV", seed=42)
+        results = model.run_election()
+        assert results is not None
+
+    def test_run_with_stv_system(self):
+        """Run election with STV system."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=500, electoral_system="STV", seed=42)
+        results = model.run_election()
+        assert results is not None
 
 
 class TestPropertyBased:
@@ -383,7 +515,6 @@ class TestErrorHandling:
 
         model = ElectionModel(n_voters=100, seed=42)
         model.electoral_system = "INVALID"
-        # Should not crash — falls through to else branch (PR counting)
         results = model.run_election()
         assert results is not None
 
@@ -408,7 +539,6 @@ class TestErrorHandling:
         try:
             model = ElectionModel(n_voters=100, n_constituencies=0, seed=42)
             results = model.run_election()
-            # If it doesn't crash, that's acceptable
             assert results is not None
         except (ValueError, IndexError, ZeroDivisionError):
-            pass  # acceptable — zero constituencies is an invalid config
+            pass

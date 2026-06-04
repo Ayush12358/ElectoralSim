@@ -244,6 +244,25 @@ class TestConfig:
         with pytest.raises(ValueError, match="valence must be >= 0"):
             Config(n_voters=100, parties=parties)
 
+    def test_candidate_config(self):
+        """CandidateConfig stores candidate-level data."""
+        from electoral_sim import CandidateConfig
+
+        c = CandidateConfig("John", "Party A", 5, 0.3, -0.1, 60, True)
+        assert c.name == "John"
+        assert c.party == "Party A"
+        assert c.constituency == 5
+        assert c.valence == 60
+        assert c.incumbent is True
+
+    def test_config_with_candidates(self):
+        """Config accepts optional candidate list."""
+        from electoral_sim import Config, CandidateConfig
+
+        candidates = [CandidateConfig("A1", "Party A", 0, valence=60)]
+        config = Config(n_voters=100, candidates=candidates)
+        assert config.candidates[0].name == "A1"
+
     def test_allocation_methods_config_and_registry_synced(self):
         """VALID_ALLOCATION_METHODS from config matches ALLOCATION_METHODS registry."""
         from electoral_sim.core.config import VALID_ALLOCATION_METHODS

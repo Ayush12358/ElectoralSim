@@ -33,6 +33,7 @@ __version__ = "0.1.1"
 from electoral_sim.core.model import ElectionModel
 from electoral_sim.core.config import (
     PRESETS,
+    CandidateConfig,
     Config,
     PartyConfig,
     australia_house_config,

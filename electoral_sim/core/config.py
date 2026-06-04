@@ -34,6 +34,32 @@ class PartyConfig:
 
 
 @dataclass
+class CandidateConfig:
+    """Configuration for a single candidate within a party.
+
+    Enables candidate-level modeling with individual valence,
+    incumbency status, local ideology, and demographics.
+
+    Attributes:
+        name: Candidate name
+        party: Party name this candidate belongs to
+        constituency: Constituency ID (or None for party-list)
+        position_x: Candidate-specific economic position
+        position_y: Candidate-specific social position
+        valence: Candidate-level non-policy appeal (overrides party default if higher)
+        incumbent: Whether this candidate is an incumbent
+    """
+
+    name: str
+    party: str
+    constituency: int | None = None
+    position_x: float = 0.0
+    position_y: float = 0.0
+    valence: float = 50.0
+    incumbent: bool = False
+
+
+@dataclass
 class Config:
     """
     Main configuration for ElectionModel.
@@ -63,6 +89,9 @@ class Config:
 
     # Parties (can be list of PartyConfig or dicts)
     parties: list[PartyConfig | dict] = field(default_factory=list)
+
+    # Candidates (optional candidate-level modeling — preserves party-level API)
+    candidates: list[CandidateConfig] | None = None
 
     # Electoral system
     electoral_system: Literal["FPTP", "PR"] = "FPTP"

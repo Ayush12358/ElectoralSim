@@ -163,7 +163,7 @@
 - [x] **P2** Add primary election and candidate selection systems
     - Support closed/open primaries, party candidate fields, valence selection, and general-election candidate handoff.
     - Useful for US-style presets and intra-party competition.
-- [ ] **P2** Add candidate-level modeling
+- [x] **P2** Add candidate-level modeling
     - Current party-level frame limits candidate valence, incumbency, local ideology, candidate demographics, and multi-candidate districts.
     - Introduce optional candidate frame while preserving party-level API.
 - [ ] **P2** Add coalition feedback into subsequent elections

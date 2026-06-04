@@ -520,7 +520,7 @@
     - `if __name__ == '__main__'` block never tested (lines 449-472)
 - [ ] **P2** `systems/alternative.py` (79%, 148 stmts) — `if __name__` block uncovered (lines 318-355)
     - Condorcet cycle edge case (lines 89-94)
-- [ ] **P3** `visualization/specialized.py` (96%) — lines 56-57 uncovered (animation save path)
+- [x] **P3** `visualization/specialized.py` animation save path now tested (animation save path)
 - [x] **P3** `data/loaders.py` year-filtering branches now tested (branch of incumbents from votes without seats column)
 
 ### Integration Test Coverage

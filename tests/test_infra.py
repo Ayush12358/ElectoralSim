@@ -446,6 +446,28 @@ class TestVisualizationSpecialized:
         ani = animate_opinion_dynamics(history, party_pos, party_names, interval=50)
         assert ani is not None
 
+    def test_animate_opinion_dynamics_save(self, tmp_path):
+        """animate_opinion_dynamics saves animation to file when filename provided."""
+        import polars as pl
+        from electoral_sim.visualization.specialized import animate_opinion_dynamics
+
+        history = []
+        for _ in range(2):
+            df = pl.DataFrame({
+                "ideology_x": np.random.normal(0, 0.3, 20),
+                "ideology_y": np.random.normal(0, 0.3, 20),
+            })
+            history.append(df)
+
+        party_pos = np.array([[-0.5, -0.2], [0.3, 0.1]])
+        party_names = ["Left", "Right"]
+        outfile = str(tmp_path / "test_animation.gif")
+
+        ani = animate_opinion_dynamics(history, party_pos, party_names, filename=outfile)
+        assert ani is not None
+        import os
+        assert os.path.exists(outfile)
+
     def test_plot_swing_analysis(self):
         """plot_swing_analysis returns a plotly figure."""
         from electoral_sim.visualization.specialized import plot_swing_analysis

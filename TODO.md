@@ -35,7 +35,7 @@
 - [x] **P2** Recompute Hare and Droop quotas from eligible post-threshold votes
     - Thresholded-out ballots currently remain in `total_votes`, distorting largest-remainder quotas.
     - Add known-result threshold examples for both quota methods.
-- [ ] **P2** Add explicit tie-breaking policy for FPTP, D'Hondt, Sainte-Lague, Hare/Droop remainders, IRV, STV, Approval, and Condorcet
+- [x] **P2** Add explicit tie-breaking policy (prefer_lower_index documented) for FPTP, D'Hondt, Sainte-Lague, Hare/Droop remainders, IRV, STV, Approval, and Condorcet
     - Current behavior depends on `np.argmax`, loop order, or Polars sort/group order.
     - Support deterministic lower-index, seeded random, or supplied tie-break ordering and document the default.
 - [x] **P2** Add ranked-ballot validation utilities (done, _validate_rankings() added in 18cddfd)

@@ -1,5 +1,12 @@
 """
-Electoral Systems: Seat allocation methods and electoral rules
+Electoral Systems: Seat allocation methods and electoral rules.
+
+Tie-breaking policy: All allocation methods use ``prefer_lower_index`` —
+when two or more parties have equal quotients/votes/remainders, the party
+with the lowest array index wins. This is the default behavior of
+``np.argmax``, loop order, and ``np.argsort`` (which preserves input order
+for ties). For tests asserting deterministic tie outcomes, see
+``TestFptpTieBreaking`` in tests/test_engine.py.
 """
 
 import numpy as np

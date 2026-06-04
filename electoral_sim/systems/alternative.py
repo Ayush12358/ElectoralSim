@@ -6,6 +6,13 @@ Implements:
 - STV (Single Transferable Vote)
 - Approval Voting
 - Condorcet methods
+- Borda Count
+- Score (Range) Voting
+
+Tie-breaking policy: All voting systems use ``prefer_lower_index`` —
+when candidates are tied, the candidate with the lowest array index
+wins (or is eliminated last). This is the default behavior of
+``np.argmax`` and loop-order-dependent selection.
 """
 
 import numpy as np

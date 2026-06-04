@@ -365,6 +365,23 @@ class TestHistoricalDataLoader:
         for key, party_shares in viab.items():
             assert abs(sum(party_shares.values()) - 1.0) < 0.001
 
+    def test_constituency_viability_by_year(self, sample_csv):
+        """get_constituency_viability with year filter exercises the year branch."""
+        from electoral_sim.data.loaders import HistoricalDataLoader
+
+        loader = HistoricalDataLoader(sample_csv)
+        viab = loader.get_constituency_viability(year=2020)
+        assert len(viab) == 3  # North, South, East
+
+    def test_incumbents_by_year(self, sample_csv):
+        """get_incumbents with year filter exercises the year-filtering branch."""
+        from electoral_sim.data.loaders import HistoricalDataLoader
+
+        loader = HistoricalDataLoader(sample_csv)
+        incumbents = loader.get_incumbents(year=2020)
+        assert "PartyA" in incumbents
+        assert "PartyB" in incumbents
+
 
 # =============================================================================
 # VOTER GENERATION - PARTY FRAME WITH NOTA

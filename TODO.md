@@ -521,7 +521,7 @@
 - [ ] **P2** `systems/alternative.py` (79%, 148 stmts) — `if __name__` block uncovered (lines 318-355)
     - Condorcet cycle edge case (lines 89-94)
 - [ ] **P3** `visualization/specialized.py` (96%) — lines 56-57 uncovered (animation save path)
-- [ ] **P3** `data/loaders.py` (94%) — lines 56, 78 uncovered (branch of incumbents from votes without seats column)
+- [x] **P3** `data/loaders.py` year-filtering branches now tested (branch of incumbents from votes without seats column)
 
 ### Integration Test Coverage
 

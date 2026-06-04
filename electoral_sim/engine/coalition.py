@@ -426,3 +426,48 @@ def form_coalition_with_utility(
             best_coalition = parties
 
     return best_coalition, best_utility
+
+
+def coalition_feedback(
+    coalition_parties: list[int],
+    party_votes: np.ndarray,
+    junior_penalty: float = 0.05,
+    senior_bonus: float = 0.02,
+) -> np.ndarray:
+    """
+    Compute vote-share adjustments for coalition parties in subsequent elections.
+
+    Senior coalition partners (largest seat shares) get a small bonus.
+    Junior partners suffer a penalty (the 'junior partner penalty' effect).
+    Non-coalition parties are unaffected.
+
+    Args:
+        coalition_parties: List of party indices in the coalition
+        party_votes: Vote shares from previous election
+        junior_penalty: Vote share penalty for junior partners (default 5pp)
+        senior_bonus: Vote share bonus for senior partner (default 2pp)
+
+    Returns:
+        Adjusted vote shares array (same shape as input)
+    """
+    adjusted = party_votes.copy()
+    if len(coalition_parties) == 0:
+        return adjusted
+
+    # Sort coalition parties by vote share (descending) to find senior partner
+    coalition_votes = [(p, party_votes[p]) for p in coalition_parties]
+    coalition_votes.sort(key=lambda x: -x[1])
+    senior = coalition_votes[0][0]
+
+    for p in coalition_parties:
+        if p == senior and len(coalition_votes) > 1:
+            adjusted[p] += senior_bonus
+        elif p != senior:
+            adjusted[p] = max(0.0, adjusted[p] - junior_penalty)
+
+    # Normalize so shares still sum to approximately 1
+    total = adjusted.sum()
+    if total > 0:
+        adjusted = adjusted / total
+
+    return adjusted

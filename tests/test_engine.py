@@ -1245,3 +1245,12 @@ class TestPrimaryElections:
         utilities = np.array([[1.0, 0.5], [0.3, 0.9], [0.8, 0.2]])
         result = open_primary(utilities)
         assert result["winner"] in [0, 1]
+
+    def test_coalition_feedback_junior_penalty(self):
+        """Junior coalition partners lose vote share in next election."""
+        from electoral_sim.engine.coalition import coalition_feedback
+
+        votes = np.array([0.4, 0.3, 0.2, 0.1])
+        adjusted = coalition_feedback([0, 1], votes)
+        assert abs(adjusted.sum() - 1.0) < 0.01
+        assert adjusted[0] > votes[0]  # Senior partner bonus

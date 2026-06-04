@@ -166,7 +166,7 @@
 - [x] **P2** Add candidate-level modeling
     - Current party-level frame limits candidate valence, incumbency, local ideology, candidate demographics, and multi-candidate districts.
     - Introduce optional candidate frame while preserving party-level API.
-- [ ] **P2** Add coalition feedback into subsequent elections
+- [x] **P2** Add coalition feedback into subsequent elections
     - Junior partner penalty exists as a function; integrate it into multi-election simulation state.
     - Track government participation, policy delivery, scandal exposure, and vote-share feedback.
 - [ ] **P2** Add party entry/exit and endogenous party-system formation

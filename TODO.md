@@ -17,7 +17,7 @@
 - [x] **P1** Make `ElectionModel` reject or truly implement `"IRV"` and `"STV"` at model level
     - `run_election()` currently treats every non-`"FPTP"` system as PR.
     - Replace shallow tests that assert only non-`None` with either ranked-ballot integration tests or explicit `ValueError` tests.
-- [ ] **P1** Validate `electoral_system` and `allocation_method` during `ElectionModel` construction and chain setters
+- [x] **P1** Validate `electoral_system` and `allocation_method` during `ElectionModel` construction and chain setters
     - `with_system("INVALID")` and direct mutation can silently run as PR.
     - Accepted values should be centralized and exposed in docs/CLI help.
 - [ ] **P1** Fix Streamlit dashboard chart rendering mismatch in `app.py`

@@ -169,6 +169,15 @@ class TestChainableAPI:
             with pytest.raises(ValueError, match="Unsupported electoral system"):
                 model.with_system(system)
 
+    def test_with_allocation_rejects_invalid(self):
+        """with_allocation() raises ValueError for unsupported methods."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=1000, seed=42)
+        for method in ["INVALID", "saintelague", "Hare"]:
+            with pytest.raises(ValueError, match="Unknown allocation method"):
+                model.with_allocation(method)
+
 
 class TestReproducibility:
     """Seed and determinism tests."""
@@ -522,6 +531,13 @@ class TestErrorHandling:
 
         with pytest.raises(ValueError, match="Unsupported electoral system"):
             ElectionModel(n_voters=100, electoral_system="INVALID", seed=42)
+
+    def test_invalid_allocation_method_at_init_raises_error(self):
+        """Invalid allocation_method at construction raises ValueError."""
+        from electoral_sim import ElectionModel
+
+        with pytest.raises(ValueError, match="Unknown allocation method"):
+            ElectionModel(n_voters=100, allocation_method="INVALID", seed=42)
 
     def test_invalid_allocation_method_raises_error(self):
         from electoral_sim import ElectionModel

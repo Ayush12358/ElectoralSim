@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 VALID_ELECTORAL_SYSTEMS = frozenset({"FPTP", "PR"})
+VALID_ALLOCATION_METHODS = frozenset({"dhondt", "sainte_lague", "hare", "droop"})
 
 
 @dataclass
@@ -79,6 +80,11 @@ class Config:
             raise ValueError(
                 f"Unsupported electoral system: '{self.electoral_system}'. "
                 f"Valid options: {sorted(VALID_ELECTORAL_SYSTEMS)}"
+            )
+        if self.allocation_method not in VALID_ALLOCATION_METHODS:
+            raise ValueError(
+                f"Unknown allocation method: '{self.allocation_method}'. "
+                f"Valid options: {sorted(VALID_ALLOCATION_METHODS)}"
             )
         # Convert dicts to PartyConfig if needed
         if self.parties:

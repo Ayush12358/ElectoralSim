@@ -170,6 +170,14 @@ class TestConfig:
             with pytest.raises(ValueError, match="Unsupported electoral system"):
                 Config(n_voters=100, electoral_system=system)
 
+    def test_config_rejects_invalid_allocation_method(self):
+        """Config raises ValueError for unsupported allocation methods."""
+        from electoral_sim import Config
+
+        for method in ["INVALID", "saintelague", "Hare", "dHondt"]:
+            with pytest.raises(ValueError, match="Unknown allocation method"):
+                Config(n_voters=100, allocation_method=method)
+
 
 class TestPresets:
     """Tests for country presets."""

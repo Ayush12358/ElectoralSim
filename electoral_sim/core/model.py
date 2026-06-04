@@ -14,7 +14,7 @@ import numpy as np
 import polars as pl
 from mesa import Model
 
-from electoral_sim.core.config import VALID_ELECTORAL_SYSTEMS
+from electoral_sim.core.config import VALID_ELECTORAL_SYSTEMS, VALID_ALLOCATION_METHODS
 from electoral_sim.agents.party import PartyAgents
 from electoral_sim.agents.party_strategy import adaptive_strategy_step
 from electoral_sim.agents.voter import VoterAgents
@@ -123,6 +123,12 @@ class ElectionModel(Model):
             raise ValueError(
                 f"Unsupported electoral system: '{electoral_system}'. "
                 f"Valid options: {sorted(VALID_ELECTORAL_SYSTEMS)}"
+            )
+
+        if allocation_method not in VALID_ALLOCATION_METHODS:
+            raise ValueError(
+                f"Unknown allocation method: '{allocation_method}'. "
+                f"Valid options: {sorted(VALID_ALLOCATION_METHODS)}"
             )
 
         # Initialize GPU support
@@ -303,7 +309,15 @@ class ElectionModel(Model):
 
         Returns:
             self for chaining
+
+        Raises:
+            ValueError: If method is not a supported allocation method.
         """
+        if method not in VALID_ALLOCATION_METHODS:
+            raise ValueError(
+                f"Unknown allocation method: '{method}'. "
+                f"Valid options: {sorted(VALID_ALLOCATION_METHODS)}"
+            )
         self.allocation_method = method
         return self
 

@@ -253,6 +253,41 @@ def stv_election(
     }
 
 
+def borda_count(
+    rankings: np.ndarray,
+    n_candidates: int,
+) -> dict:
+    """
+    Borda Count: candidates receive points based on rank position.
+
+    For n candidates, 1st choice gets n-1 points, 2nd gets n-2 points,
+    ..., last choice gets 0 points. Winner is the candidate with the
+    highest total score.
+
+    Args:
+        rankings: (n_voters, n_candidates) array of rankings (1=first choice)
+        n_candidates: Number of candidates
+
+    Returns:
+        Dictionary with winner and per-candidate scores
+    """
+    _validate_rankings(rankings, n_candidates, "borda_count")
+    scores = np.zeros(n_candidates, dtype=np.float64)
+    n_voters = len(rankings)
+
+    for voter_ranks in rankings:
+        for c in range(n_candidates):
+            rank = voter_ranks[c]
+            if rank > 0:  # 0 = unranked
+                scores[c] += n_candidates - rank
+
+    winner = int(np.argmax(scores)) if n_voters > 0 else -1
+    return {
+        "winner": winner,
+        "scores": scores,
+    }
+
+
 def approval_voting(
     approvals: np.ndarray,
     n_candidates: int,

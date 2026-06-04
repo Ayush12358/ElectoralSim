@@ -61,7 +61,7 @@
 - [ ] **P2** Add score/range voting as an alternative system
     - External comparison frameworks commonly evaluate plurality, RCV, approval, score, and Condorcet together.
     - Implement ballot generation from utilities and single-winner aggregation with known-result tests.
-- [ ] **P2** Add Borda Count and supplementary vote/two-round runoff systems
+- [x] **P2** Add Borda Count as an alternative system and supplementary vote/two-round runoff systems
     - International IDEA lists Borda Count and Two-Round Systems as common electoral-system variants.
     - Add docs and examples beside IRV/STV/Approval/Condorcet.
 - [ ] **P2** Add open-list and closed-list PR variants

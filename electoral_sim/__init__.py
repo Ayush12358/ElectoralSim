@@ -68,6 +68,7 @@ from electoral_sim.systems.allocation import (
 )
 from electoral_sim.systems.alternative import (
     approval_voting,
+    borda_count,
     condorcet_winner,
     generate_rankings,
     irv_election,

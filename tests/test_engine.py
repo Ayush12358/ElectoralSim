@@ -609,6 +609,24 @@ class TestAlternativeVoting:
         assert result["approval_counts"].sum() == 0
         assert result["approval_shares"].sum() == 0
 
+    def test_borda_count_basic(self):
+        """Borda Count: 1st choice gets most points."""
+        from electoral_sim import borda_count
+
+        rankings = np.array([[1, 2, 3], [1, 2, 3], [2, 1, 3]])
+        result = borda_count(rankings, n_candidates=3)
+        assert result["winner"] == 0  # Candidate 0 has most 1st choices
+        assert result["scores"][0] > result["scores"][1]
+
+    def test_borda_count_unanimous(self):
+        """Borda Count: unanimous winner gets maximum points."""
+        from electoral_sim import borda_count
+
+        rankings = np.array([[1, 2, 3], [1, 2, 3]])
+        result = borda_count(rankings, n_candidates=3)
+        assert result["winner"] == 0
+        assert result["scores"][0] == 4  # 2 voters × (3-1) = 4
+
     def test_irv_rejects_duplicate_ranks(self):
         """IRV raises ValueError for duplicate ranks in a voter's ballot."""
         from electoral_sim import irv_election

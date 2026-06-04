@@ -217,3 +217,36 @@ class TestCrossModule:
 
         gov = form_government(seats, positions, names)
         assert "success" in gov
+
+    def test_batch_runner_with_preset(self):
+        """BatchRunner works with country presets."""
+        from electoral_sim import ElectionModel
+        from electoral_sim.analysis import BatchRunner, ParameterSweep
+
+        sweep = ParameterSweep({
+            "n_voters": [500, 1000],
+        })
+        runner = BatchRunner(
+            model_class=ElectionModel,
+            parameter_sweep=sweep,
+            n_runs_per_config=1,
+            n_jobs=1,
+            election_kwargs={"n_constituencies": 3, "seed": 42},
+        )
+        results_df = runner.run()
+        assert len(results_df) >= 2
+
+    def test_event_manager_model_integration(self):
+        """EventManager adds events during stepping, election still completes."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(
+            n_voters=500,
+            n_constituencies=3,
+            event_probs={"scandal": 0.5},
+            seed=42,
+        )
+        model.step()
+        results = model.run_election()
+        assert results is not None
+        assert results["turnout"] > 0

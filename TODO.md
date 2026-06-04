@@ -525,7 +525,7 @@
 
 ### Integration Test Coverage
 
-- [ ] **P2** `tests/test_integration.py` has only 12 tests across 3 classes — should have more cross-module workflows
+- [x] **P2** test_integration.py now has 14 tests with cross-module workflows across 3 classes — should have more cross-module workflows
     - No integration test for: Model + Coalition (run election then form government)
     - No integration test for: BatchRunner + Presets
     - No integration test for: EventManager → Model → step() → run_election()

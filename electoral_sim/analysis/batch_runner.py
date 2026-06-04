@@ -31,12 +31,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import numpy as np
 import polars as pl
 
-try:
-    from tqdm import tqdm
-except ImportError:
-    # Fallback if tqdm not installed
-    def tqdm(iterable, **kwargs):
-        return iterable
+from tqdm import tqdm
 
 
 @dataclass

@@ -280,7 +280,7 @@ streamlit run app.py
 ```
 
 <p align="center">
-  <img src="docs/assets/screenshot 5.png" alt="ElectoralSim Dashboard" width="800">
+  <img src="docs/assets/screenshot 1.png" alt="ElectoralSim Dashboard" width="800">
 </p>
 
 Features:
@@ -288,6 +288,13 @@ Features:
 - Dynamic parameters (economic growth, national mood, anti-incumbency)
 - Real-time seat distribution and vote share charts
 - Swing analysis and ideological landscape visualization
+
+<p align="center">
+  <img src="docs/assets/screenshot 2.png" alt="ElectoralSim Dashboard" width="800">
+</p>
+<p align="center">
+  <img src="docs/assets/screenshot 3.png" alt="ElectoralSim Dashboard" width="800">
+</p>
 
 More screenshots: [`docs/assets/`](docs/assets/)
 

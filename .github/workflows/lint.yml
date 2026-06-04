@@ -22,7 +22,7 @@ jobs:
           pip install black ruff
 
       - name: Check formatting with Black
-        run: black --check electoral_sim/
+        run: black --check electoral_sim/ tests/
 
       - name: Lint with Ruff
-        run: ruff check electoral_sim/
+        run: ruff check electoral_sim/ tests/

@@ -50,6 +50,7 @@ dependencies = [
     "numpy>=1.24.0,<3.0.0",
     "networkx>=3.0",
     "numba>=0.60.1",
+    "tqdm>=4.60.0",
 ]
 
 [project.optional-dependencies]
@@ -69,6 +70,7 @@ dev = [
     "ruff>=0.1.0",
     "mypy>=1.0.0",
     "pre-commit>=3.0.0",
+    "psutil>=5.9.0",
 ]
 docs = [
     "mkdocs>=1.5.0",

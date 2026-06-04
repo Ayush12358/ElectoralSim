@@ -87,3 +87,8 @@ jobs:
               compile(f.read(), 'app.py', 'exec')
           print('Streamlit app compiles OK')
           "
+
+      - name: Run tests with optional deps
+        run: |
+          pip install -e ".[viz]"
+          pytest tests/test_infra.py -v --tb=short

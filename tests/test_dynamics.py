@@ -169,3 +169,27 @@ class TestOpinionDynamicsClass:
         assert len(od.neighbor_starts) == 100
         assert len(od.neighbor_ends) == 100
         assert len(od.neighbors_flat) > 0
+
+    def test_zealot_step_standalone(self):
+        """zealot_step() preserves zealot opinions while updating others."""
+        from electoral_sim.dynamics.opinion_dynamics import zealot_step, generate_network
+
+        rng = np.random.default_rng(42)
+        opinions = rng.integers(0, 3, 50)
+        adj_list, _ = generate_network(50, "erdos_renyi", p=0.1)
+        zealot_mask = np.zeros(50, dtype=bool)
+        zealot_mask[:5] = True
+
+        new_opinions = zealot_step(opinions, adj_list, zealot_mask, noise_rate=0.01, rng=rng)
+        assert np.array_equal(new_opinions[zealot_mask], opinions[zealot_mask])
+
+    def test_noisy_voter_numba_path(self):
+        """Noisy voter uses Numba path when available for large N."""
+        pytest.importorskip("numba")
+        from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
+
+        od = OpinionDynamics(n_agents=2000, topology="barabasi_albert", m=3, seed=42)
+        opinions = od.rng.integers(0, 3, od.n_agents)
+        new = od.step(opinions, model="noisy_voter", noise_rate=0.01)
+        assert len(new) == 2000
+        assert set(np.unique(new)).issubset({0, 1, 2})

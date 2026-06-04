@@ -513,7 +513,7 @@
 - [ ] **P2** `engine/gpu_accel.py` (27%, 48 stmts) — GPU functions skip when CuPy unavailable
     - Need GPU hardware to test `compute_utilities_gpu`, `mnl_sample_gpu`
     - CPU fallback/mock tests could exercise error paths
-- [ ] **P2** `dynamics/opinion_dynamics.py` (68%, 168 stmts) — Numba import fallback paths uncovered
+- [x] **P2** `dynamics/opinion_dynamics.py` zealot_step and Numba path now tested paths uncovered
     - NetworkX import fallback paths uncovered (lines 19-21, 27-36, 63)
     - Numba zealot + bounded confidence Numba branches uncovered (lines 249-269, 449-472)
     - `zealot_step()` standalone function never tested (line 198)

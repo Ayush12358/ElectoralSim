@@ -14,7 +14,7 @@
     - Current `prange` loop increments shared `seats[winner]`; repeated all-party-0 probes returned totals below the constituency count.
     - Add deterministic regression where every constituency is won by the same party and `seats.sum() == n_constituencies`.
     - Implement by writing per-constituency winners in parallel, then reducing counts outside the parallel loop.
-- [ ] **P1** Make `ElectionModel` reject or truly implement `"IRV"` and `"STV"` at model level
+- [x] **P1** Make `ElectionModel` reject or truly implement `"IRV"` and `"STV"` at model level
     - `run_election()` currently treats every non-`"FPTP"` system as PR.
     - Replace shallow tests that assert only non-`None` with either ranked-ballot integration tests or explicit `ValueError` tests.
 - [ ] **P1** Validate `electoral_system` and `allocation_method` during `ElectionModel` construction and chain setters

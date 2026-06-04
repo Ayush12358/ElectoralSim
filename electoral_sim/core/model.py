@@ -14,6 +14,7 @@ import numpy as np
 import polars as pl
 from mesa import Model
 
+from electoral_sim.core.config import VALID_ELECTORAL_SYSTEMS
 from electoral_sim.agents.party import PartyAgents
 from electoral_sim.agents.party_strategy import adaptive_strategy_step
 from electoral_sim.agents.voter import VoterAgents
@@ -117,6 +118,12 @@ class ElectionModel(Model):
         use_gpu: bool = False,  # P4: GPU acceleration (CuPy)
     ):
         super().__init__()
+
+        if electoral_system not in VALID_ELECTORAL_SYSTEMS:
+            raise ValueError(
+                f"Unsupported electoral system: '{electoral_system}'. "
+                f"Valid options: {sorted(VALID_ELECTORAL_SYSTEMS)}"
+            )
 
         # Initialize GPU support
         from electoral_sim.engine.gpu_accel import is_gpu_available
@@ -275,7 +282,15 @@ class ElectionModel(Model):
 
         Returns:
             self for chaining
+
+        Raises:
+            ValueError: If system is not a supported electoral system.
         """
+        if system not in VALID_ELECTORAL_SYSTEMS:
+            raise ValueError(
+                f"Unsupported electoral system: '{system}'. "
+                f"Valid options: {sorted(VALID_ELECTORAL_SYSTEMS)}"
+            )
         self.electoral_system = system
         return self
 
@@ -548,8 +563,13 @@ class ElectionModel(Model):
         # Count votes
         if self.electoral_system == "FPTP":
             results = self._count_fptp(voted_constituencies, voted_choices)
-        else:
+        elif self.electoral_system == "PR":
             results = self._count_pr(voted_choices)
+        else:
+            raise ValueError(
+                f"Unsupported electoral system: '{self.electoral_system}'. "
+                f"Valid options: {sorted(VALID_ELECTORAL_SYSTEMS)}"
+            )
 
         # If NOTA is included, it might "win" votes but shouldn't win seats in most systems
         # Unless we implement specific NOTA-win logic. For now, NOTA is just a vote vacuum.

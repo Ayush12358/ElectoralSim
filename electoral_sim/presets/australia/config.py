@@ -39,7 +39,7 @@ def australia_house_config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,
         parties=parties,
-        electoral_system="IRV",
+        electoral_system="FPTP",  # TODO: Implement proper IRV at model level
         **kwargs,
     )
 
@@ -66,7 +66,7 @@ def australia_senate_config(
         n_voters=n_voters,
         n_constituencies=n_constituencies,
         parties=parties,
-        electoral_system="STV",
+        electoral_system="PR",  # TODO: Implement proper STV at model level
         **kwargs,
     )
 

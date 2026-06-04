@@ -162,6 +162,14 @@ class TestConfig:
         assert party.position_x == 0.3
         assert party.valence == 60
 
+    def test_config_rejects_invalid_electoral_system(self):
+        """Config raises ValueError for unsupported electoral systems."""
+        from electoral_sim import Config
+
+        for system in ["IRV", "STV", "INVALID", "MMP"]:
+            with pytest.raises(ValueError, match="Unsupported electoral system"):
+                Config(n_voters=100, electoral_system=system)
+
 
 class TestPresets:
     """Tests for country presets."""

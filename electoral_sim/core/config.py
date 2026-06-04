@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
+VALID_ELECTORAL_SYSTEMS = frozenset({"FPTP", "PR"})
+
 
 @dataclass
 class PartyConfig:
@@ -73,6 +75,11 @@ class Config:
     seed: int | None = None
 
     def __post_init__(self):
+        if self.electoral_system not in VALID_ELECTORAL_SYSTEMS:
+            raise ValueError(
+                f"Unsupported electoral system: '{self.electoral_system}'. "
+                f"Valid options: {sorted(VALID_ELECTORAL_SYSTEMS)}"
+            )
         # Convert dicts to PartyConfig if needed
         if self.parties:
             self.parties = [PartyConfig(**p) if isinstance(p, dict) else p for p in self.parties]

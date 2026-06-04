@@ -126,8 +126,8 @@ class TestCLIDirect:
         output = capsys.readouterr().out
         assert "Turnout" in output
 
-    def test_run_simulation_with_irv(self, capsys):
-        """run_simulation() with IRV system."""
+    def test_run_simulation_irv_rejected(self, capsys):
+        """run_simulation() with IRV system exits with error."""
         from electoral_sim.core.cli import run_simulation
 
         args = types.SimpleNamespace(
@@ -141,9 +141,10 @@ class TestCLIDirect:
             output=None,
             quiet=False,
         )
-        run_simulation(args)
-        output = capsys.readouterr().out
-        assert "Turnout" in output
+        with pytest.raises(SystemExit):
+            run_simulation(args)
+        captured = capsys.readouterr()
+        assert "Unsupported electoral system" in (captured.err + captured.out)
 
     def test_run_batch_no_config(self):
         """run_batch() without config exits with error."""

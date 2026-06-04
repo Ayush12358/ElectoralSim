@@ -160,6 +160,15 @@ class TestChainableAPI:
         assert model.with_threshold(0.05) is model
         assert model.with_temperature(0.3) is model
 
+    def test_with_system_rejects_invalid(self):
+        """with_system() raises ValueError for unsupported systems."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel(n_voters=1000, seed=42)
+        for system in ["IRV", "STV", "INVALID", "MMP"]:
+            with pytest.raises(ValueError, match="Unsupported electoral system"):
+                model.with_system(system)
+
 
 class TestReproducibility:
     """Seed and determinism tests."""
@@ -412,21 +421,19 @@ class TestModelAdvancedFeatures:
         results = model.run_election()
         assert results is not None
 
-    def test_run_with_irv_system(self):
-        """Run election with IRV system."""
+    def test_irv_system_raises_valueerror(self):
+        """IRV is not supported at model level — raises ValueError."""
         from electoral_sim import ElectionModel
 
-        model = ElectionModel(n_voters=500, electoral_system="IRV", seed=42)
-        results = model.run_election()
-        assert results is not None
+        with pytest.raises(ValueError, match="Unsupported electoral system"):
+            ElectionModel(n_voters=500, electoral_system="IRV", seed=42)
 
-    def test_run_with_stv_system(self):
-        """Run election with STV system."""
+    def test_stv_system_raises_valueerror(self):
+        """STV is not supported at model level — raises ValueError."""
         from electoral_sim import ElectionModel
 
-        model = ElectionModel(n_voters=500, electoral_system="STV", seed=42)
-        results = model.run_election()
-        assert results is not None
+        with pytest.raises(ValueError, match="Unsupported electoral system"):
+            ElectionModel(n_voters=500, electoral_system="STV", seed=42)
 
 
 class TestPropertyBased:
@@ -509,14 +516,12 @@ class TestPerformance:
 class TestErrorHandling:
     """Error handling and edge cases."""
 
-    def test_invalid_electoral_system_runs_as_pr(self):
-        """Unknown electoral system falls through to PR path."""
+    def test_invalid_electoral_system_raises_error(self):
+        """Unknown electoral system raises ValueError, not silent PR fallback."""
         from electoral_sim import ElectionModel
 
-        model = ElectionModel(n_voters=100, seed=42)
-        model.electoral_system = "INVALID"
-        results = model.run_election()
-        assert results is not None
+        with pytest.raises(ValueError, match="Unsupported electoral system"):
+            ElectionModel(n_voters=100, electoral_system="INVALID", seed=42)
 
     def test_invalid_allocation_method_raises_error(self):
         from electoral_sim import ElectionModel

@@ -506,7 +506,7 @@
 
 ### Below 80% Coverage
 
-- [ ] **P2** `engine/numba_accel.py` (42%, 184 stmts) — Numba JIT functions not exercised in tests
+- [x] **P2** `engine/numba_accel.py` JIT functions now tested directly not exercised in tests
     - `dhondt_numba`, `sainte_lague_numba`, `fptp_count_numba`, `compute_utilities_numba`, `mnl_sample_numba`
     - Fallback code paths (non-Numba branches) also uncovered
     - `benchmark_numba()` function partially tested

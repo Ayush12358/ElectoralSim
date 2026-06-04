@@ -1058,3 +1058,52 @@ class TestRankedChoiceProperties:
         rankings = np.array([[2, 2, 1], [3, 3, 3]])
         with pytest.raises(ValueError, match="Duplicate"):
             irv_election(rankings, n_candidates=3)
+
+
+class TestNumbaJITDirect:
+    """Direct tests for Numba JIT functions (not through wrappers)."""
+
+    def test_dhondt_numba_direct(self):
+        """dhondt_numba returns known result."""
+        pytest.importorskip("numba")
+        from electoral_sim.engine.numba_accel import dhondt_numba
+
+        seats = dhondt_numba(np.array([100, 80, 30], dtype=np.int64), 5)
+        assert seats.sum() == 5
+        assert seats.tolist() == [3, 2, 0]
+
+    def test_sainte_lague_numba_direct(self):
+        """sainte_lague_numba returns known result."""
+        pytest.importorskip("numba")
+        from electoral_sim.engine.numba_accel import sainte_lague_numba
+
+        seats = sainte_lague_numba(np.array([100, 80, 30], dtype=np.int64), 5)
+        assert seats.sum() == 5
+        assert seats.tolist() == [2, 2, 1]
+
+    def test_compute_utilities_numba_direct(self):
+        """compute_utilities_numba returns utility matrix with correct shape."""
+        pytest.importorskip("numba")
+        from electoral_sim.engine.numba_accel import compute_utilities_numba
+
+        voter_x = np.array([0.0, 1.0, -1.0])
+        voter_y = np.array([0.0, -1.0, 1.0])
+        party_x = np.array([-0.5, 0.5])
+        party_y = np.array([0.0, 0.0])
+        valence = np.array([50.0, 40.0])
+
+        utils = compute_utilities_numba(voter_x, voter_y, party_x, party_y, valence)
+        assert utils.shape == (3, 2)
+        assert utils.dtype == np.float64
+
+    def test_mnl_sample_numba_direct(self):
+        """mnl_sample_numba returns votes in valid range."""
+        pytest.importorskip("numba")
+        from electoral_sim.engine.numba_accel import mnl_sample_numba
+
+        utilities = np.array([[1.0, 0.0], [0.0, 1.0], [0.5, 0.5]], dtype=np.float64)
+        random_vals = np.array([0.2, 0.2, 0.9], dtype=np.float64)
+
+        votes = mnl_sample_numba(utilities, temperature=0.5, random_vals=random_vals)
+        assert len(votes) == 3
+        assert all(0 <= v < 2 for v in votes)

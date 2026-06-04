@@ -26,7 +26,7 @@ def is_gpu_available() -> bool:
         # Check if we can actually use a device
         cp.cuda.Device(0).use()
         return True
-    except Exception:
+    except cp.cuda.runtime.CUDARuntimeError:
         return False
 
 

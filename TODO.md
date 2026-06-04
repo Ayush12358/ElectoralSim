@@ -482,7 +482,7 @@
 
 - [x] **P2** `core/cli.py:338` uses bare `except Exception` in `run_simulation()` — should catch specific errors
 - [x] **P2** `core/cli.py:402` uses bare `except Exception` in `run_batch()` — should catch specific errors
-- [ ] **P2** `engine/gpu_accel.py:29` uses bare `except Exception` in `is_gpu_available()` — should catch `cupy.cuda.runtime.CUDARuntimeError` explicitly
+- [x] **P2** `engine/gpu_accel.py:29` uses bare `except Exception` in `is_gpu_available()` — should catch `cupy.cuda.runtime.CUDARuntimeError` explicitly
 
 ### Stale/Placeholder Code
 

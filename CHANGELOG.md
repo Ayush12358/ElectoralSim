@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-06-05
+
+### Added
+- **23 country presets** (from 11): Canada, Israel, Netherlands, Switzerland, Mexico, New Zealand, Ireland, Scotland, Wales, Norway, Sweden, Chile, Spain added
+- **Borda Count, Score (Range) Voting, PAV committee voting** — full alternative system coverage
+- **MMP (Mixed-Member Proportional) and Parallel Mixed systems** — Germany/NZ/Japan-style
+- **Open-list and Closed-list PR variants** — candidate-order and preference-vote modeling
+- **Campaign ecosystem**: CampaignFinance, MediaEnvironment, VoterRegistration, CampaignTargeting, TurnoutMobilization, PollingAccess
+- **Primary elections**: open/closed primaries, candidate selection
+- **Redistricting module**: PrecinctGraph, ReCom proposal, ensemble analysis
+- **Sensitivity analysis**: one_at_a_time, grid_sensitivity, swing_analysis
+- **Calibration framework**: grid_search_calibration with metric weights
+- **Provenance registry**: PRESET_PROVENANCE with calibration status per preset
+- **Event timeline**: discrete-event scheduling for campaigns, polls, debates
+- **Benchmark CI smoke job**: tiny voter counts verify benchmark code paths
+- **Docs snippet CI pages**: 6 executable snippet scripts prevent signature drift
+- **Docs link-checking**: mkdocs-linkcheck plugin catches stale URLs
+- **Coverage thresholds**: per-module category fail_under targets
+- **StateConfig** dataclass for India preset — per-state weights, shifts, constituencies
+
+### Changed
+- **ElectionResult wired**: `run_election()` now returns typed `ElectionResult` instead of raw dict (dict-compatible via `__getitem__`)
+- **India preset**: BehaviorEngine + vote_mnl_fast replace hand-rolled utility and MNL
+- **EU preset**: BehaviorEngine + vote_mnl_fast per country
+- **Module organization**: 12 modules split under 250 LOC (behavior, analysis, dynamics, systems, visualization, CLI, config, indices, voter_gen, hazards, government, redistricting)
+- **Release scripts consolidated**: single path via `do_release.py`; batch wrappers removed
+- **MANIFEST.in**: finalized sdist exclusion policy for dev directories
+- **README**: 23 countries, full feature table, 502 tests
+
+### Fixed
+- `plot_india_state_map` returning `None` (orphaned `fig.update_geos` + `return fig`)
+- Various API doc signatures corrected (IRV, STV, Approval, Condorcet, efficiency_gap)
+- Duplicate TODO entries consolidated; 10 stale P5 items marked complete
+
 ## [0.1.1] - 2026-06-04
 
 ### Fixed

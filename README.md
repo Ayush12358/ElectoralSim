@@ -33,24 +33,23 @@ A modular simulation toolkit for electoral systems, voter behavior, and politica
 
 | Area | Status | Notes |
 |------|--------|-------|
-| **FPTP, PR allocation** (D'Hondt, Sainte-Laguë, Hare, Droop) | ✅ Stable | Numba-accelerated, tested |
-| **IRV/RCV, STV, Approval, Condorcet** | ✅ Stable | Algorithmic implementation |
-| **Voter generation** (demographics, ideology) | ✅ Stable | Rich synthetic voter profiles |
-| **Behavior models** (Proximity, Valence, Retrospective) | ✅ Stable | Weighted composition via BehaviorEngine |
-| **Metrics** (Gallagher, ENP, HHI, VSE, etc.) | ✅ Stable | Validated against known values |
-| **BatchRunner** (parameter sweeps) | 🟡 Beta | Sequential stable; parallel has Numba/OpenMP caveat |
-| **Country presets** (11 countries) | 🟡 Beta | Structural presets, not calibrated forecasts |
-| **India simulator** (543 Lok Sabha) | 🟡 Beta | Specialized implementation; being migrated to generic engine |
-| **Strategic/WastedVote models** | 🟡 Beta | Functional; viability inputs are synthetic by default |
-| **Opinion dynamics** (networks, bounded confidence) | 🟡 Beta | Core algorithms tested; needs empirical validation |
-| **Coalition formation & government stability** | 🟡 Beta | MWC, MCW, Laver-Shepsle, collapse models |
-| **Streamlit dashboard** | 🟡 Beta | Interactive explorer for multiple countries |
-| **Sociotropic/Pocketbook model** | 🔶 Experimental | Requires external economic data for realism |
-| **Voter psychology** (Big Five, Moral Foundations, etc.) | 🔶 Experimental | Synthetic features; not survey-calibrated |
-| **Media effects & Raducha susceptibility** | 🔶 Experimental | Simplified models |
-| **Event manager** (scandals, shocks) | 🔶 Experimental | Activated only when explicitly configured |
-| **Adaptive party strategy** | 🔶 Experimental | Median-voter walk; disabled by default |
-| **GPU acceleration** (CuPy) | 🔶 Experimental | Utility computation & MNL sampling only; needs correctness tests |
+| **FPTP, PR allocation** (D'Hondt, Sainte-Laguë, Hare, Droop, MMP, parallel) | ✅ Stable | Numba-accelerated, tested |
+| **IRV/RCV, STV, Approval, Condorcet, Borda, Score, PAV** | ✅ Stable | Full alternative system coverage |
+| **Voter generation** (demographics, ideology, Big Five, Moral Foundations) | ✅ Stable | Rich synthetic voter profiles |
+| **Behavior models** (Proximity, Valence, Retrospective, Strategic, WastedVote, Sociotropic) | ✅ Stable | Weighted composition via BehaviorEngine |
+| **Metrics** (Gallagher, ENP, HHI, VSE, Efficiency Gap, partisan bias, compactness) | ✅ Stable | Validated against known values |
+| **BatchRunner** (parameter sweeps, sensitivity, calibration, uncertainty) | ✅ Stable | Sequential & parallel; CI, quantiles, MCSE |
+| **Country presets** (23 countries + EU Parliament) | 🟡 Beta | Structural presets; 13 calibrated-status metadata |
+| **India simulator** (543 Lok Sabha) | ✅ Stable | BehaviorEngine, vote_mnl_fast, StateConfig |
+| **EU Parliament** (720 MEPs, 27 states) | ✅ Stable | D'Hondt per-country, BehaviorEngine refactored |
+| **Opinion dynamics** (BA, WS, ER networks, noisy voter, bounded confidence, zealots) | 🟡 Beta | Core algorithms tested; needs empirical validation |
+| **Coalition & government** (MWC, MCW, Laver-Shepsle, collapse, hazard, strain) | ✅ Stable | Full formation + survival + hazard models |
+| **Streamlit dashboard** | 🟡 Beta | 23 countries, scenario save/load, warning banners |
+| **Redistricting/gerrymandering** (PrecinctGraph, ReCom, ensemble) | 🟡 Beta | Optional geometry dependencies |
+| **Campaign models** (finance, media, registration, targeting, mobilization, polling) | 🟡 Beta | Full campaign-ecosystem modeling |
+| **Primary elections** (open/closed, candidate selection) | 🟡 Beta | US-style intra-party competition |
+| **Event manager** (scandals, shocks, election timeline, polls) | 🔶 Experimental | Activated when explicitly configured |
+| **GPU acceleration** (CuPy) | 🔶 Experimental | Utility computation & MNL sampling only |
 
 ---
 
@@ -60,42 +59,46 @@ A modular simulation toolkit for electoral systems, voter behavior, and politica
 | System | Methods | Status |
 |--------|---------|--------|
 | **Plurality** | First Past The Post (FPTP) | Stable |
-| **Proportional** | D'Hondt, Sainte-Laguë, Hare Quota, Droop Quota | Stable |
-| **Ranked Choice** | IRV/RCV, STV (Single Transferable Vote) | Stable |
-| **Other** | Approval Voting, Condorcet Winner | Stable |
+| **Proportional** | D'Hondt, Sainte-Laguë, Hare Quota, Droop Quota, Open-list, Closed-list | Stable |
+| **Mixed** | MMP (Mixed-Member Proportional), Parallel Mixed | Stable |
+| **Ranked Choice** | IRV/RCV, STV (Single Transferable Vote), Borda Count | Stable |
+| **Scoring** | Score (Range) Voting, Approval Voting, Condorcet Winner | Stable |
+| **Committee** | PAV (Proportional Approval Voting) | Stable |
 
 ### Voter Behavior Models
-- **Proximity Model** — Spatial voting based on ideological distance
-- **Valence Model** — Non-policy candidate appeal
-- **Retrospective Model** — Economic voting (reward/punish incumbents)
-- **Strategic Voting** — Wasted vote model (Experimental)
-- **Sociotropic/Pocketbook** — National vs personal economic evaluation (Experimental)
+- **Proximity Model** — Spatial voting based on ideological distance (Stable)
+- **Valence Model** — Non-policy candidate appeal (Stable)
+- **Retrospective Model** — Economic voting (reward/punish incumbents) (Stable)
+- **Strategic Voting** — Wasted vote model with district-level viability (Stable)
+- **Sociotropic/Pocketbook** — National vs personal economic evaluation (Beta)
 
-### Opinion Dynamics (Experimental)
-- **Network Topologies** — Barabási-Albert, Watts-Strogatz, Erdős-Rényi
-- **Models** — Bounded Confidence, Noisy Voter, Zealots
+### Opinion Dynamics (Beta)
+- **Network Topologies** — Barabási-Albert, Watts-Strogatz, Erdős-Rényi, Random Regular
+- **Models** — Bounded Confidence, Noisy Voter, Zealots (with Numba acceleration)
 
-### Coalition & Government (Beta)
+### Coalition & Government (Stable)
 - **Formation** — MWC, MCW, Laver-Shepsle portfolio allocation
-- **Stability** — Sigmoid/Linear/Exponential collapse models
+- **Stability** — Sigmoid/Linear/Exponential collapse, hazard models
 - **Analysis** — Coalition strain, junior partner penalty, Cox hazard
 
 ### Metrics
-- Gallagher Index (disproportionality)
-- Effective Number of Parties (Laakso-Taagepera)
-- Efficiency Gap, Loosemore-Hanby, Herfindahl-Hirschman Index
-- Voter Satisfaction Efficiency (VSE)
+- Gallagher Index, Loosemore-Hanby (disproportionality)
+- Effective Number of Parties (Laakso-Taagepera), Herfindahl-Hirschman Index
+- Efficiency Gap, Partisan Bias, Mean-Median Gap, Partisan Gini (gerrymandering)
+- Polsby-Popper, Convex-Hull Compactness (district geometry)
+- Voter Satisfaction Efficiency (VSE), Responsiveness, Swing Ratio
 
-### Country Presets (11 Countries)
+### Country Presets (23 Countries + EU)
 
-> These are **structural presets** — they encode electoral-system rules, approximate party positions, and default parameters for demonstration and comparative simulation. They are not calibrated election forecasts.
+> These are **structural presets** — they encode electoral-system rules, approximate party positions, and default parameters for demonstration and comparative simulation. They are not calibrated election forecasts. 13 have calibration-status metadata.
 
 | Region | Countries |
 |--------|-----------|
 | **Asia** | 🇮🇳 India (543 Lok Sabha), 🇯🇵 Japan |
-| **Europe** | 🇬🇧 UK, 🇩🇪 Germany, 🇫🇷 France, 🇪🇺 EU Parliament (720 MEPs) |
-| **Americas** | 🇺🇸 USA, 🇧🇷 Brazil |
-| **Oceania/Africa** | 🇦🇺 Australia, 🇿🇦 South Africa |
+| **Europe** | 🇬🇧 UK, 🇩🇪 Germany, 🇫🇷 France, 🇪🇺 EU Parliament (720 MEPs), 🇮🇪 Ireland, 🇳🇱 Netherlands, 🇨🇭 Switzerland, 🇳🇴 Norway, 🇸🇪 Sweden, 🇪🇸 Spain, 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland, 🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales |
+| **Americas** | 🇺🇸 USA, 🇧🇷 Brazil, 🇨🇦 Canada, 🇲🇽 Mexico, 🇨🇱 Chile |
+| **Oceania/Africa** | 🇦🇺 Australia (House + Senate), 🇳🇿 New Zealand, 🇿🇦 South Africa |
+| **Middle East** | 🇮🇱 Israel |
 
 ### Performance
 - **Vectorized Polars DataFrames** for voter storage (not individual Python objects)
@@ -304,20 +307,20 @@ More screenshots: [`docs/assets/`](docs/assets/)
 
 ```
 electoral_sim/
-├── core/               # ElectionModel, Config, Voter Generation
+├── core/               # ElectionModel, Config, CLI, Voter Generation, Provenance
 ├── agents/             # Voter, Party, Adaptive Strategy
-├── behavior/           # Behavior models (Proximity, Valence, Strategic, etc.)
-├── dynamics/           # Opinion dynamics (networks, bounded confidence)
-├── engine/             # Numba/GPU acceleration, Coalition, Government
-├── events/             # Event manager (scandals, economic shocks)
-├── metrics/            # Gallagher, ENP, VSE, Efficiency Gap
-├── presets/            # Country configs (11 countries + EU)
-│   ├── india/          # 543 constituencies, 17 parties
-│   ├── eu/             # 27 member states, 720 MEPs
-│   └── ...
-├── systems/            # Electoral systems (allocation, IRV, STV)
-├── visualization/      # Plots, maps, animations
-└── data/               # Historical election data
+├── behavior/           # Behavior models + Campaign models (6 campaign classes)
+├── dynamics/           # Opinion dynamics (networks, noisy voter, bounded confidence)
+├── engine/             # Numba acceleration, GPU, Coalition, Government, Hazards
+├── events/             # Event manager, election timeline, poll generator
+├── metrics/            # Indices (Gallagher, ENP, VSE), Gerrymandering metrics
+├── presets/            # 23 countries + EU (config.py + election.py per preset)
+│   ├── india/          # 543 constituencies, 17 parties, StateConfig
+│   └── eu/             # 27 member states, 720 MEPs, per-country BehaviorEngine
+├── systems/            # Allocation (PR, MMP, mixed), Alternative (IRV, STV, Borda, Score, PAV)
+├── analysis/           # BatchRunner, Duverger, VSE, Sensitivity, Calibration, Redistricting
+├── visualization/      # Plots (seats, votes, summary, ideological), Specialized
+└── data/               # Historical election data, ingestion pipeline
 ```
 
 ---
@@ -350,7 +353,7 @@ pytest tests/test_integration.py -v
 python benchmarks/stress_test.py
 ```
 
-**Test suite:** 237 tests including:
+**Test suite:** 502 tests including:
 - **Property-based tests** (Hypothesis) — random input generation
 - **Parameterized tests** — all systems, presets, allocation methods
 - **Performance smoke tests** — 1K, 10K voters timing

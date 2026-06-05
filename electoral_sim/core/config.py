@@ -165,6 +165,7 @@ from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.india.config import india_config
 from electoral_sim.presets.israel.config import israel_config
 from electoral_sim.presets.japan.config import japan_config
+from electoral_sim.presets.mexico.config import mexico_config
 from electoral_sim.presets.netherlands.config import netherlands_config
 from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.switzerland.config import switzerland_config
@@ -188,6 +189,7 @@ PRESETS = {
     "france": france_config,
     "israel": israel_config,
     "japan": japan_config,
+    "mexico": mexico_config,
     "netherlands": netherlands_config,
 }
 
@@ -235,6 +237,11 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions (PR fallback for STV)",
         "electoral_system": "PR",
         "n_constituencies": 8,
+    },
+    "mexico": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, 300 FPTP districts + 200 PR list",
+        "electoral_system": "FPTP",
     },
     "netherlands": {
         "calibration": "structural_demo",

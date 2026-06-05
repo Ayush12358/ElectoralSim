@@ -201,7 +201,7 @@
     - Useful for fragmentation and coalition comparisons.
 - [x] **P2** Add Switzerland preset with PR plus referendum/direct-democracy hooks
     - Model referendums as separate ballot events rather than party-seat contests only.
-- [ ] **P2** Add Mexico preset with mixed-member Chamber of Deputies structure
+- [x] **P2** Add Mexico preset with mixed-member Chamber of Deputies structure
     - Include district/list tiers and coalition-party handling.
 - [ ] **P2** Add New Zealand MMP preset
     - Covers party vote, electorate vote, threshold/one-electorate exception, overhang behavior, and leveling seats.

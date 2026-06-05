@@ -167,6 +167,7 @@ from electoral_sim.presets.israel.config import israel_config
 from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.netherlands.config import netherlands_config
 from electoral_sim.presets.south_africa.config import south_africa_config
+from electoral_sim.presets.switzerland.config import switzerland_config
 from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.usa.config import usa_config
 
@@ -180,6 +181,7 @@ PRESETS = {
     "australia_house": australia_house_config,
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
+    "switzerland": switzerland_config,
     "brazil": brazil_config,
     "canada": canada_config,
     "eu": eu_config,
@@ -203,6 +205,12 @@ PRESET_PROVENANCE = {
         "source": "Synthetic two-party positions",
         "electoral_system": "FPTP",
         "n_constituencies": 435,
+    },
+    "switzerland": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, PR with 26 cantons",
+        "electoral_system": "PR",
+        "n_constituencies": 26,
     },
     "uk": {
         "calibration": "structural_demo",

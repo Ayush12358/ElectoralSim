@@ -463,8 +463,8 @@
 - [x] **P2** Add preset calibration status metadata
 - [ ] **P5** Historical election data for all countries
 - [ ] **P5** Calibration against real election results
-- [ ] **P5** Sensitivity analysis tools
-- [ ] **P5** Uncertainty quantification
+- [x] **P5** Sensitivity analysis tools
+- [x] **P5** Uncertainty quantification
 
 ---
 

@@ -314,7 +314,7 @@
     - Run tiny voter counts to verify benchmark code paths without enforcing performance thresholds.
 - [x] **P3** Add `pytest -W error` gate (done in 838336c)
     - Keep warning budget at zero.
-- [ ] **P3** Register all custom pytest marks
+- [x] **P3** Register all custom pytest marks
     - `slow` appears in tests but is not registered in `pyproject.toml`.
 - [x] **P3** Add dependency freshness and upper-bound review
     - Track Mesa, Polars, Numba, NumPy, NetworkX, Streamlit, Plotly, and CuPy compatibility.

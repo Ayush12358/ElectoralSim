@@ -203,10 +203,27 @@ Config file format (JSON):
         description="Display information about built-in electoral system presets",
     )
 
+    info_parser = subparsers.add_parser(
+        "preset-info",
+        help="Show metadata for a specific preset",
+    )
+    info_parser.add_argument("preset", help="Preset name (e.g., india, germany)")
+
+    validate_parser = subparsers.add_parser(
+        "validate",
+        help="Validate a preset configuration",
+    )
+    validate_parser.add_argument("--preset", "-p", required=True, help="Preset to validate")
+    validate_parser.add_argument("--year", type=int, help="Election year for validation data")
+
     args = parser.parse_args()
 
     if args.command == "list-presets":
         list_presets()
+    elif args.command == "preset-info":
+        preset_info(args)
+    elif args.command == "validate":
+        validate_preset(args)
     elif args.command == "run":
         run_simulation(args)
     elif args.command == "batch":
@@ -401,6 +418,48 @@ def run_batch(args):
         sys.exit(1)
     except (ValueError, OSError) as e:
         print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def preset_info(args):
+    """Display metadata for a specific preset."""
+    from electoral_sim.core.config import PRESETS, PRESET_PROVENANCE
+
+    preset = args.preset.lower()
+    if preset not in PRESETS:
+        print(f"Error: Unknown preset '{args.preset}'. Run 'electoral-sim list-presets'.", file=sys.stderr)
+        sys.exit(1)
+
+    prov = PRESET_PROVENANCE.get(preset, {})
+    config = PRESETS[preset](n_voters=100)
+
+    print(f"Preset: {preset}")
+    print(f"  Electoral System: {prov.get('electoral_system', 'N/A')}")
+    print(f"  Calibration: {prov.get('calibration', 'N/A')}")
+    print(f"  Source: {prov.get('source', 'N/A')}")
+    print(f"  Parties: {config.n_parties}")
+    print(f"  Constituencies: {config.n_constituencies}")
+
+
+def validate_preset(args):
+    """Validate a preset configuration by running a small simulation."""
+    from electoral_sim import ElectionModel
+    from electoral_sim.core.config import PRESETS
+
+    preset = args.preset.lower()
+    if preset not in PRESETS:
+        print(f"Error: Unknown preset '{args.preset}'.", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        model = ElectionModel.from_preset(preset, n_voters=500)
+        result = model.run_election()
+        turnout = result["turnout"] if isinstance(result, dict) else result.turnout
+        print(f"Preset '{preset}' validated successfully.")
+        print(f"  Turnout: {turnout:.1%}")
+        print(f"  Gallagher: {result['gallagher']:.2f}" if isinstance(result, dict) else f"  Gallagher: {result.gallagher:.2f}")
+    except Exception as e:
+        print(f"Validation failed for '{preset}': {e}", file=sys.stderr)
         sys.exit(1)
 
 

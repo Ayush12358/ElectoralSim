@@ -195,7 +195,7 @@
 
 - [x] **P2** Add Canada federal preset with FPTP, province metadata, and riding count
     - Include party positions, regional strengths, and source notes.
-- [ ] **P2** Add Israel preset with nationwide PR and electoral threshold
+- [x] **P2** Add Israel preset with nationwide PR and electoral threshold
     - Include coalition-heavy government formation examples.
 - [ ] **P2** Add Netherlands preset with low-threshold nationwide PR
     - Useful for fragmentation and coalition comparisons.

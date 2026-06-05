@@ -163,6 +163,7 @@ from electoral_sim.presets.eu.config import eu_config
 from electoral_sim.presets.france.config import france_config
 from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.india.config import india_config
+from electoral_sim.presets.israel.config import israel_config
 from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.uk.config import uk_config
@@ -182,6 +183,7 @@ PRESETS = {
     "canada": canada_config,
     "eu": eu_config,
     "france": france_config,
+    "israel": israel_config,
     "japan": japan_config,
 }
 
@@ -253,6 +255,12 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions, FPTP with 338 ridings",
         "electoral_system": "FPTP",
         "n_constituencies": 338,
+    },
+    "israel": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, nationwide PR with 3.25% threshold",
+        "electoral_system": "PR",
+        "threshold": 0.0325,
     },
     "japan": {
         "calibration": "structural_demo",

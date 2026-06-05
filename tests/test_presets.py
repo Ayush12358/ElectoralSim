@@ -35,6 +35,7 @@ class TestAllPresets:
             "south_africa",
             "canada",
             "eu",
+            "israel",
         ],
     )
     def test_all_presets_run(self, preset):
@@ -104,6 +105,15 @@ class TestAllPresets:
         model = ElectionModel.from_preset("canada", n_voters=5000)
         assert model.electoral_system == "FPTP"
         assert model.parties.n_parties == 5
+
+    def test_israel_preset_structure(self):
+        """Israel preset uses nationwide PR with 3.25% threshold."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("israel", n_voters=5000)
+        assert model.electoral_system == "PR"
+        assert model.threshold == 0.0325
+        assert model.parties.n_parties == 6
 
     def test_preset_provenance_metadata(self):
         """from_preset() stores provenance metadata on the model."""

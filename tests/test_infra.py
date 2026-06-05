@@ -453,10 +453,12 @@ class TestVisualizationSpecialized:
 
         history = []
         for _ in range(2):
-            df = pl.DataFrame({
-                "ideology_x": np.random.normal(0, 0.3, 20),
-                "ideology_y": np.random.normal(0, 0.3, 20),
-            })
+            df = pl.DataFrame(
+                {
+                    "ideology_x": np.random.normal(0, 0.3, 20),
+                    "ideology_y": np.random.normal(0, 0.3, 20),
+                }
+            )
             history.append(df)
 
         party_pos = np.array([[-0.5, -0.2], [0.3, 0.1]])
@@ -466,6 +468,7 @@ class TestVisualizationSpecialized:
         ani = animate_opinion_dynamics(history, party_pos, party_names, filename=outfile)
         assert ani is not None
         import os
+
         assert os.path.exists(outfile)
 
     def test_plot_swing_analysis(self):
@@ -541,7 +544,11 @@ class TestVisualizationReturnTypes:
         from electoral_sim.visualization.plots import plot_seats_vs_votes
 
         fig = plot_seats_vs_votes(
-            {"vote_counts": np.array([100, 80, 30]), "seats": np.array([5, 3, 2]), "gallagher": 0.05},
+            {
+                "vote_counts": np.array([100, 80, 30]),
+                "seats": np.array([5, 3, 2]),
+                "gallagher": 0.05,
+            },
             ["A", "B", "C"],
         )
         assert isinstance(fig, matplotlib.figure.Figure)
@@ -554,12 +561,17 @@ class TestVisualRegressionSmoke:
         """All standard plot functions return figures with non-empty axes."""
         import matplotlib.figure
         from electoral_sim.visualization.plots import (
-            plot_seat_distribution, plot_vote_shares, plot_seats_vs_votes,
+            plot_seat_distribution,
+            plot_vote_shares,
+            plot_seats_vs_votes,
             plot_ideological_space,
         )
 
-        data = {"seats": np.array([100, 80, 30]), "vote_counts": np.array([100, 80, 30]),
-                "gallagher": 5.0}
+        data = {
+            "seats": np.array([100, 80, 30]),
+            "vote_counts": np.array([100, 80, 30]),
+            "gallagher": 5.0,
+        }
         names = ["A", "B", "C"]
         positions = np.array([[-0.5, -0.2], [0.3, 0.1], [0.0, 0.3]])
 
@@ -653,9 +665,7 @@ class TestOptionalDependencyBoundaries:
         from electoral_sim.events.timeline import PollGenerator
 
         pg = PollGenerator(sample_size=1000, house_effect=0.02)
-        result = pg.generate_poll(
-            np.array([0.4, 0.35, 0.25]), rng=np.random.default_rng(42)
-        )
+        result = pg.generate_poll(np.array([0.4, 0.35, 0.25]), rng=np.random.default_rng(42))
         assert abs(result["poll_shares"].sum() - 1.0) < 0.01
         assert len(result["poll_shares"]) == 3
         assert "house_effect" in result

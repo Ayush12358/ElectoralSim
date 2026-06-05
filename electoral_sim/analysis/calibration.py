@@ -83,9 +83,7 @@ def grid_search_calibration(
 
     for combo in product(*param_values):
         params = dict(zip(param_names, combo))
-        loss = mse_loss(
-            model_class, params, targets, metric_weights, n_runs, seed
-        )
+        loss = mse_loss(model_class, params, targets, metric_weights, n_runs, seed)
         results.append({"params": params, "loss": loss})
 
     results.sort(key=lambda r: r["loss"])
@@ -114,7 +112,7 @@ def generate_calibration_report(
     lines.append(f"  {results[0]['params']}")
 
     if len(results) > 1:
-        lines.append(f"\nTop 5 configurations:")
+        lines.append("\nTop 5 configurations:")
         for i, r in enumerate(results[:5], 1):
             lines.append(f"  {i}. loss={r['loss']:.4f} params={r['params']}")
 

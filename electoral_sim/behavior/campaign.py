@@ -190,5 +190,3 @@ class MediaEnvironment:
         if media_diet is None:
             return 0.3  # Default moderate susceptibility
         return float(1.0 - np.mean(media_diet))
-
-

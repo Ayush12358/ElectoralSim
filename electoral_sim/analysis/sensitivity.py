@@ -85,8 +85,12 @@ def grid_sensitivity(
             model = model_class(**params, **model_kwargs)
             result = model.run_election()
             metrics.append(result.get(metric, 0.0))
-        entry = {**params, f"{metric}_mean": float(np.mean(metrics)),
-                 f"{metric}_std": float(np.std(metrics)), "n_runs": n_runs}
+        entry = {
+            **params,
+            f"{metric}_mean": float(np.mean(metrics)),
+            f"{metric}_std": float(np.std(metrics)),
+            "n_runs": n_runs,
+        }
         results.append(entry)
 
     return results
@@ -133,11 +137,13 @@ def swing_analysis(
             metrics.append(result.get(metric, 0.0))
 
         mean_val = float(np.mean(metrics))
-        results.append({
-            "swing_param": swing_param,
-            "swing_value": value,
-            f"{metric}_mean": mean_val,
-            f"{metric}_std": float(np.std(metrics)),
-        })
+        results.append(
+            {
+                "swing_param": swing_param,
+                "swing_value": value,
+                f"{metric}_mean": mean_val,
+                f"{metric}_std": float(np.std(metrics)),
+            }
+        )
 
     return results

@@ -35,7 +35,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
-    parser.add_argument("--version", action="version", version="%(prog)s 0.1.1")
+    parser.add_argument("--version", action="version", version="%(prog)s 0.2.0")
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
@@ -220,22 +220,26 @@ Config file format (JSON):
 
     if args.command == "list-presets":
         from electoral_sim.core._cli_commands import list_presets
+
         list_presets()
     elif args.command == "preset-info":
         from electoral_sim.core._cli_commands import preset_info
+
         preset_info(args)
     elif args.command == "validate":
         from electoral_sim.core._cli_commands import validate_preset
+
         validate_preset(args)
     elif args.command == "run":
         from electoral_sim.core._cli_commands import run_simulation
+
         run_simulation(args)
     elif args.command == "batch":
         from electoral_sim.core._cli_commands import run_batch
+
         run_batch(args)
     else:
         parser.print_help()
-
 
 
 from electoral_sim.core._cli_commands import (  # noqa: E402 — after all deps defined

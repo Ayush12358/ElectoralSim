@@ -151,9 +151,7 @@ def compute_state_party_utilities(
     # Compute base utilities via BehaviorEngine
     voter_data = {
         "n_voters": n_voters,
-        "positions": np.column_stack(
-            [df["ideology_x"].to_numpy(), df["ideology_y"].to_numpy()]
-        ),
+        "positions": np.column_stack([df["ideology_x"].to_numpy(), df["ideology_y"].to_numpy()]),
     }
     party_data = {
         "n_parties": n_parties,

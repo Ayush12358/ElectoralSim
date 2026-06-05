@@ -223,9 +223,11 @@ class TestCrossModule:
         from electoral_sim import ElectionModel
         from electoral_sim.analysis import BatchRunner, ParameterSweep
 
-        sweep = ParameterSweep({
-            "n_voters": [500, 1000],
-        })
+        sweep = ParameterSweep(
+            {
+                "n_voters": [500, 1000],
+            }
+        )
         runner = BatchRunner(
             model_class=ElectionModel,
             parameter_sweep=sweep,

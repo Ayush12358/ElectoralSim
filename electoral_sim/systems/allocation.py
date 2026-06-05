@@ -337,12 +337,12 @@ def parallel_mixed_allocation(
 
     if district_votes.sum() > 0 and n_district_seats > 0:
         padded = np.zeros(n_parties, dtype=float)
-        padded[:len(district_votes)] = district_votes
+        padded[: len(district_votes)] = district_votes
         district_seats = dhondt_allocation(padded, n_district_seats)
 
     if pr_votes.sum() > 0 and n_pr_seats > 0:
         padded = np.zeros(n_parties, dtype=float)
-        padded[:len(pr_votes)] = pr_votes
+        padded[: len(pr_votes)] = pr_votes
         pr_seats = dhondt_allocation(padded, n_pr_seats, threshold)
 
     return {
@@ -381,9 +381,9 @@ def mmp_allocation(
 
     # Pad arrays to same length
     d_votes = np.zeros(n_parties, dtype=float)
-    d_votes[:len(district_votes)] = district_votes
+    d_votes[: len(district_votes)] = district_votes
     l_votes = np.zeros(n_parties, dtype=float)
-    l_votes[:len(list_votes)] = list_votes
+    l_votes[: len(list_votes)] = list_votes
 
     # Step 1: Allocate district seats (FPTP)
     district_seats = np.zeros(n_parties, dtype=int)

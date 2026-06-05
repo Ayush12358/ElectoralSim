@@ -1,6 +1,7 @@
 import numpy as np
 import polars as pl
 
+
 def generate_voter_frame(
     n_voters: int,
     n_constituencies: int,
@@ -228,5 +229,3 @@ def generate_voter_frame(
             "turnout_prob": turnout_prob.astype(np.float32),
         }
     )
-
-

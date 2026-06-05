@@ -252,7 +252,9 @@ class BatchRunner:
                 pl.col("gallagher").std().alias("gallagher_std"),
                 pl.col("gallagher").quantile(0.25).alias("gallagher_q25"),
                 pl.col("gallagher").quantile(0.75).alias("gallagher_q75"),
-                (pl.col("gallagher").std() / pl.col("gallagher").count().sqrt()).alias("gallagher_mcse"),
+                (pl.col("gallagher").std() / pl.col("gallagher").count().sqrt()).alias(
+                    "gallagher_mcse"
+                ),
                 pl.col("enp_votes").mean().alias("enp_votes_mean"),
                 pl.col("enp_votes").std().alias("enp_votes_std"),
                 pl.col("enp_seats").mean().alias("enp_seats_mean"),
@@ -313,6 +315,7 @@ class BatchRunner:
         manifest = self._build_manifest()
         manifest_path = f"{filepath}.manifest.json"
         import json as _json
+
         with open(manifest_path, "w") as f:
             _json.dump(manifest, f, indent=2)
         if self.verbose:
@@ -338,7 +341,9 @@ class BatchRunner:
 
             result = subprocess.run(
                 ["git", "rev-parse", "HEAD"],
-                capture_output=True, text=True, timeout=5,
+                capture_output=True,
+                text=True,
+                timeout=5,
             )
             if result.returncode == 0:
                 git_commit = result.stdout.strip()

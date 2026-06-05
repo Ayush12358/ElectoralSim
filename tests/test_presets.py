@@ -615,8 +615,10 @@ class TestDataIngestion:
         from electoral_sim.data.ingestion import validate_schema
         import polars as pl
 
-        df = pl.DataFrame({"constituency": [], "party": [], "votes": []},
-                          schema={"constituency": pl.Utf8, "party": pl.Utf8, "votes": pl.Int64})
+        df = pl.DataFrame(
+            {"constituency": [], "party": [], "votes": []},
+            schema={"constituency": pl.Utf8, "party": pl.Utf8, "votes": pl.Int64},
+        )
         errors = validate_schema(df)
         assert len(errors) > 0
 
@@ -634,12 +636,14 @@ class TestDataIngestion:
         from electoral_sim.data.ingestion import compute_incumbents
         import polars as pl
 
-        df = pl.DataFrame({
-            "constituency": ["A", "A", "B", "B"],
-            "party": ["X", "Y", "X", "Z"],
-            "votes": [100, 80, 90, 60],
-            "seats": [1, 0, 0, 1],
-        })
+        df = pl.DataFrame(
+            {
+                "constituency": ["A", "A", "B", "B"],
+                "party": ["X", "Y", "X", "Z"],
+                "votes": [100, 80, 90, 60],
+                "seats": [1, 0, 0, 1],
+            }
+        )
         incumbents = compute_incumbents(df)
         assert "X" in incumbents
         assert "Z" in incumbents
@@ -649,7 +653,9 @@ class TestDataIngestion:
         from electoral_sim.data.ingestion import load_geometry
 
         geojson = tmp_path / "test.geojson"
-        geojson.write_text('{"type":"FeatureCollection","features":[],"crs":{"type":"name","properties":{"name":"EPSG:4326"}}}')
+        geojson.write_text(
+            '{"type":"FeatureCollection","features":[],"crs":{"type":"name","properties":{"name":"EPSG:4326"}}}'
+        )
         result = load_geometry(str(geojson))
         assert result["crs"] == "EPSG:4326"
         assert result["n_features"] == 0
@@ -664,9 +670,7 @@ class TestPresetContracts:
         from electoral_sim.core.config import PRESET_PROVENANCE
 
         for name in PRESETS:
-            assert name in PRESET_PROVENANCE, (
-                f"Preset '{name}' missing from PRESET_PROVENANCE"
-            )
+            assert name in PRESET_PROVENANCE, f"Preset '{name}' missing from PRESET_PROVENANCE"
 
     def test_every_preset_config_loads_and_runs(self):
         """Every preset config loads and runs a smoke simulation."""
@@ -686,6 +690,6 @@ class TestPresetContracts:
 
         for name, factory in PRESETS.items():
             config = factory()
-            assert config.electoral_system in VALID_ELECTORAL_SYSTEMS, (
-                f"Preset '{name}' has unknown system: {config.electoral_system}"
-            )
+            assert (
+                config.electoral_system in VALID_ELECTORAL_SYSTEMS
+            ), f"Preset '{name}' has unknown system: {config.electoral_system}"

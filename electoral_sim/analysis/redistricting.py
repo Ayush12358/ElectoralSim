@@ -34,7 +34,9 @@ class PrecinctGraph:
         """
         self.n_precincts = n_precincts
         self.adj_list = adj_list if adj_list is not None else [[] for _ in range(n_precincts)]
-        self.populations = populations if populations is not None else np.ones(n_precincts, dtype=int)
+        self.populations = (
+            populations if populations is not None else np.ones(n_precincts, dtype=int)
+        )
         self.assignment = np.full(n_precincts, -1, dtype=int)
 
     def assign_districts(self, assignment: np.ndarray):

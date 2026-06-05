@@ -113,7 +113,11 @@ def network_diagnostics(G, opinions: np.ndarray | None = None) -> dict:
 
     sorted_deg = np.sort(deg_array)
     index = np.arange(1, n + 1)
-    influence_gini = float((2 * index - n - 1).dot(sorted_deg) / (n * sorted_deg.sum())) if sorted_deg.sum() > 0 else 0.0
+    influence_gini = (
+        float((2 * index - n - 1).dot(sorted_deg) / (n * sorted_deg.sum()))
+        if sorted_deg.sum() > 0
+        else 0.0
+    )
 
     return {
         "degree_distribution": degree_stats,

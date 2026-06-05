@@ -1,6 +1,7 @@
 import numpy as np
 from electoral_sim.analysis.redistricting import PrecinctGraph, recom_proposal
 
+
 def ensemble_analysis(
     graph: PrecinctGraph,
     enacted_assignment: np.ndarray,

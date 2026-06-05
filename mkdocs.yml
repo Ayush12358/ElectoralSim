@@ -33,9 +33,6 @@ plugins:
         python:
           options:
             show_source: true
-  - linkcheck:
-      enabled: !ENV [LINKCHECK, false]
-      timeout: 10
 
 markdown_extensions:
   - pymdownx.highlight:

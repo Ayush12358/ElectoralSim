@@ -5,6 +5,7 @@ Extracted from indices.py to keep each file under the 250-LOC ceiling.
 
 import numpy as np
 
+
 def efficiency_gap(
     party_a_votes: np.ndarray,
     party_b_votes: np.ndarray,
@@ -137,7 +138,7 @@ def polsby_popper(area: float, perimeter: float) -> float:
     """
     if perimeter <= 0:
         return 0.0
-    return float(4 * np.pi * area / (perimeter ** 2))
+    return float(4 * np.pi * area / (perimeter**2))
 
 
 def convex_hull_compactness(area: float, convex_hull_area: float) -> float:

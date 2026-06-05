@@ -667,11 +667,13 @@ class TestAlternativeVoting:
         """PAV elects a proportional committee from approval ballots."""
         from electoral_sim import pav_committee
 
-        approvals = np.array([
-            [1, 1, 0, 0],  # Voter 1 approves A, B
-            [1, 1, 0, 0],  # Voter 2 approves A, B
-            [0, 0, 1, 1],  # Voter 3 approves C, D
-        ])
+        approvals = np.array(
+            [
+                [1, 1, 0, 0],  # Voter 1 approves A, B
+                [1, 1, 0, 0],  # Voter 2 approves A, B
+                [0, 0, 1, 1],  # Voter 3 approves C, D
+            ]
+        )
         result = pav_committee(approvals, n_candidates=4, committee_size=2)
         assert len(result["committee"]) == 2
         assert 0 <= result["committee"][0] <= 3
@@ -870,7 +872,12 @@ class TestAllocationKnownResults:
         )
 
         votes = np.array([100, 80, 30])
-        for allocator in [dhondt_allocation, sainte_lague_allocation, hare_quota_allocation, droop_quota_allocation]:
+        for allocator in [
+            dhondt_allocation,
+            sainte_lague_allocation,
+            hare_quota_allocation,
+            droop_quota_allocation,
+        ]:
             for n in [1, 3, 5, 10]:
                 seats = allocator(votes, n)
                 assert seats.sum() == n, f"{allocator.__name__} with n={n}: {seats.tolist()}"
@@ -1036,9 +1043,9 @@ class TestNumbaWrappers:
             f"Race condition: expected {n_constituencies} seats for party 0, got {seats[0]}. "
             f"All seats: {seats}"
         )
-        assert seats.sum() == n_constituencies, (
-            f"Total seats {seats.sum()} != constituencies {n_constituencies}"
-        )
+        assert (
+            seats.sum() == n_constituencies
+        ), f"Total seats {seats.sum()} != constituencies {n_constituencies}"
         assert seats[1:].sum() == 0
 
     def test_benchmark_numba(self):
@@ -1067,11 +1074,13 @@ class TestFptpTieBreaking:
         from electoral_sim.systems.allocation import fptp_allocation
         import polars as pl
 
-        df = pl.DataFrame({
-            "constituency": [0, 0],
-            "party": [0, 1],
-            "votes": [100, 100],
-        })
+        df = pl.DataFrame(
+            {
+                "constituency": [0, 0],
+                "party": [0, 1],
+                "votes": [100, 100],
+            }
+        )
         seats = fptp_allocation(df, n_constituencies=1)
         assert seats[0] == 1
         assert seats[1] == 0
@@ -1086,21 +1095,26 @@ class TestFptpTieBreaking:
         votes = np.array([0, 1, 0, 1], dtype=np.int64)
         seats_numba, _ = fptp_count_fast(constituencies, votes, 1, 2)
 
-        df = pl.DataFrame({
-            "constituency": [0, 0],
-            "party": [0, 1],
-            "votes": [2, 2],
-        })
+        df = pl.DataFrame(
+            {
+                "constituency": [0, 0],
+                "party": [0, 1],
+                "votes": [2, 2],
+            }
+        )
         seats_polars = fptp_allocation(df, n_constituencies=1)
         assert (seats_numba == seats_polars).all()
 
     def test_alternative_systems_main_block(self):
         """if __name__ == '__main__' block in alternative.py runs without error."""
-        import subprocess, sys
+        import subprocess
+        import sys
 
         result = subprocess.run(
             [sys.executable, "-m", "electoral_sim.systems.alternative"],
-            capture_output=True, text=True, timeout=30
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
         assert result.returncode == 0
         assert "Alternative Voting Systems Test" in result.stdout

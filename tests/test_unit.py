@@ -210,13 +210,16 @@ class TestConfig:
             with pytest.raises(ValueError, match="Unknown allocation method"):
                 Config(n_voters=100, allocation_method=method)
 
-    @pytest.mark.parametrize("field,value,match", [
-        ("n_voters", 0, "n_voters must be positive"),
-        ("n_constituencies", 0, "n_constituencies must be positive"),
-        ("threshold", 1.5, "threshold must be"),
-        ("threshold", -0.1, "threshold must be"),
-        ("temperature", 0, "temperature must be positive"),
-    ])
+    @pytest.mark.parametrize(
+        "field,value,match",
+        [
+            ("n_voters", 0, "n_voters must be positive"),
+            ("n_constituencies", 0, "n_constituencies must be positive"),
+            ("threshold", 1.5, "threshold must be"),
+            ("threshold", -0.1, "threshold must be"),
+            ("temperature", 0, "temperature must be positive"),
+        ],
+    )
     def test_config_rejects_invalid_values(self, field, value, match):
         """Config raises ValueError for out-of-range parameter values."""
         from electoral_sim import Config
@@ -279,9 +282,9 @@ class TestConfig:
 
         config_set = set(VALID_ALLOCATION_METHODS)
         registry_set = set(ALLOCATION_METHODS.keys())
-        assert config_set == registry_set, (
-            f"Mismatch: config={sorted(config_set)}, registry={sorted(registry_set)}"
-        )
+        assert (
+            config_set == registry_set
+        ), f"Mismatch: config={sorted(config_set)}, registry={sorted(registry_set)}"
 
 
 class TestPresets:
@@ -349,7 +352,7 @@ class TestModel:
 
         # Check result structure
         assert results is not None
-        assert hasattr(results, '__getitem__')  # dict or ElectionResult (dict-compatible)
+        assert hasattr(results, "__getitem__")  # dict or ElectionResult (dict-compatible)
         # Check that key results exist
         assert "seats" in results
         assert "turnout" in results
@@ -437,7 +440,11 @@ class TestElectoralInvariants:
     )
     def test_allocation_non_negative(self, votes, n_seats):
         """Seat allocations contain no negative values."""
-        from electoral_sim.systems.allocation import dhondt_allocation, sainte_lague_allocation, hare_quota_allocation
+        from electoral_sim.systems.allocation import (
+            dhondt_allocation,
+            sainte_lague_allocation,
+            hare_quota_allocation,
+        )
 
         votes_arr = np.array(votes, dtype=np.int64)
         assume(votes_arr.sum() > 0)

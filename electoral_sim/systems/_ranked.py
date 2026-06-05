@@ -180,9 +180,7 @@ def stv_election(
                 eliminated.add(to_eliminate)
 
     remaining = [
-        (c, vote_counts[c])
-        for c in range(n_candidates)
-        if c not in elected and c not in eliminated
+        (c, vote_counts[c]) for c in range(n_candidates) if c not in elected and c not in eliminated
     ]
     remaining.sort(key=lambda x: -x[1])
     for c, _ in remaining:

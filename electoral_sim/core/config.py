@@ -201,7 +201,6 @@ from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.usa.config import usa_config
 from electoral_sim.presets.wales.config import wales_config
 
-
 # Preset mapping
 PRESETS = {
     "india": india_config,

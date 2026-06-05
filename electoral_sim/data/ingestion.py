@@ -136,19 +136,21 @@ def load_geometry(path: str) -> "dict[str, Any]":
         try:
             import shapefile
         except ImportError:
-            raise ImportError(
-                "Shapefile support requires pyshp. Install with: pip install pyshp"
-            )
+            raise ImportError("Shapefile support requires pyshp. Install with: pip install pyshp")
         with shapefile.Reader(path) as sf:
             for record in sf.shapeRecords():
-                features.append({
-                    "type": "Feature",
-                    "geometry": record.shape.__geo_interface__,
-                    "properties": dict(zip(
-                        [f[0] for f in sf.fields[1:]],
-                        record.record,
-                    )),
-                })
+                features.append(
+                    {
+                        "type": "Feature",
+                        "geometry": record.shape.__geo_interface__,
+                        "properties": dict(
+                            zip(
+                                [f[0] for f in sf.fields[1:]],
+                                record.record,
+                            )
+                        ),
+                    }
+                )
         crs = "Unknown"
     else:
         raise ValueError(f"Unsupported geometry format: '{ext}'. Use .geojson or .shp")

@@ -1,6 +1,7 @@
 import json
 import sys
 
+
 def list_presets():
     """List all available country presets with details."""
     from electoral_sim.core.config import PRESETS
@@ -196,7 +197,10 @@ def preset_info(args):
 
     preset = args.preset.lower()
     if preset not in PRESETS:
-        print(f"Error: Unknown preset '{args.preset}'. Run 'electoral-sim list-presets'.", file=sys.stderr)
+        print(
+            f"Error: Unknown preset '{args.preset}'. Run 'electoral-sim list-presets'.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     prov = PRESET_PROVENANCE.get(preset, {})
@@ -226,8 +230,11 @@ def validate_preset(args):
         turnout = result["turnout"] if isinstance(result, dict) else result.turnout
         print(f"Preset '{preset}' validated successfully.")
         print(f"  Turnout: {turnout:.1%}")
-        print(f"  Gallagher: {result['gallagher']:.2f}" if isinstance(result, dict) else f"  Gallagher: {result.gallagher:.2f}")
+        print(
+            f"  Gallagher: {result['gallagher']:.2f}"
+            if isinstance(result, dict)
+            else f"  Gallagher: {result.gallagher:.2f}"
+        )
     except Exception as e:
         print(f"Validation failed for '{preset}': {e}", file=sys.stderr)
         sys.exit(1)
-

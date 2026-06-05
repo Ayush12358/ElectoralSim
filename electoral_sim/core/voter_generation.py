@@ -74,4 +74,6 @@ def generate_party_frame(
         )
 
     return pl.DataFrame(party_data)
+
+
 from electoral_sim.core._voter_gen import generate_voter_frame  # noqa: E402, F401

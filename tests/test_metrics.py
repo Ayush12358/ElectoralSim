@@ -128,9 +128,7 @@ class TestOtherMetrics:
         """efficiency_gap returns 0.0 for zero total votes."""
         from electoral_sim.metrics.indices import efficiency_gap
 
-        result = efficiency_gap(
-            np.array([0, 0]), np.array([0, 0]), np.array([1, 0])
-        )
+        result = efficiency_gap(np.array([0, 0]), np.array([0, 0]), np.array([1, 0]))
         assert result == 0.0
 
     def test_enp_zero_shares(self):

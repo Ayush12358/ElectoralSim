@@ -393,12 +393,15 @@ class TestCampaignFinance:
 
         model = StrategicVotingModel(sensitivity=1.0)
         # District-level: party 0 viable in district 0, party 1 viable in district 1
-        district_viability = np.array([
-            [0.8, 0.2],  # District 0: party 0 strong
-            [0.2, 0.8],  # District 1: party 1 strong
-        ])
-        result = model.compute_utility(2, np.array([0.5, 0.5]),
-                                       constituency_viability=district_viability)
+        district_viability = np.array(
+            [
+                [0.8, 0.2],  # District 0: party 0 strong
+                [0.2, 0.8],  # District 1: party 1 strong
+            ]
+        )
+        result = model.compute_utility(
+            2, np.array([0.5, 0.5]), constituency_viability=district_viability
+        )
         assert result.shape == (2, 2)
         # Party with higher local viability should have less penalty (higher utility)
         assert result[0, 0] > result[0, 1]  # District 0 prefers party 0

@@ -118,7 +118,7 @@ Key completions this session:
 
 ## Version History
 
-### v0.1.1 (Current)
+### v0.2.0 (Current)
 - Legitimacy audit: 6 bug fixes, honest README rewrite, benchmarks, CI, data provenance
 - Fixed Numba multiprocessing crash, GPU stub, placeholder docstrings, import errors
 - Added benchmark scripts, dashboard screenshots, API maturity labeling

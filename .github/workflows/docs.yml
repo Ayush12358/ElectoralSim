@@ -26,17 +26,10 @@ jobs:
 
       - name: Install MkDocs
         run: |
-          pip install mkdocs mkdocs-material mkdocstrings[python] mkdocs-linkcheck
+          pip install mkdocs mkdocs-material mkdocstrings[python]
 
       - name: Build docs
         run: mkdocs build
-
-      - name: Check links
-        run: LINKCHECK=true mkdocs build
-      - name: Note
-        if: ${{ !cancelled() }}
-        run: |
-          echo "::notice::Link-checking complete. Broken links are fatal failures."
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5

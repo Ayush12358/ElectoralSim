@@ -202,6 +202,8 @@ class GovernmentSimulator:
             "stability": self.stability,
             "n_events": len(self.events),
         }
+
+
 from electoral_sim.engine._hazards import (  # noqa: E402, F401
     cox_proportional_hazard,
     hazard_rate,

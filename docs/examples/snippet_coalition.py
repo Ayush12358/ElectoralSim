@@ -3,6 +3,7 @@ Coalition & Government — verify formation, strain, and stability.
 
 Mirrors README Coalition Formation snippet.
 """
+
 import numpy as np
 from electoral_sim import (
     form_government,

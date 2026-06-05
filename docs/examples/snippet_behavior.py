@@ -3,6 +3,7 @@ Behavior Engine — verify custom behavior composition.
 
 Mirrors README Custom Behavior Engine snippet.
 """
+
 from electoral_sim import (
     ElectionModel,
     BehaviorEngine,

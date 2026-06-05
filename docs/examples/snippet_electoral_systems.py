@@ -3,6 +3,7 @@ Electoral Systems — verify seat allocation and alternative voting imports.
 
 Mirrors README Key Features / Electoral Systems table.
 """
+
 import numpy as np
 from electoral_sim import (
     allocate_seats,

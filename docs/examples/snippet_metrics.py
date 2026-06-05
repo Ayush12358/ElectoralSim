@@ -3,6 +3,7 @@ Metrics — verify electoral indices return expected types and ranges.
 
 Mirrors README Metrics section.
 """
+
 import numpy as np
 from electoral_sim import (
     gallagher_index,

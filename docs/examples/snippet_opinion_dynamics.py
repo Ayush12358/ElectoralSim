@@ -3,6 +3,7 @@ Opinion Dynamics — verify network generation, dynamics, and diagnostics.
 
 Mirrors README Opinion Dynamics snippet.
 """
+
 import numpy as np
 from electoral_sim import ElectionModel
 from electoral_sim.dynamics.opinion_dynamics import (
@@ -42,7 +43,9 @@ def test_noisy_voter():
     """noisy_voter_step updates opinions."""
     adj_list, _ = generate_network(50, topology="barabasi_albert", m=3)
     opinions = np.random.randn(50)
-    new_opinions = noisy_voter_step(opinions, adj_list, noise_rate=0.1, rng=np.random.default_rng(42))
+    new_opinions = noisy_voter_step(
+        opinions, adj_list, noise_rate=0.1, rng=np.random.default_rng(42)
+    )
     assert len(new_opinions) == 50
     assert not np.array_equal(opinions, new_opinions)
 

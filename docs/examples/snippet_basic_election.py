@@ -12,7 +12,7 @@ def test_basic_election():
     model = ElectionModel(n_voters=100_000, seed=42)
     results = model.run_election()
 
-    assert isinstance(results, dict)
+    assert hasattr(results, "__getitem__")  # dict or ElectionResult
     assert "turnout" in results
     assert "gallagher" in results
     assert "enp_votes" in results
@@ -27,7 +27,7 @@ def test_chainable_api():
         .with_threshold(0.05)
         .run_election()
     )
-    assert isinstance(results, dict)
+    assert hasattr(results, "__getitem__")  # dict or ElectionResult
     assert results.get("system") == "PR" or "seats" in results
 
 
@@ -37,7 +37,7 @@ def test_preset_loading():
         try:
             model = ElectionModel.from_preset(preset, n_voters=1000, seed=42)
             results = model.run_election()
-    assert hasattr(results, '__getitem__')  # dict or ElectionResult
+            assert hasattr(results, "__getitem__")  # dict or ElectionResult
             assert "seats" in results or "turnout" in results
         except Exception as e:
             raise AssertionError(f"Preset {preset} failed: {e}")

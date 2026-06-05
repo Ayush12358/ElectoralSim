@@ -318,7 +318,7 @@
     - `slow` appears in tests but is not registered in `pyproject.toml`.
 - [x] **P3** Add dependency freshness and upper-bound review
     - Track Mesa, Polars, Numba, NumPy, NetworkX, Streamlit, Plotly, and CuPy compatibility.
-- [ ] **P3** Add Python 3.13 CI lane if not already green
+- [x] **P3** Add Python 3.13 CI lane if not already green
     - `pyproject.toml` advertises Python 3.13 support.
 - [ ] **P3** Add CodeQL or static-analysis TODO triage to release checklist
     - Keep generated alerts tied back to actionable TODO entries.

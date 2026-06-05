@@ -310,7 +310,7 @@
     - `release.py`, `do_release.py`, `bump_version.py`, and batch files should have one documented release path.
 - [x] **P3** Move benchmark scripts under `benchmarks/` or document why some remain in `scripts/`
     - `scripts/benchmark_gpu.py` and `scripts/benchmark_scale.py` are outside the benchmark directory.
-- [ ] **P3** Add small benchmark CI smoke job
+- [x] **P3** Add small benchmark CI smoke job
     - Run tiny voter counts to verify benchmark code paths without enforcing performance thresholds.
 - [x] **P3** Add `pytest -W error` gate (done in 838336c)
     - Keep warning budget at zero.

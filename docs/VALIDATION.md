@@ -130,3 +130,46 @@ Gallagher (actual): - | Gallagher (simulated): -
 - [ ] Out-of-sample validation on at least one held-out election
 - [ ] Uncertainty quantification (confidence intervals, Monte Carlo SE) reported
 - [ ] Predictive distribution compared to actual results with proper scoring rules
+
+---
+
+## Calibration Procedure
+
+ElectoralSim provides a `grid_search_calibration` function for systematic parameter tuning.
+To calibrate a preset against real election results:
+
+```python
+from electoral_sim.analysis import grid_search_calibration
+
+params = {
+    "temperature": [0.1, 0.3, 0.5, 0.7],
+    "threshold": [0.0, 0.03, 0.05],
+}
+actual = {
+    "gallagher": 3.5,       # From real election results
+    "enp_votes": 4.5,
+    "turnout": 0.76,
+}
+weights = {"gallagher": 1.0, "enp_votes": 0.5, "turnout": 0.5}
+
+results = grid_search_calibration(
+    model_class=ElectionModel,
+    preset="germany",
+    parameter_grid=params,
+    target_metrics=actual,
+    metric_weights=weights,
+    n_runs_per_config=3,
+    n_voters=50000,
+    seed=2021,
+)
+print(f"Best params: {results[0]['params']}")
+print(f"Best loss: {results[0]['loss']:.4f}")
+```
+
+### Workflow
+1. Choose a preset and find real election reference data (vote shares, turnout, Gallagher)
+2. Define a parameter grid around plausible values (temperature, threshold, party positions)
+3. Run `grid_search_calibration` to find best-fitting parameters
+4. Update the preset's `config.py` with calibrated positions and valence
+5. Update preset provenance in `PRESET_PROVENANCE` to track calibration status
+6. Populate the validation tables above with actual vs simulated comparisons

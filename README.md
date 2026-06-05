@@ -353,7 +353,7 @@ pytest tests/test_integration.py -v
 python benchmarks/stress_test.py
 ```
 
-**Test suite:** 502 tests including:
+**Test suite:** 454 tests including:
 - **Property-based tests** (Hypothesis) — random input generation
 - **Parameterized tests** — all systems, presets, allocation methods
 - **Performance smoke tests** — 1K, 10K voters timing
@@ -393,7 +393,7 @@ python benchmarks/stress_test.py
 - **Country presets** use synthetic party positions and valence values — they are structural demos, not calibrated to real election data.
 - **Voter psychology features** (Big Five, Moral Foundations, affective polarization) are synthetically generated and not derived from survey instruments.
 - **2D ideological space** is a deliberate simplification; complex political systems (India, Brazil, EU) have dimensions (caste, region, language, religion) not captured.
-- **India simulator** currently uses a specialized high-performance path separate from the generic `ElectionModel`; improvements to the core engine do not automatically benefit India.
+- **India simulator** previously used a separate path but now shares the core BehaviorEngine (CHANGELOG v0.2.0).
 - **GPU acceleration** is experimental and limited to utility computation and MNL sampling kernels; it has not been correctness-tested against CPU outputs.
 
 ### Parallel Execution Caveat

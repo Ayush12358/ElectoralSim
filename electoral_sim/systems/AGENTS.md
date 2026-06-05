@@ -11,10 +11,10 @@ Seat allocation algorithms, mixed electoral systems, alternative voting methods,
 
 | File | Lines | Contents |
 |------|-------|----------|
-| `allocation.py` | 421 | 5 PR allocators + `allocate_seats()` dispatcher + `ALLOCATION_METHODS` registry + open/closed-list + MMP + parallel mixed |
-| `alternative.py` | 329 | Borda, Score, Approval, Condorcet, PAV, ranking generator, `_validate_rankings()` |
-| `_ranked.py` | 198 | IRV/RCV and STV (extracted from alternative.py) |
-| `primary.py` | 18 | `candidate_selection()`, `open_primary()`, `closed_primary()` |
+| `allocation.py` | 435 | 5 PR allocators + `allocate_seats()` dispatcher + `ALLOCATION_METHODS` registry + open/closed-list + MMP + parallel mixed |
+| `alternative.py` | 343 | Borda, Score, Approval, Condorcet, PAV, ranking generator, `_validate_rankings()` |
+| `_ranked.py` | 210 | IRV/RCV and STV (extracted from alternative.py) |
+| `primary.py` | 97 | `candidate_selection()`, `open_primary()`, `closed_primary()` |
 
 ## Signatures
 

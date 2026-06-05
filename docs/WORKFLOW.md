@@ -19,7 +19,7 @@ Use this lookup to find where the work lives:
 | Feature Type | Primary File(s) | Test File(s) |
 |-------------|-----------------|--------------|
 | New voting system | `systems/allocation.py` or `systems/alternative.py` | `tests/test_engine.py` |
-| New behavior model | `behavior/voter_behavior.py` | `tests/test_behavior.py` |
+| New behavior model | `behavior/_models.py` | `tests/test_behavior.py` |
 | New country preset | `presets/<country>/config.py` + `__init__.py` | `tests/test_presets.py` |
 | ElectionModel change | `core/model.py` | `tests/test_model.py` |
 | Coalition/government | `engine/coalition.py` or `engine/government.py` | `tests/test_engine.py` |
@@ -284,7 +284,7 @@ git push
 
 ## Quick Reference: Adding a New Behavior Model
 
-1. Create class in `electoral_sim/behavior/voter_behavior.py`:
+1. Create class in `electoral_sim/behavior/_models.py`:
    - Implement `compute_utility()` method
    - Follow `BehaviorModel` protocol
 

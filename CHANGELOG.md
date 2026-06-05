@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-06-05
+
+### Added
+- **13 new API documentation files**: campaign, events, primary, sensitivity, calibration, duverger, VSE, redistricting, visualization, GPU, constituency, counting, agents — 21 total API docs
+- **50+ missing function signatures** added across 7 existing API docs (election_model, electoral_systems, behavior_models, coalition, opinion_dynamics, metrics, batch_runner)
+- **ElectionResult, CandidateConfig, CalibrationStatus** fully documented in election_model.md
+
+### Changed
+- **Man page rewritten**: version 0.0.2→0.2.0, license MIT→Apache 2.0, 11→23 presets, 3→5 commands, full system list
+- **AGENTS.md files (6)**: all line count tables updated (core, engine, systems), presets table 10→23, test count 401/502→454, removed stale .coverage reference
+- **Test count synchronized**: README (502→454), tests/AGENTS.md (401→454), ITERATION.md (329→454), CHANGELOG (502→454)
+- **Preset tables updated** in docs/cli.md, docs/presets/README.md, _cli_commands.py from 11→24 presets
+- **mkdocs.yml**: fixed 6 broken snippet references (.md→.py)
+- **Party counts corrected** across docs/cli.md, docs/presets/README.md, docs/presets/countries.md to match actual config files
+- **README**: India simulator limitation rephrased to reflect BehaviorEngine refactor in v0.2.0
+
+### Fixed
+- **`engine/__init__.py`**: removed non-existent `calculate_coalition_strain` from `__all__`, imported missing `form_coalition_with_utility`
+- **`docs/VALIDATION.md`**: rewritten broken `grid_search_calibration` example (non-existent `preset` param, wrong `parameter_grid`→`param_grid`)
+- **`docs/api/election_model.md`**: corrected `electoral_system` values — IRV/STV etc. are standalone functions, not valid `ElectionModel` constructor values
+- **`docs/installation.md`**: Python version 3.11→3.12
+- **`docs/MAINTENANCE.md`**: removed Python 3.10/3.11 references from CI matrix
+- **`SECURITY.md`**: version pin 0.0.1→0.2.0, supported versions expanded
+- **`docs/WORKFLOW.md`**: behavior model path `voter_behavior.py`→`_models.py`
+- **`ruff` F541**: f-string without placeholders in examples/opinion_dynamics.py
+- **Black formatting**: 5 files reformatted (benchmark_core, app, coalition_government, presets/__init__, model)
+- **`.coverage`**: removed from git tracking
+- **`.gitignore`**: added `.mypy_cache/`
+- **`presets/__init__.py`**: removed stale PRESETS dict (4 entries vs 24 in core/config.py)
+- **`MANIFEST.in`**: removed stale exclusions for non-existent files
+
+### Removed
+- Dead `plot_uncertainty_bands()` from `visualization/specialized.py`
+- Embedded `__main__` test block (56 lines) from `core/model.py`
+- Stale `v0.2.1` draft release from GitHub
+- Stale local tag `v0.0.2`
+- Stale `metrics/indices.py` entry from TODO.md oversized modules table
+
+### Infrastructure
+- Apache 2.0 license headers added to 138 Python files
+- `Config.parties` type: `list`→`Sequence` (mypy covariance fix)
+- `batch_runner.py`: 3 implicit Optional defaults fixed
+- `pyproject.toml`: Black target-version `["py312","py313"]`→`["py312"]`
+- TODO.md: 15 new tooling/test-infra items across P3 and P5 sections
+
 ## [0.2.0] - 2026-06-05
 
 ### Added
@@ -32,7 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Module organization**: 12 modules split under 250 LOC (behavior, analysis, dynamics, systems, visualization, CLI, config, indices, voter_gen, hazards, government, redistricting)
 - **Release scripts consolidated**: single path via `do_release.py`; batch wrappers removed
 - **MANIFEST.in**: finalized sdist exclusion policy for dev directories
-- **README**: 23 countries, full feature table, 502 tests
+- **README**: 23 countries, full feature table, 454 tests
 
 ### Fixed
 - `plot_india_state_map` returning `None` (orphaned `fig.update_geos` + `return fig`)

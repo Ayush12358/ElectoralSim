@@ -71,10 +71,10 @@ nav:
     - Validation: VALIDATION.md
     - Feature Comparison: FEATURE_COMPARISON.md
     - CI Snippets:
-      - Basic Election: examples/snippet_basic_election.md
-      - Electoral Systems: examples/snippet_electoral_systems.md
-      - Behavior Engine: examples/snippet_behavior.md
-      - Coalition: examples/snippet_coalition.md
-      - Metrics: examples/snippet_metrics.md
-      - Opinion Dynamics: examples/snippet_opinion_dynamics.md
+      - Basic Election: examples/snippet_basic_election.py
+      - Electoral Systems: examples/snippet_electoral_systems.py
+      - Behavior Engine: examples/snippet_behavior.py
+      - Coalition: examples/snippet_coalition.py
+      - Metrics: examples/snippet_metrics.py
+      - Opinion Dynamics: examples/snippet_opinion_dynamics.py
   - Maintenance: MAINTENANCE.md

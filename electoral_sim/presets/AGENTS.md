@@ -7,17 +7,30 @@ Each preset defines a real-world electoral system: party names, ideological posi
 ## Directory Structure
 
 | Country | Type | Key Feature |
-|---|---|---|
+|---|---|---|---|
 | `australia/` | Config | IRV for House, STV for Senate (two configs) |
-| `brazil/` | Config | Open-list PR, 7 parties, D'Hondt |
-| `eu/` | Script | 27 member states, 720 MEPs, 7 political groups |
-| `france/` | Config | Two-round system (simulated as FPTP), 577 seats |
-| `germany/` | Config | MMP with 5% threshold, Sainte-Lague |
+| `brazil/` | Config | Open-list PR, 7 parties, D'Hondt, 513 seats |
+| `canada/` | Config | FPTP, 338 ridings, 5 parties |
+| `chile/` | Config | PR, 155 seats, 28 multi-member districts |
+| `eu/` | Script | 27 member states, 720 MEPs, 8 political groups |
+| `france/` | Config | Two-round system (simulated as FPTP with alliances), 577 seats |
+| `germany/` | Config | MMP with 5% threshold, Sainte-Lague, 598 seats |
 | `india/` | Script | 543 constituencies, 17 parties, state-wise results |
-| `japan/` | Config | Parallel system (FPTP + PR), 289 districts |
-| `south_africa/` | Config | Pure PR, single national district |
+| `ireland/` | Config | PR-STV, 39 constituencies, 6 parties |
+| `israel/` | Config | National PR, 120 seats, 1.5% threshold |
+| `japan/` | Config | Parallel system (FPTP + PR), 289 districts, 465 total |
+| `mexico/` | Config | FPTP, 300 districts, 6 parties |
+| `netherlands/` | Config | National PR, 150 seats, 0.67% threshold |
+| `norway/` | Config | PR, 169 seats, 19 multi-member districts |
+| `nz/` | Config | MMP, 120 seats (72 electorates + 48 list) |
+| `scotland/` | Config | AMS, 129 seats (73 FPTP + 56 list) |
+| `south_africa/` | Config | Pure PR, single national district, 400 seats |
+| `spain/` | Config | PR, 350 seats, 52 multi-member districts |
+| `sweden/` | Config | PR, 349 seats, 29 multi-member districts |
+| `switzerland/` | Config | PR, 200 seats, 26 multi-member districts |
 | `uk/` | Config | Multi-party FPTP, 650 Commons seats |
 | `usa/` | Config | Two-party FPTP, 435 House districts |
+| `wales/` | Config | AMS, 60 seats (40 FPTP + 20 list) |
 
 **Simple** (Config): config.py + `__init__.py` that re-exports the config function.
 **Complex** (Script): election.py with dedicated simulation logic, custom result types.

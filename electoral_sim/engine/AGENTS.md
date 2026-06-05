@@ -10,12 +10,12 @@ Two distinct responsibilities live here: (1) accelerated backend functions (Numb
 
 | File | Lines | Purpose |
 |------|-------|---------|
-| `numba_accel.py` | 363 | JIT-compiled `dhondt_numba()`, `sainte_lague_numba()`, `fptp_count_numba()` (parallel), `mnl_sample_numba()`, `compute_utilities_numba()`. Wrapper functions (`fptp_count_fast`, `vote_mnl_fast`, `dhondt_fast`) decide at runtime whether to call JIT or fallback. Includes `benchmark_numba()`. |
-| `gpu_accel.py` | 136 | CuPy-based GPU kernels for utility matrix and MNL sampling. `is_gpu_available()` gates usage. |
-| `coalition.py` | 544 | `minimum_winning_coalitions()`, `minimum_connected_winning()`, `predict_coalition_stability()`, `form_government()`, `allocate_portfolios_laver_shepsle()`, `junior_partner_penalty()`, `form_coalition_with_utility()`. |
-| `strain.py` | 49 | `coalition_strain()` weighted pairwise policy-distance strain calculation. |
-| `government.py` | 208 | `GovernmentSimulator` class with `step()`/`simulate()` lifecycle, `collapse_probability()` (sigmoid/linear/exponential models). |
-| `_hazards.py` | 91 | `hazard_rate()` (bathtub curve + event weights) and `cox_proportional_hazard()` (Warwick 1994 defaults). Extracted from government.py. |
+| `numba_accel.py` | 377 | JIT-compiled `dhondt_numba()`, `sainte_lague_numba()`, `fptp_count_numba()` (parallel), `mnl_sample_numba()`, `compute_utilities_numba()`. Wrapper functions (`fptp_count_fast`, `vote_mnl_fast`, `dhondt_fast`) decide at runtime whether to call JIT or fallback. Includes `benchmark_numba()`. |
+| `gpu_accel.py` | 150 | CuPy-based GPU kernels for utility matrix and MNL sampling. `is_gpu_available()` gates usage. |
+| `coalition.py` | 558 | `minimum_winning_coalitions()`, `minimum_connected_winning()`, `predict_coalition_stability()`, `form_government()`, `allocate_portfolios_laver_shepsle()`, `junior_partner_penalty()`, `form_coalition_with_utility()`. |
+| `strain.py` | 66 | `coalition_strain()` weighted pairwise policy-distance strain calculation. |
+| `government.py` | 224 | `GovernmentSimulator` class with `step()`/`simulate()` lifecycle, `collapse_probability()` (sigmoid/linear/exponential models). |
+| `_hazards.py` | 105 | `hazard_rate()` (bathtub curve + event weights) and `cox_proportional_hazard()` (Warwick 1994 defaults). Extracted from government.py. |
 
 ## Key Patterns
 

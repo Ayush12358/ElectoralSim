@@ -8,14 +8,14 @@ ElectoralSim includes pre-configured setups for 23 countries plus the EU Parliam
 |--------|---------|--------|-------|---------|
 | `india` | India | FPTP | 543 | 17 |
 | `usa` | USA | FPTP | 435 | 2 |
-| `uk` | UK | FPTP | 650 | 6 |
+| `uk` | UK | FPTP | 650 | 5 |
 | `germany` | Germany | MMP (PR) | 598 | 6 |
-| `brazil` | Brazil | PR | 513 | 8 |
-| `france` | France | Two-Round | 577 | 7 |
-| `japan` | Japan | Mixed | 465 | 6 |
+| `brazil` | Brazil | PR | 513 | 7 |
+| `france` | France | Two-Round | 577 | 4 |
+| `japan` | Japan | Mixed | 465 | 5 |
 | `australia_house` | Australia | IRV | 151 | 5 |
-| `australia_senate` | Australia | STV | 76 | 5 |
-| `south_africa` | South Africa | PR | 400 | 6 |
+| `australia_senate` | Australia | STV | 76 | 4 |
+| `south_africa` | South Africa | PR | 400 | 5 |
 | `canada` | Canada | FPTP | 338 | 5 |
 | `chile` | Chile | PR | 155 | 6 |
 | `ireland` | Ireland | PR-STV | 39 | 6 |

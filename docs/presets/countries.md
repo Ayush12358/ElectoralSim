@@ -31,7 +31,6 @@ model = ElectionModel.from_preset("uk", n_voters=100_000)
 | Labour | Left |
 | Liberal Democrats | Center |
 | SNP | Center-Left (Scotland) |
-| Plaid Cymru | Left (Wales) |
 | Green | Left |
 
 ---
@@ -53,7 +52,7 @@ model = ElectionModel.from_preset("germany", n_voters=100_000)
 | AfD | Right |
 | Linke | Left |
 
-**System:** PR with Sainte-Laguë allocation and 5% threshold
+**System:** MMP (Mixed-Member Proportional)
 
 ---
 
@@ -69,13 +68,10 @@ config = france_config(n_voters=100_000)
 
 | Party | Position |
 |-------|----------|
-| Renaissance | Center |
-| RN | Right |
-| LFI | Left |
-| LR | Center-Right |
-| PS | Center-Left |
-| EELV | Left-Green |
-| PCF | Left |
+| NFP | Left Alliance |
+| Ensemble | Center |
+| RN | Far-Right |
+| LR | Traditional Right |
 
 ---
 
@@ -106,7 +102,6 @@ from electoral_sim import japan_config
 | Komeito | Center |
 | JCP | Left |
 | Ishin | Right |
-| DPP | Center |
 
 **System:** FPTP (289 seats) + PR (176 seats)
 
@@ -154,7 +149,6 @@ from electoral_sim import south_africa_config
 | DA | Center-Right |
 | EFF | Left |
 | IFP | Center |
-| FF+ | Right |
 | MK | Left |
 
 **System:** PR with D'Hondt (400 National Assembly seats)

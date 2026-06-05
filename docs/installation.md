@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.11 or higher
+- Python 3.12 or higher
 - pip (Python package manager)
 
 ## Basic Installation
@@ -39,7 +39,7 @@ For running tests and contributing:
 ```bash
 pip install -e ".[dev]"
 ```
-This installs: `pytest`, `pytest-cov`
+This installs: `pytest`, `pytest-cov`, `hypothesis`, `black`, `ruff`, `pre-commit`, and other development tools
 
 ### All Dependencies
 ```bash

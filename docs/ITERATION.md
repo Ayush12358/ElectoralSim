@@ -235,7 +235,7 @@ Agent: Starting iteration cycle. 12 items remain in TODO.md.
        
        [Follows WORKFLOW.md: reads batch_runner.py, plans fix,
         uses multiprocessing.get_context("spawn"), adds OMP_NUM_THREADS=1,
-        removes xfail, runs tests: 329 passed, commits]
+        removes xfail, runs tests: 454 passed, commits]
 
 Agent: Task complete. 11 items remain.
        Next task: P1 Add benchmark scripts (line 45)

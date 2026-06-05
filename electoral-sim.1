@@ -1,4 +1,4 @@
-.TH ELECTORAL-SIM 1 "December 2024" "electoral-sim 0.0.2" "User Commands"
+.TH ELECTORAL-SIM 1 "June 2026" "electoral-sim 0.2.0" "User Commands"
 .SH NAME
 electoral-sim \- High-performance agent-based electoral simulation toolkit
 .SH SYNOPSIS
@@ -10,30 +10,40 @@ is a modular agent-based modeling toolkit for simulating electoral systems, vote
 
 The toolkit provides:
 .IP \(bu 2
-Multiple electoral systems (FPTP, PR, IRV, STV)
+Multiple electoral systems (FPTP, PR, MMP, Parallel Mixed, IRV, STV, Borda, Score, Approval, Condorcet, PAV)
 .IP \(bu 2
-11 country presets + EU Parliament
+23 country presets + EU Parliament
 .IP \(bu 2
-Advanced voter behavior models (proximity, valence, strategic voting)
+Advanced voter behavior models (proximity, valence, retrospective, strategic, sociotropic)
 .IP \(bu 2
-Opinion dynamics on social networks
+Campaign models (finance, media, targeting, mobilization)
+.IP \(bu 2
+Opinion dynamics on social networks (BA, WS, ER, Random Regular)
 .IP \(bu 2
 Coalition and government stability simulation
 .IP \(bu 2
-Comprehensive metrics (Gallagher Index, ENP, VSE, etc.)
+Comprehensive metrics (Gallagher, ENP, VSE, Efficiency Gap, gerrymandering)
 .IP \(bu 2
 Batch parameter sweeping for sensitivity analysis
+.IP \(bu 2
+454 tests, ~85% coverage
 
 .SH COMMANDS
 .TP
 .B run
 Run a single election simulation with custom or preset parameters
 .TP
-.B batch  
+.B batch
 Execute multiple simulations with parameter sweeps for sensitivity analysis
 .TP
 .B list-presets
 List all available country and region electoral system presets
+.TP
+.B preset-info \fIPRESET\fR
+Show detailed information about a specific preset
+.TP
+.B validate
+Validate configuration and preset data
 
 .SH OPTIONS
 .SS General Options
@@ -53,7 +63,7 @@ Number of voters (default: 100,000)
 Number of constituencies (default: 10)
 .TP
 .BR \-s ", " \-\-system " \fISYSTEM\fR"
-Electoral system: FPTP, PR, IRV, or STV (default: FPTP)
+Electoral system: FPTP or PR (default: FPTP)
 .TP
 .BR \-a ", " \-\-allocation " \fIMETHOD\fR"
 PR allocation method: dhondt, sainte_lague, hare, or droop (default: dhondt)
@@ -62,7 +72,7 @@ PR allocation method: dhondt, sainte_lague, hare, or droop (default: dhondt)
 Electoral threshold 0-1, e.g., 0.05 for 5% (default: 0)
 .TP
 .BR \-p ", " \-\-preset " \fICOUNTRY\fR"
-Use country preset (overrides other parameters). Available: india, usa, uk, germany, france, japan, brazil, australia_house, australia_senate, south_africa, eu
+Use country preset (overrides other parameters). Available: india, usa, uk, germany, france, japan, brazil, australia_house, australia_senate, south_africa, canada, chile, eu, ireland, israel, mexico, netherlands, norway, nz, scotland, spain, sweden, switzerland, wales
 .TP
 .B \-\-seed \fINUMBER\fR
 Random seed for reproducibility
@@ -131,6 +141,14 @@ electoral-sim list-presets
 .RE
 .fi
 
+.SS Preset Information
+.PP
+.nf
+.RS
+electoral-sim preset-info germany
+.RE
+.fi
+
 .SS Batch Simulation with Parameter Sweep
 .PP
 Create a batch configuration file \fBbatch_config.json\fR:
@@ -163,38 +181,77 @@ electoral-sim batch --config batch_config.json --output results.csv
 
 .SH COUNTRY PRESETS
 .TP
-.B india
-543 constituencies, FPTP, 17 parties (Lok Sabha)
-.TP
-.B usa
-435 districts, FPTP, 2 parties (House of Representatives)
-.TP
-.B uk
-650 constituencies, FPTP, 5+ parties (House of Commons)
-.TP
-.B germany
-299 districts, MMP (PR), 5% threshold, 6 parties (Bundestag)
-.TP
-.B france
-577 constituencies, Two-round system, 5 parties
-.TP
-.B japan
-289 constituencies, Mixed system, 2% threshold
-.TP
-.B brazil
-513 seats, Open-list PR, 8 parties
-.TP
 .B australia_house
 151 electorates, IRV, 5 parties
 .TP
 .B australia_senate
-76 seats, STV, 5 parties
+76 seats, STV, 4 parties
 .TP
-.B south_africa
-400 seats, Closed-list PR, 1.5% threshold, 8 parties
+.B brazil
+513 seats, Open-list PR, 7 parties (Chamber of Deputies)
+.TP
+.B canada
+338 ridings, FPTP, 5 parties (House of Commons)
+.TP
+.B chile
+155 seats, 28 multi-member districts, PR, 6 parties
 .TP
 .B eu
 720 MEPs, 27 member states, D'Hondt allocation (EU Parliament)
+.TP
+.B france
+577 constituencies, Two-round system, 4 parties (National Assembly)
+.TP
+.B germany
+299 districts, MMP, 5% threshold, 6 parties (Bundestag)
+.TP
+.B india
+543 constituencies, FPTP, 17 parties (Lok Sabha)
+.TP
+.B ireland
+39 constituencies, PR-STV, 6 parties (Dail)
+.TP
+.B israel
+120 seats, National PR, 1.5% threshold, 6 parties (Knesset)
+.TP
+.B japan
+289 constituencies, Mixed system, 2% threshold, 5 parties
+.TP
+.B mexico
+300 districts, FPTP, 6 parties (Chamber of Deputies)
+.TP
+.B netherlands
+150 seats, National PR, 0.67% threshold, 8 parties (Tweede Kamer)
+.TP
+.B norway
+169 seats, 19 districts, PR, 7 parties (Storting)
+.TP
+.B nz
+120 seats, MMP, 6 parties
+.TP
+.B scotland
+129 seats, AMS, 5 parties
+.TP
+.B south_africa
+400 seats, Closed-list PR, 1.5% threshold, 5 parties
+.TP
+.B spain
+350 seats, 52 districts, PR, 6 parties (Congress)
+.TP
+.B sweden
+349 seats, 29 districts, PR, 7 parties (Riksdag)
+.TP
+.B switzerland
+200 seats, 26 districts, PR, 5 parties (National Council)
+.TP
+.B uk
+650 constituencies, FPTP, 5 parties (House of Commons)
+.TP
+.B usa
+435 districts, FPTP, 2 parties (House of Representatives)
+.TP
+.B wales
+60 seats, AMS, 4 parties (Senedd)
 
 .SH FILES
 .TP
@@ -219,7 +276,7 @@ Written by Ayush Maurya <ayush12358@users.noreply.github.com>
 Report bugs at: https://github.com/Ayush12358/ElectoralSim/issues
 
 .SH COPYRIGHT
-Copyright \(co 2024 Ayush Maurya. License MIT.
+Copyright \(co 2025-2026 Ayush Maurya. License Apache 2.0.
 
 .SH SEE ALSO
 Full documentation: https://ayush12358.github.io/ElectoralSim/

@@ -20,7 +20,7 @@ A modular agent-based modeling toolkit for electoral systems,
 voter behavior, and political dynamics using Mesa + Polars.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 # =============================================================================
 # FACADE API (Backward Compatibility)

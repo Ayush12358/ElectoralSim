@@ -8,16 +8,16 @@ Central module: model creation, configuration, vote counting, CLI, and voter gen
 
 | File | Lines | Purpose |
 |------|-------|---------|
-| `model.py` | 1000 | `ElectionModel(Model)` — chainable entry point; `ElectionResult` dataclass |
-| `config.py` | 233 | `Config` / `PartyConfig` dataclasses, `PRESETS` registry, `CalibrationStatus` enum |
-| `cli.py` | 247 | `main()` — run, batch, list-presets subcommands; handlers in `_cli_commands.py` |
-| `voter_generation.py` | 77 | `generate_party_frame()`; voter generation in `_voter_gen.py` (232 lines) |
-| `_provenance.py` | 142 | `PRESET_PROVENANCE` dict — calibration status, source metadata per preset |
-| `_cli_commands.py` | 233 | `run_simulation()`, `run_batch()`, `list_presets()`, `preset_info()`, `validate_preset()` |
-| `_voter_gen.py` | 232 | `generate_voter_frame()` — demographics, ideology, Big Five, Moral Foundations |
-| `counting.py` | 78 | `count_fptp()`, `count_pr()` — delegates to Numba |
-| `constituency.py` | 63 | `ConstituencyMetadata`, `ConstituencyManager` |
-| `__init__.py` | 17 | Re-exports public API (facade pattern) |
+| `model.py` | 953 | `ElectionModel(Model)` — chainable entry point; `ElectionResult` dataclass |
+| `config.py` | 247 | `Config` / `PartyConfig` dataclasses, `PRESETS` registry, `CalibrationStatus` enum |
+| `cli.py` | 251 | `main()` — run, batch, list-presets subcommands; handlers in `_cli_commands.py` |
+| `voter_generation.py` | 93 | `generate_party_frame()`; voter generation in `_voter_gen.py` (245 lines) |
+| `_provenance.py` | 156 | `PRESET_PROVENANCE` dict — calibration status, source metadata per preset |
+| `_cli_commands.py` | 267 | `run_simulation()`, `run_batch()`, `list_presets()`, `preset_info()`, `validate_preset()` |
+| `_voter_gen.py` | 245 | `generate_voter_frame()` — demographics, ideology, Big Five, Moral Foundations |
+| `counting.py` | 92 | `count_fptp()`, `count_pr()` — delegates to Numba |
+| `constituency.py` | 139 | `ConstituencyMetadata`, `ConstituencyManager` |
+| `__init__.py` | 31 | Re-exports public API (facade pattern) |
 
 ## KEY ARCHITECTURE
 

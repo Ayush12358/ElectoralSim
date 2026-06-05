@@ -140,30 +140,33 @@ To calibrate a preset against real election results:
 
 ```python
 from electoral_sim.analysis import grid_search_calibration
+from electoral_sim import ElectionModel
 
-params = {
-    "temperature": [0.1, 0.3, 0.5, 0.7],
-    "threshold": [0.0, 0.03, 0.05],
-}
-actual = {
-    "gallagher": 3.5,       # From real election results
-    "enp_votes": 4.5,
-    "turnout": 0.76,
-}
-weights = {"gallagher": 1.0, "enp_votes": 0.5, "turnout": 0.5}
-
+# grid_search_calibration passes param_grid dict keys as **kwargs to model_class()
+# so parameters like n_voters and temperature go inside param_grid
 results = grid_search_calibration(
     model_class=ElectionModel,
-    preset="germany",
-    parameter_grid=params,
-    target_metrics=actual,
-    metric_weights=weights,
-    n_runs_per_config=3,
-    n_voters=50000,
+    param_grid={
+        "n_voters": [50000],
+        "temperature": [0.1, 0.3, 0.5, 0.7],
+        "threshold": [0.0, 0.03, 0.05],
+    },
+    targets={
+        "gallagher": 3.5,       # From real election results
+        "enp_votes": 4.5,
+        "turnout": 0.76,
+    },
+    metric_weights={"gallagher": 1.0, "enp_votes": 0.5, "turnout": 0.5},
+    n_runs=3,
     seed=2021,
 )
 print(f"Best params: {results[0]['params']}")
 print(f"Best loss: {results[0]['loss']:.4f}")
+
+# Note: grid_search_calibration does not use from_preset().
+# For preset-based calibration, create the config manually:
+# config = ElectionModel.from_preset("germany").config
+# Then pass config fields through param_grid.
 ```
 
 ### Workflow

@@ -20,6 +20,9 @@ pip install -e ".[dev,viz]"
 
 # Run tests
 pytest tests/ -v
+
+# Install pre-commit hooks
+pre-commit install
 ```
 
 ### Code Style
@@ -28,7 +31,7 @@ We use the following tools to maintain code quality:
 
 - **Black** for code formatting
 - **Ruff** for linting
-- **MyPy** for type checking
+- **MyPy** for type checking (planned, not yet enforced - 114 errors in 29 files)
 
 ```bash
 # Format code
@@ -37,7 +40,7 @@ black electoral_sim/
 # Lint
 ruff check electoral_sim/
 
-# Type check
+# Type check (optional, planned for future enforcement)
 mypy electoral_sim/
 ```
 

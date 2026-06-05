@@ -54,7 +54,7 @@ electoral-sim run --preset eu
 |--------|-------|-------------|---------|
 | `--voters` | `-n` | Number of voters | 100,000 |
 | `--constituencies` | `-c` | Number of constituencies | 10 |
-| `--system` | `-s` | Electoral system (FPTP, PR, IRV, STV) | FPTP |
+| `--system` | `-s` | Electoral system (FPTP, PR, IRV, STV, Approval, Condorcet, Borda, Score, PAV) | FPTP |
 | `--allocation` | `-a` | PR method (dhondt, sainte_lague, hare, droop) | dhondt |
 | `--threshold` | `-t` | Electoral threshold (0-1) | 0.0 |
 | `--preset` | `-p` | Country preset | None |
@@ -139,12 +139,12 @@ electoral-sim list-presets
 | `usa` | 435 districts, FPTP, 2 parties (House) |
 | `uk` | 650 constituencies, FPTP, 5+ parties (Commons) |
 | `germany` | 299 districts, MMP (PR), 5% threshold (Bundestag) |
-| `france` | 577 constituencies, Two-round, 5 parties |
-| `japan` | 289 constituencies, Mixed, 2% threshold |
-| `brazil` | 513 seats, Open-list PR, 8 parties |
+| `france` | 577 constituencies, Two-round, 4 parties |
+| `japan` | 289 constituencies, Mixed, 2% threshold, 5 parties |
+| `brazil` | 513 seats, Open-list PR, 7 parties |
 | `australia_house` | 151 electorates, IRV, 5 parties |
-| `australia_senate` | 76 seats, STV, 5 parties |
-| `south_africa` | 400 seats, Closed-list PR, 8 parties |
+| `australia_senate` | 76 seats, STV, 4 parties |
+| `south_africa` | 400 seats, Closed-list PR, 5 parties |
 | `canada` | 338 ridings, FPTP, 5 parties |
 | `chile` | 155 seats, 28 districts, PR, 6 parties |
 | `ireland` | 39 constituencies, PR-STV, 6 parties |

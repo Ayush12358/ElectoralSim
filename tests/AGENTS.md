@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-11 test files, 401 tests, ~80% coverage. pytest with `-v --tb=short`, Hypothesis property-based testing, numpy array comparisons. Warnings: `DeprecationWarning`, `FutureWarning`, `NumbaDeprecationWarning` silenced. Warnings-as-errors gate via pyproject.toml `filterwarnings = ["error"]`.
+11 test files, 454 tests, ~85% coverage. pytest with `-v --tb=short`, Hypothesis property-based testing, numpy array comparisons. Warnings: `DeprecationWarning`, `FutureWarning`, `NumbaDeprecationWarning` silenced. Warnings-as-errors gate via pyproject.toml `filterwarnings = ["error"]`.
 
 ## FILES
 
@@ -34,7 +34,7 @@ Standalone performance scripts in `benchmarks/`:
 ## RUNNING
 
 ```bash
-pytest tests/ -v              # All tests (401)
+pytest tests/ -v              # All tests (454)
 pytest tests/test_unit.py -v  # Single file
 pytest tests/ --cov           # With coverage
 python benchmarks/stress_test.py   # Stress/benchmark (standalone)
@@ -50,4 +50,4 @@ python benchmarks/stress_test.py   # Stress/benchmark (standalone)
 
 ## COVERAGE
 
-~80% across 401 tests. Covers all electoral systems, 11+ presets, coalition logic, opinion dynamics, and acceleration paths. Source measurement in `electoral_sim/`; `tests/` excluded from coverage.
+~85% across 454 tests. Covers all electoral systems, 23+ presets, coalition logic, opinion dynamics, and acceleration paths. Source measurement in `electoral_sim/`; `tests/` excluded from coverage.

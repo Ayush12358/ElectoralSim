@@ -10,7 +10,6 @@ Guide to maximizing ElectoralSim performance for large-scale simulations.
 | 100K voters | 109ms | 35ms | 15 MB |
 | 500K voters | 608ms | 176ms | 95 MB |
 | 1M voters | 1.2s | 316ms | 148 MB |
-| 2M voters | 2.4s | 672ms | 181 MB |
 
 **Batch processing:** ~200ms/election at 500K voters (~5 elections/sec)
 

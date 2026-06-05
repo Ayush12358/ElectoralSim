@@ -38,7 +38,7 @@ A pluggable system for combining multiple voter utility models (proximity, valen
 Social network-based opinion evolution using models like Bounded Confidence and Noisy Voter.
 
 ### Country Presets
-Pre-configured setups for 23 countries including India, USA, UK, Germany, and the EU Parliament.
+Pre-configured setups for 23 countries plus the EU Parliament, including India, USA, UK, and Germany.
 
 ---
 

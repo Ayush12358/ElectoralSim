@@ -9,6 +9,8 @@ ElectionModel(
     n_voters: int = 100_000,
     n_constituencies: int = 10,
     parties: list[dict] | None = None,
+    voter_frame: pl.DataFrame | None = None,
+    party_frame: pl.DataFrame | None = None,
     electoral_system: str = "FPTP",
     allocation_method: str = "dhondt",
     threshold: float = 0.0,
@@ -25,6 +27,7 @@ ElectionModel(
     indifference_threshold: float = 0.3,
     event_probs: dict[str, float] | None = None,
     use_adaptive_strategy: bool = False,
+    constituency_manager: ConstituencyManager | None = None,
     use_gpu: bool = False,
 )
 ```
@@ -36,8 +39,8 @@ ElectionModel(
 | `n_voters` | int | 100,000 | Total number of voter agents |
 | `n_constituencies` | int | 10 | Number of electoral districts |
 | `parties` | list[dict] | None | Party configurations (auto-generated if None) |
-| `electoral_system` | str | "FPTP" | "FPTP" or "PR" |
-| `allocation_method` | str | "dhondt" | For PR: "dhondt", "sainte_lague", "hare", "droop" |
+| `electoral_system` | str | "FPTP" | "FPTP" or "PR". Other systems (IRV, STV, Borda, Score, Approval, Condorcet, PAV) are available as standalone functions in `electoral_sim.systems` — see [Electoral Systems](electoral_systems.md) |
+| `allocation_method` | str | "dhondt" | For PR: "dhondt", "sainte_lague", "hare", "droop", "mmp" |
 | `threshold` | float | 0.0 | Electoral threshold (0-1) |
 | `temperature` | float | 0.5 | MNL temperature (lower = more deterministic) |
 | `seed` | int | None | Random seed for reproducibility |
@@ -49,6 +52,11 @@ ElectionModel(
 | `national_mood` | float | 0.0 | Wave election modifier (+ pro-incumbent, - anti-incumbent) |
 | `alienation_threshold` | float | -2.0 | Abstain if max utility below this |
 | `indifference_threshold` | float | 0.3 | Abstain if utility range below this |
+| `voter_frame` | pl.DataFrame | None | Pre-built voter DataFrame (bypasses auto-generation) |
+| `party_frame` | pl.DataFrame | None | Pre-built party DataFrame (bypasses auto-generation) |
+| `constituency_manager` | ConstituencyManager | None | Real-data constituency manager for geographic integration |
+| `event_probs` | dict[str, float] | None | Event probabilities: `{"scandal": 0.01, "shock": 0.005}` |
+| `use_adaptive_strategy` | bool | False | Enable party adaptive strategy (median voter chasing) |
 | `use_gpu` | bool | False | Use CuPy GPU acceleration |
 
 ---
@@ -88,7 +96,7 @@ Create model from a country preset.
 def from_preset(cls, preset: str, **kwargs) -> ElectionModel
 ```
 
-**Available presets:** `"india"`, `"usa"`, `"uk"`, `"germany"`, `"brazil"`, `"france"`, `"japan"`, `"australia_house"`, `"australia_senate"`, `"south_africa"`
+**Available presets:** 24 presets: `india`, `usa`, `uk`, `germany`, `australia_house`, `australia_senate`, `south_africa`, `spain`, `sweden`, `brazil`, `canada`, `chile`, `eu`, `france`, `ireland`, `israel`, `japan`, `mexico`, `netherlands`, `norway`, `nz`, `scotland`, `switzerland`, `wales`. See [Country Presets](../presets/README.md) for details.
 
 **Example:**
 ```python
@@ -104,7 +112,7 @@ model = ElectionModel.from_preset("germany", n_voters=50_000)
 ```python
 def with_system(self, system: str) -> ElectionModel
 ```
-Set electoral system ("FPTP" or "PR").
+Set electoral system ("FPTP", "PR", "IRV", "STV", "Approval", "Condorcet", "Borda", "Score", or "PAV").
 
 ### with_allocation
 
@@ -147,10 +155,10 @@ results = (
 Run a single election simulation.
 
 ```python
-def run_election(self, **kwargs) -> dict
+def run_election(self, **kwargs) -> ElectionResult
 ```
 
-**Returns:** Dictionary with:
+**Returns:** `ElectionResult` (dict-compatible) with:
 | Key | Type | Description |
 |-----|------|-------------|
 | `seats` | np.ndarray | Seats won by each party |
@@ -201,6 +209,29 @@ Run one simulation step (for opinion dynamics).
 def step(self) -> None
 ```
 
+### run
+
+Run multi-step simulation with periodic elections.
+
+```python
+def run(self, n_steps: int = 100, election_interval: int = 10) -> None
+```
+
+**Parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `n_steps` | int | 100 | Total simulation steps |
+| `election_interval` | int | 10 | Steps between elections |
+
+**Example:**
+```python
+model = ElectionModel(n_voters=10_000, opinion_dynamics=od)
+model.run(n_steps=200, election_interval=20)
+# Elections held at steps 20, 40, 60, ..., 200
+results = model.get_results()
+```
+
 ---
 
 ## Accessing Agent Data
@@ -244,7 +275,7 @@ class Config:
     n_voters: int = 100_000
     n_constituencies: int = 10
     parties: list[PartyConfig | dict] = field(default_factory=list)
-    electoral_system: Literal["FPTP", "PR"] = "FPTP"
+    electoral_system: str = "FPTP"
     allocation_method: Literal["dhondt", "sainte_lague", "hare", "droop"] = "dhondt"
     threshold: float = 0.0
     temperature: float = 0.5
@@ -263,4 +294,74 @@ class PartyConfig:
     position_y: float = 0.0
     valence: float = 50.0
     incumbent: bool = False
+```
+
+---
+
+## ElectionResult
+
+Typed election result container with dictionary backward-compatibility.
+Supports both attribute access (`result.turnout`) and dict access (`result['turnout']`).
+
+```python
+@dataclass
+class ElectionResult:
+    system: str = "FPTP"
+    seats: np.ndarray         # Seats won per party
+    vote_counts: np.ndarray   # Votes received per party
+    vote_shares: np.ndarray | None = None
+    seat_shares: np.ndarray | None = None
+    turnout: float = 0.0
+    gallagher: float = 0.0
+    enp_votes: float = 1.0
+    enp_seats: float = 1.0
+    vse: float | None = None
+    n_constituencies: int = 0
+    metadata: dict[str, Any]       # Optional metadata from run
+    warnings: list[str]            # Non-fatal warnings collected during run
+    party_names: list[str]         # Names of parties in order
+```
+
+### Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `to_dict()` | dict | Full dict conversion for serialization |
+| `__getitem__(key)` | Any | Dict-style access (e.g. `result['turnout']`) |
+| `get(key, default)` | Any | Dict-style `.get()` with default |
+| `keys()` | dict_keys | Dict-style `.keys()` for `dict()` compatibility |
+| `__contains__(key)` | bool | Dict-style `'key' in result` test |
+
+---
+
+## CandidateConfig
+
+Candidate-level configuration for candidate-centric modeling.
+
+```python
+@dataclass
+class CandidateConfig:
+    name: str
+    party: str
+    constituency: int | None = None    # District ID, or None for party-list
+    position_x: float = 0.0            # Candidate-specific economic position
+    position_y: float = 0.0            # Candidate-specific social position
+    valence: float = 50.0              # Individual non-policy appeal
+    incumbent: bool = False
+```
+
+Candidate valence overrides party default if higher, enabling realistic primary → general election handoff.
+
+---
+
+## CalibrationStatus
+
+Enum describing the calibration level of each country preset.
+
+```python
+class CalibrationStatus(str, Enum):
+    STRUCTURAL_DEMO = "structural_demo"           # Synthetic positions only
+    PARTIALLY_CALIBRATED = "partially_calibrated" # Some data-driven parameters
+    HISTORICALLY_CALIBRATED = "historically_calibrated" # Matched to election data
+    VALIDATION_ONLY = "validation_only"           # Preset kept for validation
 ```

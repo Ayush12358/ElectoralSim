@@ -42,7 +42,7 @@ Go to Settings > General:
 Go to Settings > Branches > Add rule for `master`:
 - Require pull request reviews before merging
 - Require status checks to pass before merging
-  - Select: `test (3.10)`, `test (3.11)`, `test (3.12)`, `lint`
+  - Select: `test (3.12)`, `lint`
 - Require branches to be up to date before merging
 - Optionally require signed commits
 - Apply rules to administrators
@@ -73,7 +73,7 @@ Go to Settings > Environments:
 
 | Workflow | File | Trigger | Purpose |
 |----------|------|---------|---------|
-| Tests | `tests.yml` | Push, PR | Run pytest on Python 3.10, 3.11, 3.12 |
+| Tests | `tests.yml` | Push, PR | Run pytest on Python 3.12 |
 | Lint | `lint.yml` | Push, PR | Check code style with Black and Ruff |
 | Docs | `docs.yml` | Push to docs/, manual | Build and deploy MkDocs to GitHub Pages |
 | Publish | `publish.yml` | Release published | Upload to PyPI via trusted publishing |
@@ -169,7 +169,7 @@ pytest tests/ --cov=electoral_sim --cov-report=html
 
 ### CI Testing Matrix
 Tests run on:
-- Python 3.10, 3.11, 3.12
+- Python 3.12
 - Ubuntu (Linux)
 - Dependencies installed from pyproject.toml
 

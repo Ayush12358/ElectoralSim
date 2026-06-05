@@ -42,7 +42,7 @@ sweep = ParameterSweep(
 - `n_samples` (int): Number of random samples (for sweep_type='random')
 
 **Methods**:
-- `generate_configs()` → `list[dict]`: Generate all parameter configurations
+- `generate_configs()` → `list[dict]`: Generate all parameter configurations as a list of dictionaries, each containing one complete set of keyword arguments for `ElectionModel.__init__`
 - `__len__()` → `int`: Number of configurations
 
 ---
@@ -105,9 +105,14 @@ summary = runner.get_summary_stats()
 
 **Summary Columns**:
 - `config_idx`: Configuration index
-- Parameter columns
+- Parameter columns (e.g., `n_voters`, `temperature`)
 - `*_mean`: Mean of each metric
 - `*_std`: Standard deviation of each metric
+- `*_q25`: 25th percentile of each metric
+- `*_q75`: 75th percentile of each metric
+- `*_mcse`: Monte Carlo Standard Error (std / sqrt(n))
+- `*_ci_lower`: 95% confidence interval lower bound (mean - 1.96 × MCSE)
+- `*_ci_upper`: 95% confidence interval upper bound (mean + 1.96 × MCSE)
 - `n_runs`: Number of runs per config
 
 ---
@@ -125,6 +130,21 @@ runner.export_results('results.json')
 - `filepath` (str): Output file path
 - `format` (str): `'csv'`, `'parquet'`, `'json'`, or `'auto'` (infer from extension)
 
+**Reproducibility Manifest:** Exporting results also writes a `<filepath>.manifest.json` file containing:
+
+| Field | Description |
+|-------|-------------|
+| `version` | electoral-sim package version |
+| `git_commit` | Git commit hash at time of run |
+| `python` | Python version |
+| `platform` | OS/platform string |
+| `dependencies` | mesa, polars, numpy, numba, networkx versions |
+| `seed_hierarchy` | Base seed and n_runs_per_config |
+| `config_hash` | SHA-256 of parameter sweep config (12 char) |
+| `n_configs` | Number of configurations |
+| `n_jobs` | Number of parallel workers |
+| `model_class` | Model class name |
+
 ---
 
 #### `export_summary(filepath, format='auto')`
@@ -132,7 +152,13 @@ Export summary statistics to file.
 
 ```python
 runner.export_summary('summary.csv')
+runner.export_summary('summary.parquet')
+runner.export_summary('summary.json')
 ```
+
+**Parameters**:
+- `filepath` (str): Output file path
+- `format` (str): `'csv'`, `'parquet'`, `'json'`, or `'auto'` (infer from extension)
 
 ---
 

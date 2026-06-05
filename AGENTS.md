@@ -2,11 +2,11 @@
 
 **Updated:** 2026-06-05
 **Version:** v0.2.0
-**Branch:** auto
+**Branch:** master
 
 ## Overview
 
-Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV, Borda, Score, PAV, MMP), opinion dynamics, coalition formation, and government stability across 23 country presets + EU Parliament. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration. 502 tests, ~85% coverage.
+Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV, Borda, Score, PAV, MMP), opinion dynamics, coalition formation, and government stability across 23 country presets + EU Parliament. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration. 454 tests, ~85% coverage.
 
 ## Feature Implementation Workflow
 
@@ -20,7 +20,7 @@ See `docs/ITERATION.md` for the meta-workflow that continuously picks tasks from
 
 ```
 ./
-├── electoral_sim/        # Main package (12 modules, 60+ .py files)
+├── electoral_sim/        # Main package (12 modules, 100+ .py files)
 │   ├── core/             # ElectionModel, Config, CLI, Voter Generation
 │   ├── agents/           # VoterAgents, PartyAgents, adaptive strategy
 │   ├── behavior/         # Proximity, Valence, Strategic, Campaign models
@@ -31,10 +31,10 @@ See `docs/ITERATION.md` for the meta-workflow that continuously picks tasks from
 │   ├── analysis/         # BatchRunner, Duverger, VSE, sensitivity, calibration, redistricting
 │   ├── visualization/    # Plotly/Matplotlib plots, streamlit
 │   ├── events/           # Event manager (scandals, shocks, election timeline, polls)
-│   ├── presets/          # 23 country configs + EU Parliament
+│   ├── presets/            # 23 country presets (including EU Parliament)
 │   └── data/             # Historical election data files
 ├── app.py                # Streamlit dashboard (23 countries)
-├── tests/                # 11 test files (502 tests, ~85% coverage)
+├── tests/                # 11 test files (454 tests, ~85% coverage)
 ├── benchmarks/           # Performance benchmark scripts
 ├── docs/                 # mkdocs-material documentation + WORKFLOW.md
 └── scripts/              # Release scripts (bump_version, do_release)
@@ -108,6 +108,5 @@ electoral-sim run --help    # CLI
 
 - Global `__version__` in `electoral_sim/__init__.py` (currently 0.2.0)
 - Hypothesis property-based tests in test suite
-- `.coverage` file at root (53KB) - ignore in edits
 - Presets follow strict pattern: `config.py` with party definitions + `__init__.py` exports
 - `from_preset("country_name")` on `ElectionModel` is the preset entry point

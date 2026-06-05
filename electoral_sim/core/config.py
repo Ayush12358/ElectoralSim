@@ -163,6 +163,7 @@ from electoral_sim.presets.eu.config import eu_config
 from electoral_sim.presets.france.config import france_config
 from electoral_sim.presets.germany.config import germany_config
 from electoral_sim.presets.india.config import india_config
+from electoral_sim.presets.ireland.config import ireland_config
 from electoral_sim.presets.israel.config import israel_config
 from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.mexico.config import mexico_config
@@ -189,6 +190,7 @@ PRESETS = {
     "eu": eu_config,
     "france": france_config,
     "israel": israel_config,
+    "ireland": ireland_config,
     "japan": japan_config,
     "mexico": mexico_config,
     "netherlands": netherlands_config,
@@ -292,6 +294,11 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions, nationwide PR with 3.25% threshold",
         "electoral_system": "PR",
         "threshold": 0.0325,
+    },
+    "ireland": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, STV with 39 multi-member constituencies",
+        "electoral_system": "PR",
     },
     "japan": {
         "calibration": "structural_demo",

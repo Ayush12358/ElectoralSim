@@ -40,6 +40,7 @@ class TestAllPresets:
             "switzerland",
             "mexico",
             "nz",
+            "ireland",
         ],
     )
     def test_all_presets_run(self, preset):
@@ -151,6 +152,14 @@ class TestAllPresets:
         model = ElectionModel.from_preset("nz", n_voters=5000)
         assert model.electoral_system == "FPTP"
         assert model.threshold == 0.05
+        assert model.parties.n_parties == 6
+
+    def test_ireland_preset_structure(self):
+        """Ireland preset uses PR with 39 multi-member constituencies."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("ireland", n_voters=5000)
+        assert model.electoral_system == "PR"
         assert model.parties.n_parties == 6
 
     def test_preset_provenance_metadata(self):

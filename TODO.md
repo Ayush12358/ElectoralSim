@@ -205,7 +205,7 @@
     - Include district/list tiers and coalition-party handling.
 - [x] **P2** Add New Zealand MMP preset
     - Covers party vote, electorate vote, threshold/one-electorate exception, overhang behavior, and leveling seats.
-- [ ] **P2** Add Ireland STV preset
+- [x] **P2** Add Ireland STV preset
     - Provides real-world multi-member ranked-choice use case and validation path for STV.
 - [ ] **P2** Add Scotland/Wales additional-member presets
     - Useful for closed-list regional compensatory systems.

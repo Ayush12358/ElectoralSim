@@ -288,7 +288,7 @@
     - Validate non-empty axes/traces and no crash with small synthetic results.
 - [x] **P3** Add example notebooks or scripts for every major workflow
     - Coalition/government, opinion dynamics, BatchRunner, validation/calibration, redistricting, dashboard export, and custom behavior model.
-- [ ] **P3** Add `docs/examples/` pages that execute snippets in CI
+- [x] **P3** Add `docs/examples/` pages that execute snippets in CI
     - Prevent README/docs examples from drifting from function signatures.
 
 #### P3 Docs, Packaging & CI

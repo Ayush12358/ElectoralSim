@@ -37,7 +37,7 @@ def test_preset_loading():
         try:
             model = ElectionModel.from_preset(preset, n_voters=1000, seed=42)
             results = model.run_election()
-            assert isinstance(results, dict)
+    assert hasattr(results, '__getitem__')  # dict or ElectionResult
             assert "seats" in results or "turnout" in results
         except Exception as e:
             raise AssertionError(f"Preset {preset} failed: {e}")

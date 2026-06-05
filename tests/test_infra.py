@@ -547,6 +547,38 @@ class TestVisualizationReturnTypes:
         assert isinstance(fig, matplotlib.figure.Figure)
 
 
+class TestVisualRegressionSmoke:
+    """Smoke tests verifying plots don't crash and produce non-empty figures."""
+
+    def test_all_plots_non_empty_axes(self):
+        """All standard plot functions return figures with non-empty axes."""
+        import matplotlib.figure
+        from electoral_sim.visualization.plots import (
+            plot_seat_distribution, plot_vote_shares, plot_seats_vs_votes,
+            plot_ideological_space,
+        )
+
+        data = {"seats": np.array([100, 80, 30]), "vote_counts": np.array([100, 80, 30]),
+                "gallagher": 5.0}
+        names = ["A", "B", "C"]
+        positions = np.array([[-0.5, -0.2], [0.3, 0.1], [0.0, 0.3]])
+
+        for func, args in [
+            (plot_seat_distribution, (data, names)),
+            (plot_vote_shares, (data, names)),
+            (plot_seats_vs_votes, (data, names)),
+        ]:
+            fig = func(*args)
+            assert isinstance(fig, matplotlib.figure.Figure)
+            assert len(fig.axes) > 0
+
+        fig = plot_ideological_space(
+            np.random.default_rng(42).normal(0, 0.3, (20, 2)), positions, names
+        )
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert len(fig.axes) > 0
+
+
 class TestBenchmarkSmoke:
     """CI smoke tests for benchmark code paths."""
 

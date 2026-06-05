@@ -2,6 +2,12 @@
 Advanced Visualizations for ElectoralSim.
 
 Includes animations, cartograms, and interactive dashboards.
+
+Return type convention:
+- Plotly Figure objects: plot_swing_analysis, plot_india_state_map
+  (use st.plotly_chart() in Streamlit)
+- Matplotlib Animation/Figure objects: animate_opinion_dynamics
+  (use st.pyplot() in Streamlit)
 """
 
 from typing import Any

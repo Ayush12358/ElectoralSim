@@ -282,7 +282,7 @@
     - Plot turnout/seat distributions, seat probability histograms, and sensitivity tornado charts.
 - [ ] **P3** Add redistricting/geography visualizations
     - District maps, compactness histograms, ensemble percentile plots, and swing maps.
-- [ ] **P3** Convert visualization return types consistently
+- [x] **P3** Convert visualization return types consistently
     - Either Matplotlib-only with `st.pyplot`, Plotly-only with `st.plotly_chart`, or paired functions with explicit names.
 - [ ] **P3** Add visual regression smoke tests for generated plots
     - Validate non-empty axes/traces and no crash with small synthetic results.

@@ -274,7 +274,7 @@
     - Avoid one-off India/generic branches where common result display can be shared.
 - [x] **P3** Add dashboard support for all current presets, including Australia House/Senate, South Africa, and EU
     - Current selectbox omits several presets exposed by the package/docs.
-- [ ] **P3** Add dashboard scenario save/load
+- [x] **P3** Add dashboard scenario save/load
     - Export current sidebar parameters, seed, preset, and results as JSON.
 - [x] **P3** Add dashboard warning banners for structural vs calibrated presets
     - Keep "not a forecast" status visible inside the app, not only README.

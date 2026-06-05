@@ -62,6 +62,28 @@ economic_growth = st.sidebar.slider("Economic Growth (%)", -10.0, 10.0, 2.0)
 national_mood = st.sidebar.slider("National Mood (Wave)", -5.0, 5.0, 0.0)
 anti_incumbency = st.sidebar.slider("Anti-Incumbency Penalty", -2.0, 0.0, -0.1)
 
+# Scenario save/load
+st.sidebar.subheader("Scenario")
+import json as _json
+scenario = {
+    "preset": preset, "n_voters": n_voters, "seed": seed,
+    "economic_growth": economic_growth, "national_mood": national_mood,
+    "anti_incumbency": anti_incumbency,
+}
+scenario_json = _json.dumps(scenario, indent=2)
+st.sidebar.download_button("💾 Save Scenario", scenario_json, "electoral_scenario.json", mime="application/json")
+
+uploaded = st.sidebar.file_uploader("📂 Load Scenario", type=["json"])
+if uploaded is not None:
+    data = _json.load(uploaded)
+    preset = data.get("preset", preset)
+    n_voters = data.get("n_voters", n_voters)
+    seed = data.get("seed", seed)
+    economic_growth = data.get("economic_growth", economic_growth)
+    national_mood = data.get("national_mood", national_mood)
+    anti_incumbency = data.get("anti_incumbency", anti_incumbency)
+    st.sidebar.success("Scenario loaded!")
+
 # Run simulation
 if st.button("Run Simulation", type="primary"):
     with st.spinner("Processing voters and ballots..."):

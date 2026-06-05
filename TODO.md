@@ -308,7 +308,7 @@
     - If excluded intentionally, document the release policy.
 - [ ] **P3** Consolidate release scripts
     - `release.py`, `do_release.py`, `bump_version.py`, and batch files should have one documented release path.
-- [ ] **P3** Move benchmark scripts under `benchmarks/` or document why some remain in `scripts/`
+- [x] **P3** Move benchmark scripts under `benchmarks/` or document why some remain in `scripts/`
     - `scripts/benchmark_gpu.py` and `scripts/benchmark_scale.py` are outside the benchmark directory.
 - [ ] **P3** Add small benchmark CI smoke job
     - Run tiny voter counts to verify benchmark code paths without enforcing performance thresholds.

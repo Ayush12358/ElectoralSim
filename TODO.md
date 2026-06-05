@@ -293,7 +293,7 @@
 
 #### P3 Docs, Packaging & CI
 
-- [ ] **P3** Fix API docs for alternative systems
+- [x] **P3** Fix API docs for alternative systems
     - `docs/api/electoral_systems.md` uses signatures and return shapes that do not match current implementations.
 - [ ] **P3** Fix metrics docs for `efficiency_gap()`
     - Docs describe a two-argument signature, implementation takes `party_a_votes`, `party_b_votes`, and `party_a_seats`.

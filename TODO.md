@@ -272,7 +272,7 @@
     - Validate JSON/YAML config before running and report all invalid fields at once.
 - [ ] **P3** Add dashboard tabs for systems comparison, preset metadata, calibration status, and uncertainty intervals
     - Avoid one-off India/generic branches where common result display can be shared.
-- [ ] **P3** Add dashboard support for all current presets, including Australia House/Senate, South Africa, and EU
+- [x] **P3** Add dashboard support for all current presets, including Australia House/Senate, South Africa, and EU
     - Current selectbox omits several presets exposed by the package/docs.
 - [ ] **P3** Add dashboard scenario save/load
     - Export current sidebar parameters, seed, preset, and results as JSON.

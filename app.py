@@ -51,7 +51,7 @@ st.markdown("---")
 # Sidebar settings
 st.sidebar.header("Simulation Settings")
 preset = st.sidebar.selectbox(
-    "Select Preset", ["India (Lok Sabha)", "USA", "UK", "Germany", "Brazil", "France", "Japan"]
+    "Select Preset", ["India (Lok Sabha)", "USA", "UK", "Germany", "Brazil", "France", "Japan", "Australia (House)", "South Africa", "EU"]
 )
 
 n_voters = st.sidebar.slider("Voter Sample Size", 1000, 100000, 5000, step=1000)
@@ -85,6 +85,9 @@ if st.button("Run Simulation", type="primary"):
                 "Brazil": "brazil",
                 "France": "france",
                 "Japan": "japan",
+                "Australia (House)": "australia_house",
+                "South Africa": "south_africa",
+                "EU": "eu",
             }
             preset_key = config_map[preset]
 

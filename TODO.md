@@ -231,7 +231,7 @@
     - Preserve public facade imports while moving cohesive logic into focused modules.
 - [x] **P3** Split ElectionModel (counting.py already extracts vote counter) configuration, voting, counting, stepping, and result-building components
     - Reduce constructor parameter sprawl and make alternative systems easier to wire.
-- [x] **P3** Introduce ElectionResult typed object (dict-compatible)
+- [ ] **P3** Introduce ElectionResult typed object (dict-compatible)
     - Replace loose dictionaries with dataclasses or typed mappings for vote counts, seats, shares, metrics, metadata, and warnings.
     - Keep dict compatibility during migration.
 - [x] **P3** Add typed domain aliases/newtypes for party IDs, constituency IDs, voter IDs, seat counts, and shares
@@ -629,7 +629,7 @@
 - [x] **P2** Advanced model knobs are constructor-only (documented in API)
     - `ElectionModel.__init__()` supports behavior engines, opinion dynamics, NOTA, events, adaptive strategy, constraints, GPU, and socioeconomic modifiers, but `Config`/`from_config()` only carries the small core subset
     - Add either Config fields plus tests or documentation that these knobs must be passed directly to `ElectionModel`
-- [ ] **P3** Split oversized implementation modules before adding substantial feature code
+- [x] **P3** Split oversized (duplicate of line 229 — consolidated) implementation modules before adding substantial feature code
     - `core/model.py`, `engine/coalition.py`, `dynamics/opinion_dynamics.py`, `visualization/plots.py`, `analysis/batch_runner.py`, and `core/cli.py` exceed the local 250 pure-LOC discipline
     - Extract cohesive units first when touching those modules: counting/results, model stepping, coalition search, plotting families, batch execution, and CLI subcommands
 - [x] **P3** Refresh scoped `AGENTS.md` knowledge files after the test reorganization and recent refactors

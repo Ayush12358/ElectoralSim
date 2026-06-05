@@ -19,8 +19,13 @@ from dataclasses import dataclass, field
 import numpy as np
 import polars as pl
 
+from electoral_sim.behavior.voter_behavior import (
+    BehaviorEngine,
+    ProximityModel,
+    ValenceModel,
+)
 from electoral_sim.core.voter_generation import generate_voter_frame
-from electoral_sim.engine.numba_accel import fptp_count_fast
+from electoral_sim.engine.numba_accel import fptp_count_fast, vote_mnl_fast
 from electoral_sim.metrics.indices import effective_number_of_parties, gallagher_index
 from electoral_sim.presets.india.data import (
     DEFAULT_WEIGHTS,
@@ -126,27 +131,45 @@ def compute_state_party_utilities(
     state_weights: dict[str, float],
 ) -> np.ndarray:
     """
-    Compute utility matrix for voters in a state using proximity + state weights + valence.
+    Compute utility matrix for voters in a state using BehaviorEngine + state weights.
+
+    Uses ProximityModel(-dist * 0.3) + ValenceModel(0.005 * val) via BehaviorEngine,
+    with per-state party weight bonus on top.
     """
     n_voters = len(df)
     n_parties = len(party_names)
-    ideology_x = df["ideology_x"].to_numpy()
-    ideology_y = df["ideology_y"].to_numpy()
 
-    utilities = np.zeros((n_voters, n_parties))
+    # Build party positions and valence arrays for BehaviorEngine
+    party_positions = np.zeros((n_parties, 2), dtype=np.float64)
+    party_valence = np.zeros(n_parties, dtype=np.float64)
     for p, party in enumerate(party_names):
-        pd = INDIA_PARTIES.get(party, {})
-        px = pd.get("position_x", 0.0)
-        py = pd.get("position_y", 0.0)
-        val = pd.get("valence", 25)
+        pd_data = INDIA_PARTIES.get(party, {})
+        party_positions[p, 0] = pd_data.get("position_x", 0.0)
+        party_positions[p, 1] = pd_data.get("position_y", 0.0)
+        party_valence[p] = pd_data.get("valence", 25)
 
-        dist = np.sqrt((ideology_x - px) ** 2 + (ideology_y - py) ** 2)
-        utility = -dist * 0.3 + 0.005 * val
+    # Compute base utilities via BehaviorEngine
+    voter_data = {
+        "n_voters": n_voters,
+        "positions": np.column_stack(
+            [df["ideology_x"].to_numpy(), df["ideology_y"].to_numpy()]
+        ),
+    }
+    party_data = {
+        "n_parties": n_parties,
+        "positions": party_positions,
+        "valence": party_valence,
+    }
 
+    engine = BehaviorEngine()
+    engine.add_model(ProximityModel(weight=0.3))
+    engine.add_model(ValenceModel(weight=0.005))
+    utilities = engine.compute_all(voter_data, party_data)
+
+    # Add India-specific per-state party weight bonus
+    for p, party in enumerate(party_names):
         weight = state_weights.get(party, 0.05)
-        utility += weight * 3.0
-
-        utilities[:, p] = utility
+        utilities[:, p] += weight * 3.0
 
     return utilities
 
@@ -249,15 +272,7 @@ def simulate_india_election(
 
         utilities = compute_state_party_utilities(voter_df, party_names, state_weights)
 
-        temperature = 0.5
-        scaled = utilities / temperature
-        scaled -= scaled.max(axis=1, keepdims=True)
-        exp_utils = np.exp(scaled)
-        probs = exp_utils / exp_utils.sum(axis=1, keepdims=True)
-
-        cumprobs = np.cumsum(probs, axis=1)
-        random_vals = rng.random((n_voters, 1))
-        votes = (random_vals > cumprobs).sum(axis=1)
+        votes = vote_mnl_fast(utilities, temperature=0.5, rng=rng)
 
         turnout_prob = rng.beta(5, 2.5, n_voters) * 0.85
         will_vote = rng.random(n_voters) < turnout_prob

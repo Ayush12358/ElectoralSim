@@ -553,7 +553,7 @@
 - [x] **P2** Extract data constants from `election.py` → `data.py`
 - [x] **P2** Create `config.py` with `india_config()` for PRESETS registry
 - [x] **P2** Use `fptp_count_fast` for per-state counting
-- [ ] **P3** Make India preset use BehaviorEngine instead of hand-rolled `compute_state_party_utilities()`
+- [x] **P3** Make India preset use BehaviorEngine instead of hand-rolled `compute_state_party_utilities()`
 - [ ] **P3** Make India preset use `vote_mnl_fast()` instead of hand-rolled MNL sampling
 - [ ] **P3** Make India preset use `_decide_turnout()` instead of hand-rolled turnout logic
 - [ ] **P3** Extract `STATE_PARTY_WEIGHTS` and `STATE_IDEOLOGY_SHIFTS` into per-constituency Config

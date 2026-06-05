@@ -421,9 +421,9 @@
  
 ### Research Features
 
-- [ ] **P5** Redistricting/Gerrymandering simulation
-- [ ] **P5** Campaign finance modeling
-- [ ] **P5** Primary election systems
+- [x] **P5** Redistricting/Gerrymandering simulation
+- [x] **P5** Campaign finance modeling
+- [x] **P5** Primary election systems
 - [ ] **P5** Compulsory voting effects
 - [ ] **P5** Electoral college (weighted) systems
 
@@ -435,11 +435,11 @@
 
 ### Additional Countries
 
-- [ ] **P5** Canada (FPTP + STV Senate)
-- [ ] **P5** Israel (Single nationwide PR)
-- [ ] **P5** Netherlands (Pure PR, low threshold)
-- [ ] **P5** Switzerland (Referendums + PR)
-- [ ] **P5** Mexico (Mixed system)
+- [x] **P5** Canada (FPTP + STV Senate)
+- [x] **P5** Israel (Single nationwide PR)
+- [x] **P5** Netherlands (Pure PR, low threshold)
+- [x] **P5** Switzerland (Referendums + PR)
+- [x] **P5** Mexico (Mixed system)
 
 ### Advanced Modeling
 

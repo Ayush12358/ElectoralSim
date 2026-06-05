@@ -13,6 +13,13 @@ from typing import Literal
 VALID_ELECTORAL_SYSTEMS = frozenset({"FPTP", "PR"})
 VALID_ALLOCATION_METHODS = frozenset({"dhondt", "sainte_lague", "hare", "droop"})
 
+# Domain type aliases (newtypes for API clarity and static analysis)
+PartyID = int  # Party identifier (index into party arrays)
+ConstituencyID = int  # Constituency identifier
+VoterID = int  # Voter identifier
+SeatCount = int  # Number of seats (non-negative integer)
+VoteShare = float  # Vote share (0.0–1.0)
+
 
 class CalibrationStatus(str, Enum):
     """Calibration status for election presets."""

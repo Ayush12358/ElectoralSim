@@ -234,7 +234,7 @@
 - [x] **P3** Introduce ElectionResult typed object (dict-compatible)
     - Replace loose dictionaries with dataclasses or typed mappings for vote counts, seats, shares, metrics, metadata, and warnings.
     - Keep dict compatibility during migration.
-- [ ] **P3** Add typed domain aliases/newtypes for party IDs, constituency IDs, voter IDs, seat counts, and shares
+- [x] **P3** Add typed domain aliases/newtypes for party IDs, constituency IDs, voter IDs, seat counts, and shares
     - Prevent mixing array positions, real IDs, and labels.
 - [x] **P3** Add runtime config validation to `Config` and `PartyConfig`
     - Validate voter counts, constituency counts, thresholds, temperature, party positions, valence ranges, and duplicate party names.

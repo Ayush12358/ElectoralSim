@@ -25,9 +25,11 @@ exclude opinion_dynamics.gif
 
 # Exclude directories
 prune .git
+prune .github
 prune .venv
 prune .pytest_cache
 prune __pycache__
+prune benchmarks
 prune docs
 prune scripts
 prune examples

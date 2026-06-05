@@ -41,6 +41,8 @@ class TestAllPresets:
             "mexico",
             "nz",
             "ireland",
+            "scotland",
+            "wales",
         ],
     )
     def test_all_presets_run(self, preset):
@@ -161,6 +163,22 @@ class TestAllPresets:
         model = ElectionModel.from_preset("ireland", n_voters=5000)
         assert model.electoral_system == "PR"
         assert model.parties.n_parties == 6
+
+    def test_scotland_preset_structure(self):
+        """Scotland preset uses FPTP with 5 parties."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("scotland", n_voters=5000)
+        assert model.electoral_system == "FPTP"
+        assert model.parties.n_parties == 5
+
+    def test_wales_preset_structure(self):
+        """Wales preset uses FPTP with 4 parties."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("wales", n_voters=5000)
+        assert model.electoral_system == "FPTP"
+        assert model.parties.n_parties == 4
 
     def test_preset_provenance_metadata(self):
         """from_preset() stores provenance metadata on the model."""

@@ -169,10 +169,12 @@ from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.mexico.config import mexico_config
 from electoral_sim.presets.netherlands.config import netherlands_config
 from electoral_sim.presets.nz.config import nz_config
+from electoral_sim.presets.scotland.config import scotland_config
 from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.switzerland.config import switzerland_config
 from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.usa.config import usa_config
+from electoral_sim.presets.wales.config import wales_config
 
 
 # Preset mapping
@@ -184,17 +186,19 @@ PRESETS = {
     "australia_house": australia_house_config,
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
-    "switzerland": switzerland_config,
     "brazil": brazil_config,
     "canada": canada_config,
     "eu": eu_config,
     "france": france_config,
-    "israel": israel_config,
     "ireland": ireland_config,
+    "israel": israel_config,
     "japan": japan_config,
     "mexico": mexico_config,
     "netherlands": netherlands_config,
     "nz": nz_config,
+    "scotland": scotland_config,
+    "switzerland": switzerland_config,
+    "wales": wales_config,
 }
 
 # Data provenance registry for bundled presets
@@ -211,6 +215,11 @@ PRESET_PROVENANCE = {
         "source": "Synthetic two-party positions",
         "electoral_system": "FPTP",
         "n_constituencies": 435,
+    },
+    "scotland": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, AMS 73 constituency + 56 list",
+        "electoral_system": "FPTP",
     },
     "switzerland": {
         "calibration": "structural_demo",
@@ -303,6 +312,11 @@ PRESET_PROVENANCE = {
     "japan": {
         "calibration": "structural_demo",
         "source": "Synthetic party positions (FPTP base of parallel system)",
+        "electoral_system": "FPTP",
+    },
+    "wales": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, AMS 40 constituency + 20 list",
         "electoral_system": "FPTP",
     },
 }

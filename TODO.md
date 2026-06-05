@@ -207,7 +207,7 @@
     - Covers party vote, electorate vote, threshold/one-electorate exception, overhang behavior, and leveling seats.
 - [x] **P2** Add Ireland STV preset
     - Provides real-world multi-member ranked-choice use case and validation path for STV.
-- [ ] **P2** Add Scotland/Wales additional-member presets
+- [x] **P2** Add Scotland/Wales additional-member presets
     - Useful for closed-list regional compensatory systems.
 - [ ] **P2** Add Norway/Sweden/Denmark PR presets with leveling-seat variants
     - Compare Sainte-Lague variants, regional districts, national adjustment seats, and thresholds.

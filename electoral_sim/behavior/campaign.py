@@ -304,3 +304,53 @@ class CampaignTargeting:
             (n_districts,) persuasion effect (vote share change)
         """
         return (spending ** self.persuasion_decay) * 0.01
+
+
+class TurnoutMobilization:
+    """
+    Turnout mobilization: models canvassing, GOTV, persuasion vs
+    mobilization, targeted demographics, and resource allocation.
+    """
+
+    def __init__(
+        self,
+        base_turnout: float = 0.65,
+        canvass_effect: float = 0.05,
+        mobilization_effect: float = 0.08,
+    ):
+        """
+        Args:
+            base_turnout: Baseline turnout probability
+            canvass_effect: Increase in turnout per unit canvassing
+            mobilization_effect: Increase in turnout for GOTV operations
+        """
+        self.base_turnout = base_turnout
+        self.canvass_effect = canvass_effect
+        self.mobilization_effect = mobilization_effect
+
+    def decompose_turnout(
+        self,
+        baseline: float,
+        alienation: float,
+        indifference: float,
+        mobilization: float,
+    ) -> dict[str, float]:
+        """
+        Decompose turnout into baseline, alienation, indifference, and mobilization.
+
+        Args:
+            baseline: Baseline turnout probability
+            alienation: Turnout reduction from voter alienation
+            indifference: Turnout reduction from voter indifference
+            mobilization: Turnout increase from campaign mobilization
+
+        Returns:
+            Dict with component contributions
+        """
+        return {
+            "baseline": baseline,
+            "alienation_effect": -alienation,
+            "indifference_effect": -indifference,
+            "mobilization_effect": mobilization,
+            "total": max(0.0, min(1.0, baseline - alienation - indifference + mobilization)),
+        }

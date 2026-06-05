@@ -402,3 +402,13 @@ class TestCampaignFinance:
         assert result.shape == (2, 2)
         # Party with higher local viability should have less penalty (higher utility)
         assert result[0, 0] > result[0, 1]  # District 0 prefers party 0
+
+    def test_turnout_mobilization_decompose(self):
+        """TurnoutMobilization decomposes turnout into components."""
+        from electoral_sim.behavior.campaign import TurnoutMobilization
+
+        tm = TurnoutMobilization()
+        result = tm.decompose_turnout(0.65, 0.05, 0.03, 0.08)
+        assert "baseline" in result
+        assert "total" in result
+        assert 0 <= result["total"] <= 1

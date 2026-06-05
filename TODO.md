@@ -187,7 +187,7 @@
 - [x] **P2** Add strategic voting based on district-level viability, not only global party viability
     - For FPTP, voters should evaluate local top-two competitiveness and constituency-specific wasted-vote risk.
     - Add tests for a third party viable nationally but not locally.
-- [ ] **P2** Add turnout mobilization operations
+- [x] **P2** Add turnout mobilization operations
     - Model canvassing, GOTV, persuasion vs mobilization, targeted demographics, and resource allocation.
     - Return turnout decomposition by baseline, alienation, indifference, and campaign mobilization.
 

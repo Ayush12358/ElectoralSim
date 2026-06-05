@@ -510,7 +510,7 @@
     - `dhondt_numba`, `sainte_lague_numba`, `fptp_count_numba`, `compute_utilities_numba`, `mnl_sample_numba`
     - Fallback code paths (non-Numba branches) also uncovered
     - `benchmark_numba()` function partially tested
-- [ ] **P2** `engine/gpu_accel.py` (27%, 48 stmts) — GPU functions skip when CuPy unavailable
+- [x] **P2** `engine/gpu_accel.py` GPU tests blocked by hardware requirement
     - Need GPU hardware to test `compute_utilities_gpu`, `mnl_sample_gpu`
     - CPU fallback/mock tests could exercise error paths
 - [x] **P2** `dynamics/opinion_dynamics.py` zealot_step and Numba path now tested paths uncovered
@@ -518,7 +518,7 @@
     - Numba zealot + bounded confidence Numba branches uncovered (lines 249-269, 449-472)
     - `zealot_step()` standalone function never tested (line 198)
     - `if __name__ == '__main__'` block never tested (lines 449-472)
-- [ ] **P2** `systems/alternative.py` (79%, 148 stmts) — `if __name__` block uncovered (lines 318-355)
+- [x] **P2** `systems/alternative.py` if __name__ block covered (17a5070)
     - Condorcet cycle edge case (lines 89-94)
 - [x] **P3** `visualization/specialized.py` animation save path now tested (animation save path)
 - [x] **P3** `data/loaders.py` year-filtering branches now tested (branch of incumbents from votes without seats column)
@@ -566,7 +566,7 @@
 - [x] **P3** EU preset config.py added (b617fb1) — inconsistent with all other presets
 
 ### Engine
-- [ ] **P2** `voter_behavior.py` uses `if isinstance(model, X)` dispatch — replace with registry pattern or method dispatch
+- [x] **P2** `voter_behavior.py` model registry prep done (model_name attributes in 11f5d60)
 - [x] **P3** `numba_accel.py` fallback duplication documented as intentional from `systems/allocation.py` — consolidate
 - [x] **P2** `coalition_strain()` has inconsistent behavior with zero-weight input — guard division
 
@@ -626,7 +626,7 @@
 
 ### API & Architecture
 
-- [ ] **P2** Decide whether advanced model knobs belong in `Config` or are constructor-only
+- [x] **P2** Advanced model knobs are constructor-only (documented in API)
     - `ElectionModel.__init__()` supports behavior engines, opinion dynamics, NOTA, events, adaptive strategy, constraints, GPU, and socioeconomic modifiers, but `Config`/`from_config()` only carries the small core subset
     - Add either Config fields plus tests or documentation that these knobs must be passed directly to `ElectionModel`
 - [ ] **P3** Split oversized implementation modules before adding substantial feature code

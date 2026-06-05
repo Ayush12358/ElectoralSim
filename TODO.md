@@ -322,7 +322,7 @@
     - `pyproject.toml` advertises Python 3.13 support.
 - [x] **P3** Add CodeQL or static-analysis TODO triage to release checklist
     - Keep generated alerts tied back to actionable TODO entries.
-- [ ] **P3** Add coverage thresholds per module category
+- [x] **P3** Add coverage thresholds per module category
     - Core stable modules should have stricter thresholds than GPU/optional experimental modules.
 
 #### P5 Research & Long-Term Features

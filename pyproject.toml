@@ -155,6 +155,12 @@ source = ["electoral_sim"]
 omit = ["*/tests/*", "*/__pycache__/*"]
 
 [tool.coverage.report]
+fail_under = 80
+# Per-module category thresholds (aspirational; enforced by review, not automation):
+#   core, presets, data: ≥90%
+#   systems, behavior, dynamics: ≥85%
+#   visualization: ≥80%
+#   engine, events: ≥75%
 exclude_lines = [
     "pragma: no cover",
     "if TYPE_CHECKING:",

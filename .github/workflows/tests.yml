@@ -118,15 +118,15 @@ jobs:
           )
           print('Smoke: benchmark_voter_creation(500, 3)')
           r = benchmark_voter_creation(n_voters=500, n_constituencies=3)
-          print(f  OK — {r['time_ms']:.1f}ms, {r['n_voters']} voters')
+          print('  OK - {:.1f}ms, {} voters'.format(r['time_ms'], r['n_voters']))
 
           print('Smoke: benchmark_election(500, FPTP)')
           r = benchmark_election(n_voters=500, system='FPTP')
-          print(f  OK — {r['time_ms']:.1f}ms, turnout {r.get('turnout', 0):.1%}')
+          print('  OK - {:.1f}ms'.format(r['time_ms']))
 
           print('Smoke: benchmark_batch_throughput(500, 3)')
           r = benchmark_batch_throughput(n_voters=500, n_elections=3)
-          print(f  OK — {r:.2f} elections/s')
+          print('  OK - {:.2f} elections/s'.format(r))
 
           print('All benchmark smoke checks passed')
           "

@@ -442,3 +442,18 @@ class TestCalibration:
         report = generate_calibration_report(results, {"gallagher": 10.0})
         assert isinstance(report, str)
         assert "0.123" in report
+
+
+class TestRedistricting:
+    """Tests for redistricting module."""
+
+    def test_precinct_graph_basic(self):
+        """PrecinctGraph creates and assigns districts."""
+        from electoral_sim.analysis.redistricting import PrecinctGraph
+
+        adj = [[1], [0, 2], [1, 3], [2]]
+        pg = PrecinctGraph(4, adj, np.array([100, 200, 150, 250]))
+        pg.assign_districts(np.array([0, 0, 1, 1]))
+        balance = pg.population_balance(2)
+        assert balance["total_population"] == 700
+        assert balance["ideal_population"] == 350

@@ -126,7 +126,7 @@ jobs:
 
           print('Smoke: benchmark_batch_throughput(500, 3)')
           r = benchmark_batch_throughput(n_voters=500, n_elections=3)
-          print('  OK - {:.2f} elections/s'.format(r))
+          print('  OK - {:.2f} elections/s'.format(r['elections_per_sec']))
 
           print('All benchmark smoke checks passed')
           "

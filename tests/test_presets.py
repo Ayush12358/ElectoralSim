@@ -45,6 +45,8 @@ class TestAllPresets:
             "wales",
             "chile",
             "spain",
+            "norway",
+            "sweden",
         ],
     )
     def test_all_presets_run(self, preset):
@@ -198,6 +200,26 @@ class TestAllPresets:
         assert model.electoral_system == "PR"
         assert model.threshold == 0.03
         assert model.parties.n_parties == 6
+
+    def test_norway_preset_structure(self):
+        """Norway preset uses Sainte-Lague PR with 4% threshold."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("norway", n_voters=5000)
+        assert model.electoral_system == "PR"
+        assert model.threshold == 0.04
+        assert model.allocation_method == "sainte_lague"
+        assert model.parties.n_parties == 7
+
+    def test_sweden_preset_structure(self):
+        """Sweden preset uses Sainte-Lague PR with 4% threshold."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("sweden", n_voters=5000)
+        assert model.electoral_system == "PR"
+        assert model.threshold == 0.04
+        assert model.allocation_method == "sainte_lague"
+        assert model.parties.n_parties == 7
 
     def test_preset_provenance_metadata(self):
         """from_preset() stores provenance metadata on the model."""

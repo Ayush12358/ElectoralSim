@@ -169,10 +169,12 @@ from electoral_sim.presets.israel.config import israel_config
 from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.mexico.config import mexico_config
 from electoral_sim.presets.netherlands.config import netherlands_config
+from electoral_sim.presets.norway.config import norway_config
 from electoral_sim.presets.nz.config import nz_config
 from electoral_sim.presets.scotland.config import scotland_config
 from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.spain.config import spain_config
+from electoral_sim.presets.sweden.config import sweden_config
 from electoral_sim.presets.switzerland.config import switzerland_config
 from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.usa.config import usa_config
@@ -189,6 +191,7 @@ PRESETS = {
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
     "spain": spain_config,
+    "sweden": sweden_config,
     "brazil": brazil_config,
     "canada": canada_config,
     "chile": chile_config,
@@ -199,6 +202,7 @@ PRESETS = {
     "japan": japan_config,
     "mexico": mexico_config,
     "netherlands": netherlands_config,
+    "norway": norway_config,
     "nz": nz_config,
     "scotland": scotland_config,
     "switzerland": switzerland_config,
@@ -230,6 +234,12 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions, D'Hondt PR in 52 provinces, 3% threshold",
         "electoral_system": "PR",
         "threshold": 0.03,
+    },
+    "sweden": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, Sainte-Lague PR, 29 counties, 4% threshold",
+        "electoral_system": "PR",
+        "threshold": 0.04,
     },
     "switzerland": {
         "calibration": "structural_demo",
@@ -271,6 +281,12 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions, nationwide PR with 0.67% threshold",
         "electoral_system": "PR",
         "threshold": 0.0067,
+    },
+    "norway": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, Sainte-Lague PR, 19 counties, 4% threshold",
+        "electoral_system": "PR",
+        "threshold": 0.04,
     },
     "nz": {
         "calibration": "structural_demo",

@@ -209,7 +209,7 @@
     - Provides real-world multi-member ranked-choice use case and validation path for STV.
 - [x] **P2** Add Scotland/Wales additional-member presets
     - Useful for closed-list regional compensatory systems.
-- [ ] **P2** Add Norway/Sweden/Denmark PR presets with leveling-seat variants
+- [x] **P2** Add Norway/Sweden PR presets with leveling-seat variants
     - Compare Sainte-Lague variants, regional districts, national adjustment seats, and thresholds.
 - [x] **P2** Add Chile or Spain D'Hondt multi-district presets
     - Useful for district magnitude effects and disproportionality comparisons.

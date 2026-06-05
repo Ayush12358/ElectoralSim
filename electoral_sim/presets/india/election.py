@@ -274,7 +274,7 @@ def simulate_india_election(
 
         votes = vote_mnl_fast(utilities, temperature=0.5, rng=rng)
 
-        turnout_prob = rng.beta(5, 2.5, n_voters) * 0.85
+        turnout_prob = voter_df["turnout_prob"].to_numpy()
         will_vote = rng.random(n_voters) < turnout_prob
         voted_count = will_vote.sum()
         total_voted += voted_count

@@ -71,14 +71,20 @@ Measures partisan gerrymandering by comparing "wasted votes."
 from electoral_sim import efficiency_gap
 import numpy as np
 
-# Votes for party A in each district
-party_a_votes = np.array([6000, 5500, 4000, 3000, 2500])
-# Total votes in each district
-total_votes = np.array([10000, 10000, 10000, 10000, 10000])
+# Votes for party A and party B in each district
+party_a_votes = np.array([60, 55, 40, 45, 50])
+party_b_votes = np.array([40, 45, 60, 55, 50])
+# Binary array: 1 if party A won the district
+party_a_seats = np.array([1, 1, 0, 0, 1])
 
-gap = efficiency_gap(party_a_votes, total_votes)
-print(f"Efficiency Gap: {gap:.1%}")
+gap = efficiency_gap(party_a_votes, party_b_votes, party_a_seats)
+print(f"Efficiency Gap: {gap:.3f}")
 ```
+
+**Parameters:**
+- `party_a_votes`: Votes for party A in each district
+- `party_b_votes`: Votes for party B in each district  
+- `party_a_seats`: Binary array (1=A won, 0=B won) per district
 
 **Interpretation:**
 - Positive: Party A is disadvantaged (has more wasted votes)

@@ -278,7 +278,7 @@
     - Export current sidebar parameters, seed, preset, and results as JSON.
 - [x] **P3** Add dashboard warning banners for structural vs calibrated presets
     - Keep "not a forecast" status visible inside the app, not only README.
-- [ ] **P3** Add visualizations for uncertainty bands and batch results
+- [x] **P3** Add visualizations for uncertainty bands and batch results
     - Plot turnout/seat distributions, seat probability histograms, and sensitivity tornado charts.
 - [ ] **P3** Add redistricting/geography visualizations
     - District maps, compactness histograms, ensemble percentile plots, and swing maps.

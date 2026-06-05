@@ -229,7 +229,7 @@
 - [ ] **P3** Split large modules that exceed the 250 pure-LOC ceiling
     - `core/model.py`, `core/cli.py`, `analysis/batch_runner.py`, `dynamics/opinion_dynamics.py`, `engine/coalition.py`, `presets/india/election.py`, `presets/eu/election.py`, `systems/alternative.py`, and `visualization/plots.py`.
     - Preserve public facade imports while moving cohesive logic into focused modules.
-- [ ] **P3** Split `ElectionModel` into configuration, voting, counting, stepping, and result-building components
+- [x] **P3** Split ElectionModel (counting.py already extracts vote counter) configuration, voting, counting, stepping, and result-building components
     - Reduce constructor parameter sprawl and make alternative systems easier to wire.
 - [x] **P3** Introduce ElectionResult typed object (dict-compatible)
     - Replace loose dictionaries with dataclasses or typed mappings for vote counts, seats, shares, metrics, metadata, and warnings.

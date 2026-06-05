@@ -4,6 +4,7 @@ from electoral_sim.behavior.campaign import (
     CampaignFinance,
     CampaignTargeting,
     MediaEnvironment,
+    PollingAccess,
     TurnoutMobilization,
     VoterRegistration,
 )
@@ -24,6 +25,7 @@ __all__ = [
     "CampaignFinance",
     "CampaignTargeting",
     "MediaEnvironment",
+    "PollingAccess",
     "TurnoutMobilization",
     "VoterRegistration",
     "ProximityModel",

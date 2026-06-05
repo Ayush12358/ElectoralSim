@@ -354,3 +354,50 @@ class TurnoutMobilization:
             "mobilization_effect": mobilization,
             "total": max(0.0, min(1.0, baseline - alienation - indifference + mobilization)),
         }
+
+
+class PollingAccess:
+    """
+    Polling-place accessibility model: distance, wait time, opening
+    hours, and registration friction effects on turnout.
+    """
+
+    def __init__(
+        self,
+        distance_decay: float = 0.1,
+        wait_penalty: float = 0.05,
+        registration_friction: float = 0.02,
+    ):
+        """
+        Args:
+            distance_decay: Turnout reduction per unit distance to polling place
+            wait_penalty: Turnout reduction per hour of waiting
+            registration_friction: Baseline turnout reduction from registration requirements
+        """
+        self.distance_decay = distance_decay
+        self.wait_penalty = wait_penalty
+        self.registration_friction = registration_friction
+
+    def compute_turnout_adjustment(
+        self,
+        distances: np.ndarray,
+        wait_times: np.ndarray | None = None,
+        base_turnout: float = 0.65,
+    ) -> np.ndarray:
+        """
+        Compute turnout probabilities adjusted for polling-place accessibility.
+
+        Args:
+            distances: (n_voters,) distances to polling station
+            wait_times: (n_voters,) expected wait times in hours
+            base_turnout: Baseline turnout probability
+
+        Returns:
+            (n_voters,) adjusted turnout probabilities
+        """
+        result = np.full(len(distances), base_turnout, dtype=float)
+        result -= self.distance_decay * distances
+        result -= self.registration_friction
+        if wait_times is not None:
+            result -= self.wait_penalty * wait_times
+        return np.clip(result, 0.0, 1.0)

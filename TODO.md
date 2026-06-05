@@ -136,7 +136,7 @@
 - [x] **P2** Add constituency geometry ingestion
     - Load GeoJSON/Shapefile boundaries into optional geometry metadata.
     - Validate CRS, area/perimeter availability, adjacency construction, and missing IDs.
-- [ ] **P2** Add polling-place accessibility and queue/friction model
+- [x] **P2** Add polling-place accessibility and queue/friction model
     - Model distance, wait time, opening hours, registration friction, and turnout suppression/boost scenarios.
     - Keep it clearly framed as scenario simulation, not causal estimation.
 - [x] **P2** Add reserved/minority district constraint modeling

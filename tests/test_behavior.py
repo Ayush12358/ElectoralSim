@@ -412,3 +412,13 @@ class TestCampaignFinance:
         assert "baseline" in result
         assert "total" in result
         assert 0 <= result["total"] <= 1
+
+    def test_polling_access_model(self):
+        """PollingAccess adjusts turnout based on distance and wait times."""
+        from electoral_sim.behavior.campaign import PollingAccess
+
+        pa = PollingAccess(distance_decay=0.1)
+        distances = np.array([0.5, 2.0, 5.0])
+        result = pa.compute_turnout_adjustment(distances, base_turnout=0.65)
+        assert len(result) == 3
+        assert result[0] > result[2]  # Closer → higher turnout

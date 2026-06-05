@@ -145,6 +145,19 @@ electoral-sim list-presets
 | `australia_house` | 151 electorates, IRV, 5 parties |
 | `australia_senate` | 76 seats, STV, 5 parties |
 | `south_africa` | 400 seats, Closed-list PR, 8 parties |
+| `canada` | 338 ridings, FPTP, 5 parties |
+| `chile` | 155 seats, 28 districts, PR, 6 parties |
+| `ireland` | 39 constituencies, PR-STV, 6 parties |
+| `israel` | 120 seats, National PR, 6 parties |
+| `mexico` | 300 districts, FPTP, 6 parties |
+| `netherlands` | 150 seats, National PR, 8 parties |
+| `norway` | 169 seats, 19 districts, PR, 7 parties |
+| `nz` | 120 seats, 72 electorates + 48 list, MMP |
+| `scotland` | 129 seats, 73 FPTP + 56 list, AMS |
+| `spain` | 350 seats, 52 districts, PR, 6 parties |
+| `sweden` | 349 seats, 29 districts, PR, 7 parties |
+| `switzerland` | 200 seats, 26 districts, PR, 5 parties |
+| `wales` | 60 seats, 40 FPTP + 20 list, AMS |
 | `eu` | 720 MEPs, 27 states, D'Hondt (EU Parliament) |
 
 ---
@@ -271,6 +284,6 @@ man ./electoral-sim.1
 
 ## Related Documentation
 
-- [Python API Reference](../api/README.md)
-- [Country Presets](../presets/README.md)
-- [Quick Start Guide](../quickstart.md)
+- [Python API Reference](api/README.md)
+- [Country Presets](presets/README.md)
+- [Quick Start Guide](quickstart.md)

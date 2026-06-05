@@ -1,6 +1,6 @@
 # Country Presets
 
-ElectoralSim includes pre-configured setups for 11 countries plus the EU Parliament.
+ElectoralSim includes pre-configured setups for 23 countries plus the EU Parliament.
 
 ## Available Presets
 
@@ -16,6 +16,19 @@ ElectoralSim includes pre-configured setups for 11 countries plus the EU Parliam
 | `australia_house` | Australia | IRV | 151 | 5 |
 | `australia_senate` | Australia | STV | 76 | 5 |
 | `south_africa` | South Africa | PR | 400 | 6 |
+| `canada` | Canada | FPTP | 338 | 5 |
+| `chile` | Chile | PR | 155 | 6 |
+| `ireland` | Ireland | PR-STV | 39 | 6 |
+| `israel` | Israel | PR | 120 | 6 |
+| `mexico` | Mexico | FPTP | 300 | 6 |
+| `netherlands` | Netherlands | PR | 150 | 8 |
+| `norway` | Norway | PR | 169 | 7 |
+| `nz` | New Zealand | MMP | 120 | 6 |
+| `scotland` | Scotland | AMS | 129 | 5 |
+| `spain` | Spain | PR | 350 | 6 |
+| `sweden` | Sweden | PR | 349 | 7 |
+| `switzerland` | Switzerland | PR | 200 | 5 |
+| `wales` | Wales | AMS | 60 | 4 |
 
 ## Using Presets
 

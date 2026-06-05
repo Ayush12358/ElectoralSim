@@ -8,7 +8,7 @@
 
 ### Module Splits
 
-9 of 17 oversized modules under 250 LOC. 8 remain:
+10 of 17 oversized modules under 250 LOC. 7 remain:
 
 | Module | Lines | Difficulty |
 |--------|-------|------------|
@@ -19,7 +19,6 @@
 | `dynamics/opinion_dynamics.py` | 403 | Numba kernels interwoven |
 | `presets/india/election.py` | 383 | Monolithic state iteration |
 | `engine/numba_accel.py` | 363 | JIT-compiled functions |
-| `metrics/indices.py` | 329 | Gerrandering already extracted; remainder is disproportionality |
 
 - [ ] **P3** Split remaining modules under 250 LOC
     - Extract counting/results from `model.py`

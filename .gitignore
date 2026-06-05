@@ -25,6 +25,7 @@ build/
 .eggs/
 .hypothesis/
 .coverage
+.mypy_cache/
 coverage.xml
 htmlcov/
 .ruff_cache/

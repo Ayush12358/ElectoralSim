@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+
+# Copyright 2025-2026 Ayush Joshi
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """
 Core Performance Benchmarks for ElectoralSim
 
@@ -33,12 +48,14 @@ def report_environment():
 
     try:
         import numba
+
         print(f"  Numba:      {numba.__version__}")
     except ImportError:
         print("  Numba:      NOT INSTALLED")
 
     try:
         import psutil
+
         ram_gb = psutil.virtual_memory().total / (1024**3)
         print(f"  RAM:        {ram_gb:.1f} GB")
         _HAS_PSUTIL = True
@@ -54,6 +71,7 @@ def measure_memory():
     try:
         import psutil
         import os
+
         return psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)
     except ImportError:
         return -1
@@ -67,8 +85,10 @@ def warmup_numba():
     _ = m.run_election()
     # Also warm up dhondt/sainte-lague numba paths
     from electoral_sim.engine.numba_accel import NUMBA_AVAILABLE
+
     if NUMBA_AVAILABLE:
         from electoral_sim.engine.numba_accel import dhondt_numba, sainte_lague_numba
+
         votes = np.array([1000, 800, 500, 300], dtype=np.int64)
         _ = dhondt_numba(votes, 10)
         _ = sainte_lague_numba(votes, 10)
@@ -169,8 +189,10 @@ def run_all_benchmarks(voter_scales: list[int], warmup_runs: int = 2, measure_ru
             if r["time_ms"] < best:
                 best = r["time_ms"]
                 best_result = r
-        mem_str = f"{best_result['memory_mb']:.0f}" if best_result['memory_mb'] > 0 else "N/A"
-        print(f"{best_result['n_voters']:>12,} {best_result['columns']:>8} {best:>10.1f} {mem_str:>12}")
+        mem_str = f"{best_result['memory_mb']:.0f}" if best_result["memory_mb"] > 0 else "N/A"
+        print(
+            f"{best_result['n_voters']:>12,} {best_result['columns']:>8} {best:>10.1f} {mem_str:>12}"
+        )
 
     # --- FPTP Election ---
     print("\n" + "-" * 70)
@@ -185,8 +207,10 @@ def run_all_benchmarks(voter_scales: list[int], warmup_runs: int = 2, measure_ru
             if r["time_ms"] < best:
                 best = r["time_ms"]
                 best_result = r
-        mem_str = f"{best_result['memory_mb']:.0f}" if best_result['memory_mb'] > 0 else "N/A"
-        print(f"{best_result['n_voters']:>12,} {best:>10.1f} {mem_str:>12} {best_result['turnout']:>7.1%} {best_result['gallagher']:>10.2f}")
+        mem_str = f"{best_result['memory_mb']:.0f}" if best_result["memory_mb"] > 0 else "N/A"
+        print(
+            f"{best_result['n_voters']:>12,} {best:>10.1f} {mem_str:>12} {best_result['turnout']:>7.1%} {best_result['gallagher']:>10.2f}"
+        )
 
     # --- PR Election ---
     print("\n" + "-" * 70)
@@ -225,9 +249,7 @@ def run_all_benchmarks(voter_scales: list[int], warmup_runs: int = 2, measure_ru
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="ElectoralSim Core Performance Benchmarks"
-    )
+    parser = argparse.ArgumentParser(description="ElectoralSim Core Performance Benchmarks")
     parser.add_argument(
         "--voters",
         type=int,

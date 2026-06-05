@@ -18,10 +18,8 @@ recursive-include tests *.py
 # Exclude development files
 exclude .gitignore
 exclude TODO.md
-exclude USAGE.md
+
 exclude app.py
-exclude demo_animation.py
-exclude opinion_dynamics.gif
 
 # Exclude directories
 prune .git

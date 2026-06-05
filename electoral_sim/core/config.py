@@ -1,3 +1,17 @@
+# Copyright 2025-2026 Ayush Joshi
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """
 Configuration classes for ElectoralSim
 
@@ -8,6 +22,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from collections.abc import Sequence
 from typing import Literal
 
 VALID_ELECTORAL_SYSTEMS = frozenset({"FPTP", "PR"})
@@ -105,7 +120,7 @@ class Config:
     n_constituencies: int = 10
 
     # Parties (can be list of PartyConfig or dicts)
-    parties: list[PartyConfig | dict] = field(default_factory=list)
+    parties: Sequence[PartyConfig | dict] = field(default_factory=list)
 
     # Candidates (optional candidate-level modeling — preserves party-level API)
     candidates: list[CandidateConfig] | None = None

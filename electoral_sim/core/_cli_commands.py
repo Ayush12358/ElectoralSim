@@ -1,3 +1,17 @@
+# Copyright 2025-2026 Ayush Joshi
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import json
 import sys
 
@@ -11,17 +25,30 @@ def list_presets():
     print("=" * 70)
 
     presets_info = {
-        "india": "543 constituencies, FPTP, 17 parties (Lok Sabha)",
-        "usa": "435 districts, FPTP, 2 parties (House of Representatives)",
-        "uk": "650 constituencies, FPTP, 5+ parties (House of Commons)",
-        "germany": "299 districts, MMP (PR), 5% threshold, 6 parties (Bundestag)",
-        "france": "577 constituencies, Two-round system, 5 parties (National Assembly)",
-        "japan": "289 constituencies, Mixed system, 2% threshold (House of Representatives)",
-        "brazil": "513 seats, Open-list PR, 8 parties (Chamber of Deputies)",
         "australia_house": "151 electorates, IRV (preferential voting), 5 parties",
         "australia_senate": "76 seats, STV (proportional), 5 parties",
-        "south_africa": "400 seats, Closed-list PR, 1.5% threshold, 8 parties",
+        "brazil": "513 seats, Open-list PR, 8 parties (Chamber of Deputies)",
+        "canada": "338 ridings, FPTP, 5 parties (House of Commons)",
+        "chile": "155 seats, 28 multi-member districts, PR, 6 parties",
         "eu": "720 MEPs, 27 member states, D'Hondt allocation (EU Parliament)",
+        "france": "577 constituencies, Two-round system, 5 parties (National Assembly)",
+        "germany": "299 districts, MMP (PR), 5% threshold, 6 parties (Bundestag)",
+        "india": "543 constituencies, FPTP, 17 parties (Lok Sabha)",
+        "ireland": "39 constituencies, PR-STV, 6 parties (Dáil)",
+        "israel": "120 seats, National PR, 1.5% threshold, 6 parties (Knesset)",
+        "japan": "289 constituencies, Mixed system, 2% threshold (House of Representatives)",
+        "mexico": "300 districts, FPTP, 6 parties (Chamber of Deputies)",
+        "netherlands": "150 seats, National PR, 0.67% threshold, 8 parties (Tweede Kamer)",
+        "norway": "169 seats, 19 multi-member districts, PR, 7 parties (Storting)",
+        "nz": "120 seats, 72 electorates + 48 list, MMP, 6 parties",
+        "scotland": "129 seats, 73 FPTP + 56 list, AMS, 5 parties",
+        "south_africa": "400 seats, Closed-list PR, 1.5% threshold, 8 parties",
+        "spain": "350 seats, 52 multi-member districts, PR, 6 parties (Congress)",
+        "sweden": "349 seats, 29 multi-member districts, PR, 7 parties (Riksdag)",
+        "switzerland": "200 seats, 26 multi-member districts, PR, 5 parties (National Council)",
+        "uk": "650 constituencies, FPTP, 5+ parties (House of Commons)",
+        "usa": "435 districts, FPTP, 2 parties (House of Representatives)",
+        "wales": "60 seats, 40 FPTP + 20 list, AMS, 4 parties (Senedd)",
     }
 
     for name in sorted(PRESETS.keys()):

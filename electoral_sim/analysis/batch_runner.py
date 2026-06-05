@@ -71,8 +71,8 @@ class BatchRunner:
         parameter_sweep: ParameterSweep,
         n_runs_per_config: int = 1,
         n_jobs: int = 1,
-        election_kwargs: dict[str, Any] = None,
-        seed: int = None,
+        election_kwargs: dict[str, Any] | None = None,
+        seed: int | None = None,
         verbose: bool = True,
     ):
         """
@@ -96,7 +96,7 @@ class BatchRunner:
         self.verbose = verbose
 
         self.results: list[dict] = []
-        self.results_df: pl.DataFrame = None
+        self.results_df: pl.DataFrame | None = None
 
     def run(self) -> pl.DataFrame:
         """

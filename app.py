@@ -1,3 +1,17 @@
+# Copyright 2025-2026 Ayush Joshi
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import streamlit as st
 import numpy as np
 import polars as pl
@@ -51,7 +65,19 @@ st.markdown("---")
 # Sidebar settings
 st.sidebar.header("Simulation Settings")
 preset = st.sidebar.selectbox(
-    "Select Preset", ["India (Lok Sabha)", "USA", "UK", "Germany", "Brazil", "France", "Japan", "Australia (House)", "South Africa", "EU"]
+    "Select Preset",
+    [
+        "India (Lok Sabha)",
+        "USA",
+        "UK",
+        "Germany",
+        "Brazil",
+        "France",
+        "Japan",
+        "Australia (House)",
+        "South Africa",
+        "EU",
+    ],
 )
 
 n_voters = st.sidebar.slider("Voter Sample Size", 1000, 100000, 5000, step=1000)
@@ -65,13 +91,19 @@ anti_incumbency = st.sidebar.slider("Anti-Incumbency Penalty", -2.0, 0.0, -0.1)
 # Scenario save/load
 st.sidebar.subheader("Scenario")
 import json as _json
+
 scenario = {
-    "preset": preset, "n_voters": n_voters, "seed": seed,
-    "economic_growth": economic_growth, "national_mood": national_mood,
+    "preset": preset,
+    "n_voters": n_voters,
+    "seed": seed,
+    "economic_growth": economic_growth,
+    "national_mood": national_mood,
     "anti_incumbency": anti_incumbency,
 }
 scenario_json = _json.dumps(scenario, indent=2)
-st.sidebar.download_button("💾 Save Scenario", scenario_json, "electoral_scenario.json", mime="application/json")
+st.sidebar.download_button(
+    "💾 Save Scenario", scenario_json, "electoral_scenario.json", mime="application/json"
+)
 
 uploaded = st.sidebar.file_uploader("📂 Load Scenario", type=["json"])
 if uploaded is not None:
@@ -115,10 +147,13 @@ if st.button("Run Simulation", type="primary"):
 
             # Show calibration status warning
             from electoral_sim.core.config import PRESET_PROVENANCE
+
             prov = PRESET_PROVENANCE.get(preset_key, {})
             cal = prov.get("calibration", "unknown")
             if cal == "structural_demo":
-                st.warning("⚠️ This preset is a **structural demo** — not calibrated to real election data. Results are for demonstration and comparison purposes only.")
+                st.warning(
+                    "⚠️ This preset is a **structural demo** — not calibrated to real election data. Results are for demonstration and comparison purposes only."
+                )
 
             # Get the preset config
             config = PRESETS[preset_key](n_voters=n_voters, seed=seed)
@@ -138,10 +173,10 @@ if st.button("Run Simulation", type="primary"):
                 anti_incumbency=anti_incumbency,
             )
             results = model.run_election()
-            
+
             # Store necessary metadata for generic plotting
             results["party_names"] = model.parties.df["name"].to_list()
-            
+
             st.session_state.results = results
             st.session_state.preset_type = "generic"
 
@@ -149,7 +184,7 @@ if st.button("Run Simulation", type="primary"):
 if "results" in st.session_state:
     results = st.session_state.results
     preset_type = st.session_state.preset_type
-    
+
     if preset_type == "india":
         # Overview Metrics
         m1, m2, m3, m4 = st.columns(4)
@@ -164,7 +199,7 @@ if "results" in st.session_state:
         party_names = list(results.seats.keys())
         seats_arr = np.array(list(results.seats.values()))
         votes_arr = np.array(list(results.vote_shares.values()))
-        
+
         # Get colors safely
         party_colors = []
         for p in party_names:
@@ -181,18 +216,14 @@ if "results" in st.session_state:
         with col1:
             # Distribution Chart
             fig_seats = plot_seat_distribution(
-                {"seats": seats_arr}, 
-                party_names,
-                colors=party_colors
+                {"seats": seats_arr}, party_names, colors=party_colors
             )
             st.pyplot(fig_seats)
 
         with col2:
             # Vote Shares
             fig_votes = plot_vote_shares(
-                {"vote_counts": votes_arr}, 
-                party_names,
-                colors=party_colors
+                {"vote_counts": votes_arr}, party_names, colors=party_colors
             )
             st.pyplot(fig_votes)
 
@@ -200,7 +231,7 @@ if "results" in st.session_state:
         fig_comp = plot_seats_vs_votes(
             {"vote_counts": votes_arr, "seats": seats_arr, "gallagher": results.gallagher_index},
             party_names,
-            colors=party_colors
+            colors=party_colors,
         )
         st.pyplot(fig_comp)
 
@@ -235,21 +266,24 @@ if "results" in st.session_state:
 
         st.markdown("---")
         st.markdown("### Opinion Evolution Gallery")
-        
+
         # Check if animation exists using os.path
         import os
+
         if os.path.exists("opinion_dynamics.gif"):
-             if st.checkbox("Show Opinion Dynamics Animation", value=True):
+            if st.checkbox("Show Opinion Dynamics Animation", value=True):
                 st.image(
                     "opinion_dynamics.gif", caption="Voter Opinion Clusters Shifting Over Time"
                 )
         else:
-            st.info("ℹ️ Visualization Artifacts Missing: Run `python demo_animation.py` to generate the opinion dynamics animation.")
+            st.info(
+                "ℹ️ Visualization Artifacts Missing: Run `python demo_animation.py` to generate the opinion dynamics animation."
+            )
 
     else:
         # Generic preset visualization
         party_names = results["party_names"]
-        
+
         m1, m2, m3 = st.columns(3)
         m1.metric("Turnout", f"{results['turnout']:.1%}")
         m2.metric("Gallagher Index", f"{results['gallagher']:.2f}")
@@ -263,7 +297,9 @@ if "results" in st.session_state:
             st.pyplot(plot_vote_shares(results, party_names))
 
 else:
-    st.info("👈 Select a preset and parameters from the sidebar, then click 'Run Simulation' to start.")
+    st.info(
+        "👈 Select a preset and parameters from the sidebar, then click 'Run Simulation' to start."
+    )
 
     st.markdown(
         """

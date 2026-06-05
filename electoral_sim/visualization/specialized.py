@@ -1,3 +1,17 @@
+# Copyright 2025-2026 Ayush Joshi
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """
 Advanced Visualizations for ElectoralSim.
 
@@ -174,50 +188,4 @@ def plot_india_state_map(results_summary: dict[str, Any]):
 
     fig.update_geos(visible=False, resolution=50, showcountries=True, countrycolor="RebeccaPurple")
 
-    return fig
-
-
-def plot_uncertainty_bands(
-    batch_results: "pl.DataFrame",
-    metric: str = "turnout",
-    group_by: str | None = None,
-) -> "plotly.graph_objects.Figure":
-    """
-    Plot uncertainty bands (mean ± 1.96*std) for a metric across batch runs.
-
-    Args:
-        batch_results: Polars DataFrame from BatchRunner
-        metric: Column name to visualize (e.g., 'turnout', 'gallagher')
-        group_by: Optional column to group x-axis by (e.g., 'config_idx')
-
-    Returns:
-        Plotly Figure with mean line and shaded uncertainty band
-    """
-    import plotly.graph_objects as go
-
-    if group_by:
-        grouped = batch_results.group_by(group_by).agg(
-            [pl.col(metric).mean().alias("mean"), pl.col(metric).std().alias("std")]
-        )
-        x = grouped[group_by].to_list()
-        mean = grouped["mean"].to_numpy()
-        std = grouped["std"].to_numpy()
-    else:
-        mean = np.array([batch_results[metric].mean()])
-        std = np.array([batch_results[metric].std()])
-        x = list(range(len(mean)))
-
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=x, y=mean, mode="lines+markers", name=f"{metric} mean"))
-    fig.add_trace(
-        go.Scatter(
-            x=list(x) + list(x)[::-1],
-            y=np.concatenate([mean + 1.96 * std, (mean - 1.96 * std)[::-1]]),
-            fill="toself",
-            fillcolor="rgba(0,100,200,0.2)",
-            line=dict(color="rgba(0,0,0,0)"),
-            name="95% CI",
-        )
-    )
-    fig.update_layout(title=f"Uncertainty Bands: {metric}", yaxis_title=metric)
     return fig

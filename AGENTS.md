@@ -57,7 +57,7 @@ See `docs/ITERATION.md` for the meta-workflow that continuously picks tasks from
 | Add test | `tests/` | pytest, hypothesis property tests |
 | Streamlit app | `app.py` | Interactive dashboard |
 | Benchmarks | `benchmarks/benchmark_core.py` | Reproducible perf scripts |
-| Release | `scripts/release.py` | PyPI release workflow |
+| Release | `scripts/do_release.py` | PyPI release workflow |
 | Feature workflow | `docs/WORKFLOW.md` | Step-by-step implementation guide |
 
 ## Conventions
@@ -106,7 +106,7 @@ electoral-sim run --help    # CLI
 
 ## Notes
 
-- Global `__version__` in `electoral_sim/__init__.py` (currently 0.1.0)
+- Global `__version__` in `electoral_sim/__init__.py` (currently 0.2.0)
 - Hypothesis property-based tests in test suite
 - `.coverage` file at root (53KB) - ignore in edits
 - Presets follow strict pattern: `config.py` with party definitions + `__init__.py` exports

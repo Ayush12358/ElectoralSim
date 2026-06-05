@@ -353,10 +353,10 @@ Create these labels in GitHub:
 ### Build Failures
 ```bash
 # Clean build artifacts
-python scripts/release.py clean
+python scripts/do_release.py clean
 
 # Rebuild
-python scripts/release.py build
+python scripts/do_release.py build
 ```
 
 ### PyPI Upload Failures

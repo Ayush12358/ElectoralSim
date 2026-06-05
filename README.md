@@ -365,7 +365,7 @@ python benchmarks/stress_test.py
 
 ## Documentation
 
-- [Usage Guide](USAGE.md) — Detailed API usage examples
+- [Quick Start Guide](docs/quickstart.md) — Detailed API usage examples
 - [docs/](docs/) — Full documentation
   - [API Reference](docs/api/) — Complete function/class documentation
   - [Country Presets](docs/presets/) — India, EU, and other country guides

@@ -1,3 +1,17 @@
+# Copyright 2025-2026 Ayush Joshi
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """
 ElectionModel - Main simulation model using Mesa
 Implements India-scale electoral simulation with constituency-based structure
@@ -937,64 +951,3 @@ class ElectionModel(Model):
             "enp_seats_mean": float(enp_seats.mean()),
             "enp_seats_std": float(enp_seats.std()),
         }
-
-
-# Party presets moved to electoral_sim.config
-
-
-# =============================================================================
-# QUICK TEST
-# =============================================================================
-
-if __name__ == "__main__":
-    print("=" * 50)
-    print("ElectoralSim Quick Test")
-    print("=" * 50)
-
-    # Create model
-    print("\nCreating model with 100K voters, 10 constituencies...")
-    model = ElectionModel(
-        n_voters=100_000,
-        n_constituencies=10,
-        electoral_system="FPTP",
-        seed=42,
-    )
-
-    print(f"Voters: {len(model.voters)}")
-    print(f"Parties: {len(model.parties)}")
-
-    # Run election
-    print("\nRunning FPTP election...")
-    results = model.run_election()
-
-    print("\nResults:")
-    print(f"  Turnout: {results['turnout']:.1%}")
-    print(f"  Gallagher Index: {results['gallagher']:.2f}")
-    print(f"  ENP (votes): {results['enp_votes']:.2f}")
-    print(f"  ENP (seats): {results['enp_seats']:.2f}")
-
-    party_names = model.parties.df["name"].to_list()
-    print("\n  Party Results:")
-    for i, name in enumerate(party_names):
-        votes = results["vote_counts"][i]
-        seats = results["seats"][i]
-        print(f"    {name}: {votes:,} votes, {seats} seats")
-
-    # Test PR
-    print("\n" + "-" * 50)
-    print("Testing PR (D'Hondt)...")
-
-    model_pr = ElectionModel(
-        n_voters=100_000,
-        n_constituencies=10,
-        electoral_system="PR",
-        allocation_method="dhondt",
-        seed=42,
-    )
-
-    results_pr = model_pr.run_election()
-    print(f"  Gallagher Index: {results_pr['gallagher']:.2f}")
-
-    print("\n" + "=" * 50)
-    print("All tests passed!")
-    print("=" * 50)

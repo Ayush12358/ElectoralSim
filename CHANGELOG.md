@@ -84,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Stability**: Resolved version conflicts between `numba`, `numpy`, and `scipy` in GitHub Actions.
 - **Linting**: Cleaned up codebase to comply with modern `ruff` and `black` standards.
 
-## [0.0.2] - 2024-12-25
+## [0.0.2] - 2025-12-25
 
 ### Changed
 - **Breaking**: Migrated from `mesa-frames` to `Mesa 3.0+` with `Polars` DataFrames
@@ -108,7 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.0.1] - 2024-12-25
+## [0.0.1] - 2025-12-25
 
 ### Added
 

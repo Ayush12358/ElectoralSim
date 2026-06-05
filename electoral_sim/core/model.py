@@ -74,6 +74,14 @@ class ElectionResult:
         """Dict-style .get() method."""
         return getattr(self, key, default)
 
+    def keys(self):
+        """Dict-style .keys() for dict() compatibility."""
+        return self.to_dict().keys()
+
+    def __iter__(self):
+        """Dict-style iteration for dict() compatibility."""
+        return iter(self.to_dict())
+
     def to_dict(self) -> dict[str, Any]:
         """Full dict conversion."""
         return {
@@ -278,7 +286,7 @@ class ElectionModel(Model):
             self.n_parties = len(self.parties)
 
         # Results storage
-        self.election_results: list[dict] = []
+        self.election_results: list[ElectionResult] = []
 
         # Simple data collection
         self.collected_data: list[dict] = []
@@ -608,7 +616,7 @@ class ElectionModel(Model):
         random_vals = self.rng.random(n_voters)
         return adjusted_turnout > random_vals
 
-    def run_election(self, **kwargs) -> dict:
+    def run_election(self, **kwargs) -> ElectionResult:
         """
         Run a single election and return results.
 
@@ -616,7 +624,7 @@ class ElectionModel(Model):
             **kwargs: Extra parameters passed to the behavior engine (e.g. growth=0.03)
 
         Returns:
-            Dictionary with vote counts, seats, turnout, and metrics
+            ElectionResult with vote counts, seats, turnout, and metrics
         """
         # Compute utilities and cast votes
         utilities = self._compute_utilities(**kwargs)
@@ -692,8 +700,15 @@ class ElectionModel(Model):
             results["enp_votes"] = 1.0
             results["enp_seats"] = 1.0
             results["turnout"] = will_vote.sum() / len(will_vote) if len(will_vote) > 0 else 0.0
-            self.election_results.append(results)
-            return results
+            result_obj = ElectionResult(
+                system=self.electoral_system,
+                seats=results["seats"],
+                vote_counts=results["vote_counts"],
+                turnout=results["turnout"],
+                n_constituencies=self.n_constituencies,
+            )
+            self.election_results.append(result_obj)
+            return result_obj
 
         vote_shares = results["vote_counts"] / total_votes
         seat_shares = (
@@ -727,8 +742,22 @@ class ElectionModel(Model):
             vse_score = calculate_vse(utilities, seat_shares)
             results["vse"] = vse_score
 
-        self.election_results.append(results)
-        return results
+        result_obj = ElectionResult(
+            system=self.electoral_system,
+            seats=results["seats"],
+            vote_counts=results["vote_counts"],
+            vote_shares=results.get("vote_shares"),
+            seat_shares=results.get("seat_shares"),
+            turnout=results.get("turnout", 0.0),
+            gallagher=results.get("gallagher", 0.0),
+            enp_votes=results.get("enp_votes", 1.0),
+            enp_seats=results.get("enp_seats", 1.0),
+            vse=results.get("vse"),
+            n_constituencies=self.n_constituencies,
+            party_names=self.parties.df["name"].to_list(),
+        )
+        self.election_results.append(result_obj)
+        return result_obj
 
     def _count_fptp(self, constituencies: np.ndarray, votes: np.ndarray) -> dict:
         """

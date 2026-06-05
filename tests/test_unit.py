@@ -349,7 +349,7 @@ class TestModel:
 
         # Check result structure
         assert results is not None
-        assert isinstance(results, dict)
+        assert hasattr(results, '__getitem__')  # dict or ElectionResult (dict-compatible)
         # Check that key results exist
         assert "seats" in results
         assert "turnout" in results

@@ -159,6 +159,7 @@ class Config:
 from electoral_sim.presets.australia.config import australia_house_config, australia_senate_config
 from electoral_sim.presets.brazil.config import brazil_config
 from electoral_sim.presets.canada.config import canada_config
+from electoral_sim.presets.chile.config import chile_config
 from electoral_sim.presets.eu.config import eu_config
 from electoral_sim.presets.france.config import france_config
 from electoral_sim.presets.germany.config import germany_config
@@ -171,6 +172,7 @@ from electoral_sim.presets.netherlands.config import netherlands_config
 from electoral_sim.presets.nz.config import nz_config
 from electoral_sim.presets.scotland.config import scotland_config
 from electoral_sim.presets.south_africa.config import south_africa_config
+from electoral_sim.presets.spain.config import spain_config
 from electoral_sim.presets.switzerland.config import switzerland_config
 from electoral_sim.presets.uk.config import uk_config
 from electoral_sim.presets.usa.config import usa_config
@@ -186,8 +188,10 @@ PRESETS = {
     "australia_house": australia_house_config,
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
+    "spain": spain_config,
     "brazil": brazil_config,
     "canada": canada_config,
+    "chile": chile_config,
     "eu": eu_config,
     "france": france_config,
     "ireland": ireland_config,
@@ -220,6 +224,12 @@ PRESET_PROVENANCE = {
         "calibration": "structural_demo",
         "source": "Synthetic party positions, AMS 73 constituency + 56 list",
         "electoral_system": "FPTP",
+    },
+    "spain": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, D'Hondt PR in 52 provinces, 3% threshold",
+        "electoral_system": "PR",
+        "threshold": 0.03,
     },
     "switzerland": {
         "calibration": "structural_demo",
@@ -279,6 +289,11 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions, open-list PR",
         "electoral_system": "PR",
         "allocation": "dhondt",
+    },
+    "chile": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, D'Hondt PR in 28 multi-member districts",
+        "electoral_system": "PR",
     },
     "eu": {
         "calibration": "structural_demo",

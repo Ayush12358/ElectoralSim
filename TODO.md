@@ -211,7 +211,7 @@
     - Useful for closed-list regional compensatory systems.
 - [ ] **P2** Add Norway/Sweden/Denmark PR presets with leveling-seat variants
     - Compare Sainte-Lague variants, regional districts, national adjustment seats, and thresholds.
-- [ ] **P2** Add Chile or Spain D'Hondt multi-district presets
+- [x] **P2** Add Chile or Spain D'Hondt multi-district presets
     - Useful for district magnitude effects and disproportionality comparisons.
 - [x] **P2** Add EU preset `config.py` (done in b617fb1) through `ElectionModel.from_preset("eu")`
     - Existing EU implementation is specialized in `election.py`, inconsistent with config-based presets.

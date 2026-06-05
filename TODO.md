@@ -197,7 +197,7 @@
     - Include party positions, regional strengths, and source notes.
 - [x] **P2** Add Israel preset with nationwide PR and electoral threshold
     - Include coalition-heavy government formation examples.
-- [ ] **P2** Add Netherlands preset with low-threshold nationwide PR
+- [x] **P2** Add Netherlands preset with low-threshold nationwide PR
     - Useful for fragmentation and coalition comparisons.
 - [ ] **P2** Add Switzerland preset with PR plus referendum/direct-democracy hooks
     - Model referendums as separate ballot events rather than party-seat contests only.

@@ -457,3 +457,16 @@ class TestRedistricting:
         balance = pg.population_balance(2)
         assert balance["total_population"] == 700
         assert balance["ideal_population"] == 350
+
+    def test_recom_proposal_basic(self):
+        """ReCom proposal generates a new valid district assignment."""
+        from electoral_sim.analysis.redistricting import PrecinctGraph, recom_proposal
+
+        adj = [[1], [0, 2], [1, 3], [2]]
+        pg = PrecinctGraph(4, adj, np.array([100, 200, 150, 250]))
+        pg.assign_districts(np.array([0, 0, 1, 1]))
+        rng = np.random.default_rng(42)
+        new_assign = recom_proposal(pg, 0, 1, rng)
+        assert new_assign is not None
+        assert len(new_assign) == 4
+        assert set(np.unique(new_assign)).issubset({0, 1})

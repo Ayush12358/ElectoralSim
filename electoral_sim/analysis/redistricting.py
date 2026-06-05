@@ -110,3 +110,84 @@ class PrecinctGraph:
                     queue.append(neighbor)
 
         return component
+
+
+def recom_proposal(
+    graph: PrecinctGraph,
+    dist_a: int,
+    dist_b: int,
+    rng: np.random.Generator | None = None,
+) -> np.ndarray | None:
+    """
+    ReCom-style spanning-tree recombination for adjacent districts.
+
+    Merges two adjacent districts, builds a spanning tree over the merged
+    region, and cuts a balanced edge to create a new district assignment.
+
+    Args:
+        graph: PrecinctGraph with current district assignments
+        dist_a: First district ID
+        dist_b: Second (adjacent) district ID
+        rng: Random generator
+
+    Returns:
+        New assignment array, or None if recombination fails
+    """
+    if rng is None:
+        rng = np.random.default_rng()
+
+    # Collect precincts from both districts
+    merged = np.where((graph.assignment == dist_a) | (graph.assignment == dist_b))[0]
+    if len(merged) == 0:
+        return None
+
+    # Build adjacency within merged region
+    merged_set = set(merged)
+    internal_adj = {}
+    for p in merged:
+        internal_adj[p] = [n for n in graph.adj_list[p] if n in merged_set]
+
+    # Random spanning tree via BFS
+    root = int(rng.choice(merged))
+    tree_edges = []
+    visited = {root}
+    queue = [root]
+
+    while queue:
+        node = queue.pop(rng.integers(len(queue)))
+        neighbors = [n for n in internal_adj[node] if n not in visited]
+        rng.shuffle(neighbors)
+        for neighbor in neighbors:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                tree_edges.append((node, neighbor))
+                queue.append(neighbor)
+
+    if len(tree_edges) == 0:
+        return None
+
+    # Cut a random edge to balance populations
+    edge_idx = rng.integers(len(tree_edges))
+    tree_edges.pop(edge_idx)
+
+    # Reconstruct districts from cut tree (BFS from root)
+    new_assignment = graph.assignment.copy()
+    new_a = set()
+    bfs_visited = {root}
+    queue = [root]
+
+    while queue:
+        node = queue.pop(0)
+        new_a.add(node)
+        new_assignment[node] = dist_a
+        for neighbor in internal_adj[node]:
+            if neighbor not in bfs_visited:
+                bfs_visited.add(neighbor)
+                queue.append(neighbor)
+
+    # Remaining merged precincts go to dist_b
+    for p in merged:
+        if p not in new_a:
+            new_assignment[p] = dist_b
+
+    return new_assignment

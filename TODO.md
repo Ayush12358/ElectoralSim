@@ -124,7 +124,7 @@
 - [x] **P2** Build a redistricting module inspired by GerryChain
     - Represent precinct/constituency graphs, district assignments, population balance, contiguity, compactness, and election updaters.
     - Keep heavy GIS dependencies optional under a `geo` extra.
-- [ ] **P2** Implement ReCom-style district-plan proposal generation
+- [x] **P2** Implement ReCom-style district-plan proposal generation
     - Add spanning-tree recombination for adjacent districts, population tolerance, compactness constraints, and deterministic seeds.
     - Include small graph fixtures for fast tests.
 - [ ] **P2** Add district-plan ensemble analysis

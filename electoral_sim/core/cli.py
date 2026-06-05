@@ -242,4 +242,10 @@ Config file format (JSON):
         parser.print_help()
 
 
-from electoral_sim.core._cli_commands import list_presets, preset_info, run_batch, run_simulation, validate_preset  # noqa: E402, F401
+from electoral_sim.core._cli_commands import (
+    list_presets,
+    preset_info,
+    run_batch,
+    run_simulation,
+    validate_preset,
+)  # noqa: E402, F401

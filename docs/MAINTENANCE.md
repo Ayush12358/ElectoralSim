@@ -129,15 +129,16 @@ This script automatically:
 5. Pushes to GitHub with tags
 6. GitHub Actions then publishes to PyPI
 
-### Manual Release Steps
+  ### Manual Release Steps
 If automation fails, follow these steps:
-1. Update version in `pyproject.toml` (line 7)
-2. Update version in `electoral_sim/__init__.py` (line 9)
-3. Update `CHANGELOG.md` with release notes
-4. Stage and commit: `git add -A && git commit -m "chore: release v0.0.2"`
-5. Create tag: `git tag v0.0.2`
-6. Push with tags: `git push origin master --tags`
-7. Verify GitHub Actions completes successfully
+1. Bump version: `python scripts/bump_version.py patch|minor|major` (or edit `pyproject.toml` and `electoral_sim/__init__.py` manually)
+2. Review and update `CHANGELOG.md` with actual changes
+3. Stage and commit: `git add -A && git commit -m "chore: release v0.0.2"`
+4. Create tag: `git tag v0.0.2`
+5. Push with tags: `git push origin master --tags`
+6. GitHub Actions publishes to PyPI automatically
+
+For manual PyPI upload: `python -m build && twine upload dist/*`
 
 ### Version Numbering (Semantic Versioning)
 - MAJOR (1.0.0): Breaking API changes
@@ -383,7 +384,7 @@ python scripts/release.py build
 | Format code | `black electoral_sim/` |
 | Lint code | `ruff check electoral_sim/` |
 | Build docs | `mkdocs serve` |
-| Build package | `python scripts/release.py build` |
+| Build package | `python -m build` |
 | Release patch | `python scripts/do_release.py patch` |
 | Release minor | `python scripts/do_release.py minor` |
 | Release major | `python scripts/do_release.py major` |

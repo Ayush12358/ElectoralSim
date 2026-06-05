@@ -6,11 +6,10 @@ Utility and release automation scripts.
 
 | Script | Purpose |
 |--------|---------|
-| `release.py` | Build and publish to PyPI (`python scripts/release.py test\|publish`) |
-| `do_release.py` | One-command release (version bump + build + publish) |
-| `bump_version.py` | Version bump helper |
-| `release_pypi.bat` | Windows batch: publish to PyPI via `release.py` |
-| `release_test.bat` | Windows batch: publish to TestPyPI via `release.py` |
+| `bump_version.py` | Version bump helper (`python scripts/bump_version.py patch\|minor\|major`) |
+| `do_release.py` | **One-command release** — calls bump_version, commits, tags, pushes |
+
+For manual build/publish without version bump: use `python -m build && twine upload dist/*`.
 
 ## Testing & QA
 

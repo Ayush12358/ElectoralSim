@@ -306,7 +306,7 @@
 - [ ] **P3** Decide whether `docs/`, `benchmarks/`, `examples/`, and `.github/` belong in sdists
     - `MANIFEST.in` currently prunes docs/scripts/examples and excludes app-related files.
     - If excluded intentionally, document the release policy.
-- [ ] **P3** Consolidate release scripts
+- [x] **P3** Consolidate release scripts
     - `release.py`, `do_release.py`, `bump_version.py`, and batch files should have one documented release path.
 - [x] **P3** Move benchmark scripts under `benchmarks/` or document why some remain in `scripts/`
     - `scripts/benchmark_gpu.py` and `scripts/benchmark_scale.py` are outside the benchmark directory.

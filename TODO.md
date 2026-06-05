@@ -221,7 +221,7 @@
 - [x] **P2** Add preset calibration status enum
     - Values: structural demo, partially calibrated, historically calibrated, validation-only.
     - Surface status in README, docs, and dashboard.
-- [ ] **P2** Add alliance/bloc modeling to presets
+- [x] **P2** Add alliance/bloc modeling to presets
     - India/EU/coalition-heavy systems need parties, alliances, groups, and government blocs as distinct concepts.
 
 #### P3 Architecture & Maintainability

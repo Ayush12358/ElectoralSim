@@ -103,6 +103,10 @@ class Config:
     # Candidates (optional candidate-level modeling — preserves party-level API)
     candidates: list[CandidateConfig] | None = None
 
+    # Alliances/blocs (for coalition-heavy systems like India, EU)
+    # e.g., alliances = {"NDA": ["BJP", "Others"], "INDIA": ["INC", "SP"]}
+    alliances: dict[str, list[str]] | None = None
+
     # Electoral system
     electoral_system: Literal["FPTP", "PR"] = "FPTP"
     allocation_method: Literal["dhondt", "sainte_lague", "hare", "droop"] = "dhondt"

@@ -263,6 +263,15 @@ class TestConfig:
         config = Config(n_voters=100, candidates=candidates)
         assert config.candidates[0].name == "A1"
 
+    def test_config_with_alliances(self):
+        """Config accepts optional alliance/bloc definitions."""
+        from electoral_sim import Config
+
+        config = Config(n_voters=100, alliances={"Coalition A": ["Party X", "Party Y"]})
+        assert config.alliances is not None
+        assert "Coalition A" in config.alliances
+        assert len(config.alliances["Coalition A"]) == 2
+
     def test_allocation_methods_config_and_registry_synced(self):
         """VALID_ALLOCATION_METHODS from config matches ALLOCATION_METHODS registry."""
         from electoral_sim.core.config import VALID_ALLOCATION_METHODS

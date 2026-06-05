@@ -88,6 +88,13 @@ if st.button("Run Simulation", type="primary"):
             }
             preset_key = config_map[preset]
 
+            # Show calibration status warning
+            from electoral_sim.core.config import PRESET_PROVENANCE
+            prov = PRESET_PROVENANCE.get(preset_key, {})
+            cal = prov.get("calibration", "unknown")
+            if cal == "structural_demo":
+                st.warning("⚠️ This preset is a **structural demo** — not calibrated to real election data. Results are for demonstration and comparison purposes only.")
+
             # Get the preset config
             config = PRESETS[preset_key](n_voters=n_voters, seed=seed)
 

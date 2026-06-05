@@ -276,7 +276,7 @@
     - Current selectbox omits several presets exposed by the package/docs.
 - [ ] **P3** Add dashboard scenario save/load
     - Export current sidebar parameters, seed, preset, and results as JSON.
-- [ ] **P3** Add dashboard warning banners for structural vs calibrated presets
+- [x] **P3** Add dashboard warning banners for structural vs calibrated presets
     - Keep "not a forecast" status visible inside the app, not only README.
 - [ ] **P3** Add visualizations for uncertainty bands and batch results
     - Plot turnout/seat distributions, seat probability histograms, and sensitivity tornado charts.

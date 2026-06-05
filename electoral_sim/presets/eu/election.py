@@ -13,6 +13,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from electoral_sim.behavior.voter_behavior import (
+    BehaviorEngine,
+    ProximityModel,
+    ValenceModel,
+)
+from electoral_sim.engine.numba_accel import vote_mnl_fast
 from electoral_sim.presets.eu.data import (
     COUNTRY_GROUP_WEIGHTS,
     EU_MEMBER_STATES,
@@ -134,34 +140,37 @@ def simulate_eu_election(
         ideology_x = rng.normal(0, 0.3, n_voters)
         ideology_y = rng.normal(0, 0.3, n_voters)
 
-        # Compute utilities for each group
-        utilities = np.zeros((n_voters, n_groups))
+        # Build group position and valence arrays for BehaviorEngine
+        group_positions = np.zeros((n_groups, 2), dtype=np.float64)
+        group_valence = np.zeros(n_groups, dtype=np.float64)
         for g, group in enumerate(group_names):
-            gx = EU_POLITICAL_GROUPS[group]["position_x"]
-            gy = EU_POLITICAL_GROUPS[group]["position_y"]
-            val = EU_POLITICAL_GROUPS[group]["valence"]
+            gdata = EU_POLITICAL_GROUPS[group]
+            group_positions[g, 0] = gdata["position_x"]
+            group_positions[g, 1] = gdata["position_y"]
+            group_valence[g] = gdata["valence"]
 
-            # Distance-based utility
-            dist = np.sqrt((ideology_x - gx) ** 2 + (ideology_y - gy) ** 2)
-            utility = -dist * 0.3 + 0.005 * val
+        # Compute base utilities via BehaviorEngine
+        voter_data = {
+            "n_voters": n_voters,
+            "positions": np.column_stack([ideology_x, ideology_y]),
+        }
+        party_data = {
+            "n_parties": n_groups,
+            "positions": group_positions,
+            "valence": group_valence,
+        }
+        engine = BehaviorEngine()
+        engine.add_model(ProximityModel(weight=0.3))
+        engine.add_model(ValenceModel(weight=0.005))
+        utilities = engine.compute_all(voter_data, party_data)
 
-            # Country-specific group strength
+        # Add country-specific group weights on top
+        for g, group in enumerate(group_names):
             weight = normalized_weights.get(group, 0.05)
-            utility += weight * 3.0
+            utilities[:, g] += weight * 3.0
 
-            utilities[:, g] = utility
-
-        # MNL voting
-        temperature = 0.5
-        scaled = utilities / temperature
-        scaled -= scaled.max(axis=1, keepdims=True)
-        exp_utils = np.exp(scaled)
-        probs = exp_utils / exp_utils.sum(axis=1, keepdims=True)
-
-        # Sample votes
-        cumprobs = np.cumsum(probs, axis=1)
-        random_vals = rng.random((n_voters, 1))
-        votes = (random_vals > cumprobs).sum(axis=1)
+        # Sample votes using standardized MNL
+        votes = vote_mnl_fast(utilities, temperature=0.5, rng=rng)
 
         # Turnout (EU average ~50%, varies by country)
         base_turnout = 0.50 + rng.normal(0, 0.1)  # Country variation

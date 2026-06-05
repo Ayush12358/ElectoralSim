@@ -172,6 +172,10 @@ def plot_india_state_map(results_summary: dict[str, Any]):
         template="plotly_dark",
     )
 
+    fig.update_geos(visible=False, resolution=50, showcountries=True, countrycolor="RebeccaPurple")
+
+    return fig
+
 
 def plot_uncertainty_bands(
     batch_results: "pl.DataFrame",
@@ -216,8 +220,4 @@ def plot_uncertainty_bands(
         )
     )
     fig.update_layout(title=f"Uncertainty Bands: {metric}", yaxis_title=metric)
-    return fig
-
-    fig.update_geos(visible=False, resolution=50, showcountries=True, countrycolor="RebeccaPurple")
-
     return fig

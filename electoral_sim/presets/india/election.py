@@ -28,14 +28,12 @@ from electoral_sim.core.voter_generation import generate_voter_frame
 from electoral_sim.engine.numba_accel import fptp_count_fast, vote_mnl_fast
 from electoral_sim.metrics.indices import effective_number_of_parties, gallagher_index
 from electoral_sim.presets.india.data import (
-    DEFAULT_WEIGHTS,
     INDIA_BLOC_PARTIES,
     INDIA_ELECTION_PHASES,
     INDIA_PARTIES,
     INDIA_STATES,
     NDA_PARTIES,
-    STATE_IDEOLOGY_SHIFTS,
-    STATE_PARTY_WEIGHTS,
+    STATE_CONFIGS,
 )
 
 
@@ -113,14 +111,16 @@ def generate_state_voter_frame(
     n_voters = n_voters_per_constituency * n_constituencies
     df = generate_voter_frame(n_voters, n_constituencies, rng)
 
-    shift = STATE_IDEOLOGY_SHIFTS.get(state, (0.0, 0.0))
-    if shift != (0.0, 0.0):
-        df = df.with_columns(
-            [
-                (pl.col("ideology_x") + shift[0]).clip(-1, 1).alias("ideology_x"),
-                (pl.col("ideology_y") + shift[1]).clip(-1, 1).alias("ideology_y"),
-            ]
-        )
+    state_cfg = STATE_CONFIGS.get(state)
+    if state_cfg:
+        shift = state_cfg.ideology_shift
+        if shift != (0.0, 0.0):
+            df = df.with_columns(
+                [
+                    (pl.col("ideology_x") + shift[0]).clip(-1, 1).alias("ideology_x"),
+                    (pl.col("ideology_y") + shift[1]).clip(-1, 1).alias("ideology_y"),
+                ]
+            )
 
     return df
 
@@ -254,12 +254,13 @@ def simulate_india_election(
     global_const_id = 0
     voter_df_sample = None
 
-    for state, n_constituencies in INDIA_STATES.items():
+    for state, cfg in STATE_CONFIGS.items():
+        n_constituencies = cfg.constituencies
         if verbose:
             print(f"  Simulating {state} ({n_constituencies} seats)...", end=" ", flush=True)
 
         state_start = time.perf_counter()
-        state_weights = STATE_PARTY_WEIGHTS.get(state, DEFAULT_WEIGHTS)
+        state_weights = cfg.party_weights
 
         voter_df = generate_state_voter_frame(
             n_voters_per_constituency,

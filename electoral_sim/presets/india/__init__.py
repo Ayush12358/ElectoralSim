@@ -5,6 +5,8 @@ from electoral_sim.presets.india.data import (
     INDIA_ELECTION_PHASES,
     INDIA_PARTIES,
     INDIA_STATES,
+    STATE_CONFIGS,
+    StateConfig,
 )
 from electoral_sim.presets.india.election import (
     IndiaElectionResult,
@@ -18,15 +20,8 @@ __all__ = [
     "INDIA_STATES",
     "INDIA_PARTIES",
     "INDIA_ELECTION_PHASES",
+    "STATE_CONFIGS",
+    "StateConfig",
     "get_phase_states",
     "india_config",
-]
-
-__all__ = [
-    "simulate_india_election",
-    "IndiaElectionResult",
-    "INDIA_STATES",
-    "INDIA_PARTIES",
-    "INDIA_ELECTION_PHASES",
-    "get_phase_states",
 ]

@@ -5,6 +5,26 @@ Contains party configurations, state seat allocations, state-level party
 strength weights, and election phase schedules.
 """
 
+from dataclasses import dataclass, field
+
+
+@dataclass
+class StateConfig:
+    """Per-state configuration for India Lok Sabha simulation.
+
+    Attributes:
+        name: State/UT name
+        constituencies: Number of Lok Sabha seats
+        party_weights: Per-party strength weights (default: DEFAULT_WEIGHTS)
+        ideology_shift: (dx, dy) ideological lean shift (default: (0.0, 0.0))
+    """
+
+    name: str
+    constituencies: int
+    party_weights: dict[str, float] = field(default_factory=dict)
+    ideology_shift: tuple[float, float] = (0.0, 0.0)
+
+
 # States and their Lok Sabha seats
 INDIA_STATES = {
     # Large states
@@ -140,3 +160,13 @@ INDIA_ELECTION_PHASES = {
 # Alliance definitions
 NDA_PARTIES = {"BJP", "JD(U)", "TDP", "SAD"}
 INDIA_BLOC_PARTIES = {"INC", "AAP", "TMC", "DMK", "SP", "RJD", "SS-UBT", "NCP-SP", "JMM"}
+
+# Per-state Config registry — unified access to seats, weights, and ideology shifts.
+STATE_CONFIGS: dict[str, StateConfig] = {}
+for state_name, n_constituencies in INDIA_STATES.items():
+    STATE_CONFIGS[state_name] = StateConfig(
+        name=state_name,
+        constituencies=n_constituencies,
+        party_weights=STATE_PARTY_WEIGHTS.get(state_name, DEFAULT_WEIGHTS),
+        ideology_shift=STATE_IDEOLOGY_SHIFTS.get(state_name, (0.0, 0.0)),
+    )

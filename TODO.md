@@ -303,7 +303,7 @@
     - Catch stale GitHub Pages/PyPI/API URLs and missing source citations.
 - [x] **P3** Include `py.typed` verification test and wheel verification tests
     - Package data includes it, but add a built artifact test to prevent regressions.
-- [ ] **P3** Decide whether `docs/`, `benchmarks/`, `examples/`, and `.github/` belong in sdists
+- [x] **P3** Decide whether `docs/`, `benchmarks/`, `examples/`, and `.github/` belong in sdists
     - `MANIFEST.in` currently prunes docs/scripts/examples and excludes app-related files.
     - If excluded intentionally, document the release policy.
 - [x] **P3** Consolidate release scripts

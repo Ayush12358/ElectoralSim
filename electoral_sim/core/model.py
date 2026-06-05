@@ -8,7 +8,8 @@ agent storage and Numba for accelerated voting calculations.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Any
 
 import warnings
 
@@ -31,6 +32,65 @@ from electoral_sim.metrics.indices import effective_number_of_parties, gallagher
 if TYPE_CHECKING:
     from electoral_sim.behavior.voter_behavior import BehaviorEngine
     from electoral_sim.dynamics.opinion_dynamics import OpinionDynamics
+
+# =============================================================================
+# ELECTION RESULT
+# =============================================================================
+
+
+@dataclass
+class ElectionResult:
+    """
+    Typed election result container with dictionary backward-compatibility.
+
+    Stores vote counts, seats, shares, metrics, metadata, and warnings.
+    Supports both attribute access (result.turnout) and dict access (result['turnout']).
+    """
+
+    system: str = "FPTP"
+    seats: np.ndarray = field(default_factory=lambda: np.array([]))
+    vote_counts: np.ndarray = field(default_factory=lambda: np.array([]))
+    vote_shares: np.ndarray | None = None
+    seat_shares: np.ndarray | None = None
+    turnout: float = 0.0
+    gallagher: float = 0.0
+    enp_votes: float = 1.0
+    enp_seats: float = 1.0
+    vse: float | None = None
+    n_constituencies: int = 0
+    metadata: dict[str, Any] = field(default_factory=dict)
+    warnings: list[str] = field(default_factory=list)
+    party_names: list[str] = field(default_factory=list)
+
+    def __getitem__(self, key: str) -> Any:
+        """Dict-style access for backward compatibility."""
+        return getattr(self, key, None)
+
+    def __contains__(self, key: str) -> bool:
+        """Dict-style 'in' test."""
+        return hasattr(self, key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Dict-style .get() method."""
+        return getattr(self, key, default)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Full dict conversion."""
+        return {
+            "system": self.system,
+            "seats": self.seats,
+            "vote_counts": self.vote_counts,
+            "vote_shares": self.vote_shares,
+            "seat_shares": self.seat_shares,
+            "turnout": self.turnout,
+            "gallagher": self.gallagher,
+            "enp_votes": self.enp_votes,
+            "enp_seats": self.enp_seats,
+            "vse": self.vse,
+            "n_constituencies": self.n_constituencies,
+            "party_names": self.party_names,
+        }
+
 
 # =============================================================================
 # ELECTION MODEL

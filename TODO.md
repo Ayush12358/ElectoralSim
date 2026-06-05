@@ -231,7 +231,7 @@
     - Preserve public facade imports while moving cohesive logic into focused modules.
 - [ ] **P3** Split `ElectionModel` into configuration, voting, counting, stepping, and result-building components
     - Reduce constructor parameter sprawl and make alternative systems easier to wire.
-- [ ] **P3** Introduce an `ElectionResult` typed object
+- [x] **P3** Introduce ElectionResult typed object (dict-compatible)
     - Replace loose dictionaries with dataclasses or typed mappings for vote counts, seats, shares, metrics, metadata, and warnings.
     - Keep dict compatibility during migration.
 - [ ] **P3** Add typed domain aliases/newtypes for party IDs, constituency IDs, voter IDs, seat counts, and shares

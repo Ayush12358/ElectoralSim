@@ -127,7 +127,7 @@
 - [x] **P2** Implement ReCom-style district-plan proposal generation
     - Add spanning-tree recombination for adjacent districts, population tolerance, compactness constraints, and deterministic seeds.
     - Include small graph fixtures for fast tests.
-- [ ] **P2** Add district-plan ensemble analysis
+- [x] **P2** Add district-plan ensemble analysis
     - Compare enacted/supplied plans against simulated ensembles for seat outcomes, efficiency gap, partisan bias, and compactness.
     - Return percentile/rank summaries and plots.
 - [x] **P2** Add swing-state and swing-district analysis

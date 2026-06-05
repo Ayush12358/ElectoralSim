@@ -470,3 +470,14 @@ class TestRedistricting:
         assert new_assign is not None
         assert len(new_assign) == 4
         assert set(np.unique(new_assign)).issubset({0, 1})
+
+    def test_ensemble_analysis_basic(self):
+        """ensemble_analysis compares enacted plan against simulated ensemble."""
+        from electoral_sim.analysis.redistricting import PrecinctGraph, ensemble_analysis
+
+        adj = [[1], [0, 2], [1, 3], [2]]
+        pg = PrecinctGraph(4, adj, np.array([100, 200, 150, 250]))
+        enacted = np.array([0, 0, 1, 1])
+        result = ensemble_analysis(pg, enacted, n_plans=3, rng=np.random.default_rng(42))
+        assert "enacted_max_deviation" in result
+        assert "ensemble_mean" in result

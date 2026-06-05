@@ -131,3 +131,27 @@ jobs:
 
           print('All benchmark smoke checks passed')
           "
+
+  snippet-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run snippet smoke tests
+        run: |
+          python docs/examples/snippet_basic_election.py
+          python docs/examples/snippet_electoral_systems.py
+          python docs/examples/snippet_behavior.py
+          python docs/examples/snippet_coalition.py
+          python docs/examples/snippet_metrics.py
+          python docs/examples/snippet_opinion_dynamics.py

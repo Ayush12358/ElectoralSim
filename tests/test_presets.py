@@ -631,3 +631,39 @@ class TestDataIngestion:
         result = load_geometry(str(geojson))
         assert result["crs"] == "EPSG:4326"
         assert result["n_features"] == 0
+
+
+class TestPresetContracts:
+    """Contract tests: every preset must expose config, metadata, provenance, and smoke."""
+
+    def test_every_preset_has_provenance(self):
+        """All PRESETS keys must have a PRESET_PROVENANCE entry."""
+        from electoral_sim import PRESETS
+        from electoral_sim.core.config import PRESET_PROVENANCE
+
+        for name in PRESETS:
+            assert name in PRESET_PROVENANCE, (
+                f"Preset '{name}' missing from PRESET_PROVENANCE"
+            )
+
+    def test_every_preset_config_loads_and_runs(self):
+        """Every preset config loads and runs a smoke simulation."""
+        from electoral_sim import ElectionModel, PRESETS
+
+        for name in PRESETS:
+            model = ElectionModel.from_preset(name, n_voters=500)
+            result = model.run_election()
+            assert result is not None, f"Preset '{name}' returned None"
+            assert "turnout" in result, f"Preset '{name}' missing turnout"
+            assert result["turnout"] >= 0, f"Preset '{name}' negative turnout"
+
+    def test_every_preset_has_expected_system(self):
+        """Every preset's electoral system is valid."""
+        from electoral_sim import PRESETS
+        from electoral_sim.core.config import VALID_ELECTORAL_SYSTEMS
+
+        for name, factory in PRESETS.items():
+            config = factory()
+            assert config.electoral_system in VALID_ELECTORAL_SYSTEMS, (
+                f"Preset '{name}' has unknown system: {config.electoral_system}"
+            )

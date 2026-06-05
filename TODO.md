@@ -215,7 +215,7 @@
     - Useful for district magnitude effects and disproportionality comparisons.
 - [x] **P2** Add EU preset `config.py` (done in b617fb1) through `ElectionModel.from_preset("eu")`
     - Existing EU implementation is specialized in `election.py`, inconsistent with config-based presets.
-- [ ] **P2** Add preset contract tests
+- [x] **P2** Add preset contract tests
     - Every preset should expose config, party metadata, provenance, expected system, expected seat count, and smoke simulation.
     - Fail if docs list a preset that `PRESETS` does not expose.
 - [ ] **P2** Add preset calibration status enum

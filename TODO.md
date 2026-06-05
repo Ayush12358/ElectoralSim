@@ -286,7 +286,7 @@
     - Either Matplotlib-only with `st.pyplot`, Plotly-only with `st.plotly_chart`, or paired functions with explicit names.
 - [x] **P3** Add visual regression smoke tests for generated plots
     - Validate non-empty axes/traces and no crash with small synthetic results.
-- [ ] **P3** Add example notebooks or scripts for every major workflow
+- [x] **P3** Add example notebooks or scripts for every major workflow
     - Coalition/government, opinion dynamics, BatchRunner, validation/calibration, redistricting, dashboard export, and custom behavior model.
 - [ ] **P3** Add `docs/examples/` pages that execute snippets in CI
     - Prevent README/docs examples from drifting from function signatures.

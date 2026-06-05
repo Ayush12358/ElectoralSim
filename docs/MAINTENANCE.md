@@ -329,8 +329,8 @@ Create these labels in GitHub:
 ### Monthly Tasks
 - [ ] Release patch version if bug fixes accumulated
 - [ ] Update documentation for any changes
-- [ ] Review CodeQL security findings
-- [ ] Check PyPI download statistics
+- [ ] Review CodeQL security findings — triage each alert to an actionable TODO.md entry or dismiss with reason
+- [ ] Review dependencies (`pip list --outdated`) and update if safe
 
 ### Quarterly Tasks
 - [ ] Plan major features for next release

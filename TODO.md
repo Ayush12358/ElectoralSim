@@ -320,7 +320,7 @@
     - Track Mesa, Polars, Numba, NumPy, NetworkX, Streamlit, Plotly, and CuPy compatibility.
 - [x] **P3** Add Python 3.13 CI lane if not already green
     - `pyproject.toml` advertises Python 3.13 support.
-- [ ] **P3** Add CodeQL or static-analysis TODO triage to release checklist
+- [x] **P3** Add CodeQL or static-analysis TODO triage to release checklist
     - Keep generated alerts tied back to actionable TODO entries.
 - [ ] **P3** Add coverage thresholds per module category
     - Core stable modules should have stricter thresholds than GPU/optional experimental modules.

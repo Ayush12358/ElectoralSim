@@ -299,7 +299,7 @@
     - Docs describe a two-argument signature, implementation takes `party_a_votes`, `party_b_votes`, and `party_a_seats`.
 - [x] **P3** Add docs navigation entries for workflow, iteration, citations, validation, maintenance, and feature comparison
     - Ensure mkdocs actually publishes the repo's new support docs.
-- [ ] **P3** Add docs build link-checking
+- [x] **P3** Add docs build link-checking
     - Catch stale GitHub Pages/PyPI/API URLs and missing source citations.
 - [x] **P3** Include `py.typed` verification test and wheel verification tests
     - Package data includes it, but add a built artifact test to prevent regressions.

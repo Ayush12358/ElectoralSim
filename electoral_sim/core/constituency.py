@@ -2,13 +2,17 @@
 Constituency Metadata Management
 
 Provides structures for handling real-world constituency data including
-names, states, types (reserved/general), and geographic coordinates.
+names, states, types (reserved/general), reserved seat constraints,
+candidate eligibility, and voter demographics.
 """
 
 from dataclasses import dataclass, field
 from typing import Any
 
 import polars as pl
+
+# Reserved constituency types (India-style)
+RESERVED_TYPES = frozenset({"General", "SC", "ST"})
 
 
 @dataclass
@@ -23,6 +27,34 @@ class ConstituencyMetadata:
     metadata: dict[str, Any] = field(default_factory=dict)
     lat: float | None = None
     lon: float | None = None
+
+
+def is_candidate_eligible(
+    constituency_type: str,
+    candidate_category: str,
+    reserved_map: dict[str, str] | None = None,
+) -> bool:
+    """
+    Check if a candidate is eligible to contest in a constituency.
+
+    In General constituencies, all candidates are eligible. In reserved
+    constituencies (SC/ST), only candidates of the matching category
+    can contest. A reserved_map can override the default mapping.
+
+    Args:
+        constituency_type: 'General', 'SC', or 'ST'
+        candidate_category: Candidate's demographic category
+        reserved_map: Optional override mapping category→allowed_types
+
+    Returns:
+        True if candidate is eligible
+    """
+    if reserved_map is not None:
+        return constituency_type in reserved_map.get(candidate_category, ["General"])
+
+    if constituency_type == "General":
+        return True  # All candidates eligible
+    return candidate_category == constituency_type
 
 
 class ConstituencyManager:
@@ -74,6 +106,20 @@ class ConstituencyManager:
         if len(res) > 0:
             return res["state"][0]
         return "Unknown"
+
+    def get_type(self, const_id: int) -> str:
+        """Return constituency type (General, SC, ST).
+
+        Args:
+            const_id: Constituency identifier
+
+        Returns:
+            Constituency type string, or 'General' if not found
+        """
+        res = self.df.filter(pl.col("id") == const_id)
+        if len(res) > 0 and "type" in res.columns:
+            return res["type"][0]
+        return "General"
 
     def to_dict_list(self) -> list[dict]:
         return self.df.to_dicts()

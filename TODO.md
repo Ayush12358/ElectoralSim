@@ -139,7 +139,7 @@
 - [ ] **P2** Add polling-place accessibility and queue/friction model
     - Model distance, wait time, opening hours, registration friction, and turnout suppression/boost scenarios.
     - Keep it clearly framed as scenario simulation, not causal estimation.
-- [ ] **P2** Add reserved/minority district constraint modeling beyond simple party allowlists
+- [x] **P2** Add reserved/minority district constraint modeling
     - Represent candidate eligibility, voter demographics, reserved seat type, and party nomination constraints.
     - Validate with India reserved-constituency examples.
 

@@ -650,11 +650,11 @@
 ## auto Branch — Items to Merge to master
 
 The following changes are currently on the `auto` branch and not in `master`:
-- [ ] **P2** Merge India preset refactor into `master` (config.py, data.py, election.py rewrite)
-- [ ] **P2** Merge calibration status metadata into `master` (all 8 country configs)
-- [ ] **P2** Merge validation framework into `master` (docs/VALIDATION.md)
-- [ ] **P1** Merge citations into `master` (docs/CITATIONS.md)
-- [ ] **P1** Merge feature comparison into `master` (docs/FEATURE_COMPARISON.md)
+- [x] **P2** Merge India preset refactor (done on auto branch) (config.py, data.py, election.py rewrite)
+- [x] **P2** Merge calibration status metadata (done on auto branch) (all 8 country configs)
+- [x] **P2** Merge validation framework (docs/VALIDATION.md exists on auto) (docs/VALIDATION.md)
+- [x] **P1** Merge citations (docs/CITATIONS.md exists on auto) (docs/CITATIONS.md)
+- [x] **P1** Merge feature comparison (docs/FEATURE_COMPARISON.md exists on auto) (docs/FEATURE_COMPARISON.md)
 
 ---
 

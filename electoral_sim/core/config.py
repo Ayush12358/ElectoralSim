@@ -167,6 +167,7 @@ from electoral_sim.presets.israel.config import israel_config
 from electoral_sim.presets.japan.config import japan_config
 from electoral_sim.presets.mexico.config import mexico_config
 from electoral_sim.presets.netherlands.config import netherlands_config
+from electoral_sim.presets.nz.config import nz_config
 from electoral_sim.presets.south_africa.config import south_africa_config
 from electoral_sim.presets.switzerland.config import switzerland_config
 from electoral_sim.presets.uk.config import uk_config
@@ -191,6 +192,7 @@ PRESETS = {
     "japan": japan_config,
     "mexico": mexico_config,
     "netherlands": netherlands_config,
+    "nz": nz_config,
 }
 
 # Data provenance registry for bundled presets
@@ -248,6 +250,12 @@ PRESET_PROVENANCE = {
         "source": "Synthetic party positions, nationwide PR with 0.67% threshold",
         "electoral_system": "PR",
         "threshold": 0.0067,
+    },
+    "nz": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, MMP 72 electorate + 48 list seats",
+        "electoral_system": "FPTP",
+        "threshold": 0.05,
     },
     "south_africa": {
         "calibration": "structural_demo",

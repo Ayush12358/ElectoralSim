@@ -1,14 +1,21 @@
 # electoral_sim/analysis
 
-**Systematic parameter exploration, Duverger's Law experiments, and VSE calculations.**
+**Updated:** 2026-06-05 | **Version:** v0.2.0
+
+Systematic parameter exploration, Duverger's Law experiments, VSE calculations, sensitivity analysis, calibration, and redistricting.
 
 ## Files
 
 | File | Exports | Purpose |
 |------|---------|---------|
-| `batch_runner.py` | `BatchRunner`, `ParameterSweep` | Grid/random parameter sweeps with multiprocessing, export to CSV/Parquet/JSON |
-| `duverger.py` | `run_duverger_experiment()` | Multi-step simulation showing FPTP converges to ENP ~2 while PR stays multi-party |
-| `vse.py` | `calculate_vse()` | Voter Satisfaction Efficiency: (W_actual - W_random) / (W_optimal - W_random) |
+| `batch_runner.py` | `BatchRunner` | Grid/random parameter sweeps with multiprocessing, export to CSV/Parquet/JSON |
+| `_sweep.py` | `ParameterSweep` | Grid/random sweep definitions (extracted from batch_runner.py) |
+| `duverger.py` | `run_duverger_experiment()` | Multi-step simulation: FPTP converges to ENP ~2 while PR stays multi-party |
+| `vse.py` | `calculate_vse()` | Voter Satisfaction Efficiency |
+| `sensitivity.py` | `one_at_a_time()`, `grid_sensitivity()`, `swing_analysis()` | Parameter sensitivity analysis with OAT and grid methods |
+| `calibration.py` | `mse_loss()`, `grid_search_calibration()` | Calibration framework against target metrics |
+| `redistricting.py` | `PrecinctGraph`, `recom_proposal()` | Redistricting module: precinct graphs, ReCom proposal generation |
+| `_ensemble.py` | `ensemble_analysis()` | District plan ensemble comparison (extracted from redistricting.py) |
 
 ## Usage Patterns
 

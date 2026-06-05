@@ -1,23 +1,24 @@
 # electoral_sim/systems/ Knowledge Base
 
-**Generated:** 2026-05-29
-**Commit:** 62c3d05
-**Branch:** master
+**Updated:** 2026-06-05
+**Version:** v0.2.0
 
 ## Overview
 
-Seat allocation algorithms and alternative voting methods. Pure NumPy implementations with optional Numba JIT fallback. All PR allocation functions share the same signature. FPTP is the outlier (takes a Polars DataFrame).
+Seat allocation algorithms, mixed electoral systems, alternative voting methods, and primary elections. Pure NumPy implementations with optional Numba JIT fallback.
 
 ## Files
 
 | File | Lines | Contents |
 |------|-------|----------|
-| `allocation.py` | 222 | 5 allocators + `allocate_seats()` dispatcher + `ALLOCATION_METHODS` registry |
-| `alternative.py` | 355 | IRV, STV, approval, condorcet, ranking generator |
+| `allocation.py` | 421 | 5 PR allocators + `allocate_seats()` dispatcher + `ALLOCATION_METHODS` registry + open/closed-list + MMP + parallel mixed |
+| `alternative.py` | 329 | Borda, Score, Approval, Condorcet, PAV, ranking generator, `_validate_rankings()` |
+| `_ranked.py` | 198 | IRV/RCV and STV (extracted from alternative.py) |
+| `primary.py` | 18 | `candidate_selection()`, `open_primary()`, `closed_primary()` |
 
 ## Signatures
 
-**PR allocation** (4 functions) share this exact signature:
+**PR allocation** (4+ functions) share this exact signature:
 
 ```python
 def dhondt_allocation(votes: np.ndarray, n_seats: int, threshold: float = 0.0) -> np.ndarray

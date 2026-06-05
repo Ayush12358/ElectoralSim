@@ -1,12 +1,12 @@
 # ElectoralSim Knowledge Base
 
-**Generated:** 2026-06-04
-**Commit:** c358c8c
-**Branch:** master
+**Updated:** 2026-06-05
+**Version:** v0.2.0
+**Branch:** auto
 
 ## Overview
 
-Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV), opinion dynamics, coalition formation, and government stability across 11 country presets. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration.
+Agent-based electoral simulation toolkit (Python 3.12+). Models voting behavior, electoral systems (FPTP, PR, IRV, STV, Borda, Score, PAV, MMP), opinion dynamics, coalition formation, and government stability across 23 country presets + EU Parliament. Uses Mesa for agent orchestration, Polars for vectorized data, Numba for JIT acceleration. 502 tests, ~85% coverage.
 
 ## Feature Implementation Workflow
 
@@ -20,24 +20,24 @@ See `docs/ITERATION.md` for the meta-workflow that continuously picks tasks from
 
 ```
 ./
-├── electoral_sim/        # Main package (10 modules, 55 .py files)
-│   ├── core/             # ElectionModel, Config, vote counting
+├── electoral_sim/        # Main package (12 modules, 60+ .py files)
+│   ├── core/             # ElectionModel, Config, CLI, Voter Generation
 │   ├── agents/           # VoterAgents, PartyAgents, adaptive strategy
-│   ├── behavior/         # Proximity, Valence, Strategic models
-│   ├── dynamics/         # Opinion dynamics (network-based)
-│   ├── engine/           # Numba/GPU, Coalition, Government
-│   ├── systems/          # Allocation (DHondt, Sainte-Lague, quotas), IRV, STV
-│   ├── metrics/          # Gallagher, ENP, VSE, Efficiency Gap
-│   ├── analysis/         # BatchRunner, Duverger, VSE analysis
+│   ├── behavior/         # Proximity, Valence, Strategic, Campaign models
+│   ├── dynamics/         # Opinion dynamics (network-based, noisy voter, zealots)
+│   ├── engine/           # Numba/GPU, Coalition, Government, Hazards
+│   ├── systems/          # Allocation (D'Hondt, MMP, mixed), IRV, STV, Borda, Score, PAV
+│   ├── metrics/          # Gallagher, ENP, VSE, Efficiency Gap, gerrymandering, compactness
+│   ├── analysis/         # BatchRunner, Duverger, VSE, sensitivity, calibration, redistricting
 │   ├── visualization/    # Plotly/Matplotlib plots, streamlit
-│   ├── events/           # Event manager (scandals, shocks)
-│   ├── presets/          # 11 country configs + EU Parliament
+│   ├── events/           # Event manager (scandals, shocks, election timeline, polls)
+│   ├── presets/          # 23 country configs + EU Parliament
 │   └── data/             # Historical election data files
-├── app.py                # Streamlit dashboard
-├── tests/                # 11 test files (329 tests, 85% coverage)
+├── app.py                # Streamlit dashboard (23 countries)
+├── tests/                # 11 test files (502 tests, ~85% coverage)
 ├── benchmarks/           # Performance benchmark scripts
 ├── docs/                 # mkdocs-material documentation + WORKFLOW.md
-└── scripts/              # Release, benchmark scripts
+└── scripts/              # Release scripts (bump_version, do_release)
 ```
 
 ## Where to Look

@@ -7,10 +7,20 @@ Provides dataclass-based configuration for clean model setup.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import Literal
 
 VALID_ELECTORAL_SYSTEMS = frozenset({"FPTP", "PR"})
 VALID_ALLOCATION_METHODS = frozenset({"dhondt", "sainte_lague", "hare", "droop"})
+
+
+class CalibrationStatus(str, Enum):
+    """Calibration status for election presets."""
+
+    STRUCTURAL_DEMO = "structural_demo"
+    PARTIALLY_CALIBRATED = "partially_calibrated"
+    HISTORICALLY_CALIBRATED = "historically_calibrated"
+    VALIDATION_ONLY = "validation_only"
 
 
 @dataclass

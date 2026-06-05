@@ -218,7 +218,7 @@
 - [x] **P2** Add preset contract tests
     - Every preset should expose config, party metadata, provenance, expected system, expected seat count, and smoke simulation.
     - Fail if docs list a preset that `PRESETS` does not expose.
-- [ ] **P2** Add preset calibration status enum
+- [x] **P2** Add preset calibration status enum
     - Values: structural demo, partially calibrated, historically calibrated, validation-only.
     - Surface status in README, docs, and dashboard.
 - [ ] **P2** Add alliance/bloc modeling to presets

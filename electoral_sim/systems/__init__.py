@@ -17,9 +17,11 @@ from electoral_sim.systems.alternative import (
     borda_count,
     condorcet_winner,
     generate_rankings,
-    irv_election,
     pav_committee,
     score_voting,
+)
+from electoral_sim.systems._ranked import (
+    irv_election,
     stv_election,
 )
 from electoral_sim.systems.primary import (

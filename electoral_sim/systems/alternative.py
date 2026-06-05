@@ -2,17 +2,13 @@
 Alternative Voting Systems
 
 Implements:
-- IRV/RCV (Instant Runoff Voting / Ranked Choice Voting)
-- STV (Single Transferable Vote)
 - Approval Voting
 - Condorcet methods
 - Borda Count
 - Score (Range) Voting
+- PAV (Proportional Approval Voting)
 
-Tie-breaking policy: All voting systems use ``prefer_lower_index`` —
-when candidates are tied, the candidate with the lowest array index
-wins (or is eliminated last). This is the default behavior of
-``np.argmax`` and loop-order-dependent selection.
+IRV and STV → systems/_ranked.py (extracted to keep files under 250 LOC).
 """
 
 import numpy as np
@@ -41,223 +37,13 @@ def _validate_rankings(rankings: np.ndarray, n_candidates: int, name: str = "") 
             f"rankings shape[1] ({n_cols}) must equal n_candidates ({n_candidates}){label}"
         )
 
-    # Check each voter's rankings for duplicate non-zero ranks and out-of-range values
     for i in range(n_voters):
         row = rankings[i]
         nonzero_ranks = row[row > 0]
         if len(set(nonzero_ranks)) != len(nonzero_ranks):
             raise ValueError(f"Duplicate ranks in voter {i}: {row.tolist()}{label}")
-        # Ranks must be in [0, n_candidates] (0 = unranked, 1..n_candidates = valid ranks)
         if np.any((row < 0) | (row > n_candidates)):
             raise ValueError(f"Out-of-range ranks in voter {i}: {row.tolist()}{label}")
-
-
-def irv_election(
-    rankings: np.ndarray,
-    n_candidates: int,
-) -> dict:
-    """
-    Instant Runoff Voting (Ranked Choice Voting).
-
-    Process:
-    1. Count first-choice votes
-    2. If a candidate has majority, they win
-    3. Otherwise, eliminate last-place candidate
-    4. Transfer eliminated candidate's votes to next preference
-    5. Repeat until one candidate has majority
-
-    Args:
-        rankings: (n_voters, n_candidates) array of rankings (1=first choice, 2=second, etc.)
-                  0 or -1 means unranked
-        n_candidates: Number of candidates
-
-    Returns:
-        Dictionary with winner, round results, and elimination order
-    """
-    n_voters = len(rankings)
-    _validate_rankings(rankings, n_candidates, "irv_election")
-    eliminated = set()
-    rounds = []
-    elimination_order = []
-
-    while len(eliminated) < n_candidates - 1:
-        # Count first-choice votes among non-eliminated candidates
-        vote_counts = np.zeros(n_candidates, dtype=np.int64)
-
-        for voter_ranks in rankings:
-            # Find highest-ranked non-eliminated candidate
-            for pref in range(1, n_candidates + 1):
-                candidates_at_pref = np.where(voter_ranks == pref)[0]
-                for c in candidates_at_pref:
-                    if c not in eliminated:
-                        vote_counts[c] += 1
-                        break
-                else:
-                    continue
-                break
-
-        # Record round
-        active_votes = vote_counts.sum()
-        rounds.append(
-            {
-                "vote_counts": vote_counts.copy(),
-                "eliminated": list(eliminated),
-            }
-        )
-
-        # Check for majority
-        max_votes = vote_counts.max()
-        if max_votes > active_votes / 2:
-            winner = int(np.argmax(vote_counts))
-            return {
-                "winner": winner,
-                "rounds": rounds,
-                "elimination_order": elimination_order,
-                "final_votes": vote_counts,
-            }
-
-        # Eliminate candidate with fewest votes (among non-eliminated)
-        min_votes = float("inf")
-        to_eliminate = -1
-        for c in range(n_candidates):
-            if c not in eliminated and vote_counts[c] < min_votes:
-                min_votes = vote_counts[c]
-                to_eliminate = c
-
-        eliminated.add(to_eliminate)
-        elimination_order.append(to_eliminate)
-
-    # Last remaining candidate wins
-    for c in range(n_candidates):
-        if c not in eliminated:
-            winner = c
-            break
-
-    # Capture final vote tally from last round
-    final_tally = rounds[-1]["vote_counts"] if rounds else np.zeros(n_candidates)
-
-    return {
-        "winner": winner,
-        "rounds": rounds,
-        "elimination_order": elimination_order,
-        "final_votes": final_tally,
-    }
-
-
-def stv_election(
-    rankings: np.ndarray,
-    n_candidates: int,
-    n_seats: int,
-) -> dict:
-    """
-    Single Transferable Vote (STV) for multi-winner elections.
-
-    Uses Droop quota: floor(votes / (seats + 1)) + 1
-
-    Args:
-        rankings: (n_voters, n_candidates) ranking array
-        n_candidates: Number of candidates
-        n_seats: Number of seats to fill
-
-    Returns:
-        Dictionary with elected candidates, rounds, and transfer details
-    """
-    n_voters = len(rankings)
-    _validate_rankings(rankings, n_candidates, "stv_election")
-    quota = int(np.floor(n_voters / (n_seats + 1))) + 1
-
-    # Track vote weights (for surplus transfers)
-    weights = np.ones(n_voters, dtype=np.float64)
-
-    elected = []
-    eliminated = set()
-    rounds = []
-
-    while len(elected) < n_seats and len(eliminated) + len(elected) < n_candidates:
-        # Count weighted first-preference votes
-        vote_counts = np.zeros(n_candidates, dtype=np.float64)
-
-        for i, voter_ranks in enumerate(rankings):
-            for pref in range(1, n_candidates + 1):
-                candidates_at_pref = np.where(voter_ranks == pref)[0]
-                for c in candidates_at_pref:
-                    if c not in eliminated and c not in elected:
-                        vote_counts[c] += weights[i]
-                        break
-                else:
-                    continue
-                break
-
-        rounds.append(
-            {
-                "vote_counts": vote_counts.copy(),
-                "elected": list(elected),
-                "eliminated": list(eliminated),
-                "quota": quota,
-            }
-        )
-
-        # Check for candidates reaching quota
-        above_quota = [
-            c
-            for c in range(n_candidates)
-            if c not in elected and c not in eliminated and vote_counts[c] >= quota
-        ]
-
-        if above_quota:
-            # Elect candidate with most votes
-            best = max(above_quota, key=lambda c: vote_counts[c])
-            elected.append(best)
-
-            # Transfer surplus votes
-            surplus = vote_counts[best] - quota
-            if surplus > 0 and len(elected) < n_seats:
-                transfer_ratio = surplus / vote_counts[best]
-
-                # Reduce weights for voters who had this candidate as first preference
-                for i, voter_ranks in enumerate(rankings):
-                    for pref in range(1, n_candidates + 1):
-                        candidates_at_pref = np.where(voter_ranks == pref)[0]
-                        for c in candidates_at_pref:
-                            if c == best:
-                                weights[i] *= transfer_ratio
-                                break
-                            elif c not in eliminated and c not in elected:
-                                break
-                        else:
-                            continue
-                        break
-        else:
-            # No one reached quota - eliminate lowest
-            min_votes = float("inf")
-            to_eliminate = -1
-            for c in range(n_candidates):
-                if c not in eliminated and c not in elected:
-                    if vote_counts[c] < min_votes:
-                        min_votes = vote_counts[c]
-                        to_eliminate = c
-
-            if to_eliminate >= 0:
-                eliminated.add(to_eliminate)
-
-    # Fill remaining seats with highest-vote non-eliminated candidates
-    remaining = [
-        (c, vote_counts[c])
-        for c in range(n_candidates)
-        if c not in elected and c not in eliminated
-    ]
-    remaining.sort(key=lambda x: -x[1])
-    for c, _ in remaining:
-        if len(elected) >= n_seats:
-            break
-        elected.append(c)
-
-    return {
-        "elected": elected,
-        "rounds": rounds,
-        "n_seats": n_seats,
-        "quota": quota,
-    }
 
 
 def borda_count(
@@ -501,6 +287,8 @@ def pav_committee(
 # =============================================================================
 
 if __name__ == "__main__":
+    from electoral_sim.systems._ranked import irv_election, stv_election
+
     print("=" * 50)
     print("Alternative Voting Systems Test")
     print("=" * 50)

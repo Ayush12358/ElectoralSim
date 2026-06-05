@@ -33,6 +33,7 @@ class TestAllPresets:
             "brazil",
             "japan",
             "south_africa",
+            "canada",
             "eu",
         ],
     )
@@ -95,6 +96,14 @@ class TestAllPresets:
         assert model.electoral_system == "PR"
         assert model.allocation_method == "dhondt"
         assert model.parties.n_parties == 8
+
+    def test_canada_preset_structure(self):
+        """Canada preset uses FPTP with 338 ridings."""
+        from electoral_sim import ElectionModel
+
+        model = ElectionModel.from_preset("canada", n_voters=5000)
+        assert model.electoral_system == "FPTP"
+        assert model.parties.n_parties == 5
 
     def test_preset_provenance_metadata(self):
         """from_preset() stores provenance metadata on the model."""

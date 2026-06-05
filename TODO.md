@@ -193,7 +193,7 @@
 
 #### P2 Presets & Country Coverage
 
-- [ ] **P2** Add Canada federal preset with FPTP, province metadata, and riding count
+- [x] **P2** Add Canada federal preset with FPTP, province metadata, and riding count
     - Include party positions, regional strengths, and source notes.
 - [ ] **P2** Add Israel preset with nationwide PR and electoral threshold
     - Include coalition-heavy government formation examples.

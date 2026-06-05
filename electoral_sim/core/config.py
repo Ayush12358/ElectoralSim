@@ -158,6 +158,7 @@ class Config:
 # Re-export country configs from presets for backward compatibility
 from electoral_sim.presets.australia.config import australia_house_config, australia_senate_config
 from electoral_sim.presets.brazil.config import brazil_config
+from electoral_sim.presets.canada.config import canada_config
 from electoral_sim.presets.eu.config import eu_config
 from electoral_sim.presets.france.config import france_config
 from electoral_sim.presets.germany.config import germany_config
@@ -178,6 +179,7 @@ PRESETS = {
     "australia_senate": australia_senate_config,
     "south_africa": south_africa_config,
     "brazil": brazil_config,
+    "canada": canada_config,
     "eu": eu_config,
     "france": france_config,
     "japan": japan_config,
@@ -245,6 +247,12 @@ PRESET_PROVENANCE = {
         "calibration": "structural_demo",
         "source": "Synthetic party positions (FPTP simulation of two-round)",
         "electoral_system": "FPTP",
+    },
+    "canada": {
+        "calibration": "structural_demo",
+        "source": "Synthetic party positions, FPTP with 338 ridings",
+        "electoral_system": "FPTP",
+        "n_constituencies": 338,
     },
     "japan": {
         "calibration": "structural_demo",
